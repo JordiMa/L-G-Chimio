@@ -1,0 +1,36 @@
+<style type="text/css">
+<!--
+.Style4 {color: #990033; font-weight: bold; }
+-->
+</style>
+<h3 align="center">&nbsp;</h3>
+<h3 align="center">Installation de  L&#8208;g&#8208;Chimio</h3>
+<p align="center">&nbsp;</p>
+<p align="justify">Merci d&rsquo;avoir choisi cette application pour g&eacute;rer votre chimioth&egrave;que. Si vous rencontrez un probl&egrave;me vous pouvez 
+  me contacter &agrave; l&rsquo;adresse suivante : laurent.robin@univ&#8208;orleans.fr<br />
+</p>
+<p align="justify">  <strong>Syst&egrave;me requis :</strong><br />
+  Le logiciel fonctionne avec un serveur Apache &ndash; PHP &#8208; PostgreSQL le tout de pr&eacute;f&eacute;rence sous Linux. Le logiciel fonctionne sous windows mais cet environnement n'est pas recommand&eacute; pour l'utilisation en production d'Apache &ndash; PHP &#8208; PostgreSQL.  <strong>Je vous recommande très fortement d'utiliser le protocole SSL avec Apache afin de crypter les échanges.</strong> </p>
+<p align="justify"><strong>Configuration du PHP :  </strong><br /> 
+  Le logiciel fonctionne en plage de caractère <strong>UTF8</strong> et non ISO-8859-1, changer dans le fichier de configuration de PHP (php.ini) l'argument :<br/>
+  <span class="Style4">default_charset</span> doit être à utf8 (default_charset = &quot;utf-8&quot;)<br/>
+  Votre serveur Apache doit &ecirc;tre mis en mode production, c'est &agrave; dire que dans le fichier de configuration de PHP (php.ini) il faut que les arguments suivants :<br />
+  <span class="Style4">display_errors </span> doit &ecirc;tre &agrave; off ( display_errors = Off)<br />
+  ou les arguments :
+  <br />
+  <span class="Style4">display_errors </span> reste &agrave; On (display_errors = On) et  l'argument <span class="Style4">error_reporting</span> (error_reporting =  E_ALL &amp; ~E_NOTICE &amp; ~E_DEPRECATED &amp; ~E_WARNING ) </p>
+<p align="justify">Une  fois  vos serveurs Apache et PostgreSQL en place et fonctionnelles proc&eacute;dez &agrave; l'installation  du logiciel de gestion de chimioth&egrave;que en cliquant sur suivant ci-dessous.</p>
+<p align="center">&nbsp;</p>
+<p align="center"><a href="mailto:laurent.robin@univ-orleans.fr">Laurent ROBIN</a><br />
+Institut de Chimie Organique et Analytique - ICOA UMR7311<br />
+Universit&eacute; d&rsquo;Orl&eacute;ans<br />
+Rue de Chartre &ndash; BP6759<br />
+45067 Orl&eacute;ans Cedex 2<br />
+<br />Tél : 02 38 49 49 03<br />
+<a href="http://www.icoa.fr" target="_blank">http://www.icoa.fr</a>
+<br />
+<form  name="form1" method="post" action="etape.php">
+  <div align="center">
+    <input type="submit" name="Submit" value="Premi&egrave;re &eacute;tape" />
+  </div>
+</form></p>

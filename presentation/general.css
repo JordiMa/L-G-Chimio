@@ -1,0 +1,247 @@
+body {
+	background-color:#CCFF99;
+	margin:0px 0px 0px 0px;
+	}
+p,td {
+	font-size : 11px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : black;
+	}
+.plaque{
+	font-size : 0px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : black;
+}	
+hr {
+	color : #CCFF99 ;
+	height : 5px;
+	}
+.messagederreur {
+	font-size : 12px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : #CC0000;
+	font-weight: bold;
+	}
+h4 {
+	font-size : 11px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : #000099;
+	font-weight: bold;
+	}
+h3 {
+	font-size : 14px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : #000099;
+	font-weight: bold;
+	}
+.h3erreur{
+	font-size : 15px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : #CC0000;
+	font-weight: bold;
+	}	
+label {
+	font-size : 11px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : black;
+	font-weight: bold;
+	}
+.chek {
+	font-size : 10px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : black;
+	font-weight: normal;
+	}
+a:link {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:visited {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:hover {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	background-color:transparent;
+	TEXT-DECORATION: underline
+	}
+a:active {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	background-color:transparent;
+	TEXT-DECORATION: underline
+	}
+a:link.mnu {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	color:#666666;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:visited.mnu {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	color:#666666;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:hover.mnu {
+	font-family:arial, sans-serif;
+	font-size:100%;color:black;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:active.mnu {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	color:black;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:link.onglet {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	font-weight: bold;
+	color:white;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:visited.onglet {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	font-weight: bold;
+	color:white;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:hover.onglet {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	font-weight: bold;
+	color:white;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+a:active.onglet {
+	font-family:arial, sans-serif;
+	font-size:100%;
+	font-weight: bold;
+	color:white;
+	background-color:transparent;
+	TEXT-DECORATION: none
+	}
+td.celluleblanche {
+	font-size : 11px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color:black;
+	font-weight: bold;
+	background-color:#FFFFFF
+	}
+td.cellulebleu {
+	font-size : 11px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color:#FFFFFF;
+	font-weight: bold;
+	background-color:#3399CC
+	}
+td.bandeau {
+	font-size : 17px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-weight: bold;
+	color:#3399CC;
+	}
+td.entete {
+	font-size : 13px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-weight: bold;
+	color:#3399CC;
+	}
+p.presentation {
+	font-size : 22px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-weight: bold;
+	color:#3399CC;
+	}
+p.presentation1 {
+	font-size : 20px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-weight: bold;
+	color:#3399CC;
+	}
+p.erreur {
+	font-size : 13px ;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-weight: bold;
+	color:#FF0000;
+	}
+p.sauvegarde {
+	font-size : 13px ;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-weight: bold;
+	color:#000000;
+	}
+.stylesymbole {
+	font-size : 11px;
+	font-family : Symbol;
+	color : black;
+	}
+.blocformulaire {
+	font-size : 11px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : black;
+	font-weight: bold;
+	background-color : #99CC99;
+	border-color :black;
+	}
+.blocaffichage {
+	background-color:#FFFFCC;
+	border : 1px solid black
+	}
+.tabtransparent {border-width : 0em}
+.barre {border-left : thin solid black}
+.bord {border : 1px solid black}
+#dhtmltooltip {
+	position: absolute;
+	width: 230px;
+	border: 1px solid #C4C0BF;
+	padding: 2px;
+	background-color: #CCFF99;
+	visibility: hidden;
+	z-index: 100;
+	font-family:Helvetica,Arial,sans-serif;
+	font-size:8pt;
+	}
+li.rouge {
+	font-size : 12px;
+	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
+	color : red;
+	font-weight: bold;
+	}
+tr.ligneutil {
+	background-color:#E3ECBD;
+}
+tr.ligneutil1{
+	background-color:#CED9A0;
+}
+.divmenu {
+	position:absolute;
+	top:115px;
+	left:5px;
+}
+.divmenu1 {
+	position:absolute;
+	top:290px;
+	left:5px;
+}
+p.r {
+	color : red;
+	font-weight: bold;
+}
+output {
+	background-color:#D8D8D8;
+}
