@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -31,27 +31,29 @@ termes.
 //démarage de la session
 session_start();
 //vérification si les variables name_chimiste et reponse existe et si elles ne sont pas vide
-if (isset($_POST['name_chimiste']) && isset($_POST['reponse']) && !empty($_POST['name_chimiste']) && !empty($_POST['reponse'])) {
+if (isset($_POST['name_chimiste']) && isset($_POST['password_chimiste']) && !empty($_POST['name_chimiste']) && !empty($_POST['password_chimiste'])) {
 	//traitement du mot de passe enlève le caractère suplémentaire en met en minuscule
-	$pass=strtolower($_POST['reponse']);
-	$nb=intval(strlen($_POST['name_chimiste'])/2);
-	$carac=substr($_POST['name_chimiste'],$nb,0);
-	$pass1=substr($pass,0,$nb);
-	$pass2=substr($pass,$nb+1,32);
-	$pass=$pass1.$pass2;
+	// $pass=strtolower($_POST['reponse']);
+	// $nb=intval(strlen($_POST['name_chimiste'])/2);
+	// $carac=substr($_POST['name_chimiste'],$nb,0);
+	// $pass1=substr($pass,0,$nb);
+	// $pass2=substr($pass,$nb+1,32);
+	// $pass=$pass1.$pass2;
+	 $pass=$_POST['password_chimiste'];
+
 	//appel de la function vérification  si elle renvoie TRUE la session est générée
 	if (verification ($_POST['name_chimiste'],$pass)) {
 		session_regenerate_id();
-		$_SESSION['nom']=$_POST['name_chimiste'];
+		$_SESSION['nom']=$nom_chim;
 		//appel le fichier de connexion à la base de données
-		require 'script/connectionb.php';
+		// require 'script/connectionb.php';
 		//préparation de la requète SQL
-		$sql = "SELECT chi_langue FROM chimiste WHERE chi_nom='".$_POST['name_chimiste']."' and chi_password='".$pass."'";
+		// $sql = "SELECT chi_langue FROM chimiste WHERE chi_nom='".$_POST['name_chimiste']."' and chi_password='".$pass."'";
 		//les résultats sont retournées dans la variable $result
-		$result =$dbh->query($sql);
-		$row =$result->fetch(PDO::FETCH_NUM);
-		$_SESSION['langue']=$row[0];
-		unset($dbh);
+		// $result =$dbh->query($sql);
+		// $row =$result->fetch(PDO::FETCH_NUM);
+		$_SESSION['langue']=$lang_chim;
+		// unset($dbh);
 		include_once 'entre.php';
 	}
 	//sinon redirection sur le fichier index.php avec un message d'erreur
@@ -74,14 +76,25 @@ function verification ($nom,$pass) {
 	//appel le fichier de connexion à la base de données
 	require 'script/connectionb.php';
 	//préparation de la requète SQL
-	$sql = "SELECT chi_nom as nbres FROM chimiste WHERE chi_nom='$nom' and chi_password='".$pass."' and chi_passif='0'";
+	// $sql = "SELECT chi_nom as nbres FROM chimiste WHERE chi_nom='$nom' and chi_password='".$pass."' and chi_passif='0'";
+	$sql = "SELECT chi_id_chimiste, chi_password, chi_langue, chi_nom as nbres FROM chimiste WHERE chi_nom='$nom' and chi_passif='0'";
 	//les résultats sont retournées dans la variable $result
-	$result =$dbh->query($sql);
-	$num=$result->rowCount();
-	$row =$result->fetch(PDO::FETCH_NUM);
+	// $result =$dbh->query($sql);
+	// $num=$result->rowCount();
+	// $row =$result->fetch(PDO::FETCH_NUM);
+	foreach  ($dbh->query($sql) as $row) {
+				if (password_verify($pass, $row['chi_password'])){
+					global $id_chim, $nom_chim, $lang_chim;
+					$id_chim = $row['chi_id_chimiste'];
+					$nom_chim = $row['nbres'];
+					$lang_chim = $row['chi_langue'];
+					//fermeture de la connexion à la base de données
+					unset($dbh);
+					return TRUE;
+				}
+  }
 	//fermeture de la connexion à la base de données
 	unset($dbh);
-	if($num ==1 and $row[0]==$nom) return TRUE;
-	else return FALSE;
+	return FALSE;
 }
 ?>
