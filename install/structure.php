@@ -281,7 +281,7 @@ CREATE TABLE produit (
     pro_id_chimiste smallint NOT NULL,
     pro_id_couleur smallint NOT NULL,
     pro_id_structure integer NOT NULL,
-	pro_purete character varying(2) NOT NULL,
+	pro_purete integer NOT NULL,
     pro_purification character varying(17)[] NOT NULL,
 	pro_pourcentage_actif character varying(5),
 	pro_sel character varying(5),
@@ -329,9 +329,9 @@ CREATE TABLE produit (
     pro_id_uv integer,
     pro_id_sm integer,
     pro_id_hrms integer,
-    CONSTRAINT contrainte_aspect CHECK ((pro_aspect <@ ARRAY['GOMME'::character varying, 'HUILE'::character varying, 'LIQUIDE'::character varying, 'MOUSSE'::character varying, 'SOLIDE'::character varying])),
+    CONSTRAINT contrainte_aspect CHECK ((pro_aspect <@ ARRAY['GOMME'::character varying, 'HUILE'::character varying, 'LIQUIDE'::character varying, 'MOUSSE'::character varying, 'SOLIDE'::character varying, 'INCONNU'::character varying])),
     CONSTRAINT contrainte_originesubstance CHECK ((pro_origine_substance <@ ARRAY['SYNTHESE'::character varying, 'HEMISYNTHESE'::character varying, 'NATURELLE'::character varying, 'INCONNU'::character varying])),
-    CONSTRAINT contrainte_purification CHECK ((pro_purification <@ ARRAY['AUCUNE'::character varying, 'COLONNE'::character varying, 'DISTILLATION'::character varying, 'EXTRACTION'::character varying, 'FILTRATION'::character varying, 'FILTRATIONCEL'::character varying, 'HPLC'::character varying, 'PRECIPITATION'::character varying, 'RECRISTALLISATION'::character varying, 'RESINE'::character varying])),
+    CONSTRAINT contrainte_purification CHECK ((pro_purification <@ ARRAY['AUCUNE'::character varying, 'COLONNE'::character varying, 'DISTILLATION'::character varying, 'EXTRACTION'::character varying, 'FILTRATION'::character varying, 'FILTRATIONCEL'::character varying, 'HPLC'::character varying, 'PRECIPITATION'::character varying, 'RECRISTALLISATION'::character varying, 'RESINE'::character varying, 'INCONNUE'::character varying])),
 	CONSTRAINT contrainte_unitemasse CHECK ((pro_unite_masse <@ ARRAY['MG'::character varying, 'NMOL'::character varying])),
 	CONSTRAINT contrainte_etapemol CHECK ((pro_etape_mol <@ ARRAY['INTERMEDIAIRE'::character varying, 'FINALE'::character varying, 'AUCUNE'::character varying, 'INCONNUE'::character varying]))
 );

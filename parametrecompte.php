@@ -36,22 +36,25 @@ include_once 'langues/'.$_SESSION['langue'].'/lang_compte.php';
 echo"<script language=\"JavaScript\">
   <!--
   function GetSmiles(theForm) {
-    if (document.modifcompte.email.value==\"\") {alert(\"".CHAMP." \'".EMAIL."\' ".RENSEIGNE."\");}
+    if (document.modifcompte.OLDPASS.value==\"\") {alert(\"".PASSERR."\");}
     else {
-      if (document.modifcompte.langue.value==\"\") {alert(\"".CHAMP." \'".LANGUE."\' ".RENSEIGNE."\");}
+      if (document.modifcompte.email.value==\"\") {alert(\"".CHAMP." \'".EMAIL."\' ".RENSEIGNE."\");}
       else {
-		if (document.modifcompte.password.value!=\"\" || document.modifcompte.password2.value!=\"\") {
-			if (document.modifcompte.password.value!=\"\" && document.modifcompte.password2.value==\"\") {alert(\"".CHAMP." \'".PASSWORDVER."\' ".RENSEIGNE."\");}
-			else{
-			    if (document.modifcompte.password.value!=document.modifcompte.password2.value) {alert(\"".VERIF."\");}
-				else {
-					if (document.modifcompte.password.value.length<12) {alert(\"".NBPASSWORD."\");}
-					else {theForm.submit();}
-					}
-				}
-			}
-		else {theForm.submit();}
-		}
+        if (document.modifcompte.langue.value==\"\") {alert(\"".CHAMP." \'".LANGUE."\' ".RENSEIGNE."\");}
+        else {
+          if (document.modifcompte.password.value!=\"\" || document.modifcompte.password2.value!=\"\") {
+            if (document.modifcompte.password.value!=\"\" && document.modifcompte.password2.value==\"\") {alert(\"".CHAMP." \'".PASSWORDVER."\' ".RENSEIGNE."\");}
+            else{
+              if (document.modifcompte.password.value!=document.modifcompte.password2.value) {alert(\"".VERIF."\");}
+              else {
+                if (document.modifcompte.password.value.length<12) {alert(\"".NBPASSWORD."\");}
+                else {theForm.submit();}
+              }
+            }
+          }
+          else {theForm.submit();}
+        }
+      }
     }
  }
  </script>";
@@ -90,10 +93,15 @@ $sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLU
 //les résultats sont retournées dans la variable $result1
 $result1 =$dbh->query($sql);
 $row1 =$result1->fetch(PDO::FETCH_NUM);
+
+
 print "<strong>".PASSWORDCOMP."</strong><br/><br/>";
 $formulaire->ajout_password ($row1[0]+1, "", $row1[0],"password",PASSWORDMOD."<br/>","");
 print"<br/>";
 $formulaire->ajout_password ($row1[0]+1, "", $row1[0],"password2",PASSWORDVER."<br/>","");
+print"<br/><br/>";
+print"<br/><br/>";
+$formulaire->ajout_password ($row1[0]+1, "", $row1[0],"OLDPASS",PASSWORDACTU."<br/>","");
 print"<br/><br/>";
 $formulaire->ajout_button (SUBMIT,"","button","onClick=\"GetSmiles(form)\"");
 //fin du formulaire

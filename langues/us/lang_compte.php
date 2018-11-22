@@ -31,6 +31,7 @@ termes.
 define('SELECTLANGUE','Select language');
 define('LANGUE','Language :');
 define('PASSWORDCOMP','Change Password :');
+define('PASSWORDACTU','<strong style="color: red;"Current password :</strong>');
 define('PASSWORDMOD','Enter the new password :');
 define('PASSWORDVER','Confirm new password :');
 define('RECEVOIR','Send an email for each structure entry for your team :');
@@ -41,5 +42,7 @@ define('RENSEIGNE','should be informed');
 define('VERIF','The two password fields are not identical');
 define('SAUVDONNE','Saved Data');
 define('SAUVECHEC','Backup failed');
+define('SAUVEPASS','Incorrect password');
 define('NBPASSWORD','Your password must consist of at least 12 characters');
+define('PASSERR','Your current password should be informed');
 ?>

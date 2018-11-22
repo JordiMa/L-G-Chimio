@@ -1,6 +1,6 @@
 ﻿<?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -41,13 +41,13 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 	}
 
 	if (empty($db)) print"connexion au serveur de base de données PostgreSQL échouée";
-	else {		
+	else {
 		include_once 'structure.php';
 		$req=$db->exec ($sql);
 		if ($req!==false) {
 			print"<li>Création des tables de la base de données réussit</li>";
 			$ok++;
-		}	
+		}
 		else {
 			print"<li class=\"rouge\">Echec de la création des tables de la base de données<br/>Message(s) d'erreur :<br/>";
 			print_r ($db->errorInfo());
@@ -271,7 +271,8 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 													(214, 'FFFF66'),
 													(215, 'FFFF99'),
 													(216, 'FFFFCC'),
-													(217, 'INCOL');");
+													(217, 'INCOL'),
+													(218, 'INCON');");
 		if ($req1!==false) {
 			$psql103="SELECT setval('couleur_id_seq',217);";
 			$presultat103=$db->exec($psql103);
@@ -303,7 +304,7 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 			$presultat102=$db->exec($psql102);
 			print"<ul><li>Insertion des données dans la table preautions réussit</li></ul>";
 			$ok++;
-		}	
+		}
 		else {
 			print"<ul><li class=\"rouge\">Echec de l'insertion des données dans la table precaution<br/>Message(s) d'erreur :<br/>";
 			print_r ($db->errorInfo());
@@ -334,7 +335,7 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 			$presultat101=$db->exec($psql101);
 			print"<ul><li>Insertion des données dans la table solvant réussit</li></ul>";
 			$ok++;
-		}	
+		}
 		else {
 			print"<ul><li class=\"rouge\">Echec de l'insertion des données dans la table solvant<br/>Message(s) d'erreur :<br/>";
 			print_r ($db->errorInfo());
@@ -350,7 +351,7 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 			$presultat100=$db->exec($psql100);
 			print"<ul><li>Insertion des données dans la table type réussit</li></ul>";
 			$ok++;
-		}	
+		}
 		else {
 			print"<ul><li class=\"rouge\">Echec de l'insertion des données dans la table type<br/>Message(s) d'erreur :<br/>";
 			print_r ($db->errorInfo());
@@ -358,21 +359,21 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 			$ok=0;
 		}
 		$psql1="create index index_structures on structure using bingo_idx (str_mol bingo.molecule);";
-		$presultat1=$db->exec($psql1);	
-		if ($presultat1!==false) { 
+		$presultat1=$db->exec($psql1);
+		if ($presultat1!==false) {
 			echo "<ul><li>table structure est correctement indexée dans postgresql.</li></ul>";
 			$ok++;
-		}	
+		}
 		else {
 			echo "<ul><li class=\"rouge\">erreur de l'indexation des données de la table structure de Postgresql!<br/>Vérifiez l'existence et la configuration de Bingo dans PostgreSQL<br/>";
 			print_r ($db->errorInfo());
 			print"</li></ul>";
 			$ok=0;
-		}	
+		}
 		unset ($db);
-	}	
+	}
 	echo "</ul>";
-		
+
 	if ($ok!=0 and $ok==6) {
 		$formulaire=new formulaire ("install3","etape5.php","POST",true);
 		$formulaire->affiche_formulaire();
@@ -386,8 +387,8 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 		if ($_POST["win"]==1) $formulaire->ajout_cache ($_POST["win"],"win");
 		$formulaire->ajout_button ("Etape suivante","","submit","");
 		$formulaire->fin();
-	}	
-	else { 
+	}
+	else {
 		$formulaire=new formulaire ("install3","etape4.php","POST",true);
 		$formulaire->affiche_formulaire();
 		$formulaire->ajout_cache ($_POST["web"],"web");
@@ -400,7 +401,7 @@ if (!empty($_POST["servmysql"]) and !empty($_POST["loginmysql"]) and !empty($_PO
 		if ($_POST["win"]==1) $formulaire->ajout_cache ($_POST["win"],"win");
 		$formulaire->ajout_button ("Nouvelle tentative","new","submit","");
 		$formulaire->fin();
-	}	
+	}
 }
 else include_once 'progext2.php';
 

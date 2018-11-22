@@ -32,7 +32,11 @@ include_once 'script/secure.php';
 include_once 'protection.php';
 include_once 'langues/'.$_SESSION['langue'].'/lang_compte.php';
 
-if (empty($_POST['email'])) {
+if (empty($_POST['OLDPASS'])) {
+	$erreur=PASSERR;
+	require 'parametrecompte.php';
+}
+elseif (empty($_POST['email'])) {
 	$erreur=CHAMP." ".EMAIL." ".RENSEIGNE;
 	require 'parametrecompte.php';
 }
@@ -56,21 +60,35 @@ else modification ();
 function modification () {
 	//appel le fichier de connexion à la base de données
 	require 'script/connectionb.php';
-	$set="";
-	if (!isset($_POST['envoi'])) $_POST['envoi']="";
-	if ($_POST['envoi']==0 or $_POST['envoi']==1) $set.="chi_recevoir='".$_POST['envoi']."'";
-	if (($_POST['envoi']==0 or $_POST['envoi']==1) and !empty($_POST['email'])) $set.=" , ";
-	if (!empty($_POST['email'])) $set.="chi_email='".$_POST['email']."'";
-	if (!empty($_POST['email']) and !empty($_POST['langue'])) $set.=" , ";
-	if (!empty($_POST['langue'])) $set.="chi_langue='".$_POST['langue']."'";
-	if (!empty($_POST['langue']) and !empty($_POST['password'])) $set.=" , ";
-	if (!empty($_POST['password'])) $set.="chi_password=('".password_hash($_POST['password'],PASSWORD_BCRYPT)."')";
-	$sql="UPDATE chimiste SET $set WHERE chi_nom='".$_SESSION['nom']."'";
-	$update=$dbh->exec($sql);
-	unset($_SESSION['langue']);
-	$_SESSION['langue']=$_POST['langue'];
-	if($update==1) print "<br/><br/><p align=\"center\"><strong>".SAUVDONNE."</strong></p>";
-	else print "<br/><br/><p align=\"center\"><strong>".SAUVECHEC."</strong></p>";
-	unset($dbh);
+	$update = 0;
+	$passactu = 0;
+	$sql = "SELECT chi_password FROM chimiste WHERE chi_nom='".$_SESSION["nom"]."' and chi_passif='0'";
+
+	foreach  ($dbh->query($sql) as $row) {
+		if (password_verify($_POST['OLDPASS'], $row['chi_password'])){
+			$passactu = 1;
+			$set="";
+			if (!isset($_POST['envoi'])) $_POST['envoi']="";
+			if ($_POST['envoi']==0 or $_POST['envoi']==1) $set.="chi_recevoir='".$_POST['envoi']."'";
+			if (($_POST['envoi']==0 or $_POST['envoi']==1) and !empty($_POST['email'])) $set.=" , ";
+			if (!empty($_POST['email'])) $set.="chi_email='".$_POST['email']."'";
+			if (!empty($_POST['email']) and !empty($_POST['langue'])) $set.=" , ";
+			if (!empty($_POST['langue'])) $set.="chi_langue='".$_POST['langue']."'";
+			if (!empty($_POST['langue']) and !empty($_POST['password'])) $set.=" , ";
+			if (!empty($_POST['password'])) $set.="chi_password=('".password_hash($_POST['password'],PASSWORD_BCRYPT)."')";
+			$sql="UPDATE chimiste SET $set WHERE chi_nom='".$_SESSION['nom']."'";
+			$update=$dbh->exec($sql);
+			unset($_SESSION['langue']);
+			$_SESSION['langue']=$_POST['langue'];
+			}
+		}
+
+		if($update==1)
+			print "<br/><br/><p align=\"center\"><strong>".SAUVDONNE."</strong></p>";
+		elseif ($passactu==0)
+			print "<br/><br/><p align=\"center\"><strong style='color: red';>".SAUVEPASS."</strong></p>";
+		else
+			print "<br/><br/><p align=\"center\"><strong>".SAUVECHEC."</strong></p>";
+		unset($dbh);
 }
 ?>

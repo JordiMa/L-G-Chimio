@@ -31,6 +31,7 @@ termes.
 define('SELECTLANGUE','Sélectionnez la langue');
 define('LANGUE','Langue :');
 define('PASSWORDCOMP','Modifier le mot de passe :');
+define('PASSWORDACTU','<strong style="color: red;">Mot de passe actuel :</strong>');
 define('PASSWORDMOD','Saisir le nouveau mot de passe (minimum 12 caractères) :');
 define('PASSWORDVER','Confirmez le nouveau mot de passe :');
 define('RECEVOIR','Recevoir un courriel à chaque entrée d\'une structure pour votre équipe :');
@@ -41,5 +42,7 @@ define('RENSEIGNE','doit être renseigné');
 define('VERIF','Les deux champs mot de passe ne sont pas identiques');
 define('SAUVDONNE','Données sauvegardées');
 define('SAUVECHEC','La sauvegarde a échoué');
+define('SAUVEPASS','Mot de passe incorrect');
 define('NBPASSWORD','Votre mot de passe doit être composé d\'au moins 12 caractères');
+define('PASSERR','Votre mot de passe actuel doit être renseigné');
 ?>
