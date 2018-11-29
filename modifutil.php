@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.enscm.fr
 
 Laurent.robin@univ-orleans.fr
@@ -9,21 +9,21 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
- le CNRS et l'INRIA sur le site "http://www.cecill.info".
+le CNRS et l'INRIA sur le site "http://www.cecill.info".
 
 En contrepartie de l'accessibilité au code source et des droits de copie, de modification et de redistribution accordés par cette licence,
- il n'est offert aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l'auteur du
- programme, le titulaire des droits patrimoniaux et les concédants successifs.
+il n'est offert aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l'auteur du
+programme, le titulaire des droits patrimoniaux et les concédants successifs.
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
- et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -45,52 +45,52 @@ $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
 	print"<table width=\"492\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 	<tr>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurs.php\">".VISU."</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurajout.php\">".AJOU."</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurdesa.php\">".DESA."</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
+	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurs.php\">".VISU."</a></td>
+	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurajout.php\">".AJOU."</a></td>
+	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurdesa.php\">".DESA."</a></td>
+	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
+	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
+	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
 	</tr>
-    </table><br/>";
+	</table><br/>";
 	print"<script language=\"JavaScript\">
-	  <!--
-	  function Changer(theForm) {
+	<!--
+	function Changer(theForm) {
 		theForm.action=\"utilisateurmodif.php\";
 		theForm.param.value=true;
 		theForm.submit();
-	  }
-	  function Verif(theForm) {
+	}
+	function Verif(theForm) {
 		if (document.utilisateur.nom.value==\"\") {alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");}
-		  else {
-				if (document.utilisateur.prenom.value==\"\") {alert(\"".CHAMP." \'".PRENOM."\' ".RENSEIGNE."\");}
-				else {
-					  if (document.utilisateur.email.value==\"\") {alert(\"".CHAMP." \'".COURRIEL."\' ".RENSEIGNE."\");}
-					  else {theForm.submit();}
-					  }
-				}
-		 }
-	  function Verif1(theForm) {
+		else {
+			if (document.utilisateur.prenom.value==\"\") {alert(\"".CHAMP." \'".PRENOM."\' ".RENSEIGNE."\");}
+			else {
+				if (document.utilisateur.email.value==\"\") {alert(\"".CHAMP." \'".COURRIEL."\' ".RENSEIGNE."\");}
+				else {theForm.submit();}
+			}
+		}
+	}
+	function Verif1(theForm) {
 		if (document.utilisateur1.equipe.value==\"\" && document.utilisateur1.nomequi.value==\"\") {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");}
 		else {
-		   if ((document.utilisateur1.equipe.value==\"\" && document.utilisateur1.nomequi.value!=\"\" && document.utilisateur1.iniequi.value==\"\") || (document.utilisateur1.equipe.value==\"\" && document.utilisateur1.nomequi.value==\"\" && document.utilisateur1.iniequi.value!=\"\")) {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");}
-		   else { theForm.submit();}
+			if ((document.utilisateur1.equipe.value==\"\" && document.utilisateur1.nomequi.value!=\"\" && document.utilisateur1.iniequi.value==\"\") || (document.utilisateur1.equipe.value==\"\" && document.utilisateur1.nomequi.value==\"\" && document.utilisateur1.iniequi.value!=\"\")) {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");}
+			else { theForm.submit();}
 		}
-	  }
-	  
-	  function Verif4(theForm) {
-			if (document.utilisateur1.nomequi.value==\"\" || document.utilisateur1.iniequi.value==\"\") {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");} 
-			else {
-				theForm.submit();
-				}
-	  }
-	  </script>";
+	}
+
+	function Verif4(theForm) {
+		if (document.utilisateur1.nomequi.value==\"\" || document.utilisateur1.iniequi.value==\"\") {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");}
+		else {
+			theForm.submit();
+		}
+	}
+	</script>";
 	if (!empty($_GET["idutil"])) $utilid=$_GET["idutil"];
 	if (!empty($_POST["idutil"])) $utilid=$_POST["idutil"];
 	$sql="SELECT * FROM chimiste WHERE chi_id_chimiste='".$utilid."'";
 	$resultat=$dbh->query($sql);
 	$row=$resultat->fetch(PDO::FETCH_NUM);
-  
+
 	$formulaire=new formulaire ("utilisateur","utilisateurmodif.php","POST",true);
 	$formulaire->affiche_formulaire();
 	//recherche des informations sur le champ chi_nom
@@ -130,7 +130,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	}
 	$formulaire->ajout_select (1,"langue",$tab1,false,$lang,"",LANGUE.DEUX."<br/>",false,"onChange=\"Verif(form)\"");
 	print"<br/><br/>";
-  
+
 	//recherche le nombre d'équipes
 	$sql="SELECT equi_id_equipe,equi_nom_equipe FROM equipe order by equi_nom_equipe";
 	$result4=$dbh->query($sql);
@@ -140,7 +140,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$result8=$dbh->query($sql);
 		$row8=$result8->fetch(PDO::FETCH_NUM);
 		$traitement=new traitement_requete_sql($row8[0]);
-		
+
 		if ($row[7]=="{RESPONSABLE}") {
 			$sql="SELECT count(*) FROM chimiste WHERE chi_id_equipe='$row[9]' and chi_statut='$row[7]'";
 			$result7=$dbh->query($sql);
@@ -154,16 +154,16 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		else $tab8=$traitement->imprime();
 	}
 	else $tab8=array("ADMINISTRATEUR"=>ADMINISTRATEUR,"RESPONSABLE"=>RESPONSABLE);
-	
+
 	if (!empty($_POST["statut"])) $statututil=$_POST["statut"];
 	else {
 		$search= array('{','}');
 		$row[7]=str_replace($search,'',$row[7]);
 		$statututil=$row[7];
 	}
-	
+
 	if (isset($message)) print"<p class=\"messagederreur\">$message</p>";
-  
+
 	$formulaire->ajout_select (1,"statut",$tab8,false,$statututil,"",STATUT.DEUX."<br/>",false,"onChange=\"Verif(form)\"");
 	print"<br/><br/>";
 	$formulaire->ajout_cache ($utilid,"idutil");
@@ -171,7 +171,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	$formulaire->ajout_cache ($row[7],"exstatu");
 	//fin du formulaire
 	$formulaire->fin();
-  
+
 	if (!empty($_POST['statut'])) $statut=$_POST['statut'];
 	else {
 		$search= array('{','}');
@@ -184,8 +184,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$formulaire1->affiche_formulaire();
 
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-			<tr>
-			<td valign=\"top\">";
+		<tr>
+		<td valign=\"top\">";
 		$sql="SELECT equi_id_equipe,equi_nom_equipe FROM equipe order by equi_nom_equipe";
 		$result4=$dbh->query($sql);
 		$num4=$result4->rowCount();
@@ -226,7 +226,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$formulaire1->ajout_cache ($statututil,"statut");
 		$formulaire1->ajout_cache ($utilid,"idutil");
 		$formulaire1->ajout_cache ($row[7],"exstatu");
-      
+
 		if (!$num4>0 and $statut=="RESPONSABLE")  {
 			$etape=ETAPE2;
 			$onclic="onClick=\"Verif4(form)\"";
@@ -244,10 +244,10 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$formulaire1->fin();
 
 		if ($etape!=ETAPE1 and (!empty($equi) or !empty($row[8]) or (!empty($_POST['nomequi']) and !empty($_POST['iniequi'])))) {
-        
+
 			if (!empty($_POST["responsable"])) $responsableutil=$_POST["responsable"];
 			else $responsableutil=$row[8];
-        
+
 			$formulaire2=new formulaire ("utilisateur2","utilisateurmodif.php","POST",true);
 			$formulaire2->affiche_formulaire();
 			switch ($statut) {
@@ -293,9 +293,9 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			//fin du formulaire
 			$formulaire2->fin();
 		}
-    }
-    elseif ($statut=="CHEF") {
-       
+	}
+	elseif ($statut=="CHEF") {
+
 		$formulaire2=new formulaire ("utilisateur2","utilisateurmodif.php","POST",true);
 		$formulaire2->affiche_formulaire();
 		$sql="SELECT chi_prenom,chi_nom,chi_id_chimiste FROM chimiste WHERE chi_statut='{RESPONSABLE}' and chi_id_chimiste<>'$utilid'";
@@ -332,8 +332,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$formulaire2->ajout_button (ETAPE2,"sauv","submit","");
 		//fin du formulaire
 		$formulaire2->fin();
-    }
-    elseif ($statut=="ADMINISTRATEUR") {
+	}
+	elseif ($statut=="ADMINISTRATEUR") {
 		$formulaire2=new formulaire ("utilisateur2","utilisateurmodif.php","POST",true);
 		$formulaire2->affiche_formulaire();
 		$formulaire2->ajout_cache ($nomutil,"nom");
@@ -348,7 +348,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$formulaire2->ajout_button (ETAPE2,"sauv","submit","");
 		//fin du formulaire
 		$formulaire2->fin();
-    }
+	}
+	//echo date("d/m/Y", strtotime($row[11]));
+	if ($statut=="CHIMISTE")
+	{
+		$expireDate = date("d/m/Y", strtotime(substr($row[11],0,4) . substr($row[11],5,2) . substr($row[11],8,2)));
+		echo "<FONT COLOR='red'><br><br>" . DATEEXPIR . " : " . $expireDate . "</FONT>";
+	}
 }
 else require 'deconnexion.php';
 unset($dbh);

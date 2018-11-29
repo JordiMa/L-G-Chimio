@@ -41,7 +41,7 @@ if (empty($_POST['langue'])) $erreur.="Le champ 'langue' est vide !<br/>";
 if (empty($_POST['password'])) $erreur.="Le premier champ 'mot de passe' est vide !<br/>";
 if (empty($_POST['password2'])) $erreur.="Le deuxième champ 'mot de passe' est vide !<br/>";
 if ($_POST['password']!=$_POST['password2']) $erreur.="Les deux champs mot de passe ne sont pas identique! <br/>";
-if (strlen($_POST['password'])<10) $erreur.="le mot de passe est inférieur à 12 caractères! <br/>";
+if (strlen($_POST['password'])<12) $erreur.="le mot de passe est inférieur à 12 caractères! <br/>";
 
 if (empty($erreur)) {
 	require '../script/connectionb.php';
@@ -56,6 +56,7 @@ if (empty($erreur)) {
 	}
 	else {
 		$menu=8;
+		print_r($dbh->errorInfo());
 		include_once 'gauche.php';
 		include_once 'progext7.php';
 	}

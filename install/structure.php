@@ -1,11 +1,12 @@
 ﻿<?php
+//chi_date_expiration date DEFAULT NOW(),
 $sql="
 DROP TABLE IF EXISTS chimiste CASCADE;
 CREATE TABLE chimiste (
     chi_id_chimiste integer NOT NULL,
     chi_nom character varying(40),
     chi_prenom character varying(40),
-    chi_password character varying(32),
+    chi_password character varying(60),
     chi_email character varying(60),
 	chi_recevoir boolean DEFAULT true,
     chi_langue character varying(2),
@@ -13,6 +14,7 @@ CREATE TABLE chimiste (
     chi_id_responsable integer,
     chi_id_equipe smallint,
     chi_passif boolean DEFAULT false,
+    chi_date_expiration date DEFAULT (now() + '1 year'::interval),
     CONSTRAINT contrainte_statut CHECK ((chi_statut <@ ARRAY['ADMINISTRATEUR'::character varying, 'CHEF'::character varying, 'RESPONSABLE'::character varying, 'CHIMISTE'::character varying]))
 );
 
@@ -828,4 +830,21 @@ ALTER TABLE ONLY resultat
 ALTER TABLE ONLY produit
     ADD CONSTRAINT produit_pro_id_responsable_fkey FOREIGN KEY (pro_id_responsable) REFERENCES chimiste(chi_id_chimiste) ON UPDATE CASCADE;
 ALTER TABLE ONLY resultat
-    ADD CONSTRAINT resultat_res_id_produit_fkey FOREIGN KEY (res_id_produit) REFERENCES produit(pro_id_produit) ON UPDATE CASCADE;";
+    ADD CONSTRAINT resultat_res_id_produit_fkey FOREIGN KEY (res_id_produit) REFERENCES produit(pro_id_produit) ON UPDATE CASCADE;
+
+CREATE OR REPLACE FUNCTION pro_chi_deactive() RETURNS void AS $$
+DECLARE
+  cur_chi_deactive CURSOR IS
+  SELECT chi_id_chimiste, chi_date_expiration FROM chimiste
+  WHERE chi_date_expiration < now()
+  AND chi_statut = '{CHIMISTE}'
+  AND chi_passif = FALSE
+  FOR UPDATE;
+BEGIN
+  FOR leChimiste IN cur_chi_deactive LOOP
+  UPDATE chimiste
+  SET chi_passif = TRUE
+  WHERE CURRENT OF cur_chi_deactive;
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql;";
