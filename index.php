@@ -28,7 +28,6 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans des co
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
-//test git laurent
 if ((@opendir("install")) and (!file_exists("script/administrateur.php"))) 
    {
 	 header ("location: install/");
