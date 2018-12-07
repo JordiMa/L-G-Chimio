@@ -1,0 +1,297 @@
+
+<p>
+## Systèmes requis
+Le logiciel fonctionne avec un environnement LAPP (Linux, Apache, PostgreSQL, PHP). 
+</p>
+
+<p>
+Il sous Windows mais cet environnement n&#039;est pas recommandé pour l&#039;utilisation en production et en toute sécurité d&#039;Apache, PHP et de PostgresSQL. 
+</p>
+
+<p>
+<strong>Il est vivement recommandé d’utiliser cet environnement avec le cryptage SSL (https) et de mettre en place un firewall afin de filtrer les entrées sur votre serveur.</strong>
+</p>
+
+<p>
+<strong>*
+
+## Installation
+Dans ce tutoriel l&#039;installation s’effectua sur un serveur CentOS 7.
+
+### Apache
+Vous pouvez facilement installer Apache à partir du référentiel officiel avec la commande ci-dessous:
+
+&gt; sudo yum install httpd
+
+Après l&#039;installation, exécutez les commandes suivantes pour démarrer votre service Apache et le faire fonctionner au démarrage:
+
+&gt; sudo systemctl start httpd
+
+&gt; sudo systemctl enable httpd
+
+</strong>*
+</p>
+
+<p>
+### PHP 5.6
+Commande pour installer le package de configuration du référentiel Remi :
+</p>
+<blockquote><div class="no">
+ sudo yum install <a href="http://rpms.remirepo.net/enterprise/remi-release-7.rpm" class="urlextern" title="http://rpms.remirepo.net/enterprise/remi-release-7.rpm" rel="nofollow">http://rpms.remirepo.net/enterprise/remi-release-7.rpm</a></div></blockquote>
+
+<p>
+Commande pour installer php5.6 :
+</p>
+<blockquote><div class="no">
+ sudo yum install php56 php56-php-pgsql</div></blockquote>
+
+<p>
+Commande pour installer des paquets supplémentaires:
+</p>
+<blockquote><div class="no">
+ sudo yum install php56-php-xxx</div></blockquote>
+
+<p>
+<strong>*
+
+### PostgreSQL 9.2.24
+
+Utilisez les commandes suivantes pour installer PostgreSQL :
+
+&gt; sudo yum install <a href="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-server-9.2.24-1.el7_5.x86_64.rpm" class="urlextern" title="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-server-9.2.24-1.el7_5.x86_64.rpm" rel="nofollow">http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-server-9.2.24-1.el7_5.x86_64.rpm</a>
+
+&gt; sudo yum install <a href="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-libs-9.2.24-1.el7_5.x86_64.rpm" class="urlextern" title="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-libs-9.2.24-1.el7_5.x86_64.rpm" rel="nofollow">http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-libs-9.2.24-1.el7_5.x86_64.rpm</a>
+
+&gt; sudo yum install <a href="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-contrib-9.2.24-1.el7_5.x86_64.rpm" class="urlextern" title="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-contrib-9.2.24-1.el7_5.x86_64.rpm" rel="nofollow">http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-contrib-9.2.24-1.el7_5.x86_64.rpm</a>
+
+&gt; sudo yum install <a href="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-9.2.24-1Iel7_5.x86_64.rpm" class="urlextern" title="http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-9.2.24-1Iel7_5.x86_64.rpm" rel="nofollow">http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-9.2.24-1Iel7_5.x86_64.rpm</a>
+
+Initialiser la base :
+
+&gt; sudo postgresql-setup initdb
+
+Méthode d’authentification de l’utilisateur de la base de données :
+
+&gt; sudo vi /var/lib/pgsql/data/pg_hba.conf
+
+Trouvez la section suivante :
+
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32           ident
+    # IPv6 local connections:
+    host    all             all             ::1/128                ident
+
+Modifiez la méthode d&#039;authentification des connexions locales IPv4 à md5:
+
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32            md5
+    # IPv6 local connections:
+    host    all             all             ::1/128                 md5
+
+Sauvegarder et quitter:
+
+    :wq
+
+Configurez les adresses d’écoute PostgreSQL:
+
+&gt; sudo vi /var/lib/pgsql/data/postgresql.conf
+
+Trouver:
+
+    #listen_addresses = &#039;localhost&#039;
+
+modifiez-le pour:
+
+    listen_addresses = &#039;*&#039;
+
+Trouver:
+
+    #port = 5432
+
+modifiez-le pour:
+
+    port = 5432
+
+Sauvegarder et quitter:
+
+    :wq
+
+Démarrer PostgreSQL : 
+
+&gt; sudo systemctl start postgresql
+
+Lancement automatique au démarrage du serveur Centos :
+
+&gt; sudo systemctl enable postgresql
+
+Configurer les informations d&#039;identification de l&#039;utilisateur de la base de données:
+
+Par défaut, le programme PostgreSQL va créer un utilisateur de base de données `postgres`. Cependant, pour des raisons de sécurité, vous devez créer un autre utilisateur de base de données pour la connexion à distance.
+
+Il faut </strong>créer un utilisateur spécifique<strong> « ex : `chimio_user` » avec un mot de passe pour votre base de données chimiothèque. </strong>Celui-ci doit avoir des droits que sur cette base de données<strong>, et </strong>créez une base de données<strong> (exemple : `chimiotheque`) qui va contenir votre chimiothèque
+
+&gt; sudo -u postgres psql
+
+    CREATE USER chimio_user CREATEDB CREATEUSER ENCRYPTED PASSWORD &#039;mot_de_passe&#039;;
+    CREATE DATABASE nom_de_votre_base_de_donnée OWNER chimio_user;
+    GRANT ALL PRIVILEGES ON DATABASE nom_de_votre_base_de_donnée TO chimio_user;
+    \q
+
+</strong>*
+</p>
+
+<p>
+### PhpPgAdmin
+</p>
+
+<p>
+Installez phpPgAdmin avec la commande suivante:
+</p>
+<blockquote><div class="no">
+ sudo yum install phpPgAdmin</div></blockquote>
+
+<p>
+Puis configurez phpPgAdmin comme accessible de l’extérieur:
+</p>
+<blockquote><div class="no">
+ sudo vi /etc/httpd/conf.d/phpPgAdmin.conf</div></blockquote>
+
+<p>
+Remplacer:
+</p>
+<pre class="code">  Require local</pre>
+
+<p>
+avec:
+</p>
+<pre class="code">  Require all granted</pre>
+
+<p>
+Remplacer:
+</p>
+<pre class="code">  Deny from all</pre>
+
+<p>
+avec:
+</p>
+<pre class="code">  Allow from all</pre>
+
+<p>
+Sauvegarder et quitter:
+</p>
+<pre class="code">  :wq</pre>
+
+<p>
+Rechargez les services PostgreSQL et httpd:
+</p>
+<blockquote><div class="no">
+ sudo systemctl start postgresql-9.5.service</div></blockquote>
+<blockquote><div class="no">
+ sudo systemctl reload httpd.service</div></blockquote>
+
+<p>
+<strong>*
+
+### Bingo
+
+Une fois votre serveur </strong>PostgreSQL 9.2<strong> fonctionnel, vous devez ajouter l’outil Bingo que vous pouvez télécharger ici :
+
+<a href="http://lifescience.opensource.epam.com/download/bingo.html" class="urlextern" title="http://lifescience.opensource.epam.com/download/bingo.html" rel="nofollow">http://lifescience.opensource.epam.com/download/bingo.html</a>
+
+Une fois Bingo téléchargé et décompressé suivez le manuel d’installation en fonction de votre système d’exploitation :
+
+<a href="http://lifescience.opensource.epam.com/bingo/installation-manual-postgres.html" class="urlextern" title="http://lifescience.opensource.epam.com/bingo/installation-manual-postgres.html" rel="nofollow">http://lifescience.opensource.epam.com/bingo/installation-manual-postgres.html</a>
+
+Une fois que vous avez exécuté le fichier bingo-pg-install avec l’extension sh pour Linux ou bat pour Windows, associez les outils Bingo à la base de données créé plus tôt avec la commande SQL :
+
+&gt; psql -U postgres -d nom_de_votre_base_de_donnée -f bingo_install.sql
+
+Cette association est effectuée via le compte administrateur : postgres. Une fois cette association effectuée, vous devez changer les droits sur le schema Bingo ainsi créé. Pour cela utilisez les commandes si dessous dans votre base de données (ces commandes doivent être exécutées avec le compte administrateur) :
+
+    grant usage on schema bingo to chimio_user;
+    grant select on table bingo.bingo_config to chimio _user;
+    grant select on table bingo.bingo_tau_config to chimio_user;
+
+</strong>*
+</p>
+
+<p>
+## L-G-Chimio 
+### Téléchargez l’application L-g-Chimio
+</p>
+
+<p>
+❗️ <strong>La version ici présente sur GitHub est en cours de développement</strong> ❗️  
+</p>
+
+<p>
+Une fois le fichier zip obtenu, procédez à sa décompression avec une application adéquate.
+</p>
+
+<p>
+Placez le répertoire `chimiotheque` avec les fichiers décompressés dans le répertoire du serveur web Apache.
+</p>
+
+<p>
+Sous Linux dans le répertoire `/var/www/html/`.
+</p>
+
+<p>
+connectez-vous via un navigateur web à votre serveur web : `<a href="http://votre_serveur_web/chimiotheque/" class="urlextern" title="http://votre_serveur_web/chimiotheque/" rel="nofollow">http://votre_serveur_web/chimiotheque/</a>`.
+</p>
+
+<p>
+Vous allez arriver sur la page d’installation de L-g-Chimio.
+</p>
+
+<p>
+Après avoir cliqué sur le bouton `Première étape`, vous arrivez sur la validation de la Licence CeCILL. Une fois acceptée, vous arrivez à la première étape de l’installation.
+</p>
+
+<p>
+### Première étape
+Celle-ci permet de définir et de vérifier les répertoires d’installation de l’application.
+</p>
+
+<p>
+Une fois ces vérifications effectuer vous pouvez en cliquant sur le bouton `Etape suivante`, passez à la suite de l’installation.
+</p>
+
+<p>
+### Deuxième étape
+Cette étape permet de définir les paramètres d’accès au serveur PostgreSQL et le nom de la base de données.
+</p>
+
+<p>
+<strong>Attention</strong>, pour que cela fonctionne, l’utilisateur PostgreSQL <strong>doit posséder un mot de passe</strong>. En effet, par sécurité, il est impératif que le compte utilisateur servant pour la connexion à la base de données PostgreSQL soit protégé. Les droits de ce compte doivent être au minimum : <strong>`SELECT`, `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `FILE`, `INDEX`, `ALTER`</strong>.
+</p>
+
+<p>
+Une fois les paramètres entrés, cliquez sur `vérification`. 
+</p>
+
+<p>
+Si vous obtenez des croix rouges alors le nom d’utilisateur et/ou le mot de passe sont erronés. Le champ `Serveur PostgreSQL` est par défaut renseigné avec `localhost`. Cela signifie que le serveur PostgreSQL est sur la même machine que le serveur web Apache. Si le serveur PostgreSQL n’est pas sur la même machine alors renseignez dans le champ `Serveur PostgreSQL` <strong>l’adresse IP</strong> de celle-ci. 
+</p>
+
+<p>
+Si après la vérification vous avez des croix rouge alors les données renseignées sont erronées.
+Vous aurez également un message d’erreur serveur, juste au-dessus du champ `serveur Postgresql`.
+</p>
+
+<p>
+### Troisième étape
+Cette étape est celle de la création de la base de données avec l’ensemble des tables, si tout se passe bien vous pouvez passer à l&#039;étape suivante.
+</p>
+
+<p>
+S’il y a un problème durant la création des tables alors vous obtenez un retour des erreurs en rouge.
+</p>
+
+<p>
+### Quatrième étape
+</p>
+
+<p>
+…
+</p>

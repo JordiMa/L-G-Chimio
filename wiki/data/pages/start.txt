@@ -1,0 +1,12 @@
+====== Qu'est-ce que L-G-Chimio ? ======
+
+C'est est un outil de gestion de chimiothèque, incluant de multiples fonctionnalités tel que :
+  * Gestion de structure
+  * Recherche de structure
+  * Gestion de plaques
+  * Gestion de résultat Bio
+  * Importation et exportation de données
+  * Gestion d’équipe hiérarchisée (Chef/Responsable/Chimiste)
+
+Cette application a été réalisée par **''Laurent ROBIN''** dans le cadre d'un projet issu du ''GIS Chimiothèque Nationale'', il a pour but de mettre à disposition des laboratoires membres un logiciel permettant la gestion complète d'une chimiothèque d'un laboratoire. Ce projet a été réalisé en collaboration avec l'atelier ''Chimiothèque Départementale''.
+  

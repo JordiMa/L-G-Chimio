@@ -1,0 +1,257 @@
+====== Manuel d'utilisation ======
+
+===== Connexion =====
+
+==== Connexion à l'application ====
+
+La connexion d’un utilisateur à l’application s’effectue par le menu de gauche en entrant son nom d’utilisateur et son mot de passe envoyé automatiquement par courriel lors de la création de l’utilisateur par 
+l’administrateur/chimiothécaire. Puis, cliquez sur connexion.
+
+{{ :mu1.1.png?nolink&600 |}}
+
+Si vous êtes correctement authentifié, vous arrivez sur la page d’accueil de la chimiothèque de votre laboratoire.
+
+{{ :mu1.2.png?nolink&600 |}}
+
+Sinon, vous retournez à l’authentification, avec la possibilité de redemander un mot de passe qui vous sera envoyé par courriel.
+
+{{ :mu1.3.png?nolink&600 |}}
+
+----
+
+==== Mot de passe perdu ====
+
+Si vous avez perdu votre mot de passe, vous pouvez en obtenir un nouveau automatiquement. En bas du menu de connexion, vous cliquez sur le lien ''Perdu le mot de passe ?'' vous arrivez sur une page où il vous suffit de renseigner votre adresse courriel et de soumettre, pour recevoir un nouveau mot de passe. 
+
+**Attention, l’adresse courriel renseignée doit correspondre à celle connue pour le compte correspondant.**
+
+{{ :mu2.1.png?nolink&600 |}}
+
+----
+
+===== Saisie d'un nouveau produit =====
+
+==== Première page de saisie ====
+
+Dans la section saisie du Menu, vous arrivez sur la saisie d’un nouveau produit, cette section est accessible à tous. Il existe une différence pour l’administrateur et le chef qui vont devoir choisir une équipe pour rattacher leur saisie. Tous les champs marqués avec une ''*'' doivent être obligatoirement renseignés pour pouvoir continuer.
+
+{{ :mu3.1.png?nolink&600 |}}
+
+Sous celle-ci, vous avez un lien vers un fichier PDF contenant les recommandations de la Chimiothèque Nationale. Concernant le dessin des structures moléculaires.
+
+Vous pouvez importer directement votre structure moléculaire dans ''JSME ©//Novartis Institutes for BioMedical Research Inc. and Bruno Bienfait//'' à partir d’un fichier de type mol ou d’un smile. Par exemple à partir du logiciel ''Biovia Draw //©Dassault Systemes//'', une fois votre molécule dessinée ou ouverte dans le logiciel cliquez dans le menu ''Edit'' puis sur ''Copy As'' puis cliquez sur ''Molfile''.
+
+{{ :mu3.2.png?nolink&600 |}}
+
+Dans L-g-Chimio vous cliquez sur l’icône {{:mu3.3.1.png?nolink|}}.\\
+Cliquez ensuite sur ''Paste MOL or SDF or SMILES'' dans cette nouvelle fenêtre collez (Crtl V) votre texte (Mol ou Smiles) issu de votre logiciel de dessin de structure puis cliquez sur le bouton ''Accept''.
+
+{{ :mu3.3.png?nolink&600 |}}
+
+Le champ ''Note sur la configuration'' permet d’écrire un détail non visible sur le dessin de la structure, par exemple : mélange d’énantiomères.
+
+**❗️ Attention, il est très important de prendre soin de bien dessiner votre structure moléculaire, car c’est l’élément central du système. ❗️**
+
+Une fois la molécule correctement dessinée, vous devez renseigner la masse en mg ou en nmol de produit mis en pilulier. L’unité nmol est utilisée pour la chimiothèque Européenne des Glycomimétiques.
+
+Elle peut être de 0mg. Le produit est entré pour mémoire (le produit reste un savoir-faire du laboratoire), il est donc disponible pour être criblé virtuellement.
+
+Ensuite, vous devez renseigner le type de la molécule à savoir si elle est :
+  * **Libre de droits** : la molécule est exportable au niveau de la Chimiothèque nationale,
+  * **Sous contrat** : la molécule est visible par l’utilisateur qui l’a entré, par son responsable, par son chef et par l’administrateur.
+  * **Breveté** : la molécule est visible par tous. Vous aurez un champ supplémentaire permettant de renseigner le numéro du brevet sur la deuxième page.
+
+Le champ ''origine de la molécule'' contient une valeur par défaut pour l’ensemble des utilisateurs, si elle a été définie dans la section ''Paramètres'' (voir [[configuration#produits|Configuration]]), vous devez sélectionner une autre valeur si celle par défaut ne convient pas à votre laboratoire.
+
+Une fois les champs renseignés correctement, cliquez sur le bouton ''Soumettre'' pour passer à la page suivante.
+
+{{ :mu3.4.png?nolink&600 |}}
+
+----
+
+==== Deuxième page de saisie ====
+
+Si vous avez mis la numérotation en automatique (voir [[configuration#produits|Configuration]]), le numéro apparaît en rouge en haut au milieu.
+
+A ce stade, vous pouvez encore modifier la masse. Si elle est en dessous du seuil adopté dans la section paramétrage (voir [[configuration#produits|Configuration]]), (dans notre exemple 5mg), le numéro est modifié automatiquement lorsque votre curseur change de champ. Dans cet exemple, on a choisi en première page de renseigner la masse à 5mg. J’obtiens le numéro ICOA-FST-L-01A02. Si l’on augmente cette masse dans la page N°2, le numéro n’est pas modifié. Par contre, si l’on diminue en dessous du seuil des 5 mg défini dans le paramétrage (voir [[configuration#produits|Configuration]]), le numéro est automatiquement modifié et devient ICOA-FST-L-1, représentant un numéro de produit non stocké.
+
+**Un numéro proposé dans la page N°2 de la saisie est réservé pour la journée, même si l’utilisateur ne va pas au bout de sa saisie ou s’il modifie la masse en entraînant un changement de numéro.\\
+Ce numéro sera reproposé à partir du lendemain.**
+
+De même, si un produit est épuisé (0mg), cela entraîne un changement de numéro automatique lorsque l’utilisateur effectue le changement de masse. Le numéro ainsi libéré sera automatiquement proposé à la prochaine entrée, effectuée par un utilisateur. Pour chaque entrée dans l’application, il **y a un numéro unique permanent aléatoire à 8 chiffres** qui est généré. Ce numéro visible dans la fiche du produit peut être utilisé pour le transfert des données et le dialogue avec la Chimiothèque Nationale ou les biologistes. Ainsi chaque produit possède un numéro unique invariant à 8 chiffres et un numéro de stockage en fonction du paramétrage défini (voir [[configuration#produits|Configuration]]).
+
+Pour les analyses, vous pouvez dans le cadre blanc entrer les résultats d’analyses sous forme de texte et/ou entrer via le bouton ''Parcourir'' le fichier du spectre. Il n’y a pas de blocage sur le type de fichier. Néanmoins, on vous recommande d’utiliser un format pérenne de type ''PDF'' et pas trop volumineux, car il est stocké dans la base de données.
+
+__**Astuce :**__\\
+Dans le champ ''Précaution'' à prendre, la sélection ou désélection d’une entrée peut se faire grâce à la touche ''Alt Gr'' de votre clavier + clique droit de la souris.
+
+{{ :mu4.1.png?nolink&600 |}}
+{{ :mu4.2.png?nolink&600 |}}
+{{ :mu4.3.png?nolink&600 |}}
+
+Toutes les informations renseignées, cliquez sur ''Soumettre''. À ce moment-là, seulement les informations sont sauvegardées dans la base de données. Un courriel automatique est envoyé au responsable, au chef et à l’administrateur. Une option dans la section ''Compte'' permet de désactiver par chacun ce retour par courriel.
+
+----
+
+===== Modification et consultation des données =====
+
+La section ''Modification'' du « Menu » gauche permet à l’utilisateur de consulter et de modifier leurs molécules, pour les responsables ou chefs, celles de leur équipe. L’administrateur peut intervenir sur l’ensemble des fiches.
+
+==== Effectuer une recherche ====
+
+La page d’accueil de cette section permet à l’utilisateur d’effectuer une recherche selon divers critères.
+
+Tout le monde, peut effectuer une recherche par structure exacte, par sous structure, par similarité, par masse molaire, formule brute, référence cahier de laboratoire/thèse et numérotation. Pour ce dernier, vous pouvez utiliser :
+  * soit le numéro unique aléatoire à 8 chiffres,
+  * soit le numéro défini dans la section ''paramètres-produit'' (exemple : ICOA-FST-L-01A02),
+  * soit le numéro de la Chimiothèque Nationale (CN000000V) s’il a été importé par l’administrateur.
+
+En ce qui concerne la masse molaire et la formule brute, vous pouvez effectuer une recherche exacte en cochant la case ''exacte''. Sinon par défaut, vous effectuez une recherche par motif.
+
+La partie supérieure de la page est modifiée en fonction de l’utilisateur (chimiste, responsable, chef et administrateur
+
+Le chimiste verra le champ ''type de molécule'' (libre, sous contrat ou breveté)
+
+{{ :mu5.1.png?nolink&600 |}} 
+
+le responsable verra le champ ''type de molécule'' et ''collaborateurs'' (avec seulement les membres de son équipe).
+
+{{ :mu5.2.png?nolink&600 |}} 
+
+le chef verra ''équipes'' (avec son ou ses équipes rattachées).
+
+{{ :mu5.3.png?nolink&600 |}} 
+
+L’administrateur aura tous les menus avec l’ensemble des équipes et des utilisateurs.
+
+Pour la recherche par structure exacte, sous structure ou similarité vous devez dessiner votre structure dans JSME //©Novartis Institutes for BioMedical Research Inc. and Bruno Bienfait// puis cliquer sur le type de recherche souhaité. Pour la recherche par similarité vous pouvez ajuster le coefficient de Tanimoto grâce au taquet. Plus celui-ci est proche de zéro et plus votre recherche sera similaire.
+
+**Grâce à ce formulaire, l’utilisateur peut accéder en recherche, modification et consultation qu’aux seuls produits qu’ils lui sont rattachés par la hiérarchie des droits. Seul l’administrateur aura une vue sur l’ensemble des équipes définies.**
+
+----
+
+==== Résultat de la recherche ====
+
+Après avoir inscrit un critère de recherche et cliquez sur ''Rechercher'' dans la section concernée, vous obtenez un résultat qui s’affiche page par page avec 8 molécules par page.
+
+{{ :mu6.1.png?nolink&600 |}}
+{{ :mu6.2.png?nolink&600 |}}
+
+En haut et en bas de la page de résultats, vous pouvez changer de page, soit page par page, soit vous pouvez aller directement à une page précise. La page de résultats affiche la structure avec la formule brute et la masse molaire correspondante. En face de la structure, vous avez la référence de la ou des fiches avec le numéro de stockage, la masse stockée, le nom de l’utilisateur qui a renseigné la fiche et la date de saisie. **Les doublons étant admis par le système, vous pouvez avoir plusieurs fiches pour une même structure.**
+
+{{ :mu6.3.png?nolink&600 |}}
+
+__**Astuce :**__\\
+Vous pouvez copier (au format texte) une structure qui vous intéresse directement à partir de la page de résultat. Effectuez un clic droit sur la structure, vous obtenez un menu.
+
+{{ :mu6.4.png?nolink&600 |}}
+
+Cela permet de copier au format texte de type mol (d’autres formats sont disponibles Smiles, InChI) la structure moléculaire. Ensuite, copiez le texte dans un éditeur de texte (bloc-notes, wordpad, etc) et sauvegarder dans un fichier avec l’extension ''mol''.
+
+----
+
+==== Consulter une fiche ====
+
+Si vous avez cliqué sur l’icône {{:mu7.1.1.png?nolink|}} dans la page des résultats de la recherche, vous accédez à la consultation de la fiche de la substance. Celle-ci est modulée en fonction des droits de l’utilisateur.
+
+{{ :mu7.1.png?nolink&600 |}}
+
+Tous les utilisateurs ont l’onglet ''Structure'' et ''Analyses''. Le responsable et l’administrateur ont en plus l’onglet ''Résultats Bio''. Par contre, seul l’administrateur dispose de l’onglet ''Historique''.
+
+=== Onglet « Structure » ===
+
+Pour le premier onglet, vous visualisez l’ensemble des données de la structure. Elles sont réparties en quatre catégories : les données saisies par l’utilisateur, les données calculées par le système et les données importées par l’administrateur.
+  * Les données saisies par l’utilisateur qui sont visualisées sur cet onglet sont la structure en 2D, le mode opératoire, les observations, la couleur de la substance, la masse du produit stockée en mg, l’origine de la molécule, le type de produit, l’analyse élémentaire expérimentale, le type de purification, la référence du cahier de laboratoire, le point de fusion, le point d’ébullition, les précautions particulières à prendre vis-à-vis du produit, les solvants de solubilisation de la substance, les références bibliographiques :
+    * le numéro DOI (http://fr.wikipedia.org/wiki/Digital_Object_Identifier).
+    * le numéro CAS (http://fr.wikipedia.org/wiki/Num%C3%A9ro_CAS).
+    * le numéro HAL (http://fr.wikipedia.org/wiki/Hyper_articles_en_ligne).
+  * Les données calculées par le système sont l’analyse élémentaire théorique, la masse molaire et formule brute.
+  * Les données générées par le système visualisées sur la fiche sont le numéro de stockage, le numéro constant, la date d’entrée, le nom de la personne qui a saisi les données.
+  * Les données importées par l’administrateur sont le numéro de la Chimiothèque Nationale et la tare du pilulier.
+  * Pour les Chimiothèques ayant utilisé les versions antérieures de L-g-Chimio vous avez des données au niveau des champs : Logp, Vérifie les règles de Lipinski, Nombre d'accepteurs, Nombre de liaisons rotatives, Nombre d'atomes aromatiques, Nombre de liaisons aromatiques, Nombre de donneurs, Nombre d'atomes asymétriques, Point de fusion, Point d'ébullition. Ces données étaient calculées par les outils de la société Chemaxon que nous n’utilisons plus dans cette nouvelle version.
+
+{{ :mu8.1.png?nolink&600 |}}
+
+----
+
+=== Onglet « Analyses » ===
+
+Dans l’onglet ''Analyses'', vous pouvez visualiser l’ensemble des résultats des analyses effectuées sur la substance, qui ont été saisies par l’utilisateur. Sur la partie gauche, vous avez les résultats numériques et sur la partie droite, vous avez les fichiers chargés par l’utilisateur et disponibles au téléchargement.
+
+{{ :mu9.1.png?nolink&600 |}}
+{{ :mu9.2.png?nolink&600 |}}
+{{ :mu9.3.png?nolink&600 |}}
+
+----
+
+=== Onglet « Résultat BIO » ===
+
+L’onglet ''Résultats Bio'' accessible qu’aux responsables, chefs et administrateur permet d’avoir sous forme tableau les résultats, de tous les tests biologiques effectués sur la substance consultée. Un résultat apparaît seulement s’il a été importé par l’administrateur grâce aux outils d’importation.
+
+{{ :mu10.1.png?nolink&600 |}}
+
+En passant la souris sur le nom du test biologique, vous accédez aux détails. Le numéro à côté du nom du test biologique ici ''P22303'', c’est la référence UniProt (http://fr.wikipedia.org/wiki/UniProt) de la protéine, en cliquant dessus, vous êtes directement dirigé sur les données de cette protéine sur le site UniProt.
+
+{{ :mu10.2.png?nolink&600 |}}
+
+----
+
+=== Onglet « Historique » ===
+
+Cet onglet n’est accessible qu’aux seuls administrateurs. Il permet de visualiser l’historique des changements effectués sur la fiche de la substance consultée. Cette historisation, apporte sous forme de tableau les informations suivantes : le champ qui a été modifié, par quelle personne, à quelle date, on a également l’ancienne valeur du champ.
+
+{{ :mu11.1.png?nolink&600 |}}
+
+----
+
+==== Modifier une fiche ====
+
+Si vous avez cliqué sur l’icône {{:mu12.1.1.png?nolink|}}, vous accédez dans la page des résultats de votre recherche à la modification de la fiche de la substance. Celle-ci est modulée en fonction des droits de l’utilisateur connecté. Le formulaire sur lequel vous arrivez est identique à celui de la saisie. Pour tous les utilisateurs, à l’exception de l’administrateur, le champ ''type de structure'' est désactivé. Seul l’administrateur peut modifier le type de la structure (Libre, Sous contrat ou breveté) car ce changement d’état implique, si vous êtes en numérotation automatique, une modification du numéro du stockage physique.
+
+**Si vous êtes en numérotation automatique et que la masse du produit est modifiée, dans les 7 jours suivant la saisie initiale de la substance. Alors, une modification du numéro de stockage peut intervenir uniquement si la masse passe au-dessus ou en dessous de la limite de stockage défini.**
+
+**Si la modification de la masse intervient après ces 7 jours suivant la saisie initiale alors le numéro de stockage est modifié seulement lorsque la valeur de la masse tombe à zéro mg.**
+
+----
+
+===== Rechercher sur l'ensemble des données libre et brevetés =====
+
+La section ''Rechercher'' du « Menu » gauche permet à l’utilisateur d’effectuer une recherche selon divers critères dans l’ensemble des substances libres et brevetées de la Chimiothèque du laboratoire.
+
+Les substances sous contrats apparaissent uniquement pour les propriétaires (chimiste, responsable et chef) de cette substance.
+
+Tout le monde peut effectuer une recherche par structure (exacte, sous structure ou similarité), par masse molaire, formule brute et numérotation. Pour ce dernier, vous pouvez utiliser soit le numéro unique aléatoire à 8 chiffres, soit le numéro défini dans la section ''paramètres-produit'' (exemple : ICOA-FST-L-01A02), soit le numéro de la Chimiothèque Nationale (CN000000V) s’il a été importé par l’administrateur, soit par le QR-code.
+
+Pour la masse molaire et la formule brute, vous pouvez effectuer une recherche exacte en cochant la case ''exacte''. Sinon par défaut, vous effectuez une recherche par motif.
+
+{{ :mu13.1.png?nolink&600 |}}
+
+Une fois le critère de recherche renseigné et le bouton ''Recherche'' cliqué, la page de résultat apparaît. La présentation est semblable à la section ''modification'' mais avec uniquement la possibilité de consulter les substances. La fiche de consultation ne contient que les onglets ''structure'' et ''Analyses''.
+
+----
+
+===== Consultation des résultats des tests biologiques =====
+
+Cet onglet du menu est réservé aux types d’utilisateurs : responsables et chefs. Il leur permet de consulter pour chaque test biologique effectué, les résultats sur leurs substances. Ces résultats devront avoir été au préalable importés par l’administrateur voir Chapitre.
+
+L’utilisateur doit en premier sélectionner la cible, le type de test biologique et enfin le type de résultat (IC50, %activité, …). L’utilisateur peut visualiser ses molécules impliquées dans le test biologique et les résultats correspondants.
+
+{{ :mu14.1.png?nolink&600 |}}
+
+----
+
+===== Paramètres de son compte =====
+
+Chaque utilisateur peut modifier les paramètres de son compte. Il peut changer l’adresse courriel, la langue du compte (française ou anglaise) ou encore modifier son mot de passe.
+
+Pour le(s) administrateur(s), chef(s), responsable(s), l’option d’activation ou désactivation du retour par courriel à chaque entrée d’un de ses utilisateurs est possible.
+
+Chaque responsable reçoit, si l’option est activée ici, un courriel à chaque entrée d’un des utilisateurs de son équipe, le chef lui aura l’ensemble des utilisateurs des équipes qui lui sont rattachées.
+
+L’administrateur reçoit un courriel pour toutes les entrées des utilisateurs.
+
+Chaque utilisateur peut choisir la langue de l’interface soit le français (fr) soit l’anglais (us).
+
+Chaque utilisateur peut modifier le mot de passe qui lui a été attribué automatiquement. Le nouveau mot de passe doit d’être d’une longueur minimale de 12 caractères.
+
+{{ :mu15.1.png?nolink&600 |}}

@@ -1,0 +1,151 @@
+====== Configuration ======
+
+Tous les administrateurs ont accès aux paramétrages de l’application via le menu administration de l’application. Vous avez quatre types de paramètres : Généraux, Produits, Exportation et Maintenance. Pour accéder au paramétrage, vous devez vous connecter à l’application.
+
+===== Généraux =====
+
+Dans l’onglet ''Généraux'' de la section paramétrage, vous retrouvez les informations relatives au laboratoire que vous avez entrées à l’installation. 
+
+Grâce à cette section, vous pouvez les modifier.
+
+{{ :conf1.1.png?nolink&600 |}}
+
+----
+
+===== Produits =====
+
+Cette section permet de définir la masse minimum du stockage en pilulier de vos produits.
+
+Par défaut, elle est initialisée à 1mg. En dessous de cette valeur, le produit est considéré comme non stocké. Toutefois, ce dernier est utilisable en Modélisation Moléculaire. En effet, la structure chimique peut être utilisée pour effectuer des criblages virtuels. Les informations sur le produit sont la mémoire du laboratoire.\\
+**Tout produit est un savoir-faire propre au laboratoire**.
+
+Vous pouvez paramétrer la numérotation des piluliers, soit en **manuel** soit en **automatique**.
+En manuel, lors de la saisie d’un produit sur la deuxième page de la saisie apparaît un champ permettant de renseigner le numéro du pilulier qui va contenir le produit saisi.
+
+** ❗️ Attention en utilisant le mode manuel certaines fonctionnalités de L-g-Chimio ne vous seront pas accessibles. ❗️ **
+
+{{ :conf2.1.png?nolink&600 |}}
+
+Si vous utilisez la numérotation automatique des piluliers (ce que je vous recommande), vous avez à définir votre type de numérotation grâce à un ensemble de menus.
+
+Deux types de numéros sont à établir, celui de stockage du produit et celui du produit sans masse de stockage (masse inférieure à la valeur minimum de stockage définie au-dessus). 
+Si la masse du produit entrée est inférieure à la masse minimum de stockage alors cette dernière numérotation est utilisée. Cela permet d’avoir des produits pour mémoire et pour le criblage virtuel dans votre chimiothèque sans les avoir en stock. Toutefois, un stock peut être ajouté à postériori.
+
+{{ :conf2.2.png?nolink&600 |}}
+
+Exemple de définition d’une numérotation automatique : celle de l’ICOA est constituée d’une partie fixe : ICOA, d’un tiret, de l’initiale/numéro d’équipe, d’un tiret, du type de la molécule (libre, sous contrat, breveté), d’un tiret, du numéro de la boîte dans la série et du numéro de la position du pilulier dans la boîte. Pour un numéro sans stockage physique : exemple celui de l’ICOA est constitué d’une partie fixe : ICOA, d’un tiret, de l’initiale/numéro d’équipe, d’un tiret, du type de la molécule (libre, sous contrat, breveté) et d’un numéro incrémental de 1 à ∞.
+
+{{ :conf2.3.png?nolink&600 |}}
+
+{{ :conf2.4.png?nolink&600 |}}
+
+----
+
+===== Exportation =====
+
+Dans l’onglet ''Exportation'' vous pouvez paramétrer l’adresse courriel d’exportation du fichier SDF lorsque vous cliquez sur le bouton sur la page ''Exportation'' du menu ''Administration''.
+
+Vous pouvez également choisir quel type de numéro vous aurez dans le fichier d’exportation SDF. Soit le numéro de pilulier, soit le numéro unique permanent aléatoire à 8 chiffres.
+
+{{ :conf3.1.png?nolink&600 |}}
+
+{{ :conf3.2.png?nolink&600 |}}
+
+----
+
+===== Maintenance =====
+
+Dans cet onglet, vous pouvez vérifier que les dossiers et fichiers sensibles ont bien les autorisations ou droits adéquates.
+
+Si tous les fichiers et répertoires sont cochés en vert, cela signifie que tout est bon. 
+
+{{ :conf4.1.png?nolink&600 |}}
+
+Par contre, si vous avez une croix rouge, vous devez revoir les autorisations sur le répertoire ou le fichier correspondant.
+
+{{ :conf4.2.png?nolink&600 |}}
+
+Le répertoire ''temp'' doit être autorisé en écriture alors que le répertoire ''script'' et les fichiers ''administrateur.php'', ''connectionb.php'' et ''secure.php'' doivent être en lecture seule.
+
+Pour rendre le sous-répertoire ''script'' ainsi que leurs fichiers en lecture seule :
+  * Sous Linux avec la commande chmod. Exemple : ''chmod 555 /var/www/html/chimiotheque/script''
+  * Sous Windows, cliquez avec le bouton droit de la souris sur le(s) répertoire(s), puis sur ''propriétés'', cochez la case lecture seule, puis cliquez sur ''Appliquer''. Dans la nouvelle fenêtre, choisissez d’appliquer les modifications à ce dossier et à tous les sous-dossiers et fichiers.
+
+----
+
+===== Utilisateur =====
+
+Cette section est accessible uniquement aux administrateurs. Elle permet de gérer les utilisateurs ayant accès à l’application.
+
+==== Visualiser ====
+
+Cet onglet permet de visualiser l’ensemble des utilisateurs du logiciel. Vous avez la possibilité de les classer par nom, autorisation, responsable ou équipe en cliquant sur le mot clé correspondant. Le ''statut'' donne l’information sur l’état du compte :
+
+{{ :conf5.1.png?nolink&600 |}}
+
+La colonne ''retour'' affiche l’information pour la personne (responsable ou chef uniquement) si elle accepte de recevoir un courriel à chaque entrée d’un produit par un utilisateur de son équipe. Le ou les administrateurs reçoivent un courriel pour chaque entrée.
+
+{{ :conf5.2.png?nolink&600 |}}
+
+----
+
+==== Ajouter ====
+
+**Pour créer les équipes, vous devez tout d’abord ajouter les responsables.**
+
+A leur création, apparaissent alors deux champs : l’un permet de donner un nom d’équipe et le deuxième permet de définir un numéro ou des initiales d’équipe. C’est ce dernier champ, qui est utilisé dans la numérotation (voir chapitre I.D.2). Pour créer un utilisateur, l’intégralité des champs doit être renseignée. Quand vous sauvegardez votre saisie, un courriel automatique est envoyé à cet utilisateur avec son login et mot de passe.
+
+//Afin que l’envoi de courriel automatique soit effectué correctement, vérifiez la configuration de PHP dans la section ''Mail function'' du fichier ''php.ini'' sur votre serveur.//
+
+{{ :conf6.1.png?nolink&600 |}}
+
+Pour définir les chimistes rattachés à une équipe, dans le menu déroulant ''Statut'' vous sélectionnez ''chimiste''. Un menu apparaît permettant de sélectionner l’équipe d’appartenance de cette personne et son responsable de rattachement.
+
+{{ :conf6.2.png?nolink&600 |}}
+
+Une fois que vous avez créé les responsables et les chimistes, vous pouvez créer les chefs.
+Un chef peut avoir plusieurs responsables et plusieurs équipes. Quand vous sélectionnez ''Chef'' dans le menu déroulant ''Statut'' apparaît le champ ''Responsable''. Vous pouvez sélectionner/désélectionner un ou plusieurs responsables en utilisant la touche ''Alt Gr'' de votre clavier + clique droit de la souris.
+
+{{ :conf6.3.png?nolink&600 |}}
+
+Pour résumer, vous avez la hiérarchie suivante :
+
+{{ :conf6.4.png?nolink&600 |}}
+
+----
+
+==== Déactiver ====
+
+Cette section permet de désactiver une personne, c'est-à-dire de supprimer son autorisation d’accès à la chimiothèque de façon temporaire ou à long terme. Il vous suffit de cliquer sur ''Désactiver'' en face du nom correspondant. La personne n’est pas supprimée de la base, cela supprime simplement son autorisation d’accès.
+
+{{ :conf7.1.png?nolink&600 |}}
+
+----
+
+==== Réactiver ====
+
+Cette section permet de réactiver un compte précédemment désactivé. La personne pourra de nouveau se connecter avec son login et mot de passe, s’il n’y a pas de changement de ceux-ci. Pour réactiver un compte, il vous suffit de cliquer sur ''Réactiver'' en bout de ligne en face du nom.
+
+{{ :conf8.1.png?nolink&600 |}}
+
+----
+
+==== Modification ====
+
+Grâce à cette section, vous pouvez modifier l’ensemble des paramètres de l’utilisateur sauf le mot de passe. Il vous suffit de cliquer sur modifier en bout de ligne en face du nom.
+
+{{ :conf9.1.png?nolink&600 |}}
+
+Si la personne n’a pas de substances associées à son compte alors vous avez également la possibilité de supprimer définitivement ce compte.
+
+----
+
+==== Équipes ====
+
+Dans cette partie, vous pouvez créer une équipe en insérant le nom puis les initiales/numéros. Ce dernier champ sera utilisé pour la numérotation automatique des molécules.
+
+{{ :conf10.1.png?nolink&600 |}}
+
+Pour modifier une équipe, cliquez sur ''modifier'' en bout de ligne de celle-ci, puis modifiez les valeurs du champ et cliquez sur ''soumettre''.
+
+{{ :conf10.2.png?nolink&600 |}}

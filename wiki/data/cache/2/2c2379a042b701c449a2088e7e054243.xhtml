@@ -1,0 +1,749 @@
+
+<h1 class="sectionedit1" id="manuel_d_administration">Manuel d&#039;administration</h1>
+<div class="level1">
+
+<p>
+Cette partie est réservée aux comptes ayant le droit d’administration sur l’application.
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Manuel d&#039;administration&quot;,&quot;hid&quot;:&quot;manuel_d_administration&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:1,&quot;range&quot;:&quot;1-135&quot;} -->
+<h2 class="sectionedit2" id="creation_des_plaques_96_puits">Création des plaques 96 puits</h2>
+<div class="level2">
+
+<p>
+L’interface d’administration des plaques 96 puits permet de créer l’association <code>plaques – produits</code> de plusieurs manières.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=444722&amp;media=ma1.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Le premier champ <code>date de création</code> offre la possibilité d’entrer la date de création physique de la plaque. Il est initialisé avec la date du jour et est modifiable. Cette référence reste associée à la plaque, pour pouvoir effectuer un contrôle de pérennité de celle-ci.
+</p>
+
+<p>
+Si vous êtes en numérotation automatique des piluliers, vous pouvez directement sélectionner une boîte avec ses 80 molécules à mettre en plaque avec la correspondance directe des numéros de position (A02, A03,…, H11) entre la boîte et la plaque.
+</p>
+
+<p>
+Comme vous pouvez hiérarchiser les plaques : plaques grand-mère, x plaques mères, x plaques filles. Vous pouvez directement créer une plaque fille à partir d’une plaque mère en utilisant le champ <code>Plaque Fille de la plaque N°</code>. Elle aura la même disposition spatiale, ce sera la concentration qui va changer.
+</p>
+
+<p>
+Le champ optionnel <code>Nouveau lot d’appartenance</code> permet de donner un numéro commun à un lot de plaques si l’on souhaite qu’elles ne soient pas dissociées pour les tests biologiques. Ce numéro de lot est exporté durant la création du fichier SDF utilisé pour le transfert de données vers la Chimiothèque Nationale.
+</p>
+
+<p>
+Les champs <code>Numéro de la plaque à usage interne</code> et <code>Numéro de la plaque à usage externe</code> autorisent la saisie pour chaque plaque de son numéro identification. Le champ <code>Numéro de la plaque à usage interne</code> est le numéro exporté avec le fichier SDF vers la Chimiothèque Nationale. Le champ <code>Numéro de la plaque à usage externe</code> lui est réservé pour un usage vers d’autres structures que la CN. Ils ne sont pas automatiquement générés. Ils sont laissés à l’appréciation du chimiothécaire.
+</p>
+
+<p>
+Le menu déroulant <code>Solvant utilisé</code> octroie la capacité de définir le solvant utilisé pour la mise en plaque. Il est initialisé avec le DMSO comme solvant par défaut. Les champs suivants permettent de renseigner le volume total du mélange par puits de la plaque.
+</p>
+
+<p>
+Le menu déroulant <code>Masse de produit par puits</code> permet de définir si la masse de la substance dans le puits est basée sur une valeur moyenne ou exacte. Une fois cette sélection effectuée:
+</p>
+<ul>
+<li class="level1"><div class="li"> Si vous avez choisi <code>Masse moyenne</code> deux nouveaux champs s’affichent, un permettant de noter la concentration moyenne par puits et l’autre la masse de produit par puits en mg.</div>
+</li>
+<li class="level1"><div class="li"> Si vous avez choisi <code>Masse exacte</code> dans la page suivante vous aurez la possibilité de saisir pour chaque puits la masse exacte de produit pesé.</div>
+</li>
+</ul>
+
+<p>
+Pour les deux sélections, vous avez la possibilité de défalquer directement du stockage des produits la masse du produit indiquée. Si la masse du produit tombe à zéro et que vous êtes en numérotation automatique, alors le numéro local va changer pour un numéro local sans masse.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=e5e860&amp;media=ma1.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Cr\u00e9ation des plaques 96 puits&quot;,&quot;hid&quot;:&quot;creation_des_plaques_96_puits&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:2,&quot;range&quot;:&quot;136-3199&quot;} -->
+<h3 class="sectionedit3" id="creation_d_une_plaque_a_partir_d_une_boite_ou_d_une_autre_plaque_plaque_mere_existante">Création d&#039;une plaque à partir d&#039;une boite ou d&#039;une autre plaque (plaque mère) existante</h3>
+<div class="level3">
+
+<p>
+Si vous avez choisi de créer une plaque à partir d’une boîte ou d’une plaque déjà existante, vous arrivez sur une deuxième page complètement renseignée avec pour chaque puits de la plaque la structure associée. La plaque est créée, vous arrivez sur une page qui sera informative dans ce cas. Elle est divisée en deux parties.
+</p>
+
+<p>
+La partie du haut représente une plaque. En passant la souris sur chaque puits, vous obtenez les informations sur le propriétaire, l’équipe, le numéro et le nom IUPAC de la structure.
+</p>
+
+<p>
+Dans la partie basse, vous avez l’intégralité des molécules en 2D constituant la plaque (vous pouvez cliquer sur chacune d’elles pour l’agrandir). Vous pouvez retrouver la plaque ainsi créée avec toutes les informations dans l’onglet <code>gestion</code>.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=148c79&amp;media=ma2.1.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Cr\u00e9ation d&#039;une plaque \u00e0 partir d&#039;une boite ou d&#039;une autre plaque (plaque m\u00e8re) existante&quot;,&quot;hid&quot;:&quot;creation_d_une_plaque_a_partir_d_une_boite_ou_d_une_autre_plaque_plaque_mere_existante&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:3,&quot;range&quot;:&quot;3200-4133&quot;} -->
+<h3 class="sectionedit4" id="creation_d_une_plaque_en_definissant_chaque_puits">Création d&#039;une plaque en définissant chaque puits</h3>
+<div class="level3">
+
+<p>
+Si vous n’avez pas choisi de créer une plaque à partir d’une boîte ou d’une autre plaque alors vous avez un formulaire vous permettant d’associer pour chaque puits un produit. Pour effectuer cela vous avez trois possibilités :
+</p>
+<ul>
+<li class="level1"><div class="li"> première partie du formulaire : vous cliquez sur chaque puits de la plaque et vous lui associez un produit.</div>
+</li>
+<li class="level1"><div class="li"> deuxième partie du formulaire : vous utilisez un fichier du type CSV que vous téléchargez.</div>
+</li>
+<li class="level1"><div class="li"> méthode mixte, par l’insertion d’un fichier CSV partiel, puis vous complétez puits par puits.</div>
+</li>
+</ul>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=42a23e&amp;media=ma3.1.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+
+<h4 id="creation_puits_par_puits">Création puits par puits</h4>
+<div class="level4">
+
+<p>
+En cliquant sur un puits, vous pouvez choisir la structure à associer. Pour ce faire, vous choisissez l’équipe d’appartenance, le propriétaire et enfin le numéro de la molécule. Une fois ces étapes renseignées, la structure apparaît. Si vous avez sélectionné <code>masse exacte</code> dans la première page, un champ <code>Masse de ce produit dans le puits</code> apparaît où vous devez renseigner la masse du produit pour ce puits.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=6f35e0&amp;media=ma4.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Une fois la molécule sélectionnée, vous cliquez sur le bouton <code>Sauvegarde</code> afin de sauvegarder les données, ensuite vous pouvez passer au puits suivant.
+</p>
+
+<p>
+A partir de ce moment, la deuxième partie du formulaire permettant de renseigner les données par l’intermédiaire d’un fichier CSV disparaît laissant la place à une représentation de la plaque 96 puits avec la structure dans le puits correspondant.
+</p>
+
+<p>
+Ce qui veut dire que vous devrez utiliser cette méthode pour les 80 puits.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=88376f&amp;media=ma4.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+
+<h4 id="creation_grace_a_un_fichier_csv">Création grâce à un fichier CSV</h4>
+<div class="level4">
+
+<p>
+En utilisant un fichier de type CSV, il peut être généré à partir d’Excel ou d’un logiciel équivalent, vous pouvez insérer en totalité ou partiellement, la correspondance des produits avec les puits. Si vous êtes en masse exacte, vous pouvez également entrer celle-ci. Un fichier CSV est un fichier texte classique, mais avec les données formatées de la manière suivante dans ce cas :
+</p>
+<ul>
+<li class="level1"><div class="li"> Sans la masse : <strong>“numéro de position sur la plaque”;“numéro du produit ou numéro constant”[retour à la ligne]</strong></div>
+</li>
+</ul>
+<pre class="code">  Voici un exemple de fichier simple sans masse exacte :
+  
+  &quot;A02&quot;;&quot;ICOA-ATT-L-02E09&quot;
+  &quot;A03&quot;;&quot;ICOA-SRR-L-02A05&quot;
+  &quot;A04&quot;;&quot;ICOA-SRR-L-04C10&quot;
+  &quot;A05&quot;;&quot;ICOA-FST-L-05E05&quot;
+  &quot;A06&quot;;&quot;ICOA-JCJ-L-01C09&quot;</pre>
+<ul>
+<li class="level1"><div class="li"> Avec la masse : <strong>“numéro de position sur la plaque”;“numéro du produit ou numéro constant”;“masse (0.00 ou 0,00) en mg”[retour à la ligne]</strong></div>
+</li>
+</ul>
+<pre class="code">  Voici un exemple de fichier avec masse exacte en exprimée en mg :
+  
+  &quot;A02&quot;;&quot;ICOA-ATT-L-02E09&quot;;&quot;1&quot;
+  &quot;A03&quot;;&quot;ICOA-SRR-L-02A05&quot;;&quot;0.9&quot;
+  &quot;A04&quot;;&quot;ICOA-SRR-L-04C10&quot;;&quot;1.1&quot;
+  &quot;A05&quot;;&quot;ICOA-FST-L-05E05&quot;;&quot;1.2&quot;
+  &quot;A06&quot;;&quot;ICOA-JCJ-L-01C09&quot;;&quot;1&quot;</pre>
+
+<p>
+Pour la numérotation du produit, vous pouvez utiliser indifféremment le numéro constant à 8 chiffres généré par l’application ou le numéro défini.
+Par l’intermédiaire de la deuxième partie du formulaire, vous cliquez sur <code>Parcourir</code> pour pointer sur votre fichier CSV. Une fois celui-ci sélectionné, vous cliquez sur <code>télécharger</code>. La page est régénérée avec les données du fichier et vous obtenez l’ensemble de la plaque.
+</p>
+<hr />
+
+</div>
+
+<h4 id="methode_mixte">Méthode mixte</h4>
+<div class="level4">
+
+<p>
+Vous pouvez insérer un fichier CSV ne contenant pas les 80 puits. Vous pouvez compléter les informations par la première méthode puits par puits.
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Cr\u00e9ation d&#039;une plaque en d\u00e9finissant chaque puits&quot;,&quot;hid&quot;:&quot;creation_d_une_plaque_en_definissant_chaque_puits&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:4,&quot;range&quot;:&quot;4134-7636&quot;} -->
+<h2 class="sectionedit5" id="gestion_des_plaques_96_puits">Gestion des plaques 96 puits</h2>
+<div class="level2">
+
+<p>
+En cliquant sur l’onglet <code>Gestion</code>, vous accédez à l’interface de gestion des plaques 96 puits que vous avez créés.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=2c51b7&amp;media=ma5.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Cette interface vous permet d’avoir une vue d’ensemble de vos plaques créées et de visualiser l’ensemble de l’architecture qui lie les plaques : mères – filles – petites filles.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=e8e6ae&amp;media=ma5.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+En passant la souris sur le numéro d’une plaque, vous pouvez voir les informations qui la concernent : solvant utilisé, le volume des puits de la plaque, masse du produit par puits, date de création. Pour les plaques filles, le volume prélevé dans la plaque mère.
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Gestion des plaques 96 puits&quot;,&quot;hid&quot;:&quot;gestion_des_plaques_96_puits&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:5,&quot;range&quot;:&quot;7637-8339&quot;} -->
+<h3 class="sectionedit6" id="suivi_des_tests_biologiques">Suivi des tests biologiques</h3>
+<div class="level3">
+
+<p>
+Pour chaque plaque vous pouvez insérer les informations d’envoi en test biologique en cliquant sur le numéro de la plaque. Cela vous aide à avoir le suivi individualisé pour chacune d’elle. Une fois que vous avez cliqué sur le numéro de la plaque, vous arrivez sur un formulaire vous permettant, soit de sélectionner une référence de test biologique déjà répertorié, soit d’en créer une.
+</p>
+
+<p>
+Si vous créez une nouvelle référence de test biologique, vous pourrez renseigner les éléments suivants : le nom de la cible, le protocole du test, la concentration en mol/L du test et le laboratoire effectuant le test.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=527c8f&amp;media=ma6.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Une fois que vous avez créé ou sélectionné votre référence de test biologique et validé le formulaire, la plaque est associée au test.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=376dfc&amp;media=ma6.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour chaque plaque, vous pouvez suivre le test associé avec la date d’envoi de la plaque et tous les détails du test biologique. Vous pouvez entrer plusieurs tests pour une plaque.
+</p>
+
+<p>
+À partir de la vue générale des plaques, vous pouvez, en cliquant sur l’icône de la loupe, côté droit du numéro de la plaque, voir l’ensemble des produits qui la compose.
+</p>
+
+<p>
+Rappel : la plaque de 96 puits est composée de 80 produits, car les deux colonnes extérieures (colonne 1 et 12) doivent rester libres pour effectuer les tests de référence.
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Suivi des tests biologiques&quot;,&quot;hid&quot;:&quot;suivi_des_tests_biologiques&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:6,&quot;range&quot;:&quot;8340-9769&quot;} -->
+<h3 class="sectionedit7" id="visualisation_du_contenu_de_la_plaque">Visualisation du contenu de la plaque</h3>
+<div class="level3">
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=8327e5&amp;media=ma7.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Vous pouvez :
+</p>
+<ul>
+<li class="level1"><div class="li"> soit imprimer la plaque.</div>
+</li>
+<li class="level1"><div class="li"> soit télécharger au format SDF les informations de la plaque.</div>
+</li>
+</ul>
+
+<p>
+Un fichier SDF, est un type de fichier ayant une organisation bien définie et structurée.
+</p>
+
+<p>
+C’est un fichier texte contenant dans notre cas les informations suivantes : les molécules au format mol, le numéro 
+de la molécule, le numéro de position sur la plaque, la masse du produit en mg, la masse molaire exacte de la 
+molécule et la concentration du produit dans le puits.
+</p>
+
+<p>
+Chaque entrée est séparée par une ligne : $$$$, qui permet de délimiter un groupe d’informations correspondant à 
+une molécule.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=25a135&amp;media=ma7.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<ul>
+<li class="level1"><div class="li"> soit télécharger au format CSV.</div>
+</li>
+</ul>
+
+<p>
+Le format CSV est un format texte pouvant être simplement utilisé par l’application Excel ou d’autres tableurs, ou bases de données.
+</p>
+
+<p>
+Le fichier texte se présente sous la forme suivante :
+</p>
+<pre class="code">  number;position;mass mg;molecular weight g/mol;[] mol/L
+  89603078;A2;3;204.035733578;0.01
+  63952987;A3;3;198.100442324;0.01
+  22659896;A4;3;285.084060302;0.01
+  58792950;A5;3;177.078978601;0.01
+  93135362;A6;3;239.094628665;0.01
+  32209433;A7;3;282.121571696;0.01
+  10102413;A8;3;179.058243159;0.01
+  63805043;A9;3;212.131348522;0.01
+  96225478;A10;3;170.040150254;0.01
+  49595085;A11;3;317.949617011;0.01
+  46417295;B2;3;261.082349419;0.01</pre>
+
+<p>
+Ce même fichier vu sous l’application Excel :
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=be97e1&amp;media=ma7.3.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Visualisation du contenu de la plaque&quot;,&quot;hid&quot;:&quot;visualisation_du_contenu_de_la_plaque&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:7,&quot;range&quot;:&quot;9770-11303&quot;} -->
+<h3 class="sectionedit8" id="modification_d_une_plaque">Modification d&#039;une plaque</h3>
+<div class="level3">
+
+<p>
+À partir de la page de gestion des plaques, cliquez sur l’icône <img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?media=mu12.1.1.png" class="media" alt="" /> en face de la plaque que vous désirez modifier. Vous arrivez alors sur la page de modification de votre plaque 96 puits.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=7585a1&amp;media=ma8.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour modifier un puits cliquez sur celui-ci sur la représentation de la plaque (Image 80). Sur la partie droite un ensemble de menus apparaît qui vous permet soit de modifier la structure associée au puits soit de supprimer et libérer le puits.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=4a50bf&amp;media=ma8.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Le puits libre apparaîtra en rouge. Il pourra être laissé tel quel ou une autre substance pourra être mise à la place.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=35695e&amp;media=ma8.3.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Modification d&#039;une plaque&quot;,&quot;hid&quot;:&quot;modification_d_une_plaque&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:8,&quot;range&quot;:&quot;11304-12028&quot;} -->
+<h3 class="sectionedit9" id="suppression_d_une_plaque">Suppression d&#039;une plaque</h3>
+<div class="level3">
+
+<p>
+À partir de la vue principale de la gestion des plaques vous pouvez supprimer une plaque en appuyant sur l’icône <img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?media=ma9.1.1.png" class="media" alt="" />
+à côté de la plaque. Cette action n’est possible que si la plaque en question n’a pas de plaques filles affiliées à elle.
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Suppression d&#039;une plaque&quot;,&quot;hid&quot;:&quot;suppression_d_une_plaque&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:9,&quot;range&quot;:&quot;12029-12344&quot;} -->
+<h2 class="sectionedit10" id="resultats_des_tests_biologique">Résultats des tests biologique</h2>
+<div class="level2">
+
+<p>
+Cette section permet au chimiothécaire de gérer l’ensemble des résultats biologiques concernant ses molécules ou plaques.
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;R\u00e9sultats des tests biologique&quot;,&quot;hid&quot;:&quot;resultats_des_tests_biologique&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:10,&quot;range&quot;:&quot;12345-12518&quot;} -->
+<h3 class="sectionedit11" id="importation_des_resultat">Importation des résultat</h3>
+<div class="level3">
+
+<p>
+En allant sur la section <code>Résultats bio</code> et sur <code>importer</code>, vous avez la possibilité d’insérer des résultats suite à un test biologique. Il vous faut tout d’abord créer une cible biologique ou la sélectionner si elle existe déjà.
+</p>
+
+<p>
+Pour créer une nouvelle cible, vous devez utiliser la partie droite du formulaire en renseignant les champs suivants :
+</p>
+<ul>
+<li class="level1"><div class="li"> nom de la cible</div>
+</li>
+<li class="level1"><div class="li"> le code UniProt (référence de la protéine <a href="http://fr.wikipedia.org/wiki/UniProt" class="urlextern" title="http://fr.wikipedia.org/wiki/UniProt" rel="nofollow">http://fr.wikipedia.org/wiki/UniProt</a>)</div>
+</li>
+<li class="level1"><div class="li"> Concentration du test en mol. L-1</div>
+</li>
+<li class="level1"><div class="li"> le protocole de test et le laboratoire. </div>
+</li>
+</ul>
+
+<p>
+Puis cliquez sur sauvegarder.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=4e354b&amp;media=ma10.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour sélectionner une cible déjà renseignée, vous devez avoir recours à la partie gauche du formulaire et utiliser le menu déroulant. Une fois choisie, vous avez la possibilité de créer un nouveau protocole de test ou d’en sélectionner un déjà existant pour cette cible.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=d9ee91&amp;media=ma10.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Une fois que vous avez sélectionné ou créé le test biologique, vous arrivez sur une page en 3 parties :
+</p>
+<ul>
+<li class="level1"><div class="li"> La première partie résume les informations sur la cible, vous pouvez tout à fait changer de cible par l’intermédiaire du menu déroulant ou alors changer de protocole.</div>
+</li>
+</ul>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=d3fd16&amp;media=ma10.3.png" class="mediacenter" alt="" width="600" />
+</p>
+<ul>
+<li class="level1"><div class="li"> Dans la deuxième partie du formulaire, vous pouvez apporter des renseignements supplémentaires, facultatifs par rapport au test. Vous pouvez renseigner la date de réception des résultats, le nom basique et/ou en nomenclature IUPAC, les résultats de la molécule de référence et l’unité des résultats.</div>
+</li>
+</ul>
+<ul>
+<li class="level1"><div class="li"> Dans la troisième partie, vous pouvez charger le fichier de résultats sous la forme d’un fichier texte de type CSV (au format Windows). Il faut qu’il contienne le numéro local de la molécule et les résultats correspondants.</div>
+</li>
+</ul>
+
+<p>
+Rappel le fichier CSV est un fichier texte où chaque ligne représente une entrée. Chaque segment contient plusieurs informations séparées par un <code>;</code> par exemple ici le numéro de référence et le résultat biologique :
+</p>
+<pre class="code">  10102413;44.9
+  58216832;30.1
+  39246724;55.8</pre>
+
+<p>
+Lorsque vous avez renseigné et soumis le formulaire, vous arrivez sur une page vous permettant de trier les informations du fichier CSV. Chaque champ d’une ligne du fichier CSV est représenté avec un extrait des données. Vous devez par l’intermédiaire d’un menu déroulant sélectionner le type d’information présentée. Vous devez avoir au minimum le numéro de référence de la molécule et un résultat biologique.
+</p>
+
+<p>
+Après avoir sélectionné chaque type d’information, cliquez sur <code>Soumettre</code>. Ainsi l’ensemble des résultats biologiques sera importé et associé au test et aux molécules.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=1fd851&amp;media=ma10.4.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Importation des r\u00e9sultat&quot;,&quot;hid&quot;:&quot;importation_des_resultat&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:11,&quot;range&quot;:&quot;12519-15304&quot;} -->
+<h3 class="sectionedit12" id="consultation_des_resultats">Consultation des résultats</h3>
+<div class="level3">
+
+<p>
+En allant sur la section <code>Résultats bio</code> et sur <code>consulter</code>, vous avez la possibilité de consulter l’ensemble des résultats biologiques entrés.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=5d2a65&amp;media=ma11.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour ce faire, vous devez sélectionner, dans la première partie du formulaire, par l’intermédiaire du menu déroulant, la cible souhaitée. Sélectionnez le test biologique et le type de résultats biologiques que vous souhaitez consulter.
+La deuxième partie du formulaire met en relation les structures chimiques avec les résultats biologiques.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=821176&amp;media=ma11.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Grâce au menu <code>Type d’information</code> vous pouvez sélectionner l’affichage que d’un type de résultat : IC50, actif/inactif, %activité, %inhibition, EC50, autre résultat ou de l’ensemble des informations.
+</p>
+
+<p>
+Vous pouvez effectuer un classement des informations par ordre croissant ou décroissant en cliquant sur l’icône correspondant.
+</p>
+
+<p>
+La zone de commentaires permet d’annoter avec des informations spécifiques, les résultats pour une structure. Pour écrire cette annotation ou pour insérer un autre résultat ou effectuer une modification pour une molécule, vous pouvez cliquer sur l’icône <img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?media=mu12.1.1.png" class="media" alt="" />. La page est modifiée pour laisser place à un formulaire, vous permettant d’insérer ou modifier les informations.
+</p>
+
+<p>
+Pour valider votre modification des données biologiques pour cette structure et ce test biologique, cliquez sur le bouton <code>Modifier</code> en bout de ligne.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=3ad922&amp;media=ma11.3.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Si vous souhaitez télécharger l’ensemble des résultats biologiques sous forme de fichier SDF, cliquez sur le bouton
+en haut à droite des résultats.
+</p>
+
+<p>
+Le fichier SDF contiendra la structure moléculaire, le numéro de référence de la structure et le type de résultat sélectionné par l’intermédiaire du menu déroulant <code>Type d’information</code>.
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Consultation des r\u00e9sultats&quot;,&quot;hid&quot;:&quot;consultation_des_resultats&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:12,&quot;range&quot;:&quot;15305-17224&quot;} -->
+<h2 class="sectionedit13" id="importation_de_donnees_dans_l-g-chimio">Importation de donnees dans L-G-Chimio</h2>
+<div class="level2">
+
+<p>
+Grâce à la section <code>Importation</code>, vous pouvez intégrer des données comme la numérotation de la Chimiothèque Nationale, la tare de vos piluliers pour les produits en vrac, ou la liste des molécules envoyées chez Evotec.
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Importation de donnees dans L-G-Chimio&quot;,&quot;hid&quot;:&quot;importation_de_donnees_dans_l-g-chimio&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:13,&quot;range&quot;:&quot;17225-17506&quot;} -->
+<h3 class="sectionedit14" id="importation_de_la_numerotation_de_la_chimiotheque_nationale">Importation de la numérotation de la chimiothèque nationale</h3>
+<div class="level3">
+
+<p>
+À partir d’un fichier de type CSV au format Windows, vous pouvez charger les numéros attribués par la Chimiothèque Nationale dans vos fiches de produit. Cela associe le numéro national (ex : CN053402V) à votre numérotation locale (soit la numérotation pilulier, soit la numérotation permanente à 8 chiffres). 
+</p>
+
+<p>
+Lorsque vous envoyez vos données sous forme de SDF à la Chimiothèque Nationale et une fois votre mise à jour intégrée au serveur Nationale, vous recevez un fichier texte contenant le numéro national et votre numéro local. À partir de celui-ci, vous créez un fichier CSV en ajoutant un <code>;</code> entre les numéros et en supprimant la ligne <code>ID LOCAL ID NATIONAL</code>.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=53adaf&amp;media=ma12.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour charger le fichier, cliquez sur <code>parcourir</code> dans l’explorateur de fichier, cherchez votre fichier CSV et cliquez sur <code>ouvrir</code>. L’explorateur se ferme et le chemin du fichier apparaît dans le champ. Cliquez sur le bouton <code>soumettre</code>. Si des numéros n’ont pas été entrés par le système, une erreur vous est signalée. 
+</p>
+
+<p>
+<em>Les anciennes données de numéros nationaux sont écrasées par une nouvelle entrée via un fichier CSV.</em>
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=56adf0&amp;media=ma12.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Importation de la num\u00e9rotation de la chimioth\u00e8que nationale&quot;,&quot;hid&quot;:&quot;importation_de_la_numerotation_de_la_chimiotheque_nationale&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:14,&quot;range&quot;:&quot;17507-18795&quot;} -->
+<h3 class="sectionedit15" id="importation_de_la_tare_des_piluliers">Importation de la tare des piluliers</h3>
+<div class="level3">
+
+<p>
+À partir d’un fichier CSV, vous pouvez charger les tares pour vos piluliers de stockage des produits en vrac. Le fichier CSV doit contenir le numéro local (soit la numérotation pilulier, soit la numérotation permanente à 8 chiffres) et la tare en mg du pilulier vide et sans bouchon. La masse du pilulier peut être notée soit avec un point, soit avec une virgule, mais doit être exprimée en mg et l’unité ne doit pas être notée.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=942414&amp;media=ma13.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour charger le fichier, cliquez sur <code>parcourir</code> dans l’explorateur de fichier, cherchez votre fichier CSV et cliquez sur <code>ouvrir</code>. L’explorateur se ferme et le chemin du fichier apparaît dans le champ.
+Cliquez sur le bouton <code>soumettre</code>. Si des masses n’ont pas été entrées par le système, elles vous sont signalées en rouge (Image 90). Cela peut vouloir dire tout simplement que le pilulier n’est pas encore utilisé. Les tares ne sont entrées que pour les numéros déjà existants dans la base de données.
+</p>
+
+<p>
+<em>Les nouvelles données entrées via un CSV écrasent les anciennes tares.</em>
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=3b3b99&amp;media=ma13.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Importation de la tare des piluliers&quot;,&quot;hid&quot;:&quot;importation_de_la_tare_des_piluliers&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:15,&quot;range&quot;:&quot;18796-19968&quot;} -->
+<h3 class="sectionedit16" id="importation_de_la_liste_des_molecules_envoyees_chez_evotec">Importation de la liste des molécules envoyées chez Evotec</h3>
+<div class="level3">
+
+<p>
+Dans la section Tag Evotec, vous pouvez à partir d’un fichier CSV charger la liste des molécules que vous avez envoyées chez la Société Evotec. Cela permet de taguer les substances que vous avez déjà envoyées. Ce tague sera utilisé dans la section exportation pour donner l’information à la CN via le fichier SDF, soit pour vous, afin de faire le tri entre les molécules déjà envoyées ou non.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=feb224&amp;media=ma14.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Ce fichier texte de type CSV doit avoir le numéro permanent de la substance envoyée et la masse en mg de produit (sans l’unité).
+</p>
+
+<p>
+Si les références que vous essayez de rentrer n’existent pas alors, la liste de celles-ci est notée en rouge.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=ff303d&amp;media=ma14.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Importation de la liste des mol\u00e9cules envoy\u00e9es chez Evotec&quot;,&quot;hid&quot;:&quot;importation_de_la_liste_des_molecules_envoyees_chez_evotec&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:16,&quot;range&quot;:&quot;19969-20771&quot;} -->
+<h2 class="sectionedit17" id="exportation_des_donnees">Exportation des données</h2>
+<div class="level2">
+
+<p>
+Cette section est consacrée à l’exportation des données soit au format SDF soit au format CSV.
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Exportation des donn\u00e9es&quot;,&quot;hid&quot;:&quot;exportation_des_donnees&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:17,&quot;range&quot;:&quot;20772-20910&quot;} -->
+<h3 class="sectionedit18" id="exportation_au_format_sdf">Exportation au format SDF</h3>
+<div class="level3">
+
+<p>
+Cette section est consacrée à l’exportation des données au format SDF, formatées selon le modèle de la Chimiothèque Nationale. Les informations propres au modèle national sont : <em>la structure moléculaire, identifiant local, masse du produit en vrac et/ou numéro de la plaque contenant la structure, numéro du lot de plaque, origine de la structure, pureté, mesure de la pureté.</em>
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=0c3c0e&amp;media=ma15.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+La page consacrée à cette section est divisée en deux parties :
+</p>
+<ul>
+<li class="level1"><div class="li"> La première partie permet une extraction fine des données, par équipe voir par individus d’une équipe.</div>
+</li>
+<li class="level1"><div class="li"> La deuxième partie du formulaire permet une extraction par type de molécules (libre, sous contrat, brevetées) et par masse de substance disponible.</div>
+</li>
+</ul>
+
+</div>
+
+<h4 id="exportation_fine">Exportation fine</h4>
+<div class="level4">
+
+<p>
+Pour une exportation sélective, utilisez la première partie du formulaire.
+</p>
+
+<p>
+Commencez par sélectionner une ou plusieurs équipes (pour une sélection multiple, utilisez la touche <code>Alt Gr</code> du clavier, cliquez sur une équipe, pour désélectionner utilisez la touche <code>Alt Gr</code> du clavier et cliquez sur l’équipe à enlever de la sélection).<br/>
+
+Définissez votre critère de masse du produit disponible en vrac.<br/>
+
+Vous pouvez également sélectionner les produits disponibles en plaque 96 puits, mais pas en vrac.<br/>
+
+A ce stade vous avez la possibilité de télécharger le fichier SDF, de vous l’envoyer par courriel ou de l’envoyer à la Chimiothèque Nationale.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=d17fe4&amp;media=ma16.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Si vous souhaitez continuer à affiner votre choix, vous pouvez grâce au menu <code>utilisateur</code> sélectionner un ou plusieurs utilisateurs de ou des équipes sélectionnées. A ce tamisage, vous pouvez ajouter un ou plusieurs types de molécules (libre, sous contrat ou breveté). Dès que vous effectuez un choix sur un ou plusieurs utilisateurs, les boutons de téléchargement se déplacent sur la droite.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=16a0aa&amp;media=ma16.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+
+<h4 id="exportation_simple_sur_deux_criteres">Exportation simple sur deux critères</h4>
+<div class="level4">
+
+<p>
+Dans la deuxième partie du formulaire, vous avez la possibilité d’effectuer une exportation des données au format SDF avec simplement deux critères.
+</p>
+
+<p>
+Le premier critère est le type de molécules (vous pouvez avoir une sélection multiple).<br/>
+
+le deuxième critère est la masse du produit disponible en vrac.
+</p>
+
+<p>
+A ce stade vous avez la possibilité de télécharger le fichier SDF, de vous l’envoyer par courriel ou de l’envoyer à la Chimiothèque Nationale.
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Exportation au format SDF&quot;,&quot;hid&quot;:&quot;exportation_au_format_sdf&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:18,&quot;range&quot;:&quot;20911-23411&quot;} -->
+<h3 class="sectionedit19" id="exportation_au_format_csv_pour_la_pesee_evotec">Exportation au format CSV pour la pesée Evotec</h3>
+<div class="level3">
+
+<p>
+Cette section vous sera utile pour créer un fichier au format CSV utilisable sous Excel pour effectuer la pesée de vos substances à envoyer chez Evotec.
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=43a565&amp;media=ma17.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Ce formulaire est en deux parties :
+</p>
+<ul>
+<li class="level1"><div class="li"> La première partie permet d’exporter une ou plusieurs boîtes directement au format CSV</div>
+</li>
+<li class="level1"><div class="li"> La deuxième partie l’exportation est effectuée à partir d’une liste de numéros de substances.</div>
+</li>
+</ul>
+
+</div>
+
+<h4 id="exportation_a_partir_d_une_ou_plusieurs_boites">Exportation à partir d&#039;une ou plusieurs boites</h4>
+<div class="level4">
+
+<p>
+Vous devez sélectionner une ou plusieurs boîtes dans la liste de gauche. Ensuite, vous avez
+plusieurs options que vous pouvez cocher pour l’exportation :
+</p>
+<ul>
+<li class="level1"><div class="li"> Ajouter les produits identiques comme alternative de pesée : cette option permet d’avoir pour une structure unique les différentes substances existantes dans votre chimiothèque. Cela permet, d’utiliser la substance qui est en quantité suffisante.</div>
+</li>
+</ul>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=0c52ef&amp;media=ma18.1.png" class="mediacenter" alt="" width="600" />
+</p>
+<ul>
+<li class="level1"><div class="li"> Enlever les produits déjà envoyés chez EVOTEC et les doublons de structure : grâce aux données entrées dans la section <code>importation – Tag Evotec</code> en cochant cette option cela élimine de l’exportation les structures déjà pesées et envoyées chez la société Evotec.</div>
+</li>
+</ul>
+<ul>
+<li class="level1"><div class="li"> Mélanger les produits aléatoirement : cette option permet de faire un export, mais avec les produits dans un ordre aléatoire.</div>
+</li>
+</ul>
+
+<p>
+—
+</p>
+
+</div>
+
+<h4 id="exportation_a_partir_d_une_liste_de_produit">Exportation à partir d&#039;une liste de produit</h4>
+<div class="level4">
+
+<p>
+La deuxième partie du formulaire permet d’effectuer un export au format CSV à partir d’une liste de substance en utilisant soit le numéro unique à 8 chiffres soit le numéro local. Ensuite vous définissez le séparateur entre vos valeurs grâce au menu déroulant. Ensuite, vous cliquez sur <code>Télécharger le fichier CSV</code>. 
+</p>
+
+<p>
+Exemple :
+</p>
+
+<p>
+<img src="/UGCN/L-g-Chimio V1.4/chimiotheque/wiki/lib/exe/fetch.php?w=600&amp;tok=0f6dc3&amp;media=ma19.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Exportation au format CSV pour la pes\u00e9e Evotec&quot;,&quot;hid&quot;:&quot;exportation_au_format_csv_pour_la_pesee_evotec&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:19,&quot;range&quot;:&quot;23412-&quot;} -->

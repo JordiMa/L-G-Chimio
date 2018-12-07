@@ -1,0 +1,289 @@
+
+<h1 class="sectionedit1" id="configuration">Configuration</h1>
+<div class="level1">
+
+<p>
+Tous les administrateurs ont accès aux paramétrages de l’application via le menu administration de l’application. Vous avez quatre types de paramètres : Généraux, Produits, Exportation et Maintenance. Pour accéder au paramétrage, vous devez vous connecter à l’application.
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Configuration&quot;,&quot;hid&quot;:&quot;configuration&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:1,&quot;range&quot;:&quot;1-317&quot;} -->
+<h2 class="sectionedit2" id="generaux">Généraux</h2>
+<div class="level2">
+
+<p>
+Dans l’onglet <code>Généraux</code> de la section paramétrage, vous retrouvez les informations relatives au laboratoire que vous avez entrées à l’installation. 
+</p>
+
+<p>
+Grâce à cette section, vous pouvez les modifier.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=111915&amp;media=conf1.1.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;G\u00e9n\u00e9raux&quot;,&quot;hid&quot;:&quot;generaux&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:2,&quot;range&quot;:&quot;318-593&quot;} -->
+<h2 class="sectionedit3" id="produits">Produits</h2>
+<div class="level2">
+
+<p>
+Cette section permet de définir la masse minimum du stockage en pilulier de vos produits.
+</p>
+
+<p>
+Par défaut, elle est initialisée à 1mg. En dessous de cette valeur, le produit est considéré comme non stocké. Toutefois, ce dernier est utilisable en Modélisation Moléculaire. En effet, la structure chimique peut être utilisée pour effectuer des criblages virtuels. Les informations sur le produit sont la mémoire du laboratoire.<br/>
+
+<strong>Tout produit est un savoir-faire propre au laboratoire</strong>.
+</p>
+
+<p>
+Vous pouvez paramétrer la numérotation des piluliers, soit en <strong>manuel</strong> soit en <strong>automatique</strong>.
+En manuel, lors de la saisie d’un produit sur la deuxième page de la saisie apparaît un champ permettant de renseigner le numéro du pilulier qui va contenir le produit saisi.
+</p>
+
+<p>
+<strong> ❗️ Attention en utilisant le mode manuel certaines fonctionnalités de L-g-Chimio ne vous seront pas accessibles. ❗️ </strong>
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=045fef&amp;media=conf2.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Si vous utilisez la numérotation automatique des piluliers (ce que je vous recommande), vous avez à définir votre type de numérotation grâce à un ensemble de menus.
+</p>
+
+<p>
+Deux types de numéros sont à établir, celui de stockage du produit et celui du produit sans masse de stockage (masse inférieure à la valeur minimum de stockage définie au-dessus). 
+Si la masse du produit entrée est inférieure à la masse minimum de stockage alors cette dernière numérotation est utilisée. Cela permet d’avoir des produits pour mémoire et pour le criblage virtuel dans votre chimiothèque sans les avoir en stock. Toutefois, un stock peut être ajouté à postériori.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=7be460&amp;media=conf2.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Exemple de définition d’une numérotation automatique : celle de l’ICOA est constituée d’une partie fixe : ICOA, d’un tiret, de l’initiale/numéro d’équipe, d’un tiret, du type de la molécule (libre, sous contrat, breveté), d’un tiret, du numéro de la boîte dans la série et du numéro de la position du pilulier dans la boîte. Pour un numéro sans stockage physique : exemple celui de l’ICOA est constitué d’une partie fixe : ICOA, d’un tiret, de l’initiale/numéro d’équipe, d’un tiret, du type de la molécule (libre, sous contrat, breveté) et d’un numéro incrémental de 1 à ∞.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=978614&amp;media=conf2.3.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=6348ce&amp;media=conf2.4.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Produits&quot;,&quot;hid&quot;:&quot;produits&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:3,&quot;range&quot;:&quot;594-2960&quot;} -->
+<h2 class="sectionedit4" id="exportation">Exportation</h2>
+<div class="level2">
+
+<p>
+Dans l’onglet <code>Exportation</code> vous pouvez paramétrer l’adresse courriel d’exportation du fichier SDF lorsque vous cliquez sur le bouton sur la page <code>Exportation</code> du menu <code>Administration</code>.
+</p>
+
+<p>
+Vous pouvez également choisir quel type de numéro vous aurez dans le fichier d’exportation SDF. Soit le numéro de pilulier, soit le numéro unique permanent aléatoire à 8 chiffres.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=8c2910&amp;media=conf3.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=0454d8&amp;media=conf3.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Exportation&quot;,&quot;hid&quot;:&quot;exportation&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:4,&quot;range&quot;:&quot;2961-3444&quot;} -->
+<h2 class="sectionedit5" id="maintenance">Maintenance</h2>
+<div class="level2">
+
+<p>
+Dans cet onglet, vous pouvez vérifier que les dossiers et fichiers sensibles ont bien les autorisations ou droits adéquates.
+</p>
+
+<p>
+Si tous les fichiers et répertoires sont cochés en vert, cela signifie que tout est bon. 
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=c64bd5&amp;media=conf4.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Par contre, si vous avez une croix rouge, vous devez revoir les autorisations sur le répertoire ou le fichier correspondant.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=ee2b2b&amp;media=conf4.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Le répertoire <code>temp</code> doit être autorisé en écriture alors que le répertoire <code>script</code> et les fichiers <code>administrateur.php</code>, <code>connectionb.php</code> et <code>secure.php</code> doivent être en lecture seule.
+</p>
+
+<p>
+Pour rendre le sous-répertoire <code>script</code> ainsi que leurs fichiers en lecture seule :
+</p>
+<ul>
+<li class="level1"><div class="li"> Sous Linux avec la commande chmod. Exemple : <code>chmod 555 /var/www/html/chimiotheque/script</code></div>
+</li>
+<li class="level1"><div class="li"> Sous Windows, cliquez avec le bouton droit de la souris sur le(s) répertoire(s), puis sur <code>propriétés</code>, cochez la case lecture seule, puis cliquez sur <code>Appliquer</code>. Dans la nouvelle fenêtre, choisissez d’appliquer les modifications à ce dossier et à tous les sous-dossiers et fichiers.</div>
+</li>
+</ul>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Maintenance&quot;,&quot;hid&quot;:&quot;maintenance&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:5,&quot;range&quot;:&quot;3445-4578&quot;} -->
+<h2 class="sectionedit6" id="utilisateur">Utilisateur</h2>
+<div class="level2">
+
+<p>
+Cette section est accessible uniquement aux administrateurs. Elle permet de gérer les utilisateurs ayant accès à l’application.
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Utilisateur&quot;,&quot;hid&quot;:&quot;utilisateur&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:6,&quot;range&quot;:&quot;4579-4737&quot;} -->
+<h3 class="sectionedit7" id="visualiser">Visualiser</h3>
+<div class="level3">
+
+<p>
+Cet onglet permet de visualiser l’ensemble des utilisateurs du logiciel. Vous avez la possibilité de les classer par nom, autorisation, responsable ou équipe en cliquant sur le mot clé correspondant. Le <code>statut</code> donne l’information sur l’état du compte :
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=443db4&amp;media=conf5.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+La colonne <code>retour</code> affiche l’information pour la personne (responsable ou chef uniquement) si elle accepte de recevoir un courriel à chaque entrée d’un produit par un utilisateur de son équipe. Le ou les administrateurs reçoivent un courriel pour chaque entrée.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=4bf363&amp;media=conf5.2.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Visualiser&quot;,&quot;hid&quot;:&quot;visualiser&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:7,&quot;range&quot;:&quot;4738-5372&quot;} -->
+<h3 class="sectionedit8" id="ajouter">Ajouter</h3>
+<div class="level3">
+
+<p>
+<strong>Pour créer les équipes, vous devez tout d’abord ajouter les responsables.</strong>
+</p>
+
+<p>
+A leur création, apparaissent alors deux champs : l’un permet de donner un nom d’équipe et le deuxième permet de définir un numéro ou des initiales d’équipe. C’est ce dernier champ, qui est utilisé dans la numérotation (voir chapitre I.D.2). Pour créer un utilisateur, l’intégralité des champs doit être renseignée. Quand vous sauvegardez votre saisie, un courriel automatique est envoyé à cet utilisateur avec son login et mot de passe.
+</p>
+
+<p>
+<em>Afin que l’envoi de courriel automatique soit effectué correctement, vérifiez la configuration de PHP dans la section <code>Mail function</code> du fichier <code>php.ini</code> sur votre serveur.</em>
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=c06b8c&amp;media=conf6.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour définir les chimistes rattachés à une équipe, dans le menu déroulant <code>Statut</code> vous sélectionnez <code>chimiste</code>. Un menu apparaît permettant de sélectionner l’équipe d’appartenance de cette personne et son responsable de rattachement.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=5ff0bd&amp;media=conf6.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Une fois que vous avez créé les responsables et les chimistes, vous pouvez créer les chefs.
+Un chef peut avoir plusieurs responsables et plusieurs équipes. Quand vous sélectionnez <code>Chef</code> dans le menu déroulant <code>Statut</code> apparaît le champ <code>Responsable</code>. Vous pouvez sélectionner/désélectionner un ou plusieurs responsables en utilisant la touche <code>Alt Gr</code> de votre clavier + clique droit de la souris.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=0eb871&amp;media=conf6.3.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour résumer, vous avez la hiérarchie suivante :
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=94fe03&amp;media=conf6.4.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Ajouter&quot;,&quot;hid&quot;:&quot;ajouter&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:8,&quot;range&quot;:&quot;5373-6982&quot;} -->
+<h3 class="sectionedit9" id="deactiver">Déactiver</h3>
+<div class="level3">
+
+<p>
+Cette section permet de désactiver une personne, c&#039;est-à-dire de supprimer son autorisation d’accès à la chimiothèque de façon temporaire ou à long terme. Il vous suffit de cliquer sur <code>Désactiver</code> en face du nom correspondant. La personne n’est pas supprimée de la base, cela supprime simplement son autorisation d’accès.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=e5befc&amp;media=conf7.1.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;D\u00e9activer&quot;,&quot;hid&quot;:&quot;deactiver&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:9,&quot;range&quot;:&quot;6983-7384&quot;} -->
+<h3 class="sectionedit10" id="reactiver">Réactiver</h3>
+<div class="level3">
+
+<p>
+Cette section permet de réactiver un compte précédemment désactivé. La personne pourra de nouveau se connecter avec son login et mot de passe, s’il n’y a pas de changement de ceux-ci. Pour réactiver un compte, il vous suffit de cliquer sur <code>Réactiver</code> en bout de ligne en face du nom.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=90611c&amp;media=conf8.1.png" class="mediacenter" alt="" width="600" />
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;R\u00e9activer&quot;,&quot;hid&quot;:&quot;reactiver&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:10,&quot;range&quot;:&quot;7385-7743&quot;} -->
+<h3 class="sectionedit11" id="modification">Modification</h3>
+<div class="level3">
+
+<p>
+Grâce à cette section, vous pouvez modifier l’ensemble des paramètres de l’utilisateur sauf le mot de passe. Il vous suffit de cliquer sur modifier en bout de ligne en face du nom.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=b75df4&amp;media=conf9.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Si la personne n’a pas de substances associées à son compte alors vous avez également la possibilité de supprimer définitivement ce compte.
+</p>
+<hr />
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;Modification&quot;,&quot;hid&quot;:&quot;modification&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:11,&quot;range&quot;:&quot;7744-8142&quot;} -->
+<h3 class="sectionedit12" id="equipes">Équipes</h3>
+<div class="level3">
+
+<p>
+Dans cette partie, vous pouvez créer une équipe en insérant le nom puis les initiales/numéros. Ce dernier champ sera utilisé pour la numérotation automatique des molécules.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=2cc934&amp;media=conf10.1.png" class="mediacenter" alt="" width="600" />
+</p>
+
+<p>
+Pour modifier une équipe, cliquez sur <code>modifier</code> en bout de ligne de celle-ci, puis modifiez les valeurs du champ et cliquez sur <code>soumettre</code>.
+</p>
+
+<p>
+<img src="/UGCN/dokuwiki/lib/exe/fetch.php?w=600&amp;tok=435244&amp;media=conf10.2.png" class="mediacenter" alt="" width="600" />
+</p>
+
+</div>
+<!-- EDIT{&quot;target&quot;:&quot;section&quot;,&quot;name&quot;:&quot;\u00c9quipes&quot;,&quot;hid&quot;:&quot;equipes&quot;,&quot;codeblockOffset&quot;:0,&quot;secid&quot;:12,&quot;range&quot;:&quot;8143-&quot;} -->

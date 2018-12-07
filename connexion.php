@@ -70,4 +70,5 @@ print"<p align=\"center\"><a href=\"oublie.php\">".LOSS."</a></p>";
 </table>
 </div>
 <br/>
-<a href="presentation/credit.html" target="_blanck"><img border="0" src="images/credit.gif" width="20" height="20" alt="Crédits"></a>
+<a href="./wiki" target="_blank"><img border="0" src="images/wiki.gif" width="20" height="20" alt="Wiki"></a>
+<a href="presentation/credit.html" target="_blank"><img border="0" src="images/credit.gif" width="20" height="20" alt="Crédits"></a>

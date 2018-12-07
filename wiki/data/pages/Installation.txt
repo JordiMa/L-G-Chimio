@@ -1,0 +1,320 @@
+====== Systèmes requis ======
+Le logiciel fonctionne avec un environnement LAPP (Linux, Apache, PostgreSQL, PHP). 
+
+Il sous Windows mais cet environnement n'est pas recommandé pour l'utilisation en production et en toute sécurité d'Apache, PHP et de PostgresSQL. 
+
+**Il est vivement recommandé d’utiliser cet environnement avec le cryptage SSL (https) et de mettre en place un firewall afin de filtrer les entrées sur votre serveur.**
+
+----
+
+====== Installation ======
+Dans ce tutoriel l'installation s’effectua sur un serveur CentOS 7.
+
+===== Apache =====
+Vous pouvez facilement installer Apache à partir du référentiel officiel avec la commande ci-dessous:
+
+> sudo yum install httpd
+
+Après l'installation, exécutez les commandes suivantes pour démarrer votre service Apache et le faire fonctionner au démarrage:
+
+> sudo systemctl start httpd
+
+> sudo systemctl enable httpd
+
+----
+
+===== PHP 5.6 =====
+Commande pour installer le package de configuration du référentiel Remi :
+
+> sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+Commande pour installer php5.6 :
+
+> sudo yum install php56 php56-php-pgsql
+
+Commande pour installer des paquets supplémentaires:
+
+> sudo yum install php56-php-xxx
+
+----
+
+===== PostgreSQL 9.2.24 =====
+
+Utilisez les commandes suivantes pour installer PostgreSQL :
+
+> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-server-9.2.24-1.el7_5.x86_64.rpm
+
+> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-libs-9.2.24-1.el7_5.x86_64.rpm
+
+> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-contrib-9.2.24-1.el7_5.x86_64.rpm
+
+> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-9.2.24-1Iel7_5.x86_64.rpm
+
+Initialiser la base :
+
+> sudo postgresql-setup initdb
+
+Méthode d’authentification de l’utilisateur de la base de données :
+
+> sudo vi /var/lib/pgsql/data/pg_hba.conf
+
+Trouvez la section suivante :
+
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32           ident
+    # IPv6 local connections:
+    host    all             all             ::1/128                ident
+
+Modifiez la méthode d'authentification des connexions locales IPv4 à md5:
+
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32            md5
+    # IPv6 local connections:
+    host    all             all             ::1/128                 md5
+
+Sauvegarder et quitter:
+
+    :wq
+
+Configurez les adresses d’écoute PostgreSQL:
+
+> sudo vi /var/lib/pgsql/data/postgresql.conf
+
+Trouver:
+
+    #listen_addresses = 'localhost'
+
+modifiez-le pour:
+
+    listen_addresses = '*'
+
+Trouver:
+
+    #port = 5432
+
+modifiez-le pour:
+
+    port = 5432
+
+Sauvegarder et quitter:
+
+    :wq
+
+Démarrer PostgreSQL : 
+
+> sudo systemctl start postgresql
+
+Lancement automatique au démarrage du serveur Centos :
+
+> sudo systemctl enable postgresql
+
+Configurer les informations d'identification de l'utilisateur de la base de données:
+
+Par défaut, le programme PostgreSQL va créer un utilisateur de base de données ''postgres''. Cependant, pour des raisons de sécurité, vous devez créer un autre utilisateur de base de données pour la connexion à distance.
+
+Il faut **créer un utilisateur spécifique** « ex : ''chimio_user'' » avec un mot de passe pour votre base de données chimiothèque. **Celui-ci doit avoir des droits que sur cette base de données**, et **créez une base de données** (exemple : ''chimiotheque'') qui va contenir votre chimiothèque
+
+> sudo -u postgres psql
+
+    CREATE USER chimio_user CREATEDB CREATEUSER ENCRYPTED PASSWORD 'mot_de_passe';
+    CREATE DATABASE nom_de_votre_base_de_donnée OWNER chimio_user;
+    GRANT ALL PRIVILEGES ON DATABASE nom_de_votre_base_de_donnée TO chimio_user;
+    \q
+
+----
+
+===== PhpPgAdmin =====
+
+Installez phpPgAdmin avec la commande suivante:
+
+> sudo yum install phpPgAdmin
+
+Puis configurez phpPgAdmin comme accessible de l’extérieur:
+
+> sudo vi /etc/httpd/conf.d/phpPgAdmin.conf
+
+Remplacer:
+
+    Require local
+
+avec:
+
+    Require all granted
+
+Remplacer:
+
+    Deny from all
+
+avec:
+
+    Allow from all
+
+Sauvegarder et quitter:
+
+    :wq
+
+Rechargez les services PostgreSQL et httpd:
+
+> sudo systemctl start postgresql-9.5.service
+
+> sudo systemctl reload httpd.service
+
+----
+
+===== Bingo =====
+
+Une fois votre serveur **PostgreSQL 9.2** fonctionnel, vous devez ajouter l’outil Bingo que vous pouvez télécharger ici :
+
+http://lifescience.opensource.epam.com/download/bingo.html
+
+Une fois Bingo téléchargé et décompressé suivez le manuel d’installation en fonction de votre système d’exploitation :
+
+http://lifescience.opensource.epam.com/bingo/installation-manual-postgres.html
+
+Une fois que vous avez exécuté le fichier bingo-pg-install avec l’extension sh pour Linux ou bat pour Windows, associez les outils Bingo à la base de données créé plus tôt avec la commande SQL :
+
+> psql -U postgres -d nom_de_votre_base_de_donnée -f bingo_install.sql
+
+Cette association est effectuée via le compte administrateur : postgres. Une fois cette association effectuée, vous devez changer les droits sur le schema Bingo ainsi créé. Pour cela utilisez les commandes si dessous dans votre base de données (ces commandes doivent être exécutées avec le compte administrateur) :
+
+    grant usage on schema bingo to chimio_user;
+    grant select on table bingo.bingo_config to chimio _user;
+    grant select on table bingo.bingo_tau_config to chimio_user;
+
+----
+
+====== L-G-Chimio ======
+
+===== Téléchargez de L-g-Chimio =====
+
+❗️ **La version ici présente sur GitHub est en cours de développement** ❗️  
+
+Une fois le fichier zip obtenu, procédez à sa décompression avec une application adéquate.
+
+Placez le répertoire ''chimiotheque'' avec les fichiers décompressés dans le répertoire du serveur web Apache.
+
+Sous Linux dans le répertoire ''/var/www/html/''.
+
+Une fois cette mise en place effectuée, rendre les sous répertoires ''temp'' et ''script'' accessibles en écriture : 
+  * Sous Linux avec la commande chmod. exemple : ''chmod 777 /var/www/html/chimiotheque/temp''
+  * Sous Windows, vérifiez que les répertoires ne sont pas bloqués. Cliquez avec le bouton droit de la souris sur le répertoire, puis sur ''propriétés''.
+
+
+connectez-vous via un navigateur web à votre serveur web : ''http://votre_serveur_web/chimiotheque/''.
+
+Vous allez arriver sur la page d’installation de L-g-Chimio.
+
+{{ :lg1.png?nolink&600 |}}
+
+Après avoir cliqué sur le bouton ''Première étape'', vous arrivez sur la validation de la Licence CeCILL. Une fois acceptée, vous arrivez à la première étape de l’installation.
+
+----
+
+===== Première étape =====
+Celle-ci permet de définir et de vérifier les répertoires d’installation de l’application.
+
+{{ :lg1.1.png?nolink&600 |}}
+
+Si vous n’avez pas autorisé en écriture les répertoires ''script'' et ''temp'', vous obtenez une croix rouge. Vous devez modifier les droits sur ces deux répertoires, pour cela reportez-vous à la section [[installation#telechargez_l_application_l-g-chimio|Téléchargez de L-g-Chimio]].
+
+{{ :lg1.2.png?nolink&600 |}}
+
+Une fois ces vérifications effectuer vous pouvez en cliquant sur le bouton ''Etape suivante'', passez à la suite de l’installation.
+
+----
+
+===== Deuxième étape =====
+Cette étape permet de définir les paramètres d’accès au serveur PostgreSQL et le nom de la base de données.
+
+{{ :lg2.1.png?nolink&600 |}}
+
+**Attention**, pour que cela fonctionne, l’utilisateur PostgreSQL **doit posséder un mot de passe**. En effet, par sécurité, il est impératif que le compte utilisateur servant pour la connexion à la base de données PostgreSQL soit protégé. Les droits de ce compte doivent être au minimum : **SELECT, INSERT, UPDATE, DELETE, CREATE, FILE, INDEX, ALTER**.
+
+Une fois les paramètres entrés, cliquez sur ''vérification''. 
+
+Si vous obtenez des croix rouges alors le nom d’utilisateur et/ou le mot de passe sont erronés. Le champ ''Serveur PostgreSQL'' est par défaut renseigné avec ''localhost''. Cela signifie que le serveur PostgreSQL est sur la même machine que le serveur web Apache. Si le serveur PostgreSQL n’est pas sur la même machine alors renseignez dans le champ ''Serveur PostgreSQL'' **l’adresse IP** de celle-ci. 
+
+Si après la vérification vous avez des croix rouge alors les données renseignées sont erronées.
+Vous aurez également un message d’erreur serveur, juste au-dessus du champ ''serveur Postgresql''.
+
+{{ :lg2.2.png?nolink&600 |}}
+
+Si après vérification les paramètres de la connexion à PostgreSQL sont bons, alors pouvez cliquer sur ''Etape suivante''.
+
+{{ :lg2.3.png?nolink&600 |}}
+
+----
+
+===== Troisième étape =====
+
+Cette étape est celle de la création de la base de données avec l’ensemble des tables, si tout se passe bien vous pouvez passer à l'étape suivante.
+
+{{ :lg3.1.png?nolink&600 |}}
+
+S’il y a un problème durant la création des tables alors vous obtenez un retour des erreurs en rouge.
+
+{{ :lg3.2.png?nolink&600 |}}
+
+----
+
+===== Quatrième étape =====
+
+Cette étape permet de créer les fichiers ''administrateur.php'' et ''connectionb.php''.
+
+Ils contiennent respectivement les répertoires de l’installation et les paramètres de la connexion à la base de données. Si les fichiers sont créés, vous obtenez l’écran suivant. Vous pouvez trouver ces fichiers dans le sous-répertoire ''script'' de votre environnement L-g-Chimio.
+
+{{ :lg4.1.png?nolink&600 |}}
+
+Si les fichiers ne sont pas créés, alors vous obtenez une erreur. Vous devez vérifier les droits d’accès au sous-répertoire ''script'', qui doit être autorisé en écriture (voir section [[installation#telechargez_l_application_l-g-chimio|Téléchargez de L-g-Chimio]]).
+
+{{ :lg4.2.png?nolink&600 |}}
+
+----
+
+===== Cinquième étape =====
+
+Cette étape permet de sécuriser le sous-répertoire script qui contient les paramètres de l’application. 
+
+Celui-ci est ouvert en écriture suite aux étapes précédentes. Pour la création des fichiers, ce répertoire doit maintenant être verrouillé en lecture seulement. S’il n’est pas verrouillé, vous obtenez une croix rouge.
+
+{{ :lg5.1.png?nolink&600 |}}
+
+Pour verrouiller le répertoire ''script'' sous linux utilisez la commande chmod.
+
+Exemple : ''chmod 555 /var/www/html/chimiotheque/script''
+
+{{ :lg5.2.png?nolink&600 |}}
+
+----
+
+===== Sixième étape =====
+
+Cette étape permet de définir les paramètres du laboratoire qui seront affichés pour la personnalisation.
+
+Le fichier du logo ne doit pas excéder la taille de 19,53 Ko, il peut-être du type : jpg, gif ou png.
+
+{{ :lg6.1.png?nolink&600 |}}
+
+L’adresse courriel à renseigner est celle qui servira pour l’envoi par l’application, des courriels automatiques. Exemple d’adresse : intranet.icoa@univ-orleans.fr
+
+{{ :lg6.2.png?nolink&600 |}}
+
+----
+
+===== Septième étape =====
+
+Cette étape finale permet de définir le compte du chimiothécaire (administrateur). Vous devez remplir tous les champs pour créer ce compte. 
+
+Si vous avez une erreur dans la confirmation du mot de passe, le champ est cerclé d’une ligne rouge.
+
+{{ :lg7.3.png?nolink&600 |}}
+
+----
+
+===== Étape finale =====
+
+Votre installation est désormais finalisée.
+
+{{ :lg8f.png?nolink&600 |}}
+
+Vous devez désormais supprimer le répertoire ''install'' sur le serveur web. Maintenant, vous pouvez vous connecter normalement sur votre application : ''http://mon_site_web/chimiotheque/''.
