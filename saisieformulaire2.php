@@ -1,6 +1,6 @@
 ﻿<?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -38,7 +38,7 @@ require 'script/connectionb.php';
 include 'numero.php';
 
 if (!empty($_POST['mol']) && $_POST['masse']!="") {
-	  
+
 	if(!isset($_POST['couleur'])) $_POST['couleur']="";
 	if(!isset($_POST['purification'])) $_POST['purification']="";
 	if(!isset($_POST['aspect'])) $_POST['aspect']="";
@@ -85,7 +85,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$equipe=$tabequipe[0];
 	}
 	else $equipe=$row22[2];
-  
+
 	//recherche de la masse limite de stockage
 	$sql="SELECT para_stock,para_numerotation FROM parametres";
 	$result21=$dbh->query($sql);
@@ -115,7 +115,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$numoboite="";
 			$numoposition="";
         }
-		
+
         elseif (in_array("{BOITE}",$tab24) and in_array("{NUMERIC}",$tab24)) {
 			//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
 			$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
@@ -128,7 +128,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$numoboite="";
 			$numoincremental="";
         }
-		
+
         elseif (in_array("{NUMERIC}",$tab24)) {
 			if ($typenumero==1) {
 				//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
@@ -156,11 +156,11 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
         $nbtab23=count($tab23);
         $o=0;
         $numeroassemble=numero($typenumero);
-        
+
 		//vidange de la table temporaire
         $sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
         $deletenum=$dbh->query($sql);
-		
+
         //insertion du numéro dans la table temporaire
         while ($o<1) {
 			if ($nbtab23==0) {
@@ -181,8 +181,8 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 
 	$_POST['masse']=trim($_POST['masse']);
 	// $tabinchi=preg_split("[\n]",$_POST["inchi"]);
-	// $_POST["inchi"]=str_replace("\r","",$_POST["inchi"]);	
-	// $_POST["inchimd5"]=str_replace("InChIKey=","",$_POST["inchimd5"]);				
+	// $_POST["inchi"]=str_replace("\r","",$_POST["inchi"]);
+	// $_POST["inchimd5"]=str_replace("InChIKey=","",$_POST["inchimd5"]);
 
 	if ($_POST["mol"]!="") {
 		//javascript de vérification des champs obligatoires
@@ -198,7 +198,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 					}
 					return retval
 				  }
-				
+
 				  function selection(lstring) {
 					retvale=false
 					for(var i=1;i<lstring.length;i++) {
@@ -208,7 +208,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 					}
 					return retvale
 				  }
-				
+
 				  function GetSmiles(theForm, valeurformu) {
 					if (valeurformu==2) {
 					  document.saisie2.action=\"transfert.php\";
@@ -220,8 +220,8 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 						  break;
 						  }
 						i++;
-						}				  
-					  
+						}
+
 					  if (CKEDITOR.instances.nomiupac.getData()==\"\") {alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");}
 					  else {
 						if (document.saisie2.masse.value==\"\") {alert(\"".CHAMP." \'".MASS."\' ".RENSEIGNE."\");}
@@ -263,7 +263,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 				  }
 				  </script>";
 		//fin du javascript
-    
+
 		//affichage des erreurs du formulaire après traitement par traitement.php
 		if (isset($erreur)) echo $erreur;
 		//fin de l'affichage des erreurs
@@ -282,7 +282,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">
 			  <tr>
 			  <td>";
-		echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";	  
+		echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";
 		$jme=new visualisationmoleculejme (300,300,$_POST['mol']);
 		$jme->imprime();
 		print"</td>\n<td>\n";
@@ -339,7 +339,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 					}
 				}
 			}
-    
+
 			print "<strong>".NBPILLULIER."<font color=\"red\"> ".$numerocomplet."</font></strong><br/><br/>";
 			$formulaire->ajout_cache ($numerocomplet,"numerocomplet");
 		}
@@ -353,16 +353,16 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$formulaire->ajout_text ($rop25[0], $_POST['numerocomplet'], $rop25[0], "numerocomplet", NBPILLULIER."<br/>","","");
 			print"<br/><br/>";
 		}
-		
+
 		$formulaire->ajout_textarea ("qrcode",25,$_POST["qrcode"],4,true,QRCODE2."<br/>");
 		print"<br/><br/>";
 		$formulaire->ajout_text (5, $_POST['masse'], 5, "masse", MASS."<br/>",constant($_POST['unitmass']),"onBlur=GetSmiles(form,1)");
-		
+
 		$formulaire->ajout_cache ($_POST['masse'],"massehold");
 		print"<br/><br/>";
 		$formulaire->ajout_select (1,"couleur",$tab,false,$_POST['couleur'],SELECCOULEUR,COULEUR."<br/>",true,"");
 		print"<br/><br/>";
-   
+
 		//recherche des informations sur le champ pro_purification
 		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE constraint_NAME='contrainte_purification';";
 		//les résultats sont retournées dans la variable $result1
@@ -373,7 +373,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$tab=$traitement->imprime();
 		$formulaire->ajout_select (1,"purification",$tab,false,$_POST['purification'],SELECPURIFICATION,PURIFICATION."<br/>",false,"");
 		print"<br/><br/>";
-    
+
 		//recherche des informations sur le champ pro_aspect
 		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE constraint_NAME='contrainte_aspect';";
 		//les résultats sont retournées dans la variable $result
@@ -386,7 +386,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		//else $valaspect="";
 		$formulaire->ajout_select (1,"aspect",$tab,false,$_POST['aspect'],SELECASPECT,ASPECT."<br/>",false,"");
 		print"<br/><br/>";
-      
+
 		$sql="SELECT * FROM precaution ORDER BY pre_precaution ASC";
 		//les résultats sont retournées dans la variable $result
 		$result4=$dbh->query($sql);
@@ -399,11 +399,11 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$sql="SELECT Bingo.InchI('".$_POST["mol"]."','')";
 		$resultinchi=$dbh->query($sql);
 		$rowinchi=$resultinchi->fetch(PDO::FETCH_NUM);
-		
+
 		$sql="SELECT bingo.InChIKey ('".$rowinchi[0]."')";
 		$resultinchikey=$dbh->query($sql);
 		$rowinchikey=$resultinchikey->fetch(PDO::FETCH_NUM);
-		
+
 		$sql="SELECT lis_id_precaution FROM structure,liste_precaution,precaution WHERE str_inchi_md5='".$rowinchikey[0]."' and structure.str_id_structure=liste_precaution.lis_id_structure";
 		$resultprecaution=$dbh->query($sql);
 		$num_res_precaution=$resultprecaution->rowCount();
@@ -413,10 +413,10 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			}
 		}
 		else $tabpre=$_POST['precaution'];
-    
+
 		$formulaire->ajout_select (3,"precaution",$tab1,true,$tabpre,"",PRECAUTION."<br/>",false,"");
 		print"<br/><br/>";
-    
+
 		//recherche des informations sur le champ pro_ref_cahier_labo
 		$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_ref_cahier_labo'";
 		//les résultats sont retournées dans la variable $result
@@ -424,7 +424,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		//Les résultats sont mis sous forme de tableau
 		$rop=$result3->fetch(PDO::FETCH_NUM);
 		$formulaire->ajout_text (intval($rop[0]/1.5), $_POST['ref'], $rop[0], "ref", REFERENCECAHIER."<br/>","","");
-    
+
 		print"</td>\n<td>";
 		//recherche la liste des solvants sur la table solvant
 		$sql="SELECT * FROM solvant ORDER BY sol_solvant ASC";
@@ -449,15 +449,15 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		}
 		if (empty($tabsolvant) or !isset($tabsolvant)) $tabsolvant='';
 		$formulaire->ajout_checkbox ("solvant",$tab2,$tabsolvant,SOLVANTS."<br/>",false);
-    
-		print"</td>\n</tr>\n<tr valign=\"top\">\n<td>\n";	
+
+		print"</td>\n</tr>\n<tr valign=\"top\">\n<td>\n";
 		$formulaire->ajout_textarea ("nomiupac",30,$_POST["nomiupac"],12,true,NOM."<br/>");
-    
+
 		print"</td>\n<td";
 		if ($_POST['type']==1) print" colspan=\"2\"";
 		print">\n";
 		$formulaire->ajout_textarea ("modop",47,$_POST['modop'],12,true,MODOP."<br/>");
-      
+
 		if ($_POST['type']>1) {
 			print"\n</td>\n<td>";
 			if ($_POST['type']==2) {
@@ -467,7 +467,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			}
 			if ($_POST['type']==3) $formulaire->ajout_text (20,$_POST['numbrevet'],"","numbrevet",NUMBREVET."<br/>","","");
 		}
-    
+
 		//*********Section analyse du formulaire***********
 		print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><hr><h3>".ANALYSE."</h3><br/></td>\n</tr>\n<tr valign=\"top\">\n<td>";
 		//recherche des informations sur le champ pro_analyse_elem_trouve
@@ -512,11 +512,11 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			</table><br/>";
 		print"<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
 			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";	
+				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
 		$formulaire->ajout_text (3, $_POST['purete'], 2, "purete", PURETE,"","");
 		echo POURCENT;
 		print"<br/>\n<br/>\n";
-		$formulaire->ajout_text (21, $_POST['methopurete'], 20, "methopurete", METHOPURETE,"","");	
+		$formulaire->ajout_text (21, $_POST['methopurete'], 20, "methopurete", METHOPURETE,"","");
 		print"</td>
 			  </tr>
 			</table>";
@@ -527,7 +527,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		print"<br/>";
 		$formulaire->ajout_file (30, "fileuv",true,CHARGEUV."<br/>","");
 		print"</table></td>\n";
-    
+
 		print"\n</tr>\n<tr valign=\"top\">\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
 			  <tr>
 				<td class=\"blocformulaire\">\n<div align=\"center\">".SM."</div>\n<br/>";
@@ -603,7 +603,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$formulaire->ajout_text ($rop[0]+2,$_POST['alphaconc'],$rop[0],"alphaconc",ALPHACONC."<br/>",MOL,"");
 		print"<br/>";
 		$formulaire->ajout_select (1,"alphasolvant",$tab2,false,$_POST['alphasolvant'],ALPHASELECSOLV,ALPHASOLVANT."<br/>",false,"");
-    
+
 		print"</td>
 			  </tr>
 			</table><br/>";
@@ -638,7 +638,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			  </tr>
 			  </table>";
 		//********fin de la section analyse********
-    
+
 		//*********Section Bibliographie du formulaire***********
 		print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><hr>
 			  <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
@@ -674,8 +674,8 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$formulaire->ajout_text ($rop[0]+1,$_POST['cas'],$rop[0],"cas",CAS."<br/>","","");
 		print"</td>\n<td width=\"50%\">";
 		//********fin de la section Bibliographie********
-    
-    
+
+
 		$formulaire->ajout_textarea ("observation",52,$_POST['observation'],12,true,OBSERVATION.DEUXPOINTS."<br/>");
 		//ajout sous forme de champs caché des informations du formulaire précédant
 		$formulaire->ajout_cache ($_POST['mol'],"mol");
@@ -693,10 +693,10 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$formulebrute=$result21->fetch(PDO::FETCH_NUM);
 		$formulebrute1=str_replace(' ','',$formulebrute[0]);
 		$formulaire->ajout_cache ($formulebrute1,"formulebrute");
-				
+
 		$composition=pourcentelement ($massemolaire[0],$formulebrute[0]);
 		$formulaire->ajout_cache ($composition,"composition");
-		
+
 		// $_POST['logp']=str_replace(",",".",$_POST['logp']);
 		// $formulaire->ajout_cache ($_POST['logp'],"logp");
 		// $formulaire->ajout_cache ($_POST['acceptorcount'],"acceptorcount");
@@ -707,18 +707,18 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		// $formulaire->ajout_cache ($_POST['asymmetricatomcount'],"asymmetricatomcount");
 		$formulaire->ajout_cache ($_POST['etapmol'],"etapmol");
 		$formulaire->ajout_cache ($_POST['unitmass'],"unitmass");
-	  
-	  
+
+
 		if ($row22[0]=="{ADMINISTRATEUR}" or $row22[0]=="{CHEF}") {
 			$tabequipe=explode ("/",$_POST['equipe']);
 			$formulaire->ajout_cache ($tabequipe[0],"equipe");
 			$formulaire->ajout_cache ($tabequipe[1],"responsable");
 		}
 		//fin de l'ajout des champs cachés
-    
+
 		//fermeture de la connexion à la base de données
 		unset($dbh);
-    
+
 		print"</td>\n</tr>\n</table>\n</table>\n<p align=\"right\">";
 		$formulaire->ajout_button (SUBMIT,"","button","onClick=\"GetSmiles(form,2)\"");
 		print"</p>";

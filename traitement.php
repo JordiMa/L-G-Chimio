@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -51,13 +51,13 @@ if(!isset($_POST['asymmetricatomcount'])) $_POST['asymmetricatomcount']="0";
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
-  
+
 $date=date("Y-m-d H:i:s");
 $erreur='';
 $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
 $result5=$dbh->query($sql);
 $row5 =$result5->fetch(PDO::FETCH_NUM);
-  
+
 if ($row5[0]=="{ADMINISTRATEUR}" or $row5[0]=="{CHEF}") {
     $id_equipe=$_POST['equipe'];
     $nam=$row5[1];
@@ -88,7 +88,7 @@ $id_structure = $result1->fetch(PDO::FETCH_NUM);
 if (empty($id_structure[0])) {
     //requête d'insertion des données dans la table "structure" pour une nouvelle structure
     $sql="INSERT INTO structure (str_nom, str_mol, str_inchi, str_formule_brute, str_masse_molaire, str_analyse_elem, str_date, str_inchi_md5, str_logp, str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount) VALUES ('".AddSlashes($_POST['nomiupac'])."','".rawurldecode($_POST['mol'])."','".rawurldecode($_POST['inchi'])."','".$_POST['formulebrute']."','".$_POST['massemol']."', '".$_POST['composition']."', '".$date."', '".rawurldecode($_POST['inchikey'])."', '".$_POST['logp']."', '".$_POST['acceptorcount']."', '".$_POST['rotatablebondcount']."', '".$_POST['aromaticatomcount']."', '".$_POST['donorcount']."', '".$_POST['asymmetricatomcount']."', '".$_POST['aromaticbondcount']."')";
-    $insertion=$dbh->exec($sql);	
+    $insertion=$dbh->exec($sql);
     if($insertion==false) print_r ($dbh->errorInfo());
     $lastId = $dbh->lastInsertId('structure_str_id_structure_seq');
     //entrée des précautions éventuelles
@@ -103,7 +103,7 @@ if (empty($id_structure[0])) {
 				print_r ($dbh->errorInfo());
 				echo "</p>";
 		}
-		}  
+		}
     }
 }
 else {
@@ -128,7 +128,7 @@ else {
 			print_r ($dbh->errorInfo());
 			echo "</p>";
 		}
-        
+
 		foreach($_POST['precaution'] as $elem) {
 			$sql="INSERT INTO liste_precaution (lis_id_precaution,lis_id_structure) VALUES ('$elem','$lastId')";
 			$insertion=$dbh->exec($sql);
@@ -157,7 +157,7 @@ if (!isset($_POST['duree']) or empty($_POST['duree'])) $_POST['duree']='0';
 if (empty ($_POST['numerique'])) $_POST['numerique']='0';
 if (empty ($_POST['sansmasse'])) $_POST['sansmasse']='0';
 
-  
+
 //génère un chiffre aléatoire entre 10000000 et 9999999
 mt_srand(microtime()*10000);
 $o=0;
@@ -168,7 +168,7 @@ while ($o!=1) {
     $nbresultnb=$resultnb->rowCount();
     if ($nbresultnb>0) $o=0;
 	else $o=1;
-} 
+}
 
 //traitement du Qrcode ou code-barre multiple
 if (!empty($_POST['qrcode']) and preg_match("/\r/",$_POST['qrcode'])) {
@@ -184,21 +184,21 @@ for ($ifile=0; $ifile<count($filetype); $ifile++) {
 		$extension_fichier=preg_split("/\./",$_FILES[$fichiertmp]['name']);
 		$fichier=file_get_contents($_FILES[$fichiertmp]['tmp_name']);
 		$fichier=Base64_encode($fichier);
-		
+
 		$fichiertype=$filetype[$ifile].'_fichier';
 		$extensiontype=$filetype[$ifile].'_nom_fichier';
 		$text=$filetype[$ifile].'_text';
 		$sequence= $filetype[$ifile]."_".$filetype[$ifile]."_id_".$filetype[$ifile]."_seq";
 		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $typesm=$filetype[$ifile].'_type';
-		
-		if (!empty($_POST['donnees'.$filetype[$ifile]])) $_POST['donnees'.$filetype[$ifile]]=preg_replace("/\'/", "''",$_POST['donnees'.$filetype[$ifile]]);		
-		
+
+		if (!empty($_POST['donnees'.$filetype[$ifile]])) $_POST['donnees'.$filetype[$ifile]]=preg_replace("/\'/", "''",$_POST['donnees'.$filetype[$ifile]]);
+
 		$sql="INSERT INTO ".$filetype[$ifile]." ($fichiertype,$extensiontype,$text";
 		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",$typesm";
 		$sql.=") VALUES ('$fichier','$extension_fichier[1]','".$_POST['donnees'.$filetype[$ifile]]."'";
 		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",'{".$_POST[$filetype[$ifile].'type']."}'";
 		$sql.=")";
-		$fichierinsert=$dbh->exec($sql);	
+		$fichierinsert=$dbh->exec($sql);
 		if($fichierinsert==false) {
 			$erreur=1;
 			echo "<p align=\"center\" class=\"erreur\">";
@@ -210,6 +210,8 @@ for ($ifile=0; $ifile<count($filetype); $ifile++) {
 	else $lastIdinsertionfichier{$filetype[$ifile]} =NULL;
 }
 
+/*
+/ TODO REQ Prepare
 //insertion des données du produit
 $sql="INSERT INTO produit
   (pro_purification, pro_masse, pro_unite_masse, pro_aspect, pro_id_couleur, pro_date_entree, pro_ref_cahier_labo, pro_modop, pro_id_structure, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, pro_alpha, pro_alpha_temperature, pro_alpha_concentration, pro_alpha_solvant, pro_rf, pro_rf_solvant, pro_doi, pro_hal, pro_cas, pro_id_type, pro_num_brevet, pro_ref_contrat, pro_date_contrat, pro_id_chimiste, pro_id_equipe, pro_configuration, pro_observation, pro_num_boite, pro_num_position, pro_num_incremental, pro_numero, pro_num_constant, pro_num_sansmasse, pro_origine_substance, pro_purete, pro_methode_purete, pro_id_responsable, pro_etape_mol, pro_qrcode";
@@ -234,11 +236,92 @@ if($insertion==false)  {
 			print_r ($dbh->errorInfo());
 			echo "</p>";
 		}
+
+*/
+
+//Requete préparée pour l'ajout d'un produit
+try {
+  $stmt = $dbh->prepare("INSERT INTO produit (pro_purification, pro_masse, pro_unite_masse, pro_aspect, pro_id_couleur, pro_date_entree, pro_ref_cahier_labo, pro_modop, pro_id_structure, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, pro_alpha, pro_alpha_temperature, pro_alpha_concentration, pro_alpha_solvant, pro_rf, pro_rf_solvant, pro_doi, pro_hal, pro_cas, pro_id_type, pro_num_brevet, pro_ref_contrat, pro_date_contrat, pro_id_chimiste, pro_id_equipe, pro_configuration, pro_observation, pro_num_boite, pro_num_position, pro_num_incremental, pro_numero, pro_num_constant, pro_num_sansmasse, pro_origine_substance, pro_purete, pro_methode_purete, pro_id_responsable, pro_etape_mol, pro_qrcode, pro_id_rmnh, pro_id_rmnc, pro_id_ir, pro_id_uv, pro_id_sm, pro_id_hrms) VALUES (:pro_purification, :pro_masse, :pro_unite_masse, :pro_aspect, :pro_id_couleur, :pro_date_entree, :pro_ref_cahier_labo, :pro_modop, :pro_id_structure, :pro_analyse_elem_trouve, :pro_point_fusion, :pro_point_ebullition, :pro_pression_pb, :pro_alpha, :pro_alpha_temperature, :pro_alpha_concentration, :pro_alpha_solvant, :pro_rf, :pro_rf_solvant, :pro_doi, :pro_hal, :pro_cas, :pro_id_type, :pro_num_brevet, :pro_ref_contrat, :pro_date_contrat, :pro_id_chimiste, :pro_id_equipe, :pro_configuration, :pro_observation, :pro_num_boite, :pro_num_position, :pro_num_incremental, :pro_numero, :pro_num_constant, :pro_num_sansmasse, :pro_origine_substance, :pro_purete, :pro_methode_purete, :pro_id_responsable, :pro_etape_mol, :pro_qrcode, :pro_id_rmnh, :pro_id_rmnc, :pro_id_ir, :pro_id_uv, :pro_id_sm, :pro_id_hrms)");
+
+  $param_purif = "{".$_POST['purification']."}";
+  $stmt->bindValue(':pro_purification',$param_purif);
+
+  $stmt->bindParam(':pro_masse',$_POST['masse']);
+
+  $param_unitmass = "{".$_POST['unitmass']."}";
+  $stmt->bindParam(':pro_unite_masse',$param_unitmass);
+
+  $param_aspect = "{".$_POST['aspect']."}";
+  $stmt->bindParam(':pro_aspect',$param_aspect);
+
+  $stmt->bindParam(':pro_id_couleur',$_POST['couleur']);
+  $stmt->bindParam(':pro_date_entree',$date);
+  $stmt->bindParam(':pro_ref_cahier_labo',$_POST['ref']);
+  $stmt->bindParam(':pro_modop',$_POST['modop']);
+  $stmt->bindParam(':pro_id_structure',$lastId);
+  $stmt->bindParam(':pro_analyse_elem_trouve',$_POST['anaelem']);
+  $stmt->bindParam(':pro_point_fusion',$_POST['pfusion']);
+  $stmt->bindParam(':pro_point_ebullition',$_POST['pebulition']);
+  $stmt->bindParam(':pro_pression_pb',$_POST['pressionpb']);
+  $stmt->bindParam(':pro_alpha',$_POST['alpha']);
+  $stmt->bindParam(':pro_alpha_temperature',$_POST['alphatemp']);
+  $stmt->bindParam(':pro_alpha_concentration',$_POST['alphaconc']);
+
+  if ($_POST['alphasolvant'] = "Null") $_POST['alphasolvant'] = NULL;
+  $stmt->bindParam(':pro_alpha_solvant',$_POST['alphasolvant']);
+
+  $stmt->bindParam(':pro_rf',$_POST['rf']);
+  $stmt->bindParam(':pro_rf_solvant',$_POST['ccmsolvant']);
+  $stmt->bindParam(':pro_doi',$_POST['doi']);
+  $stmt->bindParam(':pro_hal',$_POST['hal']);
+  $stmt->bindParam(':pro_cas',$_POST['cas']);
+  $stmt->bindParam(':pro_id_type',$_POST['type']);
+  $stmt->bindParam(':pro_num_brevet',$_POST['numbrevet']);
+  $stmt->bindParam(':pro_ref_contrat',$_POST['contrat']);
+  $stmt->bindParam(':pro_date_contrat',$_POST['duree']);
+  $stmt->bindParam(':pro_id_chimiste',$nam);
+  $stmt->bindParam(':pro_id_equipe',$id_equipe);
+  $stmt->bindParam(':pro_configuration',$_POST['config']);
+  $stmt->bindParam(':pro_observation',$_POST['observation']);
+  $stmt->bindParam(':pro_num_boite',$_POST['boite']);
+  $stmt->bindParam(':pro_num_position',$_POST['coordonnee']);
+  $stmt->bindParam(':pro_num_incremental',$_POST['numerique']);
+  $stmt->bindParam(':pro_numero',$_POST['numerocomplet']);
+  $stmt->bindParam(':pro_num_constant',$chiffre);
+  $stmt->bindParam(':pro_num_sansmasse',$_POST['sansmasse']);
+
+  $param_origimol = "{".$_POST['origimol']."}";
+  $stmt->bindParam(':pro_origine_substance',$param_origimol);
+
+  if (empty($_POST['purete'])) $_POST['purete'] = NULL;
+  if (empty($_POST['methopurete'])) $_POST['methopurete'] = NULL;
+  $stmt->bindParam(':pro_purete',$_POST['purete']);
+  $stmt->bindParam(':pro_methode_purete',$_POST['methopurete']);
+
+  $stmt->bindParam(':pro_id_responsable',$responsable);
+
+  $param_etapmol = "{".$_POST['etapmol']."}";
+  $stmt->bindParam(':pro_etape_mol',$param_etapmol);
+
+  $stmt->bindParam(':pro_qrcode',$_POST['qrcode']);
+  $stmt->bindParam(':pro_id_rmnh',$lastIdinsertionfichier{'rmnh'});
+  $stmt->bindParam(':pro_id_rmnc',$lastIdinsertionfichier{'rmnc'});
+  $stmt->bindParam(':pro_id_ir',$lastIdinsertionfichier{'ir'});
+  $stmt->bindParam(':pro_id_uv',$lastIdinsertionfichier{'uv'});
+  $stmt->bindParam(':pro_id_sm',$lastIdinsertionfichier{'sm'});
+  $stmt->bindParam(':pro_id_hrms',$lastIdinsertionfichier{'hrms'});
+
+  $stmt->execute();
+  }
+catch(PDOException $e) {
+    echo "Error: " . $e->getMessage();
+  }
+
 $lastIdinsertion = $dbh->lastInsertId('produit_pro_id_produit_seq');
 //insertion des solvants de solubilisation du prosuit
 
 
-  
+
 //recherche de solvants sur la table solvant
 $sql="SELECT count(sol_id_solvant) FROM solvant";
 //les résultats sont retournées dans la variable $result3
@@ -259,9 +342,9 @@ while($countsol=$result3->fetch(PDO::FETCH_NUM)) {
         }
     }
 }
- 
+
  //'".AddSlashes($_POST['donneesrmnh'])."','".AddSlashes($_POST['donneesrmnc'])."','".AddSlashes($_POST['donneesir'])."','".AddSlashes($_POST['sm'])."','".AddSlashes($_POST['smtype'])."','".AddSlashes($_POST['hsm'])."','".AddSlashes($_POST['hsmtype'])."','".AddSlashes($_POST['donneesuv'])."'
- 
+
 
 
 if ($erreur=='') {
@@ -274,13 +357,13 @@ if ($erreur=='') {
         $envoicourriel=new envoi_mail_admin ($row4[0],$_POST['numerocomplet'],$chiffre);
 		$envoicourriel->envoi();
     }
-    
-	//envoie d'un email au chef 
+
+	//envoie d'un email au chef
     $sql="SELECT chi_id_responsable FROM chimiste WHERE chi_recevoir='1' and chi_passif='0' and chi_id_chimiste IN (SELECT chi_id_responsable FROM chimiste WHERE chi_nom='".$_SESSION['nom']."')";
     $result6=$dbh->query($sql);
     $num6=$result6->rowCount();
 	if ($num6>0) {
-		$row6=$result6->fetch(PDO::FETCH_NUM);    
+		$row6=$result6->fetch(PDO::FETCH_NUM);
         $envoicourriel=new envoi_mail_admin ($row6[0],$_POST['numerocomplet'],$chiffre);
         $envoicourriel->envoi();
     }
@@ -294,7 +377,7 @@ if ($erreur=='') {
 			$envoicourriel=new envoi_mail_admin ($row5[0],$_POST['numerocomplet'],$chiffre);
 			$envoicourriel->envoi();
 		}
-	}	
+	}
     print "<br/><br/><br/><br/><br/><br/><br/><br/><p align=\"center\" class=\"sauvegarde\">".SAUVDONNE."</p>";
 }
 //fermeture de la connexion à la base de données

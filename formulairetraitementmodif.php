@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -78,7 +78,7 @@ else {
 	$result1 = $dbh->query($sql);
 	$nbstructure=$result1->rowCount();
 	$id_structure = $result1->fetch(PDO::FETCH_NUM);
-	
+
 	if ($nbstructure==0) {
 		if(!isset($_POST['logp'])) $_POST['logp']="0";
 		if(!isset($_POST['acceptorcount'])) $_POST['acceptorcount']="0";
@@ -111,38 +111,38 @@ else {
 			//entre dans la variable $change le changement de nom de la structure
 			$change.=$_SESSION['nom']." ".$rop[2]."@".$date."@NOM@".$id_structure[1]."\n";
 		}
-		
+
 		if ( transformemol ($id_structure[2])!=transformemol ($_POST['mol'])) {
 			$sql="UPDATE structure set str_mol='".$_POST['mol']."' WHERE str_inchi_md5='".$_POST['inchikey']."'";
 			$update2=$dbh->exec($sql);
 			//entre dans la variable $change le changement de nom de la structure
 			$change.=$_SESSION['nom']." ".$rop[2]."@".$date."@STRUCTURE@".$_POST['inchikey']."\n";
-		}	
+		}
 	}
-	
+
 	if (empty($_POST['alphasolvant'])) $_POST['alphasolvant']='Null';
-	
+
 	if (isset($_POST['boite']) or isset($_POST['coordonnee']) or isset($_POST['numerique']) or isset($_POST['sansmasse']) or isset($_POST['numerocomplet'])) {
 		if (!isset($_POST['boite'])) $_POST['boite']=0;
 		if (!isset($_POST['coordonnee'])) $_POST['coordonnee']="";
 		if (!isset($_POST['numerique'])) $_POST['numerique']=0;
 		if (!isset($_POST['sansmasse'])) $_POST['sansmasse']=0;
-		if (!isset($_POST['numerocomplet'])) $_POST['numerocomplet']="";		
+		if (!isset($_POST['numerocomplet'])) $_POST['numerocomplet']="";
 		$changenumero=", pro_num_boite='".$_POST['boite']."',pro_num_position='".$_POST['coordonnee']."',pro_num_incremental='".$_POST['numerique']."',pro_numero='".$_POST['numerocomplet']."',pro_num_sansmasse='".$_POST['sansmasse']."'";
 	}
 	else $changenumero="";
-	
+
 	$changement=new changement_donnees($_POST['id'],$rop[2],$changenumero);
 	$change.=$changement->imprime();
-	
+
 	$sql="SELECT pro_id_rmnh, pro_id_rmnc, pro_id_ir, pro_id_uv, pro_id_sm, pro_id_hrms FROM produit WHERE pro_id_produit='".$_POST['id']."'";
 	$fichierselect=$dbh->query($sql);
-	$row =$fichierselect->fetch(PDO::FETCH_ASSOC); 
-	
+	$row =$fichierselect->fetch(PDO::FETCH_ASSOC);
+
 	//update de la dernière entrée avec insertion éventuelle des fichiers
 	$filetype = array ("ir","uv","sm","hrms","rmnh","rmnc");
 	for ($ifile=0; $ifile<count($filetype); $ifile++) {
-		 
+
 		if (!isset($_POST["sup$filetype[$ifile]0"])) $_POST["sup$filetype[$ifile]0"]='';
 		$fichiertmp="file".$filetype[$ifile];
 		if (!empty($_FILES[$fichiertmp]['tmp_name']) and !$_FILES[$fichiertmp]['error']) {
@@ -161,7 +161,7 @@ else {
 				$extension_fichier[1]='';
 			}
 			elseif ($lefichier!=False) {
-				
+
 				$fichier=stream_get_contents (${"fichier$filetype[$ifile]"}[0]);
 				$extension_fichier[1]=${"fichier$filetype[$ifile]"}[1];
 			}
@@ -170,17 +170,17 @@ else {
 				$extension_fichier[1]='';
 			}
 		}
-				
+
 		$fichiertype=$filetype[$ifile].'_fichier';
 		$extensiontype=$filetype[$ifile].'_nom_fichier';
 		$text=$filetype[$ifile].'_text';
 		$sequence= $filetype[$ifile]."_".$filetype[$ifile]."_id_".$filetype[$ifile]."_seq";
 		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $typesm=$filetype[$ifile].'_type';
-		
-		if (!empty($_POST['donnees'.$filetype[$ifile]])) $_POST['donnees'.$filetype[$ifile]]=preg_replace("/\'/", "''",$_POST['donnees'.$filetype[$ifile]]);		
+
+		if (!empty($_POST['donnees'.$filetype[$ifile]])) $_POST['donnees'.$filetype[$ifile]]=preg_replace("/\'/", "''",$_POST['donnees'.$filetype[$ifile]]);
 
 		if (!empty ($row['pro_id_'.$filetype[$ifile]])) {
-			
+
 			if ((!empty($fichier) or !empty ($extension_fichier[1]) or !empty ($_POST['donnees'.$filetype[$ifile]])) or (isset($_POST[$filetype[$ifile].'type']) and !empty($_POST[$filetype[$ifile].'type']))) {
 				$sql="UPDATE ".$filetype[$ifile]." SET $fichiertype='$fichier', $extensiontype='$extension_fichier[1]', $text='".$_POST['donnees'.$filetype[$ifile]]."'";
 				if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",$typesm='{".$_POST[$filetype[$ifile].'type']."}'";
@@ -189,9 +189,9 @@ else {
 			}
 			else {
 				$sql="DELETE FROM ".$filetype[$ifile]." WHERE ".$filetype[$ifile]."_id_".$filetype[$ifile]."=".$row['pro_id_'.$filetype[$ifile]].";";
-				$id{$filetype[$ifile]}=0;	
+				$id{$filetype[$ifile]}=0;
 			}
-			$fichierinsert=$dbh->exec($sql);	
+			$fichierinsert=$dbh->exec($sql);
 			if($fichierinsert==false) {
 				$erreur=1;
 				echo "<p align=\"center\" class=\"erreur\">";
@@ -199,13 +199,15 @@ else {
 				echo "</p>";
 			}
 		}
+		//Probleme ici ??? // TODO:
 		elseif ((!empty($fichier) or !empty ($extension_fichier[1]) or !empty ($_POST['donnees'.$filetype[$ifile]])) or (isset($_POST[$filetype[$ifile].'type']) and !empty($_POST[$filetype[$ifile].'type']))) {
 			$sql="INSERT INTO ".$filetype[$ifile]." ($fichiertype,$extensiontype,$text";
 			if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",$typesm";
 			$sql.=") VALUES ('$fichier','$extension_fichier[1]','".$_POST['donnees'.$filetype[$ifile]]."'";
 			if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",'{".$_POST[$filetype[$ifile].'type']."}'";
 			$sql.=")";
-			$fichierinsert=$dbh->exec($sql);				
+			$fichierinsert=$dbh->exec($sql);
+			print_r ($dbh->errorInfo());
 			if($fichierinsert==false) {
 				$erreur=1;
 				echo "<p align=\"center\" class=\"erreur\">";
@@ -214,9 +216,9 @@ else {
 			}
 			if ($fichierinsert==1) $id{$filetype[$ifile]} = $dbh->lastInsertId($sequence);
 		}
-		else $id{$filetype[$ifile]} =0;	
+		else $id{$filetype[$ifile]} =0;
 	}
-	
+
 	if(!isset($_POST['numbrevet'])) $_POST['numbrevet']="";
 	if(!isset($_POST['contrat'])) $_POST['contrat']="";
 	if(!isset($_POST['duree'])) $_POST['duree']="";
@@ -234,7 +236,7 @@ else {
 	if (!isset($_POST['duree']) or empty($_POST['duree'])) $_POST['duree']='0';
 	if (empty ($_POST['numerique'])) $_POST['numerique']='0';
 	if (empty ($_POST['sansmasse'])) $_POST['sansmasse']='0';
-  
+
 	$sql="UPDATE produit SET
 	pro_purification='{".$_POST['purification']."}', pro_masse='".$_POST['masse']."', pro_aspect='{".$_POST['aspect']."}', pro_id_couleur='".$_POST['couleur']."', pro_ref_cahier_labo='".preg_replace("/\'/", "''",$_POST['ref'])."', pro_modop='".preg_replace("/\'/", "''",$_POST['modop'])."',
 	pro_id_structure='$lastId', pro_analyse_elem_trouve='".preg_replace("/\'/", "''",$_POST['anaelem'])."', pro_point_fusion='".preg_replace("/\'/", "''",$_POST['pfusion'])."', pro_point_ebullition='".preg_replace("/\'/", "''",$_POST['pebulition'])."', pro_pression_pb='".preg_replace("/\'/", "''",$_POST['pressionpb'])."', pro_alpha='".preg_replace("/\'/", "''",$_POST['alpha'])."', pro_alpha_temperature='".preg_replace("/\'/", "''",$_POST['alphatemp'])."', pro_alpha_concentration='".preg_replace("/\'/", "''",$_POST['alphaconc'])."'";
@@ -256,7 +258,7 @@ else {
 		print"</li>";
 		$erreur++;
 	}*/
-  
+
 	//recherche de solvants sur la table solvant
 	$sql="SELECT count(sol_id_solvant) FROM solvant";
 	//les résultats sont retournées dans la variable $result3
@@ -264,7 +266,7 @@ else {
 	$countsol=$result3->fetch(PDO::FETCH_NUM);
 	$sql="SELECT solubilite.sol_id_solvant,sol_solvant FROM solubilite,solvant WHERE sol_id_produit='".$_POST['id']."' and solubilite.sol_id_solvant=solvant.sol_id_solvant";
 	$resultsolubi=$dbh->query($sql);
-	
+
 	$nbrsolvantanciens=$resultsolubi->rowCount();
 	$i=1;
 	$y=0;
@@ -274,7 +276,7 @@ else {
 		$listesolubi.=$rowsolubi[1].",";
 		$i++;
 	}
-	
+
 	for ($i=0; $i<$countsol[0]; $i++) {
 		if (isset($_POST["solvant$i"]) and !empty ($_POST["solvant$i"])) {
 			$y++;
@@ -285,7 +287,7 @@ else {
 			}
 		}
 	}
-	
+
 	if ($y!=$nbrsolvantanciens) {
 		$changeok=true;
 	}
@@ -307,7 +309,7 @@ else {
 			}
 		}
 	}
-	
+
 	//**********************************
 	//Section traitement des précautions
 	if (!empty($_POST['precaution']))  $nbprecau=count($_POST['precaution']);
@@ -327,10 +329,10 @@ else {
 		if ($nbprecau>0){
 			$compareresultplus=array_diff($_POST['precaution'],$tabprecaution);
 			$compareresultmoins=array_diff($tabprecaution,$_POST['precaution']);
-			
+
 			if (!empty($compareresultplus) or !empty($compareresultmoins)) {
 				$change.=$_SESSION['nom']." ".$rop[2]."@".$date."@PRECAUTION@".$listeprecaution."\n";
-				
+
 				if (!empty($compareresultmoins)) {
 					foreach ($compareresultmoins as $elem) {
 						$sql="DELETE FROM liste_precaution where lis_id_structure='$lastId' and lis_id_precaution='$elem'";
@@ -343,8 +345,8 @@ else {
 						}
 					}
 				}
-				
-				if (!empty($compareresultplus)) {		
+
+				if (!empty($compareresultplus)) {
 					foreach($compareresultplus as $elem) {
 						$sql="INSERT INTO liste_precaution (lis_id_precaution,lis_id_structure) VALUES ('$elem','$lastId')";
 						$insertion=$dbh->exec($sql);
@@ -356,7 +358,7 @@ else {
 						}
 					}
 				}
-			}	
+			}
 		}
 		// si données dans BD et pas de données dans POST : suppression dans la BD
 		if ($nbprecau==0){
@@ -390,7 +392,7 @@ else {
 	//fin Section traitement des précautions
 	//**********************************
 
-	
+
 	if (!empty($change)) {
 		$sql="UPDATE produit SET pro_suivi_modification='".AddSlashes($change)."' WHERE pro_id_produit='".$_POST['id']."'";
 		$updatechangement=$dbh->exec($sql);
@@ -416,6 +418,6 @@ function transformemol ($filemol) {
         elseif($i>2) $mol.="$elem\n";
 		$i++;
     }
-	return md5($mol);	
+	return md5($mol);
 }
 ?>
