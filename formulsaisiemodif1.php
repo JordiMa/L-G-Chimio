@@ -1,6 +1,6 @@
 ﻿<?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -39,7 +39,7 @@ if (!empty($_POST['id'])) {
 
 	//appel le fichier de connexion à la base de données
 	require 'script/connectionb.php';
-  
+
 	$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
 	//les résultats sont retournées dans la variable $result
 	$result =$dbh->query($sql);
@@ -62,14 +62,14 @@ if (!empty($_POST['id'])) {
 	$result1 =$dbh->query($sql);
 	$row1 =$result1->fetch(PDO::FETCH_NUM);
 	if (($row[1]==$row1[1]) or ($row[0]=="{RESPONSABLE}" and $row[2]==$row1[0]) or ($row[0]=="{CHEF}" and in_array($row1[0],$tab5)) or $row[0]=="{ADMINISTRATEUR}") {
-		
+
 		// Traitement du code inchi et de l'inchikey
 		// $tabinchi=preg_split("[\n]",$_POST["inchi"]);
-		// $_POST["inchi"]=str_replace("\r","",$_POST["inchi"]);	
+		// $_POST["inchi"]=str_replace("\r","",$_POST["inchi"]);
 		// $_POST["inchimd5"]=str_replace("InChIKey=","",$_POST["inchimd5"]);
 		// traitement de la variable nom pour transfmormer $ en lambda
 		// $_POST["nom"]=str_replace("\$l","&lambda;",$_POST["nom"]);
-		
+
 		$sql="SELECT str_inchi_md5,str_id_structure FROM structure,produit WHERE pro_id_produit='".$_POST['id']."' and produit.pro_id_structure=structure.str_id_structure";
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
@@ -87,7 +87,7 @@ if (!empty($_POST['id'])) {
 					}
 					return retval
 				  }
-				  
+
 				  function selection(lstring) {
 					retvale=false
 					for(var i=1;i<lstring.length;i++) {
@@ -97,7 +97,7 @@ if (!empty($_POST['id'])) {
 					}
 					return retvale
 				  }
-				  
+
 				  function GetSmiles(theForm) {
 					var i=0;
 					var top=false;
@@ -147,7 +147,7 @@ if (!empty($_POST['id'])) {
 			$formulaire=new formulaire ("saisie2","transfertmodif.php","POST",true);
 			$formulaire->affiche_formulaire();
 			//selection des résultats de l'ID demandé dans la table produit
-			$sql="SELECT 
+			$sql="SELECT
 				  pro_id_produit,
 				  str_nom,
 				  pro_purification,
@@ -198,11 +198,11 @@ if (!empty($_POST['id'])) {
 			print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">
 				  <tr>
 				  <td>";
-			echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";	  
+			echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";
 			$jme=new visualisationmoleculejme (300,300,$_POST['mol']);
 			$jme->imprime();
 			print"</td>\n<td>\n";
-      
+
 			//recherche de la masse limite de stockage
 			$sql="SELECT para_stock,para_numerotation FROM parametres";
 			$result21=$dbh->query($sql);
@@ -212,7 +212,7 @@ if (!empty($_POST['id'])) {
 			$tabdate=preg_split("/(-)/",$tab[0]);
 			$datentre=mktime(0,0,0,$tabdate[1],$tabdate[2],$tabdate[0]);
 			$datentre+=(3600*24*7);
-		
+
 			//si la date d'entrée est inférieure ou égale à 7 jours par rapport à la date du jour
 			//alors on peut changer le numéro par rapport à la limite de masse
 			//sinon on change de numéro lorsque la masse atteint 0mg
@@ -226,19 +226,19 @@ if (!empty($_POST['id'])) {
 			}
 			if ($rowselect[33]>0) $typenumero1=2;
 			else  $typenumero1=1;
-    
-    
+
+
 			if ($row21[1]=="AUTO") {
-    
+
 				if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
-					
+
 					//recherche des parametres du numero definient par l'administrateur
 					$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
 					$resultat24=$dbh->query($sql);
 					while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
 						$tab24[]=$row24[0];
 					}
-        
+
 					if (in_array("{BOITE}",$tab24) and in_array("{COORDONEE}",$tab24)) {
 						//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
 						$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
@@ -292,11 +292,11 @@ if (!empty($_POST['id'])) {
 					$nbtab23=count($tab23);
 					$o=0;
 					$numeroassemble=numero($typenumero);
-					
+
 					//vidange de la table temporaire
 					$sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
 					$deletenum=$dbh->exec($sql);
-					
+
 					//insertion du numéro dans la table temporaire
 					while ($o<1) {
 						if ($nbtab23==0) {
@@ -317,7 +317,7 @@ if (!empty($_POST['id'])) {
 					$numerocomplet="";
 					$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
 					$resultat25=$dbh->query($sql);
-					
+
 					while ($row25=$resultat25->fetch(PDO::FETCH_NUM)) {
 						if ($row25[0]=="{FIXE}") $numerocomplet.=$row25[1];
 						elseif ($row25[0]=="{EQUIPE}") {
@@ -393,16 +393,16 @@ if (!empty($_POST['id'])) {
 				}
 				else $qcodeval=$rowselect[36];
 			}
-			
+
 			$formulaire->ajout_textarea ("qrcode",25,$qcodeval,4,true,QRCODE2."<br/>");
 			print"<br/><br/>";
-			
+
 			print "<p><strong>".MASS."</strong>".$_POST['masse'].MG."</p>";
 			$formulaire->ajout_cache ($_POST['masse'],"masse");
 			print"<br/><br/>";
 			$formulaire->ajout_select (1,"couleur",$tabcoul,false,$rowselect[4],SELECCOULEUR,COULEUR."<br/>",true,"");
 			print"<br/><br/>";
-    
+
 			//recherche des informations sur le champ pro_purification
 			$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE  constraint_NAME='contrainte_purification';";
 			//les résultats sont retournées dans la variable $result
@@ -415,7 +415,7 @@ if (!empty($_POST['id'])) {
 			$rowselect[2]=str_replace($search,'',$rowselect[2]);
 			$formulaire->ajout_select (1,"purification",$tab,false,$rowselect[2],SELECPURIFICATION,PURIFICATION."<br/>",false,"");
 			print"<br/><br/>";
-    
+
 			//recherche des informations sur le champ pro_aspect
 			$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE constraint_NAME='contrainte_aspect';";
 			//les résultats sont retournées dans la variable $result
@@ -428,7 +428,7 @@ if (!empty($_POST['id'])) {
 			$rowselect[3]=str_replace($search,'',$rowselect[3]);
 			$formulaire->ajout_select (1,"aspect",$tab,false,$rowselect[3],SELECASPECT,ASPECT."<br/>",false,"");
 			print"<br/><br/>";
-      
+
 			$sql="SELECT * FROM precaution ORDER BY precaution.pre_precaution ASC";
 			//les résultats sont retournées dans la variable $result
 			$result4=$dbh->query($sql);
@@ -441,14 +441,14 @@ if (!empty($_POST['id'])) {
 			$sql="SELECT Bingo.InchI('".$_POST["mol"]."','')";
 			$resultinchi=$dbh->query($sql);
 			$rowinchi=$resultinchi->fetch(PDO::FETCH_NUM);
-			
+
 			$sql="SELECT bingo.InChIKey ('".$rowinchi[0]."')";
 			$resultinchikey=$dbh->query($sql);
 			$rowinchikey=$resultinchikey->fetch(PDO::FETCH_NUM);
 			$tabpre=testprecaution ($rowinchikey[0],$row2[1]);
 			$formulaire->ajout_select (3,"precaution",$tab1,true,$tabpre,"",PRECAUTION."<br/>",false,"");
 			print"<br/><br/>";
-      
+
 			//recherche des informations sur le champ pro_ref_cahier_labo
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_ref_cahier_labo'";
 			//les résultats sont retournées dans la variable $result
@@ -456,7 +456,7 @@ if (!empty($_POST['id'])) {
 			//Les résultats son mis sous forme de tableau
 			$rop=$result3->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_text (intval($rop[0]/1.5), $rowselect[5], $rop[0], "ref", REFERENCECAHIER."<br/>","","");
-    
+
 			print"</td>\n<td>";
 			//recherche des informations sur la table solvant
 			$sql="SELECT * FROM solvant ORDER BY solvant.sol_solvant ASC";
@@ -475,7 +475,7 @@ if (!empty($_POST['id'])) {
 				$isolvant++;
 			}
 			$formulaire->ajout_checkbox ("solvant",$tab2,$tabsolvant,SOLVANTS."<br/>",false);
-    
+
 			print"</td>\n</tr>\n<tr valign=\"top\">\n<td>";
 			$formulaire->ajout_textarea ("nomiupac",36,$rowselect[1],12,true,NOM."<br/>");
 
@@ -515,7 +515,7 @@ if (!empty($_POST['id'])) {
 						}
 				}
 			}
-    
+
 			//*********Section analyse du formulaire***********
 			print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><hr><h3>".ANALYSE."</h3><br/></td>\n</tr>\n<tr valign=\"top\">\n<td>";
 			//recherche des informations sur le champ pro_analyse_elem_trouve
@@ -541,7 +541,7 @@ if (!empty($_POST['id'])) {
 			//les résultats sont retournées dans la variable $result
 			$result6=$dbh->query($sql);
 			//Les résultats son mis sous forme de tableau
-			$rop=$result6->fetch(PDO::FETCH_NUM);	
+			$rop=$result6->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_text ($rop[0]+1,$rowselect[10],$rop[0],"pebulition",PEBULITION."<br/>",DEG,"");
 			print"<br/>";
 			//recherche des informations sur le champ pro_pression_pb
@@ -556,16 +556,16 @@ if (!empty($_POST['id'])) {
 				</table><br/>";
 			print"<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
 			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";	
+				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
 			if($rowselect[34]==0) $rowselect[34]="";
 			$formulaire->ajout_text (3, $rowselect[34], 2, "purete", PURETE,"","");
 			echo POURCENT;
 			print"<br/>\n<br/>\n";
-			$formulaire->ajout_text (21, $rowselect[35], 20, "methopurete", METHOPURETE,"","");	
+			$formulaire->ajout_text (21, $rowselect[35], 20, "methopurete", METHOPURETE,"","");
 			print"</td>
 			  </tr>
 			</table>";
-			
+
 			$tabsup[1]=RETIRE;
 			//##############  UV  #####################
 			print"</td>\n<td colspan=\"2\">\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
@@ -600,7 +600,7 @@ if (!empty($_POST['id'])) {
 			$formulaire->ajout_textarea ("donneessm",40,$rowsm[0],3,true,SM1."<br/>");
 			print"<br/>";
 			//recherche des informations sur le champ pro_sm_type
-			$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE  constraint_NAME='contrainte_typesm';";
+			$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE constraint_NAME='contrainte_typesm';";
 			//les résultats sont retournées dans la variable $result
 			$result13=$dbh->query($sql);
 			//Les résultats son mis sous forme de tableau
@@ -701,7 +701,7 @@ if (!empty($_POST['id'])) {
 			$formulaire->ajout_text ($rop[0]+2,$rowselect[14],$rop[0],"alphaconc",ALPHACONC."<br/>",MOL,"");
 			print"<br/>";
 			$formulaire->ajout_select (1,"alphasolvant",$tab2,false,$rowselect[15],ALPHASELECSOLV,ALPHASOLVANT."<br/>",false,"");
-    
+
 			print"</td>
 				  </tr>
 				</table>";
@@ -747,7 +747,7 @@ if (!empty($_POST['id'])) {
 			ON P.pro_id_rmnc=C.rmnc_id_rmnc
 			WHERE pro_id_produit='".$_POST['id']."'";
 			$resultrmnc =$dbh->query($sqlrmnc);
-			$rowrmnc =$resultrmnc->fetch(PDO::FETCH_NUM);		 
+			$rowrmnc =$resultrmnc->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_textarea ("donneesrmnc",52,$rowrmnc[0],12,true,DONNERRMN.RMNC.DEUXPOINTS."<br/>");
 			print"<br/>";
 			$formulaire->ajout_file (30, "filermnc",true,CHARGERRMN.RMNC.DEUXPOINTS."<br/>","");
@@ -759,7 +759,7 @@ if (!empty($_POST['id'])) {
 				  </tr>
 				</table>";
 			//********fin de la section analyse********
-    
+
 			//*********Section Bibliographie du formulaire***********
 			print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><hr>
 				  <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
@@ -794,12 +794,12 @@ if (!empty($_POST['id'])) {
 			$rop=$result20->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_text ($rop[0]+1,$rowselect[20],$rop[0],"cas",CAS."<br/>","","");
 			print"</td>\n<td width=\"50%\">";
-      
+
 			$formulaire->ajout_textarea ("observation",55,$rowselect[27],12,true,OBSERVATION.DEUXPOINTS."<br/>");
-    
+
 			//********fin de la section Bibliographie********
-   
-    
+
+
 			//ajout sous forme de champs caché des informations du formulaire précédant
 			$formulaire->ajout_cache ($_POST['type'],"type");
 			$formulaire->ajout_cache (rawurldecode($_POST['config']),"config");
@@ -831,7 +831,7 @@ if (!empty($_POST['id'])) {
 			$formulaire->ajout_cache ($_POST['etapmol'],"etapmol");
 			$formulaire->ajout_cache ($_POST['unitmass'],"unitmass");
 			//fin de l'ajout des champs cachés
-		
+
 			print"</td>\n</tr>\n</table>\n</table>\n<p align=\"right\">";
 			$formulaire->ajout_button (SUBMIT,"","button","onClick=\"GetSmiles(form)\"");
 			print"</p>";
@@ -850,7 +850,7 @@ if (!empty($_POST['id'])) {
 					CKEDITOR.inline( 'donneessm' );
 					CKEDITOR.inline( 'donneeshrms' );
 					CKEDITOR.inline( 'hsm' );
-					CKEDITOR.inline( 'sm' );					
+					CKEDITOR.inline( 'sm' );
 				</script>";
 		}
 		else {

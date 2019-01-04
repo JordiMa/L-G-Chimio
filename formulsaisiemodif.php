@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -64,19 +64,19 @@ if (!empty($_POST['id'])) {
 				if(document.saisie.masse.value==\"\"){alert(\"".MASSABS."\");}
 				else {
 					if (document.saisie.etapmol.value==\"\"){alert(\"".ETAPGABS."\");}
-					else {	       
+					else {
 						if (document.JME.smiles()=='') {alert(\"".DESSINSTRUC."\");}
 						else {
 							document.saisie.mol.value=document.JME.molFile();
 							theForm.submit();
-						}  
+						}
 					}
 				}
-			}	
+			}
           </script>\n";
 
 		require 'script/connectionb.php';
-		$sql="SELECT str_mol,pro_masse,typ_type,pro_id_type,pro_configuration,pro_origine_substance,pro_etape_mol,pro_unite_masse from produit,structure,type where pro_id_produit='".$_POST['id']."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_type=type.typ_id_type";
+		$sql="SELECT str_mol,pro_masse,typ_type,pro_id_type,pro_configuration,pro_origine_substance,pro_etape_mol,pro_unite_masse, pro_controle_structure,pro_controle_purete, pro_date_controle_purete from produit,structure,type where pro_id_produit='".$_POST['id']."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_type=type.typ_id_type";
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
 		$formulaire1=new formulaire ("saisie","saisiemodif2.php","POST",true);
@@ -88,7 +88,7 @@ if (!empty($_POST['id'])) {
 		$jsme->imprime();
 		print"<td>";
 		print OBLIGATOIRE."<br/><br/>";
-		
+
 		//recherche des informations sur le champ pro_origine_substance
 		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE  constraint_NAME='contrainte_originesubstance';";
 		//les résultats sont retournées dans la variable $result
@@ -101,7 +101,7 @@ if (!empty($_POST['id'])) {
 		$row2[5]=str_replace($search,'',$row2[5]);
 		$formulaire1->ajout_select (1,"origimol",$tab4,false,$row2[5],SELECTORIGINEMOL,ORIGINEMOL,false,"");
 		print"<br/>\n<br/>\n";
-		
+
 		//recherche des informations sur le champ pro_etape_mol
 		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE  constraint_NAME='contrainte_etapemol';";
 		//les résultats sont retournées dans la variable $result
@@ -132,13 +132,16 @@ if (!empty($_POST['id'])) {
 				$tab[$row3[0]]=constant($row3[1]);
 			}
 			$formulaire1->ajout_select (1,"type",$tab,false,$row2[3],"",TYPE,false,"");
+			
+			// TODO: CASE verif structure, verif pureté
+			//$formulaire1->ajout_checkbox ();
 		}
 		else {
 			print"<strong>".TYPE."</strong> ".constant ($row2[2]);
 			$formulaire1->ajout_cache ($row2[3],"type");
 		}
 		print"<br/>\n<br/>\n";
-		
+
 		$formulaire1->ajout_cache ("","mol");
 		// $formulaire1->ajout_cache ("","inchi");
 		// $formulaire1->ajout_cache ("","inchimd5");

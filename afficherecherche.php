@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -47,63 +47,63 @@ if (!empty($id_sql)) {
 	$result1 =$dbh->query($sql);
 	$row1 =$result1->fetch(PDO::FETCH_NUM);
 	if ($row1[2]==1 or $row1[2]==3 or ($row1[2]==2 and ($row[1]==$row1[1])) or ($row1[2]==2 and $row[0]="{RESPONSABLE}" and $row[2]==$row1[0])) {
-		$sql="SELECT str_nom, str_mol, pro_configuration, str_formule_brute, str_masse_molaire, str_analyse_elem, pro_purification, pro_masse, pro_aspect, cou_couleur, pro_date_entree, pro_ref_cahier_labo, pro_modop, pro_observation, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, typ_type, pro_doi, pro_cas, pro_hal, pro_ref_contrat, pro_date_contrat, pro_num_brevet, pro_numero, pro_num_constant,chi_nom, chi_prenom,str_logp,str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount, pro_origine_substance,pro_num_cn,pro_tare_pilulier,pro_etape_mol,pro_qrcode FROM produit,structure,couleur,type,chimiste WHERE pro_id_produit='".$id_sql."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_couleur=couleur.cou_id_couleur and produit.pro_id_type=type.typ_id_type and produit.pro_id_chimiste=chimiste.chi_id_chimiste";
+		$sql="SELECT str_nom, str_mol, pro_configuration, str_formule_brute, str_masse_molaire, str_analyse_elem, pro_purification, pro_masse, pro_aspect, cou_couleur, pro_date_entree, pro_ref_cahier_labo, pro_modop, pro_observation, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, typ_type, pro_doi, pro_cas, pro_hal, pro_ref_contrat, pro_date_contrat, pro_num_brevet, pro_numero, pro_num_constant,chi_nom, chi_prenom,str_logp,str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount, pro_origine_substance,pro_num_cn,pro_tare_pilulier,pro_etape_mol,pro_qrcode, pro_controle_purete, pro_controle_structure, pro_date_controle_purete FROM produit,structure,couleur,type,chimiste WHERE pro_id_produit='".$id_sql."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_couleur=couleur.cou_id_couleur and produit.pro_id_type=type.typ_id_type and produit.pro_id_chimiste=chimiste.chi_id_chimiste";
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
-		
+
 		//Supprime {et} du résultat de la requète
 		$search= array('{','}');
 		$row2[39]=str_replace($search,'',$row2[39]);
 		$row2[8]=str_replace($search,'',$row2[8]);
 		$row2[6]=str_replace($search,'',$row2[6]);
 		$row2[36]=str_replace($search,'',$row2[36]);
-		
+
 		//remplace dans le nom de la structure alpha, beta... par l'équivalent en symbole
 		$search1= array('alpha','beta','bêta','gamma','delta','epsilon','lambda');
 		$remplace1= array('&alpha;','&beta;','&beta;','&gamma;','&delta;','&epsilon;','&lambda;');
 		$row2[0]=str_replace($search1,$remplace1,$row2[0]);
-			
+
 		//preparation des variables
 		if (isset($_POST['mol'])) $mol=$_POST['mol'];
 		elseif(isset($_GET['mol'])) $mol=Base64_decode($_GET['mol']);
 		else $mol="";
-		
+
 		if (isset($_POST['formbrute'])) $formbrute=rawurlencode($_POST['formbrute']);
 		elseif(isset($_GET['formbrute'])) $formbrute=$_GET['formbrute'];
 		else $formbrute="";
-		
+
 		if (isset($_POST['massemol'])) $massemol=rawurlencode($_POST['massemol']);
 		elseif(isset($_GET['massemol'])) $massemol=$_GET['massemol'];
 		else $massemol="";
-		
+
 		if (isset($_POST['supinf'])) $supinf=$_POST['supinf'];
 		elseif(isset($_GET['supinf'])) $supinf=$_GET['supinf'];
 		else $supinf="";
-		
+
 		if (isset($_POST['massexact'])) $massexact=rawurlencode($_POST['massexact']);
 		elseif(isset($_GET['massexact'])) $massexact=$_GET['massexact'];
 		else $massexact="";
-		
+
 		if (isset($_POST['forbrutexact'])) $forbrutexact=rawurlencode($_POST['forbrutexact']);
 		elseif(isset($_GET['forbrutexact'])) $forbrutexact=$_GET['forbrutexact'];
 		else $forbrutexact="";
-		
+
 		if (isset($_POST['numero'])) $numero=rawurlencode($_POST['numero']);
 		elseif(isset($_GET['numero'])) $numero=$_GET['numero'];
 		else $numero="";
-		
+
 		if (isset($_POST['page'])) $page=rawurlencode($_POST['page']);
 		elseif(isset($_GET['page'])) $page=$_GET['page'];
 		else $page="";
-		
+
 		if (isset($_POST['nbrs'])) $nbrs=rawurlencode($_POST['nbrs']);
 		elseif(isset($_GET['nbrs'])) $nbrs=$_GET['nbrs'];
 		else $nbrs="";
-		
+
 		if (isset($_POST['nbpage'])) $nbpage=rawurlencode($_POST['nbpage']);
 		elseif(isset($_GET['nbpage'])) $nbpage=$_GET['nbpage'];
 		else $nbpage="";
-		
+
 		if (isset($_POST['recherche'])) $recherche=rawurlencode($_POST['recherche']);
 		elseif(isset($_GET['recherche'])) $recherche=$_GET['recherche'];
 		else $recherche="";
@@ -138,7 +138,7 @@ if (!empty($id_sql)) {
 			</div>
 			</td></tr></table>";
 
-		
+
 		$nommol="";
 		if (preg_match('/\^{/',$row2[0])) {
 			$tabnom=preg_split("/\^{/",$row2[0]);
@@ -151,9 +151,17 @@ if (!empty($id_sql)) {
 				$nommol.=$tabnom[$i];
 			}
 		}
-		else $nommol=$row2[0]; 	
-		
-		
+		else $nommol=$row2[0];
+
+		echo "<div style='text-align: center;'>";
+		if ($row2[42]) echo "<strong style='color: blue;'>Structure contrôlée : <input type='checkbox' disabled checked></strong>";
+		else  echo "<strong style='color: blue;'>Structure contrôlée : <input type='checkbox' disabled></strong>";
+		echo " | ";
+		if ($row2[41]) echo "<strong style='color: blue;'>Pureté contrôlée : <input type='checkbox' disabled checked></strong>";
+		else  echo "<strong style='color: blue;'>Pureté contrôlée : <input type='checkbox' disabled></strong>";
+		echo " | <strong style='color: blue;'>Date contrôle pureté : </strong>&nbsp;".$row2[43];
+		echo "</div>";
+
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 			<tr>
 			<td colspan=\"3\"><strong>".NOM."</strong> ".$nommol."</td>
@@ -185,7 +193,7 @@ if (!empty($id_sql)) {
 				}
 			}
 			else print"<img src=\"image.php?codeB=".$row2[40]."\">";
-		}		
+		}
 		print"		</td>
 			</tr>
 			<tr>
@@ -228,7 +236,7 @@ if (!empty($id_sql)) {
 				<td><strong>".FORMULEBRUTE."</strong>&nbsp;".$row2[3]."</td>
 			  </tr>
 			  <tr>
-				<td><strong>".NOM."</strong>&nbsp;".$row2[28]." ".$row2[27]."</td>
+					<td><strong>".NOM."</strong>&nbsp;".$row2[28]." ".$row2[27]."</td>
 			  </tr>
 			  <tr>
 				<td colspan=\"2\"><strong>".CONFIG."</strong>&nbsp;".$row2[2]."</td>
@@ -251,7 +259,7 @@ if (!empty($id_sql)) {
 			  <td><strong>".NUMBREVET."</strong>&nbsp;".$row2[24]."</td>;
 			  </tr>";
 		$row2[13]=str_replace("\r","<br/>",$row2[13]); //remplace les sauts de ligne par <br/>
-	  
+
 		//cacul des règles de Lipinski
 		$lipinsky=0;
 		if($row2[3]<=500) $lipinsky++; //masse molaire <=500
@@ -260,10 +268,10 @@ if (!empty($id_sql)) {
 		if($row2[30]<10) $lipinsky++; //nbrs d'accepteurs <10
 		if($lipinsky>=3) $lipinsky=OUI;
 		else $lipinsky=NON;
-	  
+
 		//définit si le logp est dans la plage de -4 et 5 sinon affiche ND
-		if ($row2[29]>5 or $row2[29]<-4) $row2[29]=ND;		
-	  
+		if ($row2[29]>5 or $row2[29]<-4) $row2[29]=ND;
+
 		print"<tr>
 				<td><strong>".ETAPESYNT."</strong>&nbsp;".constant ($row2[39])."</td>
 			</tr>

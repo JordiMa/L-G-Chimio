@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -59,12 +59,12 @@ if (!empty($id_sql)) {
 	$result1 =$dbh->query($sql);
 	$row1 =$result1->fetch(PDO::FETCH_NUM);
 	if (($row[1]==$row1[1]) or ($row[0]=="{RESPONSABLE}" and $row[2]==$row1[0]) or ($row[0]=="{CHEF}" and in_array($row1[0],$tab5)) or $row[0]=="{ADMINISTRATEUR}") {
-		$sql="SELECT str_nom, str_mol, str_formule_brute, str_masse_molaire, str_analyse_elem, pro_purification, pro_masse, pro_aspect, cou_couleur, pro_date_entree, pro_ref_cahier_labo, pro_modop, pro_observation, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, typ_type, pro_doi, pro_cas, pro_hal, pro_ref_contrat, pro_date_contrat, pro_num_brevet, pro_configuration, pro_numero, pro_num_constant,chi_nom, chi_prenom, str_logp,str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount, pro_origine_substance, pro_num_cn,pro_tare_pilulier,pro_etape_mol,pro_qrcode,pro_unite_masse
-		FROM produit,structure,couleur,type,chimiste 
+		$sql="SELECT str_nom, str_mol, str_formule_brute, str_masse_molaire, str_analyse_elem, pro_purification, pro_masse, pro_aspect, cou_couleur, pro_date_entree, pro_ref_cahier_labo, pro_modop, pro_observation, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, typ_type, pro_doi, pro_cas, pro_hal, pro_ref_contrat, pro_date_contrat, pro_num_brevet, pro_configuration, pro_numero, pro_num_constant,chi_nom, chi_prenom, str_logp,str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount, pro_origine_substance, pro_num_cn,pro_tare_pilulier,pro_etape_mol,pro_qrcode,pro_unite_masse, pro_controle_purete, pro_controle_structure, pro_date_controle_purete
+		FROM produit,structure,couleur,type,chimiste
 		WHERE pro_id_produit='".$id_sql."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_couleur=couleur.cou_id_couleur and produit.pro_id_type=type.typ_id_type and produit.pro_id_chimiste=chimiste.chi_id_chimiste";
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
-		
+
 		//Supprime {et} du résultat de la requète
 		$search= array('{','}');
 		$row2[39]=str_replace($search,'',$row2[39]);
@@ -72,12 +72,12 @@ if (!empty($id_sql)) {
 		$row2[5]=str_replace($search,'',$row2[5]);
 		$row2[41]=str_replace($search,'',$row2[41]);
 		$row2[36]=str_replace($search,'',$row2[36]);
-		
+
 		$search1= array('alpha','beta','bêta','gamma','delta','epsilon','lambda');
 		$remplace1= array('&alpha;','&beta;','&beta;','&gamma;','&delta;','&epsilon;','&lambda;');
 		$row2[0]=str_replace($search1,$remplace1,$row2[0]);
-		
-    
+
+
 		//preparation des variables
 		if (isset($_POST['type'])) $type=rawurlencode($_POST['type']);
 		else $type=$_GET['type'];
@@ -153,7 +153,7 @@ if (!empty($id_sql)) {
 			</td></tr></table>";
 
 			//remplace dans le nom de la structure alpha, beta... par l'équivalent en symbole
-			
+
 			$nommol="";
 			if (preg_match('/\^{/',$row2[0])) {
 				$tabnom=preg_split("/\^{/",$row2[0]);
@@ -166,14 +166,24 @@ if (!empty($id_sql)) {
 					$nommol.=$tabnom[$i];
 				}
 			}
-			else $nommol=$row2[0]; 	
+			else $nommol=$row2[0];
+
+			echo "<div style='text-align: center;'>";
+			if ($row2[43]) echo "<strong style='color: blue;'>Structure contrôlée : <input type='checkbox' disabled checked></strong>";
+			else  echo "<strong style='color: blue;'>Structure contrôlée : <input type='checkbox' disabled></strong>";
+			echo " | ";
+			if ($row2[42]) echo "<strong style='color: blue;'>Pureté contrôlée : <input type='checkbox' disabled checked></strong>";
+			else  echo "<strong style='color: blue;'>Pureté contrôlée : <input type='checkbox' disabled></strong>";
+			echo " | <strong style='color: blue;'>Date contrôle pureté : </strong>&nbsp;".$row2[44];
+			echo "</div>";
+
 			print"<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 				  <tr>
-					<td colspan=\"3\"><strong>".NOM."</strong> ".$nommol."</td>		
+					<td colspan=\"3\"><strong>".NOM."</strong> ".$nommol."</td>
 				  </tr>
 				  <tr>
 					<td rowspan=\"12\" valign=\"top\">";
-			echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";		
+			echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";
 			$jme=new visualisationmoleculejme (250,250,$row2[1]);
 			$jme->imprime();
 			print"</td>
@@ -208,13 +218,13 @@ if (!empty($id_sql)) {
 				<td><strong>".DATE."</strong>&nbsp;".$row2[9]."</td>
 			  </tr>
 			  <tr>
-				<td>
-				<table width=\"300\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
+					<td>
+						<table width=\"300\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 			  <tr>
 			  <td width=\"150\"><strong>".COULEUR."</strong></td>";
 			if ($row2[8]=="INCOL") print"<td width=\"150\">".constant($row2[8])."</td>";
 			else print"<td bgcolor=\"#".$row2[8]."\" width=\"150\" class=bord>&nbsp;</td>";
-  
+
 			$sql="SELECT distinct(pla_identifiant_local) FROM position,plaque WHERE pos_id_produit='$id_sql' and pla_id_plaque_mere='0' and position.pos_id_plaque=plaque.pla_id_plaque";
 			$result5=$dbh->query($sql);
 			$numresult5=$result5->rowCount();
@@ -228,7 +238,7 @@ if (!empty($id_sql)) {
 				}
 			}
 			else $plaq=NON;
-	
+
 			print"</tr></table></td>
 				  </tr>
 				  <tr>
@@ -270,7 +280,7 @@ if (!empty($id_sql)) {
 										  <td><strong>".NUMBREVET."</strong>&nbsp;".$row2[23]."</td>
 										  </tr>";
 			$row2[12]=str_replace("\r","<br/>",$row2[12]); //remplace les sauts de ligne par <br/>
-  
+
 			//cacul des règles de Lipinski
 			$lipinsky=0;
 			if($row2[3]<=500) $lipinsky++; //masse molaire <=500
@@ -281,7 +291,7 @@ if (!empty($id_sql)) {
 			else $lipinsky=NON;
 			//définit si le logp est dans la plage de -4 et 5 sinon affiche ND
 			if ($row2[29]>5 or $row2[29]<-4) $row2[29]=ND;
-			
+
 			print" <tr>
 					<td><strong>".ETAPESYNT."</strong>&nbsp;".constant ($row2[39])."</td>
 				  </tr>

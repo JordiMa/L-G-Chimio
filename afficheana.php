@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -58,21 +58,21 @@ if (!empty($_GET['id'])) {
 	$result1 =$dbh->query($sql);
 	$row1 =$result1->fetch(PDO::FETCH_NUM);
 	if (($row[1]==$row1[1]) or ($row[0]=="{RESPONSABLE}" and $row[2]==$row1[0]) or ($row[0]=="{CHEF}" and in_array($row1[0],$tab5)) or $row[0]=="{ADMINISTRATEUR}") {
-		$sqluv="SELECT uv_text, uv_nom_fichier FROM produit P
+		$sqluv="SELECT uv_text, uv_nom_fichier, uv_date FROM produit P
 		INNER JOIN uv U
 		ON P.pro_id_uv=U.uv_id_uv
 		WHERE pro_id_produit='".$_GET['id']."'";
 		$resultuv =$dbh->query($sqluv);
 		$rowuv =$resultuv->fetch(PDO::FETCH_NUM);
-		
-		$sqlir="SELECT ir_text, ir_nom_fichier FROM produit P
+
+		$sqlir="SELECT ir_text, ir_nom_fichier, ir_date FROM produit P
 		INNER JOIN ir I
 		ON P.pro_id_ir=I.ir_id_ir
 		WHERE pro_id_produit='".$_GET['id']."'";
 		$resultir =$dbh->query($sqlir);
 		$rowir =$resultir->fetch(PDO::FETCH_NUM);
-		
-		$sqlsm="SELECT sm_text, sm_type, sm_nom_fichier FROM produit P
+
+		$sqlsm="SELECT sm_text, sm_type, sm_nom_fichier, sm_date FROM produit P
 		INNER JOIN sm S
 		ON P.pro_id_sm=S.sm_id_sm
 		WHERE pro_id_produit='".$_GET['id']."'";
@@ -80,8 +80,8 @@ if (!empty($_GET['id'])) {
 		$rowsm =$resultsm->fetch(PDO::FETCH_NUM);
 		$search= array('{','}');
 		$rowsm[1]=str_replace($search,'',$rowsm[1]);
-		
-		$sqlhrms="SELECT hrms_text, hrms_type, hrms_nom_fichier FROM produit P
+
+		$sqlhrms="SELECT hrms_text, hrms_type, hrms_nom_fichier, hrms_date FROM produit P
 		INNER JOIN hrms H
 		ON P.pro_id_hrms=H.hrms_id_hrms
 		WHERE pro_id_produit='".$_GET['id']."'";
@@ -89,27 +89,27 @@ if (!empty($_GET['id'])) {
 		$rowhrms =$resulthrms->fetch(PDO::FETCH_NUM);
 		$search= array('{','}');
 		$rowhrms[1]=str_replace($search,'',$rowhrms[1]);
-		
-		$sqlrmnh="SELECT rmnh_text, rmnh_nom_fichier FROM produit P
+
+		$sqlrmnh="SELECT rmnh_text, rmnh_nom_fichier, rmnh_date FROM produit P
 		INNER JOIN rmnh R
 		ON P.pro_id_rmnh=R.rmnh_id_rmnh
 		WHERE pro_id_produit='".$_GET['id']."'";
 		$resultrmnh =$dbh->query($sqlrmnh);
 		$rowrmnh =$resultrmnh->fetch(PDO::FETCH_NUM);
-		
-		$sqlrmnc="SELECT rmnc_text, rmnc_nom_fichier FROM produit P
+
+		$sqlrmnc="SELECT rmnc_text, rmnc_nom_fichier, rmnc_date FROM produit P
 		INNER JOIN rmnc C
 		ON P.pro_id_rmnc=C.rmnc_id_rmnc
 		WHERE pro_id_produit='".$_GET['id']."'";
 		$resultrmnc =$dbh->query($sqlrmnc);
 		$rowrmnc =$resultrmnc->fetch(PDO::FETCH_NUM);
-		
+
 		$sql="SELECT pro_alpha, pro_alpha_temperature, pro_alpha_concentration, pro_alpha_solvant, pro_rf, pro_rf_solvant,pro_purete,pro_methode_purete
 		FROM produit P
 		WHERE pro_id_produit='".$_GET['id']."'";
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
-		
+
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td valign=\"top\">
 				<table width=\"328\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 				<tr>
@@ -153,28 +153,34 @@ if (!empty($_GET['id'])) {
 		if (!empty($rowrmnh[0])) $rowrmnh[0]=str_replace("\r","<br/>",$rowrmnh[0]);
 		if (!empty($rowrmnc[0])) $rowrmnc[0]=str_replace("\r","<br/>",$rowrmnc[0]);
 		if (!empty($rowir[0])) $rowir[0]=str_replace("\r","<br/>",$rowir[0]);
+		if (!isset($rowuv[2])) $rowsm[3] = "";
+		if (!isset($rowsm[3])) $rowsm[3] = "";
+		if (!isset($rowhrms[3])) $rowsm[3] = "";
+		if (!isset($rowrmnc[2])) $rowsm[3] = "";
+		if (!isset($rowir[2])) $rowsm[3] = "";
+		if (!isset($rowrmnh[2])) $rowsm[3] = "";
 		print"<tr><td><div style=\"width:500px; height:100px; overflow:auto; border:solid 1px black;\"><strong>".PURETE."</strong>&nbsp;".$row2[6]."&nbsp;".POURCENT."<br/><br/><strong>".METHOPURETE."</strong>&nbsp;".$row2[7]."</div></td><td>&nbsp;</td></tr>";
-		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".UV."</strong><br/>".$rowuv[0]."</div></td><td>";
+		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".UV."</strong><br/>".$rowuv[2]."<br/><br/>".$rowuv[0]."</div></td><td>";
 		if (!empty($rowuv[1])) print "<a href=\"telecharge.php?id=".$_GET['id']."&rank=uv\" target=\"_blank\">".FICHIERTEL."</a>";
 		else print"&nbsp;";
 		print"</td></tr>";
-		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".SM."</strong><br/>".$rowsm[0]."<br/><strong>".SMTYPE."</strong>&nbsp;".$rowsm[1]."</div></td><td>";
+		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".SM."</strong><br/>".$rowsm[3]."<br/><br/>".$rowsm[0]."<br/><strong>".SMTYPE."</strong>&nbsp;".$rowsm[1]."</div></td><td>";
 		if (!empty($rowsm[2])) print "<a href=\"telecharge.php?id=".$_GET['id']."&rank=sm\" target=\"_blank\">".FICHIERTEL."</a>";
 		else print"&nbsp;";
 		print"</td></tr>";
-		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".HRMS."</strong><br/>".$rowhrms[0]."<br/><strong>".SMTYPE."</strong>&nbsp;".$rowhrms[1]."</div></td><td>";
+		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".HRMS."</strong><br/>".$rowhrms[3]."<br/><br/>".$rowhrms[0]."<br/><strong>".SMTYPE."</strong>&nbsp;".$rowhrms[1]."</div></td><td>";
 		if (!empty($rowhrms[2])) print "<a href=\"telecharge.php?id=".$_GET['id']."&rank=hrms\" target=\"_blank\">".FICHIERTEL."</a>";
 		else print"&nbsp;";
 		print"</td></tr>";
-		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".RMNH."</strong><br/>".$rowrmnh[0]."</div></td><td>";
+		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".RMNH."</strong><br/>".$rowrmnh[2]."<br/><br/>".$rowrmnh[0]."</div></td><td>";
 		if (!empty($rowrmnh[1])) print "<a href=\"telecharge.php?id=".$_GET['id']."&rank=rmnh\" target=\"_blank\">".FICHIERTEL."</a>";
 		else print"&nbsp;";
 		print"</td></tr>";
-		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".RMNC."</strong><br/>".$rowrmnc[0]."</div></td><td>";
+		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".RMNC."</strong><br/>".$rowrmnc[2]."<br/><br/>".$rowrmnc[0]."</div></td><td>";
 		if (!empty($rowrmnc[1])) print "<a href=\"telecharge.php?id=".$_GET['id']."&rank=rmnc\" target=\"_blank\">".FICHIERTEL."</a>";
 		else print"&nbsp;";
 		print"</td></tr>";
-		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".IR."</strong><br/>".$rowir[0]."</div></td><td>";
+		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".IR."</strong><br/>".$rowir[2]."<br/><br/>".$rowir[0]."</div></td><td>";
 		if (!empty($rowir[1])) print "<a href=\"telecharge.php?id=".$_GET['id']."&rank=ir\" target=\"_blank\">".FICHIERTEL."</a>";
 		else print"&nbsp;";
 		print"</td></tr>";

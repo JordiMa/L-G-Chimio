@@ -86,25 +86,52 @@ if($result1==false) {
 $id_structure = $result1->fetch(PDO::FETCH_NUM);
 
 if (empty($id_structure[0])) {
-    //requête d'insertion des données dans la table "structure" pour une nouvelle structure
-    $sql="INSERT INTO structure (str_nom, str_mol, str_inchi, str_formule_brute, str_masse_molaire, str_analyse_elem, str_date, str_inchi_md5, str_logp, str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount) VALUES ('".AddSlashes($_POST['nomiupac'])."','".rawurldecode($_POST['mol'])."','".rawurldecode($_POST['inchi'])."','".$_POST['formulebrute']."','".$_POST['massemol']."', '".$_POST['composition']."', '".$date."', '".rawurldecode($_POST['inchikey'])."', '".$_POST['logp']."', '".$_POST['acceptorcount']."', '".$_POST['rotatablebondcount']."', '".$_POST['aromaticatomcount']."', '".$_POST['donorcount']."', '".$_POST['asymmetricatomcount']."', '".$_POST['aromaticbondcount']."')";
-    $insertion=$dbh->exec($sql);
-    if($insertion==false) print_r ($dbh->errorInfo());
-    $lastId = $dbh->lastInsertId('structure_str_id_structure_seq');
-    //entrée des précautions éventuelles
-    if (!empty($_POST['precaution'])) {
-		foreach($_POST['precaution'] as $elem) {
-			$sql="INSERT INTO liste_precaution (lis_id_precaution,lis_id_structure) VALUES ('$elem','$lastId')";
-			$insertion=$dbh->exec($sql);
-			$error=$dbh->errorInfo();
-			if($insertion==false) {
-				$erreur=1;
-				echo "<p align=\"center\" class=\"erreur\">";
-				print_r ($dbh->errorInfo());
-				echo "</p>";
-		}
-		}
+  //requête d'insertion des données dans la table "structure" pour une nouvelle structure
+  try {
+    $stmt = $dbh->prepare("INSERT INTO structure (str_nom, str_mol, str_inchi, str_formule_brute, str_masse_molaire, str_analyse_elem, str_date, str_inchi_md5, str_logp, str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount) VALUES (:nomiupac, :mol, :inchi, :formulebrute, :massemol, :composition, :p_date, :inchikey, :logp, :acceptorcount, :rotatablebondcount, :aromaticatomcount, :donorcount, :asymmetricatomcount, :aromaticbondcount)");
+
+    $stmt->bindValue(':nomiupac',AddSlashes($_POST['nomiupac']));
+    $stmt->bindValue(':mol',rawurldecode($_POST['mol']));
+    $stmt->bindValue(':inchi',rawurldecode($_POST['inchi']));
+    $stmt->bindValue(':formulebrute',$_POST['formulebrute']);
+    $stmt->bindValue(':massemol',$_POST['massemol']);
+    $stmt->bindValue(':composition',$_POST['composition']);
+    $stmt->bindValue(':p_date',$date);
+    $stmt->bindValue(':inchikey',rawurldecode($_POST['inchikey']));
+    $stmt->bindValue(':logp',$_POST['logp']);
+    $stmt->bindValue(':acceptorcount',$_POST['acceptorcount']);
+    $stmt->bindValue(':rotatablebondcount',$_POST['rotatablebondcount']);
+    $stmt->bindValue(':aromaticatomcount',$_POST['aromaticatomcount']);
+    $stmt->bindValue(':donorcount',$_POST['donorcount']);
+    $stmt->bindValue(':asymmetricatomcount',$_POST['asymmetricatomcount']);
+    $stmt->bindValue(':aromaticbondcount',$_POST['aromaticbondcount']);
+
+    $stmt->execute();
     }
+    catch(PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+  /* Remplacer par requete ci dessus
+  $sql="INSERT INTO structure (str_nom, str_mol, str_inchi, str_formule_brute, str_masse_molaire, str_analyse_elem, str_date, str_inchi_md5, str_logp, str_acceptorcount, str_rotatablebondcount, str_aromaticatomcount, str_donorcount, str_asymmetricatomcount, str_aromaticbondcount) VALUES ('".AddSlashes($_POST['nomiupac'])."','".rawurldecode($_POST['mol'])."','".rawurldecode($_POST['inchi'])."','".$_POST['formulebrute']."','".$_POST['massemol']."', '".$_POST['composition']."', '".$date."', '".rawurldecode($_POST['inchikey'])."', '".$_POST['logp']."', '".$_POST['acceptorcount']."', '".$_POST['rotatablebondcount']."', '".$_POST['aromaticatomcount']."', '".$_POST['donorcount']."', '".$_POST['asymmetricatomcount']."', '".$_POST['aromaticbondcount']."')";
+  $insertion=$dbh->exec($sql);
+  if($insertion==false) print_r ($dbh->errorInfo());
+  */
+
+  $lastId = $dbh->lastInsertId('structure_str_id_structure_seq');
+  //entrée des précautions éventuelles
+  if (!empty($_POST['precaution'])) {
+  	foreach($_POST['precaution'] as $elem) {
+  		$sql="INSERT INTO liste_precaution (lis_id_precaution,lis_id_structure) VALUES ('$elem','$lastId')";
+  		$insertion=$dbh->exec($sql);
+  		$error=$dbh->errorInfo();
+  		if($insertion==false) {
+  			$erreur=1;
+  			echo "<p align=\"center\" class=\"erreur\">";
+  			print_r ($dbh->errorInfo());
+  			echo "</p>";
+      }
+  	}
+  }
 }
 else {
     $lastId=$id_structure[0];
@@ -139,7 +166,7 @@ else {
 				echo "</p>";
 			}
 		}
-    }
+  }
 }
 //traitement des données
 if (empty($_POST['alphasolvant'])) $_POST['alphasolvant']='Null';
@@ -181,33 +208,33 @@ $filetype = array ("ir","uv","sm","hrms","rmnh","rmnc");
 for ($ifile=0; $ifile<count($filetype); $ifile++) {
     $fichiertmp="file".$filetype[$ifile];
     if (!empty($_FILES[$fichiertmp]['tmp_name']) and !$_FILES[$fichiertmp]['error']) {
-		$extension_fichier=preg_split("/\./",$_FILES[$fichiertmp]['name']);
-		$fichier=file_get_contents($_FILES[$fichiertmp]['tmp_name']);
-		$fichier=Base64_encode($fichier);
+  		$extension_fichier=preg_split("/\./",$_FILES[$fichiertmp]['name']);
+  		$fichier=file_get_contents($_FILES[$fichiertmp]['tmp_name']);
+  		$fichier=Base64_encode($fichier);
 
-		$fichiertype=$filetype[$ifile].'_fichier';
-		$extensiontype=$filetype[$ifile].'_nom_fichier';
-		$text=$filetype[$ifile].'_text';
-		$sequence= $filetype[$ifile]."_".$filetype[$ifile]."_id_".$filetype[$ifile]."_seq";
-		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $typesm=$filetype[$ifile].'_type';
+  		$fichiertype=$filetype[$ifile].'_fichier';
+  		$extensiontype=$filetype[$ifile].'_nom_fichier';
+  		$text=$filetype[$ifile].'_text';
+  		$sequence= $filetype[$ifile]."_".$filetype[$ifile]."_id_".$filetype[$ifile]."_seq";
+  		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $typesm=$filetype[$ifile].'_type';
 
-		if (!empty($_POST['donnees'.$filetype[$ifile]])) $_POST['donnees'.$filetype[$ifile]]=preg_replace("/\'/", "''",$_POST['donnees'.$filetype[$ifile]]);
+  		if (!empty($_POST['donnees'.$filetype[$ifile]])) $_POST['donnees'.$filetype[$ifile]]=preg_replace("/\'/", "''",$_POST['donnees'.$filetype[$ifile]]);
 
-		$sql="INSERT INTO ".$filetype[$ifile]." ($fichiertype,$extensiontype,$text";
-		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",$typesm";
-		$sql.=") VALUES ('$fichier','$extension_fichier[1]','".$_POST['donnees'.$filetype[$ifile]]."'";
-		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",'{".$_POST[$filetype[$ifile].'type']."}'";
-		$sql.=")";
-		$fichierinsert=$dbh->exec($sql);
-		if($fichierinsert==false) {
-			$erreur=1;
-			echo "<p align=\"center\" class=\"erreur\">";
-			print_r ($dbh->errorInfo());
-			echo "</p>";
-		}
-		if ($fichierinsert==1) $lastIdinsertionfichier{$filetype[$ifile]} = $dbh->lastInsertId($sequence);
+  		$sql="INSERT INTO ".$filetype[$ifile]." ($fichiertype,$extensiontype,$text";
+  		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",$typesm";
+  		$sql.=") VALUES ('$fichier','$extension_fichier[1]','".$_POST['donnees'.$filetype[$ifile]]."'";
+  		if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",'{".$_POST[$filetype[$ifile].'type']."}'";
+  		$sql.=")";
+  		$fichierinsert=$dbh->exec($sql);
+  		if($fichierinsert==false) {
+  			$erreur=1;
+  			echo "<p align=\"center\" class=\"erreur\">";
+  			print_r ($dbh->errorInfo());
+  			echo "</p>";
+      }
+		  if ($fichierinsert==1) $lastIdinsertionfichier{$filetype[$ifile]} = $dbh->lastInsertId($sequence);
     }
-	else $lastIdinsertionfichier{$filetype[$ifile]} =NULL;
+	else $lastIdinsertionfichier{$filetype[$ifile]} = NULL;
 }
 
 /*
@@ -327,20 +354,20 @@ $sql="SELECT count(sol_id_solvant) FROM solvant";
 //les résultats sont retournées dans la variable $result3
 $result3=$dbh->query($sql);
 while($countsol=$result3->fetch(PDO::FETCH_NUM)) {
-    for ($i=0; $i<$countsol[0]; $i++) {
-		if (!empty ($_POST["solvant$i"])) {
-			$sol="solvant".$i;
-			//insertion des solvants de solubilisation du produit
-			$sql="INSERT INTO solubilite (sol_id_solvant,sol_id_produit) VALUES ('".$_POST[$sol]."','$lastIdinsertion')";
+  for ($i=0; $i<$countsol[0]; $i++) {
+    if (!empty ($_POST["solvant$i"])) {
+  		$sol="solvant".$i;
+  		//insertion des solvants de solubilisation du produit
+  		$sql="INSERT INTO solubilite (sol_id_solvant,sol_id_produit) VALUES ('".$_POST[$sol]."','$lastIdinsertion')";
 			${"insert$i"}=$dbh->exec($sql);
 			if(${"insert$i"}==false)  {
 				$erreur=1;
 				echo "<p align=\"center\" class=\"erreur\">";
 				print_r ($dbh->errorInfo());
 				echo "</p>";
-		}
-        }
+	    }
     }
+  }
 }
 
  //'".AddSlashes($_POST['donneesrmnh'])."','".AddSlashes($_POST['donneesrmnc'])."','".AddSlashes($_POST['donneesir'])."','".AddSlashes($_POST['sm'])."','".AddSlashes($_POST['smtype'])."','".AddSlashes($_POST['hsm'])."','".AddSlashes($_POST['hsmtype'])."','".AddSlashes($_POST['donneesuv'])."'
