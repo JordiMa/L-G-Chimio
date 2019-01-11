@@ -146,6 +146,37 @@ if (!empty($_POST['id'])) {
 			//initialisation du formulaire
 			$formulaire=new formulaire ("saisie2","transfertmodif.php","POST",true);
 			$formulaire->affiche_formulaire();
+
+			if (isset($_POST["chx_purete"]) && $_POST["chx_purete"] == "chx_purete"){
+				print
+					"<div>
+						<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete' checked>
+						<label for='chx_purete'>Pureté contrôlée</label>
+					</div>";
+				}
+				else {
+					print
+						"<div>
+							<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete'>
+							<label for='chx_purete'>Pureté contrôlée</label>
+						</div>";
+					}
+					
+			if (isset($_POST["chx_structure"]) && $_POST["chx_structure"] == "chx_structure"){
+				print
+					"<div>
+						<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure' checked>
+						<label for='chx_tructure'>Structure contrôlée</label>
+					</div>";
+				}
+				else {
+					print
+						"<div>
+							<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure'>
+							<label for='chx_tructure'>Structure contrôlée</label>
+						</div>";
+					}
+
 			//selection des résultats de l'ID demandé dans la table produit
 			$sql="SELECT
 				  pro_id_produit,

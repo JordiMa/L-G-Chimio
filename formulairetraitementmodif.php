@@ -237,20 +237,42 @@ else {
 	if (empty ($_POST['numerique'])) $_POST['numerique']='0';
 	if (empty ($_POST['sansmasse'])) $_POST['sansmasse']='0';
 
+// supprimer pour requête préparée
+// TODO
 	$sql="UPDATE produit SET
 	pro_purification='{".$_POST['purification']."}', pro_masse='".$_POST['masse']."', pro_aspect='{".$_POST['aspect']."}', pro_id_couleur='".$_POST['couleur']."', pro_ref_cahier_labo='".preg_replace("/\'/", "''",$_POST['ref'])."', pro_modop='".preg_replace("/\'/", "''",$_POST['modop'])."',
 	pro_id_structure='$lastId', pro_analyse_elem_trouve='".preg_replace("/\'/", "''",$_POST['anaelem'])."', pro_point_fusion='".preg_replace("/\'/", "''",$_POST['pfusion'])."', pro_point_ebullition='".preg_replace("/\'/", "''",$_POST['pebulition'])."', pro_pression_pb='".preg_replace("/\'/", "''",$_POST['pressionpb'])."', pro_alpha='".preg_replace("/\'/", "''",$_POST['alpha'])."', pro_alpha_temperature='".preg_replace("/\'/", "''",$_POST['alphatemp'])."', pro_alpha_concentration='".preg_replace("/\'/", "''",$_POST['alphaconc'])."'";
 	if ($_POST['alphasolvant']!=NULL) $sql.=", pro_alpha_solvant=".preg_replace("/\'/", "''",$_POST['alphasolvant']);
 	$sql.=", pro_rf='".preg_replace("/\'/", "''",$_POST['rf'])."', pro_rf_solvant='".preg_replace("/\'/", "''",$_POST['ccmsolvant'])."', pro_doi='".preg_replace("/\'/", "''",$_POST['doi'])."',
-	pro_hal='".preg_replace("/\'/", "''",$_POST['hal'])."', pro_cas='".preg_replace("/\'/", "''",$_POST['cas'])."', pro_id_type='".preg_replace("/\'/", "''",$_POST['type'])."', pro_num_brevet='".preg_replace("/\'/", "''",$_POST['numbrevet'])."', pro_ref_contrat='".preg_replace("/\'/", "''",$_POST['contrat'])."', pro_date_contrat='".preg_replace("/\'/", "''",$_POST['duree'])."', pro_configuration='".preg_replace("/\'/", "''",$_POST['config'])."', pro_purete='".preg_replace("/\'/", "''",$_POST['purete'])."', pro_methode_purete='".preg_replace("/\'/", "''",$_POST['methopurete'])."', pro_origine_substance='{".$_POST['origimol']."}', pro_observation='".preg_replace("/\'/", "''",$_POST['observation'])."'".$changenumero.",pro_etape_mol='{".$_POST['etapmol']."}',pro_qrcode='".$_POST['qrcode']."'";
+	pro_hal='".preg_replace("/\'/", "''",$_POST['hal'])."', pro_cas='".preg_replace("/\'/", "''",$_POST['cas'])."', pro_id_type='".preg_replace("/\'/", "''",$_POST['type'])."', pro_num_brevet='".preg_replace("/\'/", "''",$_POST['numbrevet'])."', pro_ref_contrat='".preg_replace("/\'/", "''",$_POST['contrat'])."', pro_date_contrat='".preg_replace("/\'/", "''",$_POST['duree'])."', pro_configuration='".preg_replace("/\'/", "''",$_POST['config'])."'";
+if (isset($_POST['purete']) && $_POST['purete'] != ''){
+	$sql.=", pro_purete='".preg_replace("/\'/", "''",$_POST['purete'])."'";
+}
+	$sql .=", pro_methode_purete='".preg_replace("/\'/", "''",$_POST['methopurete'])."', pro_origine_substance='{".$_POST['origimol']."}', pro_observation='".preg_replace("/\'/", "''",$_POST['observation'])."'".$changenumero.",pro_etape_mol='{".$_POST['etapmol']."}',pro_qrcode='".$_POST['qrcode']."'";
 	if($id{'rmnh'}>0) $sql.=", pro_id_rmnh='".$id{'rmnh'}."'";
 	if($id{'rmnc'}>0) $sql.=", pro_id_rmnc='".$id{'rmnc'}."'";
 	if($id{'ir'}>0) $sql.=", pro_id_ir='".$id{'ir'}."'";
 	if($id{'uv'}>0) $sql.=", pro_id_uv='".$id{'uv'}."'";
 	if($id{'sm'}>0) $sql.=", pro_id_sm='".$id{'sm'}."'";
 	if($id{'hrms'}>0) $sql.=", pro_id_hrms='".$id{'hrms'}."'";
+	if (isset($_POST["chx_purete"]) && $_POST["chx_purete"] == "chx_purete"){
+		$sql.=", pro_controle_purete = TRUE";
+		//$sql.=", pro_date_controle_purete = now()";
+	}
+	else {
+		$sql.=", pro_controle_purete = FALSE";
+	}
+	if (isset($_POST["chx_structure"]) && $_POST["chx_structure"] == "chx_structure"){
+			//$stmt->bindValue(':pro_controle_structure',TRUE);
+			$sql.=", pro_controle_structure = TRUE";
+	}
+	else {
+		$sql.=", pro_controle_structure = FALSE";
+	}
+
 	$sql.=" where pro_id_produit='".$_POST['id']."'";
 	$insert=$dbh->exec($sql);
+
 	/*désactivé passage à la version 1.3.2.1
 	if ($insert==false) {
 		print"<li class=\"rouge\">".ERREUR_PRODUIT.MESSAGEERREUR;
@@ -258,6 +280,163 @@ else {
 		print"</li>";
 		$erreur++;
 	}*/
+/*
+// requête préparée
+	try {
+	$stmt = $dbh->prepare("
+		UPDATE produit SET
+		pro_purification = :pro_purification,
+		pro_masse = :pro_masse,
+		pro_aspect = :pro_aspect,
+		pro_id_couleur = :pro_id_couleur,
+		pro_ref_cahier_labo = :pro_ref_cahier_labo,
+		pro_modop = :pro_modop,
+		pro_id_structure = :pro_id_structure,
+		pro_analyse_elem_trouve = :pro_analyse_elem_trouve,
+		pro_point_fusion = :pro_point_fusion,
+		pro_point_ebullition = :pro_point_ebullition,
+		pro_pression_pb = :pro_pression_pb,
+		pro_alpha = :pro_alpha,
+		pro_alpha_temperature = :pro_alpha_temperature,
+		pro_alpha_concentration = :pro_alpha_concentration,
+		pro_alpha_solvant = :pro_alpha_solvant,
+		pro_rf = :pro_rf,
+		pro_rf_solvant = :pro_rf_solvant,
+		pro_doi = :pro_doi,
+		pro_hal = :pro_hal,
+		pro_cas = :pro_cas,
+		pro_id_type = :pro_id_type,
+		pro_num_brevet = :pro_num_brevet,
+		pro_ref_contrat = :pro_ref_contrat,
+		pro_date_contrat = :pro_date_contrat,
+		pro_configuration = :pro_configuration,
+		pro_purete = :pro_purete,
+		pro_methode_purete = :pro_methode_purete,
+		pro_origine_substance = :pro_origine_substance,
+		pro_observation = :pro_observation,
+		pro_num_boite = :pro_num_boite,
+		pro_num_position = :pro_num_position,
+		pro_num_incremental = :pro_num_incremental,
+		pro_numero = :pro_numero,
+		pro_num_sansmasse = :pro_num_sansmasse,
+		pro_etape_mol = :pro_etape_mol,
+		pro_qrcode = :pro_qrcode,
+		pro_id_rmnh = :pro_id_rmnh,
+		pro_id_rmnc = :pro_id_rmnc,
+		pro_id_ir = :pro_id_ir,
+		pro_id_uv = :pro_id_uv,
+		pro_id_sm = :pro_id_sm,
+		pro_id_hrms = :pro_id_hrms,
+		pro_controle_purete = :pro_controle_purete,
+		pro_date_controle_purete = :pro_date_controle_purete,
+		pro_controle_structure = :pro_controle_structure
+		where pro_id_produit = :pro_id_produit;");
+
+	$param_purification = "{".$_POST['purification']."}";
+	$stmt->bindParam(':pro_purification',$param_purification);
+
+	$stmt->bindParam(':pro_masse',$_POST['masse']);
+
+	$param_aspect = "{".$_POST['aspect']."}";
+	$stmt->bindParam(':pro_aspect',$param_aspect);
+
+	$stmt->bindParam(':pro_id_couleur',$_POST['couleur']);
+	$stmt->bindParam(':pro_ref_cahier_labo',$_POST['ref']);
+	$stmt->bindParam(':pro_modop',$_POST['modop']);
+	$stmt->bindParam(':pro_id_structure',$lastId);
+	$stmt->bindParam(':pro_analyse_elem_trouve',$_POST['anaelem']);
+	$stmt->bindParam(':pro_point_fusion',$_POST['pfusion']);
+	$stmt->bindParam(':pro_point_ebullition',$_POST['pebulition']);
+	$stmt->bindParam(':pro_pression_pb',$_POST['pressionpb']);
+	$stmt->bindParam(':pro_alpha',$_POST['alpha']);
+	$stmt->bindParam(':pro_alpha_temperature',$_POST['alphatemp']);
+	$stmt->bindParam(':pro_alpha_concentration',$_POST['alphaconc']);
+	$stmt->bindParam(':pro_alpha_solvant',$_POST['alphasolvant']);
+	$stmt->bindParam(':pro_rf',$_POST['rf']);
+	$stmt->bindParam(':pro_rf_solvant',$_POST['ccmsolvant']);
+	$stmt->bindParam(':pro_doi',$_POST['doi']);
+	$stmt->bindParam(':pro_hal',$_POST['hal']);
+	$stmt->bindParam(':pro_cas',$_POST['cas']);
+	$stmt->bindParam(':pro_id_type',$_POST['type']);
+	$stmt->bindParam(':pro_num_brevet',$_POST['numbrevet']);
+	$stmt->bindParam(':pro_ref_contrat',$_POST['contrat']);
+	$stmt->bindParam(':pro_date_contrat',$_POST['duree']);
+	$stmt->bindParam(':pro_configuration',$_POST['config']);
+	$stmt->bindParam(':pro_purete',$_POST['purete']);
+	$stmt->bindParam(':pro_methode_purete',$_POST['methopurete']);
+
+	$param_origimol = "{".$_POST['origimol']."}";
+	$stmt->bindParam(':pro_origine_substance',$param_origimol);
+
+	$param_pro_observation = NULL;
+	$param_pro_num_boite = NULL;
+	$param_pro_num_position = NULL;
+	$param_pro_num_incremental = NULL;
+	$param_pro_numero = NULL;
+	$param_pro_num_sansmasse = NULL;
+
+	if(isset($_POST['observation']))
+		$param_pro_observation = $_POST['observation'];
+
+	if(isset($_POST['boite']))
+		$param_pro_num_boite = $_POST['boite'];
+
+	if(isset($_POST['coordonnee']))
+		$param_pro_num_position = $_POST['coordonnee'];
+
+	if(isset($_POST['numerique']))
+		$param_pro_num_incremental = $_POST['numerique'];
+
+	if(isset($_POST['numerocomplet']))
+		$param_pro_numero = $_POST['numerocomplet'];
+
+	if(isset($_POST['sansmasse']))
+		$param_pro_num_sansmasse = $_POST['sansmasse'];
+
+	$stmt->bindParam(':pro_observation',$param_pro_observation);
+	$stmt->bindParam(':pro_num_boite',$param_pro_num_boite);
+	$stmt->bindParam(':pro_num_position',$param_pro_num_position);
+	$stmt->bindParam(':pro_num_incremental',$param_pro_num_incremental);
+	$stmt->bindParam(':pro_numero',$param_pro_numero);
+	$stmt->bindParam(':pro_num_sansmasse',$param_pro_num_sansmasse);
+
+	$param_etapmol = "{".$_POST['etapmol']."}";
+	$stmt->bindParam(':pro_etape_mol',$param_etapmol);
+
+	$stmt->bindParam(':pro_qrcode',$_POST['qrcode']);
+
+	$stmt->bindParam(':pro_id_rmnh',$id{'rmnh'});
+	$stmt->bindParam(':pro_id_rmnc',$id{'rmnc'});
+	$stmt->bindParam(':pro_id_ir',$id{'ir'});
+	$stmt->bindParam(':pro_id_uv',$id{'uv'});
+	$stmt->bindParam(':pro_id_sm',$id{'sm'});
+	$stmt->bindParam(':pro_id_hrms',$id{'hrms'});
+
+	if (isset($_POST["chx_purete"]) && $_POST["chx_purete"] == "chx_purete"){
+		$stmt->bindValue(':pro_controle_purete',1);
+		$stmt->bindValue(':pro_date_controle_purete',date('Y-m-d'));
+	}
+	else {
+		$stmt->bindValue(':pro_controle_purete',FALSE);
+		$stmt->bindValue(':pro_date_controle_purete',NULL);
+	}
+
+	if (isset($_POST["chx_structure"]) && $_POST["chx_structure"] == "chx_structure"){
+			$stmt->bindValue(':pro_controle_structure',TRUE);
+	}
+	else {
+		$stmt->bindValue(':pro_controle_structure',FALSE);
+	}
+
+	$stmt->bindParam(':pro_id_produit',$_POST['id']);
+
+	$stmt->execute();
+
+}
+	catch(PDOException $e) {
+		echo "Error: " . $e->getMessage();
+}
+*/
 
 	//recherche de solvants sur la table solvant
 	$sql="SELECT count(sol_id_solvant) FROM solvant";

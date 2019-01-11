@@ -857,4 +857,20 @@ SET chi_passif = TRUE
 WHERE CURRENT OF cur_chi_deactive;
 END LOOP;
 END;
-$$ LANGUAGE plpgsql;";
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION ajoute_pro_date_ctrl_purete() RETURNS trigger AS $$
+    BEGIN
+		IF NEW.pro_controle_purete IS TRUE THEN
+			IF OLD.pro_date_controle_purete IS NULL THEN
+				UPDATE produit SET pro_date_controle_purete = now() where pro_id_produit = OLD.pro_id_produit;
+			END IF;
+		END IF;
+        RETURN NEW;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER ajoute_pro_date_ctrl_purete
+AFTER UPDATE OF pro_date_controle_purete ON produit
+FOR EACH ROW
+EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();";

@@ -103,7 +103,7 @@ if (!empty($_POST['id'])) {
 		print"<br/>\n<br/>\n";
 
 		//recherche des informations sur le champ pro_etape_mol
-		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE  constraint_NAME='contrainte_etapemol';";
+		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE constraint_NAME='contrainte_etapemol';";
 		//les résultats sont retournées dans la variable $result
 		$result5=$dbh->query($sql);
 		//Les résultats sont mis sous forme de tableau
@@ -116,7 +116,7 @@ if (!empty($_POST['id'])) {
 		print"<br/>\n<br/>\n";
 
 		$formulaire1->ajout_text (5, $row2[1], 5, "masse", MASS,"","");
-		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE  constraint_NAME='contrainte_unitemasse';";
+		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE constraint_NAME='contrainte_unitemasse';";
 		//les résultats sont retournées dans la variable $result
 		$result4=$dbh->query($sql);
 		//Les résultats sont mis sous forme de tableau
@@ -132,9 +132,36 @@ if (!empty($_POST['id'])) {
 				$tab[$row3[0]]=constant($row3[1]);
 			}
 			$formulaire1->ajout_select (1,"type",$tab,false,$row2[3],"",TYPE,false,"");
-			
-			// TODO: CASE verif structure, verif pureté
-			//$formulaire1->ajout_checkbox ();
+
+			if ($row2[9]){
+				print
+					"<div>
+						<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete' checked>
+						<label for='chx_purete'>Pureté contrôlée</label>
+					</div>";
+				}
+				else {
+					print
+						"<div>
+							<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete'>
+							<label for='chx_purete'>Pureté contrôlée</label>
+						</div>";
+					}
+
+			if ($row2[8]){
+				print
+					"<div>
+						<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure' checked>
+						<label for='chx_tructure'>Structure contrôlée</label>
+					</div>";
+				}
+				else {
+					print
+						"<div>
+							<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure'>
+							<label for='chx_tructure'>Structure contrôlée</label>
+						</div>";
+					}
 		}
 		else {
 			print"<strong>".TYPE."</strong> ".constant ($row2[2]);
