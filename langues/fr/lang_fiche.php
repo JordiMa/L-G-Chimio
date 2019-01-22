@@ -190,4 +190,8 @@ define('INTERMEDIAIRE','intermédiaire de synthèse');
 define('FINALE','molécule finale');
 define('QRCODE','Code barre/Qrcode :');
 define('NMOL','nmol');
+define('CONTROLE_STRUCT','Structure contrôlée : ');
+define('CONTROLE_PURETE','Pureté contrôlée : ');
+define('DATE_CONTROLE_PURETE','Date contrôle pureté : ');
+define('DATE_ENVOIE_EVOTEC','Date d\'envoi chez EVOTEC :');
 ?>

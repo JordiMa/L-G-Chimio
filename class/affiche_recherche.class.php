@@ -152,16 +152,18 @@ class affiche_recherche {
 					$search= array('{','}');
 					$ror[5]=str_replace($search,'',$ror[5]);
 
+          // [JM - 22/01/2019] affiche le contrôle de la pureté et de la strucutre
 					echo "<tr>
                   <td valign=\"top\">
                   --<br/>
                   ".$ror[3]." - ".$ror[4].constant($ror[5])."<br/>
                   ".$ror[0]." ".$ror[1]."&nbsp;".$date."<br/>
                   ".EQUI." ".$ror2[1]." ".$ror2[0]."<br/>";
-                  if ($ror[6]) echo "pureté contrôlée : <input type='checkbox' disabled checked><br/>";
-                  else  echo "pureté contrôlée : <input type='checkbox' disabled><br/>";
-                  if ($ror[7]) echo "structure contrôlée : <input type='checkbox' disabled checked><br/>";
-                  else  echo "structure contrôlée : <input type='checkbox' disabled><br/>";
+                  if ($ror[6]) echo CONTROLE_PURETE."<input type='checkbox' disabled checked><br/>";
+                  else  echo CONTROLE_PURETE."<input type='checkbox' disabled><br/>";
+                  if ($ror[7]) echo CONTROLE_STRUCT."<input type='checkbox' disabled checked><br/>";
+                  else  echo CONTROLE_STRUCT."<input type='checkbox' disabled><br/>";
+
           echo "</td>
                   <td align=\"right\" valign=\"middle\">
                     <form method=\"post\" action=\"fiche.php\">

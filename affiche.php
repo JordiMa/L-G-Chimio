@@ -168,14 +168,28 @@ if (!empty($id_sql)) {
 			}
 			else $nommol=$row2[0];
 
+			// [JM - 22/01/2019] affiche le contrôle de la pureté et de la strucutre
 			echo "<div style='text-align: center;'>";
-			if ($row2[43]) echo "<strong style='color: blue;'>Structure contrôlée : <input type='checkbox' disabled checked></strong>";
-			else  echo "<strong style='color: blue;'>Structure contrôlée : <input type='checkbox' disabled></strong>";
+			if ($row2[43]) echo "<strong style='color: blue;'>".CONTROLE_STRUCT."<input type='checkbox' disabled checked></strong>";
+			else  echo "<strong style='color: blue;'>".CONTROLE_STRUCT."<input type='checkbox' disabled></strong>";
 			echo " | ";
-			if ($row2[42]) echo "<strong style='color: blue;'>Pureté contrôlée : <input type='checkbox' disabled checked></strong>";
-			else  echo "<strong style='color: blue;'>Pureté contrôlée : <input type='checkbox' disabled></strong>";
-			echo " | <strong style='color: blue;'>Date contrôle pureté : </strong>&nbsp;".$row2[44];
+			if ($row2[42]) echo "<strong style='color: blue;'>".CONTROLE_PURETE."<input type='checkbox' disabled checked></strong>";
+			else  echo "<strong style='color: blue;'>".CONTROLE_PURETE."<input type='checkbox' disabled></strong>";
+			echo " | <strong style='color: blue;'>".DATE_CONTROLE_PURETE."</strong>&nbsp;".$row2[44];
 			echo "</div>";
+
+			// [JM - 22/01/2019] affiche date d'envoie chez evotec
+			// [JM - 22/01/2019] seulement pour les responsables, les chefs et les admins
+			if ($row[0]=="{RESPONSABLE}" || $row[0]=="{CHEF}" || $row[0]=="{ADMINISTRATEUR}"){
+				$sql_evo="SELECT evo_date_envoie FROM evotec WHERE evo_numero_permanent=".$row2[26];
+				$result_evo =$dbh->query($sql_evo);
+				$row_evo =$result_evo->fetch(PDO::FETCH_NUM);
+				if ($row_evo[0]){
+					echo "<div style='text-align: center;'>";
+					echo "<strong style='color: red;'>".DATE_ENVOIE_EVOTEC."</strong>&nbsp;".$row_evo[0];
+					echo "</div>";
+				}
+			}
 
 			print"<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 				  <tr>

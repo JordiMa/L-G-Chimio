@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -97,7 +97,7 @@ if (!empty($_POST['type']) or !empty($_POST['chimiste']) or !empty($_POST['equip
 			}
 		}
 	}
-  
+
 	elseif (empty($_POST['type']) and !empty($_POST['equipechi'])) {
 		if($row[0]=="{ADMINISTRATEUR}" or $row[0]=="{CHEF}") {
 			$sql="SELECT DISTINCT pro_id_structure FROM produit WHERE pro_id_equipe='".$_POST['equipechi']."' order by pro_id_structure";
@@ -115,7 +115,7 @@ if (!empty($_POST['type']) or !empty($_POST['chimiste']) or !empty($_POST['equip
 			}
 		}
 	}
-  
+
 	elseif (!empty($_POST['type']) and !empty($_POST['chimiste'])) {
 		if($row[0]=="{RESPONSABLE}") {
 			if ($row[1]==$_POST['chimiste']) $sql="(SELECT DISTINCT pro_id_structure FROM produit WHERE pro_id_type=".$_POST['type']." and pro_id_chimiste='".$_POST['chimiste']."' and pro_id_equipe='".$row[2]."') UNION (SELECT DISTINCT pro_id_structure FROM produit WHERE pro_id_type=".$_POST['type']." and pro_id_chimiste='".$_POST['chimiste']."') order by pro_id_structure";
@@ -180,7 +180,7 @@ if (!empty($_POST['type']) or !empty($_POST['chimiste']) or !empty($_POST['equip
 			}
 		}
 	}
-  
+
 	elseif (empty($_POST['type']) and !empty($_POST['chimiste'])) {
 		if($row[0]=="{RESPONSABLE}") {
 			if ($row[1]==$_POST['chimiste']) $sql="(SELECT DISTINCT pro_id_structure FROM produit WHERE pro_id_chimiste='".$_POST['chimiste']."' and pro_id_equipe='".$row[2]."') UNION (SELECT DISTINCT pro_id_structure FROM produit WHERE pro_id_chimiste='".$_POST['chimiste']."') order by pro_id_structure";
@@ -245,7 +245,7 @@ if (!empty($_POST['type']) or !empty($_POST['chimiste']) or !empty($_POST['equip
 			}
 		}
 	}
-  
+
 	elseif (!empty($_POST['type'])) {
 		if($row[0]=="{RESPONSABLE}") {
 			$sql="(SELECT DISTINCT pro_id_structure FROM produit WHERE pro_id_type='".$_POST['type']."' and pro_id_equipe='".$row[2]."') UNION (SELECT DISTINCT pro_id_structure FROM produit WHERE pro_id_type='".$_POST['type']."' and pro_id_chimiste='".$row[1]."') order by pro_id_structure";
@@ -325,8 +325,8 @@ if (!empty($_POST['type']) or !empty($_POST['chimiste']) or !empty($_POST['equip
 
 elseif (!empty ($_POST['formbrute']) or $_POST['massemol']!="" or !empty($_POST['mol']) or !empty($_POST['numero']) or !empty($_POST['refcahier'])) {
 	if (!empty($_POST['mol'])) {
-		
-		
+
+
 		if($row[0]=="{ADMINISTRATEUR}") {
 			switch ($_POST['recherche']) {
 				case 0: {
@@ -476,7 +476,7 @@ elseif (!empty ($_POST['formbrute']) or $_POST['massemol']!="" or !empty($_POST[
 
 	if (!empty ($_POST['formbrute'])) {
 		if ($_POST['forbrutexact']=='exacte') {
-      
+
 			if ($row[0]=="{ADMINISTRATEUR}") {
 				$sql="SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE str_formule_brute='".$_POST['formbrute']."' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste  order by pro_id_structure";
 				$result2 = $dbh->query($sql);
@@ -641,7 +641,7 @@ elseif (!empty ($_POST['formbrute']) or $_POST['massemol']!="" or !empty($_POST[
 				while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 					$tab[$row4[0]]=$row4[1];
 				}
-			}	
+			}
 		}
 		 elseif ($row[0]=="{CHEF}") {
 			$sql="SELECT equi_id_equipe FROM equipe WHERE equi_id_equipe in(SELECT chi_id_equipe FROM chimiste WHERE chi_id_responsable='".$row[1]."') order by equi_nom_equipe";
@@ -717,7 +717,7 @@ elseif (!empty ($_POST['formbrute']) or $_POST['massemol']!="" or !empty($_POST[
 				while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 					$tab[$row4[0]]=$row4[1];
 				}
-			}	
+			}
 		}
 		 elseif ($row[0]=="{CHEF}") {
 			$sql="SELECT equi_id_equipe FROM equipe WHERE equi_id_equipe in(SELECT chi_id_equipe FROM chimiste WHERE chi_id_responsable='".$row[1]."') order by equi_nom_equipe";
@@ -778,7 +778,7 @@ elseif (!empty ($_POST['formbrute']) or $_POST['massemol']!="" or !empty($_POST[
 			}
 		}
 	}
-	
+
 	if ($_POST['massemol']!="") {
 		if ($_POST['massexact']=='exacte') {
 			if ($row[0]=="{ADMINISTRATEUR}") {

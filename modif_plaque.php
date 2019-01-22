@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -83,7 +83,7 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 	$rowplaque[2]=str_replace($search,'',$rowplaque[2]);
 	if ($rowplaque[1]>0) print"<strong>".VOLUME."</strong><br/> $rowplaque[1] ".constant($rowplaque[2])."<br/>";
 	if ($rowplaque[3]>0) print"<strong>".MASSE."</strong><br/> $rowplaque[3] ".MG."</td>";
-	
+
     print"<td align=\"center\" valign=\"middle\">";
     print"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"489\">
 		  <tr>
@@ -108,17 +108,17 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 		  </tr>
 		  <tr>
 		   <td rowspan=\"9\" class=\"plaque\"><img name=\"plaque_r2_c1\" src=\"images/plaque/plaque_r2_c1.gif\" width=\"64\" height=\"318\" border=\"0\" id=\"plaque_r2_c1\" alt=\"\" /></td>";
-    
-	
+
+
 	$sql="SELECT * FROM position WHERE pos_id_plaque='".$_GET['idmodif']."'";
     $resultatcount=$dbh->query($sql);
     $numresultatplaque=$resultatcount->rowCount();
 	$rowplaque=$resultatcount->fetch(PDO::FETCH_NUM);
-	
+
 	$sql="SELECT SUM(pos_mass_prod) total FROM position WHERE pos_id_plaque='".$_GET['idmodif']."'";
     $resultatsum=$dbh->query($sql);
 	$rowsum=$resultatsum->fetch(PDO::FETCH_NUM);
-	
+
 	$x="a";
     for ($i=2 ; $i<=9 ; $i++) {
         if ($i>2) print"<tr>";
@@ -146,21 +146,21 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 						}
 					}
 					else $nommol=$row[0];
-					
+
 					/*if ($row[3]>0 and $rowsum[0]>0) {
 						//if ($rowplaque[6]==1) print"<td><a href=\" modif_plaque_c.php?L=$i&H=$y&id=".$_GET['idmodif']."&equipechi=$row[6]&chimiste=$row[5]&numero=$row[7]&up=1&massetran=1&massety=2\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<p>".PUITVIDE."</p>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."r.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";
-						//else print"<td><a href=\" modif_plaque_c.php?L=$i&H=$y&id=".$_GET['idmodif']."&equipechi=$row[6]&chimiste=$row[5]&numero=$row[7]&up=1&massety=2\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<p>".PUITVIDE."</p>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."r.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";						
+						//else print"<td><a href=\" modif_plaque_c.php?L=$i&H=$y&id=".$_GET['idmodif']."&equipechi=$row[6]&chimiste=$row[5]&numero=$row[7]&up=1&massety=2\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<p>".PUITVIDE."</p>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."r.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";
 						print"<td><a href=\" modif_plaque_c.php?L=$i&H=$y&id=".$_GET['idmodif']."&equipechi=$row[6]&chimiste=$row[5]&numero=$row[7]&up=1&massety=2\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<p>".PUITVIDE."</p>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."r.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";
 					}
 					else {*/
-					
+
 						print"<td class=\"plaque\"><a href=\"modif_plaque_c.php?L=$i&H=$y&id=".$_GET['idmodif']."&equipechi=$row[6]&chimiste=$row[5]&numero=$row[7]&up=1&massetran=1&massety=";
 						if ($rowsum[0]>0) echo "2";
 						else echo "1";
 						print"\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<table width=\'100%\' border=\'0\' cellpadding=\'0\' cellspacing=\'0\'><tr><td align=\'center\'>";
 						print"</td></tr><tr><td align=\'center\'>".addslashes($row[2])."<br/>".addslashes($row[3])." ".addslashes($row[4])."<br/>".addslashes($row[1])."</td></tr><tr><td align=\'center\'>".addslashes($nommol)."</td></tr>";
 						if ($row[8]>0) {
-							$row[8]=str_replace(".",",",$row[8]); 
+							$row[8]=str_replace(".",",",$row[8]);
 							print"<tr><td align=\'center\'>".$row[8]." ".MG."</td></tr>";
 						}
 						print"</table>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."v.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";
@@ -174,7 +174,7 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 					if ($numresultatplaque>0) {
 						if ($rowsum[0]>0) print"\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<p>".PUITVIDE."</p>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."r.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";
 						else print"\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<p>".PUITVIDE1."</p>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."r.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";
-					}	
+					}
 					else print"\" onmouseout=\"hideddrivetip(),MM_swapImgRestore()\" onmouseover=\"ddrivetip('<p>".PUITVIDE."</p>'),MM_swapImage('Image$i$y','','images/plaque/plaque_r".$i."_c".$y.".gif',1)\"><img src=\"images/plaque/plaque_r".$i."_c".$y."r.gif\" name=\"Image$i$y\" width=\"37\" height=\"37\" border=\"0\" id=\"Image$i$y\" /></a></td>\n";
 				}
 				if ($i==2 and $y==11) print"<td rowspan=\"9\"><img name=\"plaque_r2_c12\" src=\"images/plaque/plaque_r2_c12.gif\" width=\"55\" height=\"318\" border=\"0\" id=\"plaque_r2_c12\" /></td>";
@@ -214,11 +214,11 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 		$formulaire->ajout_cache ($_GET["L"],"L");
 		$formulaire->ajout_cache ($_GET["H"],"H");
 		$formulaire->ajout_cache ($_GET['idmodif'],"id");
-		
+
 		if (isset($massetran) and $massetran==1) $formulaire->ajout_cache ($massetran,"massetran");
 		//fin du formulaire
 		$formulaire->fin();
-		
+
 
 		//initialisation du formulaire
 		$formulaire1=new formulaire ("insertproduit","modif_plaque_c.php","GET",true);
@@ -298,7 +298,7 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 		print "</td>";
 	}
     print"</tr>";
-    
+
     if (empty($numresultatplaque) or $numresultatplaque==0) {
 		print"<tr><td colspan=\"";
 		if (!empty($_GET["L"]) and !empty($_GET["H"]) and !empty($_GET['idmodif'])) echo "3";
@@ -348,18 +348,18 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 			<th scope=\"col\" width=\"37\">10</th>
 			<th scope=\"col\" width=\"37\">11</th>
 		  </tr>
-		  <tr>";	
-		
-		  
+		  <tr>";
+
+
 		while($row=$resultat7->fetch(PDO::FETCH_NUM)) {
 			$tab7[$row[1]]=$row[0];
-		}	
+		}
 
 		$i=0;
 		$u="a";
 		$uu=2;
-			
-		while ($i<80) { 
+
+		while ($i<80) {
 			if ($uu==2) echo "<tr>
 			<th scope=\"row\" height=\"75\">".mb_strtoupper($u)."</th>";
 			print"<td>";
@@ -373,7 +373,7 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 				$uu=2;
 				$u++;
 				echo "</tr>";
-			}	
+			}
 			$i++;
 		}
 	}

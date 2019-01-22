@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -48,18 +48,18 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				if (strlen($donne[$k])==8) $numlocal=$donne[$k];
 				else $masse=$donne[$k];
 			}
-			$masse=str_replace("\,",".",$masse); 
+			$masse=str_replace("\,",".",$masse);
 			$sql="SELECT pro_id_produit FROM produit WHERE pro_num_constant=$numlocal";
 			//echo $sql;
 			$existancenumero=$dbh->query($sql);
 			$nbexiste=$existancenumero->rowCount();
 			if ($nbexiste>0) {
-			
+
 				$sql="SELECT str_inchi_md5 FROM produit,structure WHERE pro_num_constant=$numlocal and produit.pro_id_structure=structure.str_id_structure and str_inchi_md5 not in (SELECT str_inchi_md5 FROM produit,structure,evotec WHERE evotec.evo_numero_permanent=produit.pro_num_constant and produit.pro_id_structure=structure.str_id_structure);";
 				$rechercheinchikey=$dbh->query($sql);
 				$rowinchi=$rechercheinchikey->fetch(PDO::FETCH_NUM);
 				$numinchi=$rechercheinchikey->rowCount();
-				
+
 				if ($numinchi>0) {
 					$masse=str_replace(",",".",$masse);
 					$sql="INSERT INTO evotec (evo_numero_permanent,evo_masse) VALUES ('$numlocal','$masse')";
@@ -71,7 +71,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						$sql="SELECT pro_masse,pro_suivi_modification,pro_id_equipe,pro_id_type,pro_numero FROM produit WHERE pro_num_constant='".$numlocal."'";
 						$resultat2=$dbh->query($sql);
 						$row2=$resultat2->fetch(PDO::FETCH_NUM);
-						
+
 						$suivi=$row2[1];
 						$massenew=$row2[0]-$masse;
 						if ($massenew<0) $massenew=0;
@@ -79,7 +79,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						$sql="UPDATE produit SET pro_masse='".$massenew."', pro_suivi_modification='".$suivi."' WHERE pro_num_constant='".$numlocal."'";
 						echo $sql;
 						$upd=$dbh->exec($sql);
-					
+
 						//si la masse tombe à 0mg alors le numéro du produit est changé pour le type sans masse
 						if ($massenew==0) {
 							$sql="SELECT para_stock,para_numerotation FROM parametres";
@@ -124,7 +124,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 									}
 									else $numeroassemble=numero(2);
 								}
-							
+
 								$numerocomplet="";
 								$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='2' ORDER BY num_id_numero";
 								$resultat25=$dbh->query($sql);
@@ -176,12 +176,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 							}
 						}
 					}
-				}					
-				
+				}
+
 				else {
 					$sql="SELECT pro_num_constant FROM produit,structure WHERE produit.pro_id_structure=structure.str_id_structure and str_inchi_md5 in (SELECT str_inchi_md5 FROM produit,structure WHERE pro_num_constant=$numlocal and produit.pro_id_structure=structure.str_id_structure);";
 					$recherchedoublon=$dbh->query($sql);
-					
+
 					$doublon='';
 					while($rowdoublon=$recherchedoublon->fetch(PDO::FETCH_NUM)) {
 						$doublon.=$rowdoublon[0].", ";

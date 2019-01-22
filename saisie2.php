@@ -28,6 +28,7 @@ invit�s � charger et tester l'ad�quation du logiciel � leurs besoins dan
 Le fait que vous puissiez acc�der � cet en-t�te signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accept� les
 termes.
 */
+
 include_once 'script/administrateur.php';
 include_once 'script/secure.php';
 include_once 'autoload.php';
@@ -39,10 +40,36 @@ require 'script/connectionb.php';
 $sql="SELECT bingo.CheckMolecule('".$_POST['mol']."')";
 $resultat=$dbh->query($sql);
 $check =$resultat->fetch(PDO::FETCH_NUM);
+
+// [JM - 22/01/2019] Traduction de MOL en INCHI
+$sql1="SELECT Bingo.InchI('".$_POST["mol"]."','')";
+$resul1=$dbh->query($sql1);
+$row1=$resul1->fetch(PDO::FETCH_NUM);
+
+// [JM - 22/01/2019] Recherche INCHI existant
+$sql2="SELECT str_inchi FROM structure WHERE str_inchi ='".$row1[0]."'";
+$result2=$dbh->query($sql2);
+$row2=$result2->fetch(PDO::FETCH_NUM);
+
+// [JM - 22/01/2019] Avertis si doublon
+if ($row2[0]){
+	echo '<script language="javascript">';
+	// [JM - 22/01/2019] Si l'utilisateur annule, il revient à la page précédente
+	echo 'if(confirm("Attention doublon ! La structure existe déjà dans la base.\rVoulez-vous continuer ?")){
+
+	}
+	else{
+		window.stop();
+		history.back();
+	}';
+	echo '</script>';
+}
+
 if ($check[0]==NULL) include_once 'saisieformulaire2.php';
 else {
 	$erreur=$check[0];
 	include_once 'saisie1.php';
 }
+
 include_once 'presentation/pied.php';
 ?>
