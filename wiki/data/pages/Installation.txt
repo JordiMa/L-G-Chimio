@@ -42,13 +42,13 @@ Commande pour installer des paquets supplémentaires:
 
 Utilisez les commandes suivantes pour installer PostgreSQL :
 
-> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-server-9.2.24-1.el7_5.x86_64.rpm
+> sudo yum install http://mirror.centos.org/centos/7/os/x86_64/Packages/postgresql-server-9.2.24-1.el7_5.x86_64.rpm
 
-> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-libs-9.2.24-1.el7_5.x86_64.rpm
+> sudo yum install http://mirror.centos.org/centos/7/os/x86_64/Packages/postgresql-libs-9.2.24-1.el7_5.x86_64.rpm
 
-> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-contrib-9.2.24-1.el7_5.x86_64.rpm
+> sudo yum install http://mirror.centos.org/centos/7/os/x86_64/Packages/postgresql-contrib-9.2.24-1.el7_5.x86_64.rpm
 
-> sudo yum install http://mirror.centos.org/centos/7/updates/x86_64/Packages/postgresql-9.2.24-1Iel7_5.x86_64.rpm
+> sudo yum install http://mirror.centos.org/centos/7/os/x86_64/Packages/postgresql-9.2.24-1Iel7_5.x86_64.rpm
 
 Initialiser la base :
 
