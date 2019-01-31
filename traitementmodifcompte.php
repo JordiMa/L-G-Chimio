@@ -68,9 +68,10 @@ function modification () {
 		if (password_verify($_POST['OLDPASS'], $row['chi_password'])){
 			$passactu = 1;
 			$set="";
-			if (!isset($_POST['envoi'])) $_POST['envoi']="";
-			if ($_POST['envoi']==0 or $_POST['envoi']==1) $set.="chi_recevoir='".$_POST['envoi']."'";
-			if (($_POST['envoi']==0 or $_POST['envoi']==1) and !empty($_POST['email'])) $set.=" , ";
+			if (isset($_POST['envoi'])){
+				if ($_POST['envoi']==0 or $_POST['envoi']==1) $set.="chi_recevoir='".$_POST['envoi']."'";
+				if (($_POST['envoi']==0 or $_POST['envoi']==1) and !empty($_POST['email'])) $set.=" , ";
+			}
 			if (!empty($_POST['email'])) $set.="chi_email='".$_POST['email']."'";
 			if (!empty($_POST['email']) and !empty($_POST['langue'])) $set.=" , ";
 			if (!empty($_POST['langue'])) $set.="chi_langue='".$_POST['langue']."'";
