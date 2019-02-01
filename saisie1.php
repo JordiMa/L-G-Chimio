@@ -108,7 +108,7 @@ if ($row[0]=="{ADMINISTRATEUR}") {
 	}
 	else $tab1="";
 
-	$formulaire1->ajout_select (1,"equipe",$tab1,false,$_POST['equipe'],SELECTEQUIPE,"* Equipe - Responsable - Chimiste :",false,"");
+	$formulaire1->ajout_select (1,"equipe",$tab1,false,$_POST['equipe'],"Equipe - Responsable - Chimiste","* Equipe - Responsable - Chimiste :",false,"");
 	print"<br/>\n<br/>\n";
 }
 
