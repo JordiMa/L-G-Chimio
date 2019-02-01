@@ -39,9 +39,9 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
-	print"<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+	print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 	  <tr>
-		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"exportation.php\">".SDF."</a></td>
+		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"exportation.php\">EXPORT</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"exportation.old.php\">".SDF." OLD</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"exportationcsvpesee.php\">".CSV."</a></td>
 		</tr>

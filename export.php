@@ -64,9 +64,9 @@ if(isset($_GET['chx_typeContrat'])){
  	$result_type = $dbh->query($sql_type);
 }
 ?>
-	<table width="164" border="0" cellspacing="0" cellpadding="0">
+	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td width="82" height="23" align="center" valign="middle" background="images/onglet1.gif"><a class="onglet" href="exportation.php"><?php echo SDF ?></a></td>
+			<td width="82" height="23" align="center" valign="middle" background="images/onglet1.gif"><a class="onglet" href="exportation.php"><?php echo "EXPORT" ?></a></td>
 			<td width="82" height="23" align="center" valign="middle" background="images/onglet.gif"><a class="onglet" href="exportation.old.php"><?php echo SDF . " OLD" ?></a></td>
 			<td width="82" height="23" align="center" valign="middle" background="images/onglet.gif"><a class="onglet" href="exportationcsvpesee.php"><?php echo CSV ?></a></td>
 		</tr>
@@ -76,7 +76,10 @@ if(isset($_GET['chx_typeContrat'])){
 	<!-- [JM - 24/01/2019] Debut du formulaire -->
 	<form action="exportation.php" method="get">
 
-		Sélectionnez vos critères de sélection :<br>
+		<input type="radio" name="rad_format" value="SDF" onchange="this.form.submit()" <?php if(isset($_GET['rad_format']) && $_GET['rad_format'] == "SDF") echo "checked"; ?> >SDF<br>
+		<input type="radio" name="rad_format" value="CSV" onchange="this.form.submit()" <?php if(isset($_GET['rad_format']) && $_GET['rad_format'] == "CSV") echo "checked"; ?> >CSV<br>
+
+		<br>Sélectionnez vos critères de sélection :<br>
 		<input type="checkbox" name="chx_equipe" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_equipe'])) echo "checked"; ?> >Equipe<br>
 		<input type="checkbox" name="chx_utilisateur" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_utilisateur'])) echo "checked"; ?> >Utilisateur<br>
 		<input type="checkbox" name="chx_typeContrat" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_typeContrat'])) echo "checked"; ?> >Type de contrat<br>
@@ -135,14 +138,16 @@ if(isset($_GET['chx_typeContrat'])){
 		<?php } ?>
 
 	<br><br>
-	<input type="image" name="download" value="download" src="images/charge.gif" alt="Télécharger le fichier SDF" title="Télécharger le fichier SDF">
-	<input type="image" name="liste" value="liste" src="images/liste.gif" alt="Afficher les resultat" title="Afficher les resultat">
+	<?php if(isset($_GET['rad_format'])) { ?>
+		<input type="image" name="download" value="download" src="images/charge.gif" alt="Télécharger le fichier" title="Télécharger le fichier">
+	<?php } ?>
+	<input type="image" name="liste" value="liste" src="images/liste.gif" alt="Afficher les resultats" title="Afficher les resultats">
 
 	</form>
 
 <?php
 	if (isset($_GET['download_x']) || isset($_GET['liste_x'])){
-		$sql_sdf = "SELECT pro_id_produit, pro_num_constant, str_mol, pro_masse, pro_purete, pro_methode_purete, pro_origine_substance, pro_numero FROM produit INNER JOIN structure ON produit.pro_id_structure = structure.str_id_structure WHERE 1=1";
+		$sql_sdf = "SELECT pro_id_produit, pro_num_constant, str_mol, pro_masse, pro_purete, pro_methode_purete, pro_origine_substance, pro_numero, str_inchi FROM produit INNER JOIN structure ON produit.pro_id_structure = structure.str_id_structure WHERE 1=1";
 
 		if(isset($_GET['chx_equipe']))
 			if(isset($_GET['equipe']))
@@ -186,20 +191,53 @@ if(isset($_GET['chx_typeContrat'])){
 			$row_evotec=$result_evotec->fetchAll(PDO::FETCH_NUM);
 
 			$array_afficheListe = array();
+
+			$contenuFichier_csv[0][0] = 'Numéro local';
+			$contenuFichier_csv[0][1] = 'Numéro constant';
+			$contenuFichier_csv[0][2] = 'Inchi';
+			$contenuFichier_csv[0][3] = 'Masse';
+			$contenuFichier_csv[0][4] = 'Numéro de plaque';
+			$contenuFichier_csv[0][5] = "Chez Evotec";
+			$contenuFichier_csv[0][6] = 'Pureté';
+			$contenuFichier_csv[0][7] = 'Méthode pureée';
+			$contenuFichier_csv[0][8] = 'Origine substance';
+
 			// [JM - 24/01/2019] Boucle sur chaque produit
 			foreach ($result_sdf as $key => $value) {
+
+				$contenuFichier_csv[$key+1][0] = " ";
+				$contenuFichier_csv[$key+1][1] = " ";
+				$contenuFichier_csv[$key+1][2] = " ";
+				$contenuFichier_csv[$key+1][3] = " ";
+				$contenuFichier_csv[$key+1][4] = " ";
+				$contenuFichier_csv[$key+1][5] = " ";
+				$contenuFichier_csv[$key+1][6] = " ";
+				$contenuFichier_csv[$key+1][7] = " ";
+				$contenuFichier_csv[$key+1][8] = " ";
+
+				$contenuFichier_csv[$key+1][0] = $value['pro_numero'];
+				$contenuFichier_csv[$key+1][1] = $value['pro_num_constant'];
+				$contenuFichier_csv[$key+1][2] = $value['str_inchi'];
+				$contenuFichier_csv[$key+1][3] = $value['pro_masse'];
+
 				// [JM - 24/01/2019] Imprime la strucure MOL dans le fichier SDF
 				$contenuFichier_sdf .= $value['str_mol'];
+
+				$contenuFichier_sdf .= "\n";
+				$contenuFichier_sdf .= "\n> <identificateur_local> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n".$value['pro_numero'];
 
 				// [JM - 24/01/2019] Imprime le numero permanent dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n> <identificateur> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_num_constant'];
 
+
 				// [JM - 24/01/2019] Imprime la masse du produit dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n> <vrac> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_masse'];
+
 
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n> <plaque> (".($key + 1) .")";
@@ -208,20 +246,24 @@ if(isset($_GET['chx_typeContrat'])){
 					// [JM - 24/01/2019] Imprime le numero de plaque dans le fichier SDF
 					if(in_array($value[0], $value_plaque)){
 						$contenuFichier_sdf .= "\n". $value_plaque[0];
+						$contenuFichier_csv[$key+1][4] = $value_plaque[0];
 						break;
 					}
 				}
 
 				//[JM - 24/01/2019] Si contrainte Evotec cocher
-				if(isset($_GET['chx_evotec']))
+				if(isset($_GET['chx_evotec'])){
 				// [JM - 24/01/2019] Imprime le TAG Evotec dans le fichier SDF
 					$contenuFichier_sdf .= "\nEvotec";
+					$contenuFichier_csv[$key+1][5] = "OUI";
+				}
 				else {
 					// [JM - 24/01/2019] Boucle sur la liste des produits chez Evotec
 					foreach ($row_evotec as $key_evotec => $value_evotec) {
 						if(in_array($value['pro_num_constant'], $value_evotec)){
 							// [JM - 24/01/2019] Imprime le TAG Evotec dans le fichier SDF
 							$contenuFichier_sdf .= "\nEvotec";
+							$contenuFichier_csv[$key+1][5] = "OUI";
 							break;
 						}
 					}
@@ -231,16 +273,19 @@ if(isset($_GET['chx_typeContrat'])){
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n> <purete> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_purete'];
+				$contenuFichier_csv[$key+1][6] = $value['pro_purete'];
 
 				// [JM - 24/01/2019] Imprime la methode de mesure de la purete dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n> <methode_mesure_purete> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_methode_purete'];
+				$contenuFichier_csv[$key+1][7] = $value['pro_methode_purete'];
 
 				// [JM - 24/01/2019] Imprime l'origine de la substance dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n> <origine> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_origine_substance'];
+				$contenuFichier_csv[$key+1][8] = $value['pro_origine_substance'];
 
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n$$$$\n";
@@ -252,11 +297,26 @@ if(isset($_GET['chx_typeContrat'])){
 			}
 			if (isset($_GET['download_x'])){
 				$timestamp = time();
-				// [JM - 24/01/2019] création du fichier SDF
-				$fichier_sdf = fopen('temp/'.$timestamp.'.sdf', 'w+');
-				// [JM - 24/01/2019] Remplissage du fichier
-				fwrite($fichier_sdf, $contenuFichier_sdf);
-				echo "<a class='download-file' href='temp/".$timestamp.".sdf' download='Export_SDF_".date("Y-m-d").".sdf'></a>";
+
+				if ($_GET['rad_format'] == "SDF"){
+					// [JM - 24/01/2019] création du fichier SDF
+					$fichier_sdf = fopen('temp/'.$timestamp.'.sdf', 'w+');
+					// [JM - 24/01/2019] Remplissage du fichier
+					fwrite($fichier_sdf, $contenuFichier_sdf);
+					echo "<a class='download-file' href='temp/".$timestamp.".sdf' download='Export_SDF_".date("Y-m-d").".sdf'></a>";
+				}
+
+				if ($_GET['rad_format'] == "CSV"){
+					// [JM - 24/01/2019] création du fichier SDF
+					$fichier_csv = fopen('temp/'.$timestamp.'.csv', 'w+');
+					// [JM - 24/01/2019] Remplissage du fichier
+					fprintf($fichier_csv, chr(0xEF).chr(0xBB).chr(0xBF));
+					foreach($contenuFichier_csv as $ligne){
+						fputcsv($fichier_csv, $ligne, ";");
+					}
+					echo "<a class='download-file' href='temp/".$timestamp.".csv' download='Export_CSV_".date("Y-m-d").".csv'></a>";
+				}
+
 			}
 			if (isset($_GET['liste_x'])){
 				if (sizeof($array_afficheListe) == 0)
