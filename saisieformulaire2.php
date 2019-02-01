@@ -713,6 +713,8 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$tabequipe=explode ("/",$_POST['equipe']);
 			$formulaire->ajout_cache ($tabequipe[0],"equipe");
 			$formulaire->ajout_cache ($tabequipe[1],"responsable");
+			if ($row22[0]=="{ADMINISTRATEUR}")
+				$formulaire->ajout_cache ($tabequipe[2],"chimiste");
 		}
 		//fin de l'ajout des champs cachés
 

@@ -33,6 +33,7 @@ include_once 'langues/'.$_SESSION['langue'].'/lang_formulaire.php';
 
 if(!isset($_POST["mol"])) $_POST["mol"]="";
 if(!isset($_POST['equipe'])) $_POST['equipe']="";
+if(!isset($_POST['chimiste'])) $_POST['chimiste']="";
 if(!isset($_POST['masse'])) $_POST['masse']="";
 if(!isset($_POST['type'])) $_POST['type']="";
 if(!isset($_POST['config'])) $_POST['config']="";
@@ -97,17 +98,17 @@ if ($row[0]=="{CHEF}") {
 }
 
 if ($row[0]=="{ADMINISTRATEUR}") {
-	$sql="SELECT equi_id_equipe,equi_nom_equipe,chi_nom,chi_prenom,chi_id_chimiste
-	FROM equipe,chimiste WHERE chi_statut='{RESPONSABLE}' and chi_id_equipe=equi_id_equipe order by equi_nom_equipe";
+	$sql='SELECT equi_id_equipe, equi_nom_equipe, res.chi_id_chimiste, res.chi_nom, res.chi_prenom, chim.chi_id_chimiste ,chim.chi_nom, chim.chi_prenom FROM chimiste AS "chim" Inner Join chimiste AS "res" on res.chi_id_chimiste = chim.chi_id_responsable Inner Join equipe on chim.chi_id_equipe = equipe.equi_id_equipe WHERE res.chi_statut=\'{RESPONSABLE}\'';
 	$result1=$dbh->query($sql);
 	$nbresult1=$result1->rowCount();
 	if ($nbresult1>0) {
 		while($row1 = $result1->fetch(PDO::FETCH_NUM)) {
-			$tab1[$row1[0]."/".$row1[4]]=$row1[1]." --- ".$row1[3]." ".$row1[2];
+			$tab1[$row1[0]."/".$row1[2]."/".$row1[5]]=$row1[1]." --- ".$row1[3]." ".$row1[4]." --- ".$row1[6]." ".$row1[7];
 		}
 	}
 	else $tab1="";
-	$formulaire1->ajout_select (1,"equipe",$tab1,false,$_POST['equipe'],SELECTEQUIPE,EQUIPE,false,"");
+
+	$formulaire1->ajout_select (1,"equipe",$tab1,false,$_POST['equipe'],SELECTEQUIPE,"* Equipe - Responsable - Chimiste :",false,"");
 	print"<br/>\n<br/>\n";
 }
 

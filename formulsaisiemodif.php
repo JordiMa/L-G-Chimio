@@ -76,9 +76,15 @@ if (!empty($_POST['id'])) {
           </script>\n";
 
 		require 'script/connectionb.php';
-		$sql="SELECT str_mol,pro_masse,typ_type,pro_id_type,pro_configuration,pro_origine_substance,pro_etape_mol,pro_unite_masse, pro_controle_structure,pro_controle_purete, pro_date_controle_purete from produit,structure,type where pro_id_produit='".$_POST['id']."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_type=type.typ_id_type";
+		$sql="SELECT str_mol,pro_masse,typ_type,pro_id_type,pro_configuration,pro_origine_substance,pro_etape_mol,pro_unite_masse, pro_controle_structure,pro_controle_purete, pro_date_controle_purete, pro_numero from produit,structure,type where pro_id_produit='".$_POST['id']."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_type=type.typ_id_type";
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
+
+
+		if ($row[0]=="{ADMINISTRATEUR}") {
+			// [JM - 01/02/2019] bouton pour réattribuer la structure à un autre chimiste
+			print"<a class='btnlink' target='_blank' href='attributionstructures.php?produit=".$row2[11]."&Rechercher=Rechercher'>Réattribuer la structure à un chimiste</a>";
+		}
 		$formulaire1=new formulaire ("saisie","saisiemodif2.php","POST",true);
 		$formulaire1->affiche_formulaire();
 		print"<br/><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr>\n<td width=\"500\" height=\"500\">";
@@ -90,7 +96,7 @@ if (!empty($_POST['id'])) {
 		print OBLIGATOIRE."<br/><br/>";
 
 		//recherche des informations sur le champ pro_origine_substance
-		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE  constraint_NAME='contrainte_originesubstance';";
+		$sql="SELECT check_clause FROM INFORMATION_SCHEMA.check_constraints WHERE constraint_NAME='contrainte_originesubstance';";
 		//les résultats sont retournées dans la variable $result
 		$result4=$dbh->query($sql);
 		//Les résultats sont mis sous forme de tableau

@@ -131,7 +131,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	print"<br/><br/><div class=\"divmenu1\"><table width=\"140\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr align=\"center\">\n<td class=cellulebleu>";
 	echo ADMINISTRATION;
 	print"</td>\n</tr>\n<tr align=\"left\">\n<td height=\"100\" valign=\"top\" class=celluleblanche>\n<br/>\n";
-	for ($y=6; $y<=11 ; $y++) {
+	for ($y=6; $y<=12 ; $y++) {
 		print"&nbsp;<a class=\"mnu\" href=\"";
 		switch($y) {
 			case 6 : print"plaques.php";
@@ -146,6 +146,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			break;
 			case 11 : print"parametres.php";
 			break;
+			case 12 : print"attributionstructures.php";
 		}
 		if(isset($menu) and $menu==$y) print"\"><img border=\"0\" src=\"images/pucerouge.gif\" width=\"9\" height=\"9\">&nbsp;";
 		else print"\" onMouseOut=\"MM_swapImgRestore()\" onMouseOver=\"MM_swapImage('Image$y','','images/pucerouge.gif',1)\">\n<img name=\"Image$y\" border=\"0\" src=\"images/pucebleu.gif\" width=\"9\" height=\"9\">&nbsp;";
@@ -162,6 +163,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			break;
 			case 11 : echo PARAMETRES;
 			break;
+			case 12 : echo "Attribution structures";
         }
 		print"</a>\n<br/>\n<br/>\n";
     }

@@ -11,7 +11,7 @@ p,td {
 	font-size : 0px;
 	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
 	color : black;
-}	
+}
 hr {
 	color : #CCFF99 ;
 	height : 5px;
@@ -39,7 +39,7 @@ h3 {
 	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
 	color : #CC0000;
 	font-weight: bold;
-	}	
+	}
 label {
 	font-size : 11px;
 	font-family : Verdana, Arial, Helvetica, Geneva, sans-serif;
@@ -244,4 +244,20 @@ p.r {
 }
 output {
 	background-color:#D8D8D8;
+}
+
+a:link.btnlink, a:visited.btnlink {
+	font-size: small;
+	background-color: silver;
+	color: black;
+	border: 2px solid green;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	float: right;
+}
+
+a:hover.btnlink, a:active.btnlink {
+	background-color: green;
+	color: white;
 }

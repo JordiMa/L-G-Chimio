@@ -62,6 +62,8 @@ if ($row5[0]=="{ADMINISTRATEUR}" or $row5[0]=="{CHEF}") {
     $id_equipe=$_POST['equipe'];
     $nam=$row5[1];
 	$responsable=$_POST['responsable'];
+  if ($row5[0]=="{ADMINISTRATEUR}")
+    $nam = $_POST['chimiste'];
 }
 
 else {
@@ -306,7 +308,9 @@ try {
   $stmt->bindParam(':pro_num_brevet',$_POST['numbrevet']);
   $stmt->bindParam(':pro_ref_contrat',$_POST['contrat']);
   $stmt->bindParam(':pro_date_contrat',$_POST['duree']);
+
   $stmt->bindParam(':pro_id_chimiste',$nam);
+
   $stmt->bindParam(':pro_id_equipe',$id_equipe);
   $stmt->bindParam(':pro_configuration',$_POST['config']);
   $stmt->bindParam(':pro_observation',$_POST['observation']);
