@@ -1,6 +1,10 @@
+html{
+	height: 100%;
+}
 body {
 	background-color:#CCFF99;
 	margin:0px 0px 0px 0px;
+	height: 100%;
 	}
 p,td {
 	font-size : 11px;
@@ -229,12 +233,12 @@ tr.ligneutil1{
 	background-color:#CED9A0;
 }
 .divmenu {
-	position:absolute;
+	#position:absolute;
 	top:115px;
 	left:5px;
 }
 .divmenu1 {
-	position:absolute;
+	#position:absolute;
 	top:290px;
 	left:5px;
 }

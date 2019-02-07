@@ -28,7 +28,7 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
-print"<div class=\"divmenu\"><table width=\"140\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr align=\"center\">\n<td class=cellulebleu>";
+print"<div class=\"divmenu\"><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr align=\"center\">\n<td class=cellulebleu>";
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
@@ -37,7 +37,7 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 echo MENU;
-print"</td>\n</tr>\n<tr align=\"left\">\n<td height=\"100\" valign=\"top\" class=celluleblanche>\n<br/>\n";
+print"</td>\n</tr>\n<tr align=\"left\">\n<td height=\"100%\" valign=\"top\" class=celluleblanche>\n<br/>\n";
 
 if ($row[0]=='{RESPONSABLE}' or $row[0]=='{CHEF}') {
 	for ($i=1; $i<=6 ; $i++) {
@@ -128,9 +128,9 @@ else {
 print"</td>\n</tr>\n</table></div>";
 
 if ($row[0]=='{ADMINISTRATEUR}') {
-	print"<br/><br/><div class=\"divmenu1\"><table width=\"140\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr align=\"center\">\n<td class=cellulebleu>";
+	print"<br/><br/><div class=\"divmenu1\"><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr align=\"center\">\n<td class=cellulebleu>";
 	echo ADMINISTRATION;
-	print"</td>\n</tr>\n<tr align=\"left\">\n<td height=\"100\" valign=\"top\" class=celluleblanche>\n<br/>\n";
+	print"</td>\n</tr>\n<tr align=\"left\">\n<td height=\"100%\" valign=\"top\" class=celluleblanche>\n<br/>\n";
 	for ($y=6; $y<=12 ; $y++) {
 		print"&nbsp;<a class=\"mnu\" href=\"";
 		switch($y) {
@@ -168,11 +168,11 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		print"</a>\n<br/>\n<br/>\n";
     }
 	print"</td>\n</tr>\n</table></div>";
-	print"<br/><a href=\"presentation/l-g-chimio_documentation.pdf\" target=\"_blank\"><img border=\"0\" src=\"images/aide1.gif\" width=\"20\" height=\"20\" alt=\"Documentation\"></a> <a href=\"./wiki\" target=\"_blank\"><img border=\"0\" src=\"images/wiki.gif\" width=\"20\" height=\"20\" alt=\"Wiki\"></a> <a href=\"presentation/credit.html\" target=\"_blank\"><img border=\"0\" src=\"images/credit.gif\" width=\"20\" height=\"20\" alt=\"Crédits\"></a>";
+	//print"<br/><a href=\"presentation/l-g-chimio_documentation.pdf\" target=\"_blank\"><img border=\"0\" src=\"images/aide1.gif\" width=\"20\" height=\"20\" alt=\"Documentation\"></a> <a href=\"./wiki\" target=\"_blank\"><img border=\"0\" src=\"images/wiki.gif\" width=\"20\" height=\"20\" alt=\"Wiki\"></a> <a href=\"presentation/credit.html\" target=\"_blank\"><img border=\"0\" src=\"images/credit.gif\" width=\"20\" height=\"20\" alt=\"Crédits\"></a>";
 }
 else
 {
-	print"<br/><a href=\"presentation/l-g-chimio_utilisateur.pdf\" target=\"_blank\"><img border=\"0\" src=\"images/aide1.gif\" width=\"20\" height=\"20\" alt=\"Documentation\"></a> <a href=\"./wiki\" target=\"_blank\"><img border=\"0\" src=\"images/wiki.gif\" width=\"20\" height=\"20\" alt=\"Wiki\"></a> <a href=\"presentation/credit.html\" target=\"_blank\"><img border=\"0\" src=\"images/credit.gif\" width=\"20\" height=\"20\" alt=\"Crédits\"></a>";
+	//print"<br/><a href=\"presentation/l-g-chimio_utilisateur.pdf\" target=\"_blank\"><img border=\"0\" src=\"images/aide1.gif\" width=\"20\" height=\"20\" alt=\"Documentation\"></a> <a href=\"./wiki\" target=\"_blank\"><img border=\"0\" src=\"images/wiki.gif\" width=\"20\" height=\"20\" alt=\"Wiki\"></a> <a href=\"presentation/credit.html\" target=\"_blank\"><img border=\"0\" src=\"images/credit.gif\" width=\"20\" height=\"20\" alt=\"Crédits\"></a>";
 }
 unset($dbh);
 ?>
