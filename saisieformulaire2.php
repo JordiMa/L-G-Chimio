@@ -186,82 +186,142 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 
 	if ($_POST["mol"]!="") {
 		//javascript de vérification des champs obligatoires
-		echo"<script language=\"JavaScript\">
-				  <!--
-				  function contains(onechar,lstring) {
-					retval=false
-					for(var i=1;i<=lstring.length;i++) {
-					  if(lstring.substring(i,i+1)==onechar) {
-						retval=true
-						break
-					  }
-					}
-					return retval
-				  }
+		echo"
+<script language=\"JavaScript\">
+		function contains(onechar, lstring)
+		{
+			retval = false
+			for (var i = 1; i <= lstring.length; i++)
+			{
+				if (lstring.substring(i, i + 1) == onechar)
+				{
+					retval = true
+					break
+				}
+			}
+			return retval
+		}
 
-				  function selection(lstring) {
-					retvale=false
-					for(var i=1;i<lstring.length;i++) {
-					  if(document.chimiotheque.D5.options[i].text==document.chimiotheque.T3.value){retvale=true
-					  break
-					  }
-					}
-					return retvale
-				  }
+		function selection(lstring)
+		{
+			retvale = false
+			for (var i = 1; i < lstring.length; i++)
+			{
+				if (document.chimiotheque.D5.options[i].text == document.chimiotheque.T3.value)
+				{
+					retvale = true
+					break
+				}
+			}
+			return retvale
+		}
 
-				  function GetSmiles(theForm, valeurformu) {
-					if (valeurformu==2) {
-					  document.saisie2.action=\"transfert.php\";
-					  var i=0;
-					  var top=false;
-					  while ( document.saisie2[\"solvant\"+i] ) {
-						if(document.saisie2[\"solvant\"+i].checked) {
-						  top=true;
-						  break;
-						  }
+		function GetSmiles(theForm, valeurformu)
+		{
+			if (valeurformu == 2)
+			{
+				document.saisie2.action = \"transfert.php\";
+				var i = 0;
+				var top = true;
+				if (document.saisie2.config_solvantsDeSolubilisation.value == '1')
+				{
+					top = false;
+					while (document.saisie2[\"solvant\"+i] )
+					{
+						if (document.saisie2[\"solvant\"+i].checked)
+						{
+							top = true;
+							break;
+						}
 						i++;
-						}
-
-					  if (CKEDITOR.instances.nomiupac.getData()==\"\") {alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");}
-					  else {
-						if (document.saisie2.masse.value==\"\") {alert(\"".CHAMP." \'".MASS."\' ".RENSEIGNE."\");}
-						else {
-						  if((isNaN(document.saisie2.masse.value)) || (contains(\".\",saisie2.masse.value))) {alert(\"".CHAMP." \'".MASS."\' ".ERREURMASSE."\");}
-						  else {
-							if (document.saisie2.couleur.value==\"\") {alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");}
-							else {
-							  if (document.saisie2.ref.value==\"\") {alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");}
-							  else {
-								if (document.saisie2.aspect.value==\"\") {alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");}
-								else {
-								  if (document.saisie2.purification.value==\"\") {alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");}
-								  else {
-									  if((document.saisie2.purification.value==\"".RECRISTALLISATION."\" || document.saisie2.purification.value==\"".PRECIPITATION."\") && (document.saisie2.aspect.value==\"".LIQUIDE."\")){alert(\"".RECRISTALISE."\");}
-									  else {
-										if(document.saisie2.purification.value==\"".DISTILLATION."\" && document.saisie2.aspect.value==\"".SOLIDE."\"){alert(\"".DISTILATION."\");}
-										else {
-										  if (!top) {alert(\"".CHAMP." \'".SOLVANTS."\' ".RENSEIGNE."\");}
-										  else {theForm.submit();}
-										}
-									  }
-									}
-								  }
-								}
-							  }
-						  }
-						}
-					  }
 					}
-					else {
-						if (valeurformu==1) {
-							if ((document.saisie2.masse.value>=5 && document.saisie2.massehold.value<5) || (document.saisie2.masse.value<5 && document .saisie2.massehold.value>=5)) {
-							  document.saisie2.action=\"saisie2.php\";
-							  theForm.submit();
+				}
+
+				if (CKEDITOR.instances.nomiupac.getData() == \"\" && document.saisie2.config_nomenclature.value== '1')
+				{
+					alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");
+				}
+				else
+				{
+					if (document.saisie2.masse.value == \"\")
+					{
+						alert(\"".CHAMP." \'".MASS."\' ".RENSEIGNE."\");
+					}
+					else
+					{
+						if ((isNaN(document.saisie2.masse.value)) || (contains(\".\",saisie2.masse.value)))
+						{
+							alert(\"".CHAMP." \'".MASS."\' ".ERREURMASSE."\");
+						}
+						else
+						{
+							if (document.saisie2.couleur.value == \"\" && document.saisie2.config_couleur.value== '1')
+							{
+								alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");
+							}
+							else
+							{
+								if (document.saisie2.ref.value == \"\" && document.saisie2.config_refCahier.value== '1')
+								{
+									alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");
+								}
+								else
+								{
+									if (document.saisie2.aspect.value == \"\" && document.saisie2.config_aspect.value== '1')
+									{
+										alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");
+									}
+									else
+									{
+										if (document.saisie2.purification.value == \"\" && document.saisie2.config_typePurif.value== '1')
+										{
+											alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");
+										}
+										else
+										{
+											if ((document.saisie2.purification.value == \"".RECRISTALLISATION. "\" || document.saisie2.purification.value==\"".PRECIPITATION."\") && (document.saisie2.aspect.value==\"".LIQUIDE."\"))
+											{
+												alert(\"".RECRISTALISE."\");
+											}
+											else
+											{
+												if (document.saisie2.purification.value == \"".DISTILLATION."\" && document.saisie2.aspect.value==\"".SOLIDE."\")
+												{
+													alert(\"".DISTILATION."\");
+												}
+												else
+												{
+													if (!top)
+													{
+														alert(\"".CHAMP." \'".SOLVANTS."\' ".RENSEIGNE."\");
+													}
+													else
+													{
+														theForm.submit();
+													}
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
-				  }
-				  </script>";
+				}
+			}
+			else
+			{
+				if (valeurformu == 1)
+				{
+					if ((document.saisie2.masse.value >= 5 && document.saisie2.massehold.value < 5) || (document.saisie2.masse.value < 5 && document.saisie2.massehold.value >= 5))
+					{
+						document.saisie2.action = \"saisie2.php\";
+						theForm.submit();
+					}
+				}
+			}
+		}
+</script>";
 		//fin du javascript
 
 		//affichage des erreurs du formulaire après traitement par traitement.php
@@ -271,6 +331,14 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		//initialisation du formulaire
 		$formulaire=new formulaire ("saisie2","","POST",true);
 		$formulaire->affiche_formulaire();
+		// Verification des champs obligatoires
+		print"<input type='hidden' name='config_couleur' value='".$config_data['couleur']."'>";
+		print"<input type='hidden' name='config_typePurif' value='".$config_data['typePurif']."'>";
+		print"<input type='hidden' name='config_aspect' value='".$config_data['aspect']."'>";
+		print"<input type='hidden' name='config_refCahier' value='".$config_data['refCahier']."'>";
+		print"<input type='hidden' name='config_nomenclature' value='".$config_data['nomenclature']."'>";
+		print"<input type='hidden' name='config_solvantsDeSolubilisation' value='".$config_data['solvantsDeSolubilisation']."'>";
+
 		//sélection des couleur dans la base de données
 		$sql = "SELECT * FROM couleur";
 		//les résultats sont retournées dans la variable $result

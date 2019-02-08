@@ -273,6 +273,8 @@ try {
   $stmt = $dbh->prepare("INSERT INTO produit (pro_purification, pro_masse, pro_unite_masse, pro_aspect, pro_id_couleur, pro_date_entree, pro_ref_cahier_labo, pro_modop, pro_id_structure, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, pro_alpha, pro_alpha_temperature, pro_alpha_concentration, pro_alpha_solvant, pro_rf, pro_rf_solvant, pro_doi, pro_hal, pro_cas, pro_id_type, pro_num_brevet, pro_ref_contrat, pro_date_contrat, pro_id_chimiste, pro_id_equipe, pro_configuration, pro_observation, pro_num_boite, pro_num_position, pro_num_incremental, pro_numero, pro_num_constant, pro_num_sansmasse, pro_origine_substance, pro_purete, pro_methode_purete, pro_id_responsable, pro_etape_mol, pro_qrcode, pro_id_rmnh, pro_id_rmnc, pro_id_ir, pro_id_uv, pro_id_sm, pro_id_hrms) VALUES (:pro_purification, :pro_masse, :pro_unite_masse, :pro_aspect, :pro_id_couleur, :pro_date_entree, :pro_ref_cahier_labo, :pro_modop, :pro_id_structure, :pro_analyse_elem_trouve, :pro_point_fusion, :pro_point_ebullition, :pro_pression_pb, :pro_alpha, :pro_alpha_temperature, :pro_alpha_concentration, :pro_alpha_solvant, :pro_rf, :pro_rf_solvant, :pro_doi, :pro_hal, :pro_cas, :pro_id_type, :pro_num_brevet, :pro_ref_contrat, :pro_date_contrat, :pro_id_chimiste, :pro_id_equipe, :pro_configuration, :pro_observation, :pro_num_boite, :pro_num_position, :pro_num_incremental, :pro_numero, :pro_num_constant, :pro_num_sansmasse, :pro_origine_substance, :pro_purete, :pro_methode_purete, :pro_id_responsable, :pro_etape_mol, :pro_qrcode, :pro_id_rmnh, :pro_id_rmnc, :pro_id_ir, :pro_id_uv, :pro_id_sm, :pro_id_hrms)");
 
   $param_purif = "{".$_POST['purification']."}";
+  if ($param_purif == "{}")
+    $param_purif = "{INCONNUE}";
   $stmt->bindValue(':pro_purification',$param_purif);
 
   $stmt->bindParam(':pro_masse',$_POST['masse']);
@@ -281,11 +283,20 @@ try {
   $stmt->bindParam(':pro_unite_masse',$param_unitmass);
 
   $param_aspect = "{".$_POST['aspect']."}";
+  if ($param_aspect = "{}")
+    $param_aspect = "{INCONNU}";
   $stmt->bindParam(':pro_aspect',$param_aspect);
 
+  if (empty($_POST['couleur']))
+    $_POST['couleur'] = 218;
   $stmt->bindParam(':pro_id_couleur',$_POST['couleur']);
+
   $stmt->bindParam(':pro_date_entree',$date);
+
+  if (empty($_POST['ref']))
+    $_POST['ref'] = NULL;
   $stmt->bindParam(':pro_ref_cahier_labo',$_POST['ref']);
+
   $stmt->bindParam(':pro_modop',$_POST['modop']);
   $stmt->bindParam(':pro_id_structure',$lastId);
   $stmt->bindParam(':pro_analyse_elem_trouve',$_POST['anaelem']);
@@ -332,6 +343,8 @@ try {
   $stmt->bindParam(':pro_id_responsable',$responsable);
 
   $param_etapmol = "{".$_POST['etapmol']."}";
+  if ($param_etapmol = "{}")
+    $param_etapmol = "{INCONNUE}";
   $stmt->bindParam(':pro_etape_mol',$param_etapmol);
 
   $stmt->bindParam(':pro_qrcode',$_POST['qrcode']);
@@ -350,7 +363,6 @@ catch(PDOException $e) {
 
 $lastIdinsertion = $dbh->lastInsertId('produit_pro_id_produit_seq');
 //insertion des solvants de solubilisation du prosuit
-
 
 
 //recherche de solvants sur la table solvant

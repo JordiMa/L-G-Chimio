@@ -28,6 +28,34 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
+
+if (file_exists('script/config.json')){
+  $json_source = file_get_contents('script/config.json');
+  $config_data = json_decode($json_source, true);
+
+  /*
+  // Valeur disponible (utiliser pour les champs obligatoire)
+  // 0 = non obligatoire ; 1 = obligatoire
+  $config_data['etapeSynthese'];
+  $config_data['couleur'];
+  $config_data['typePurif'];
+  $config_data['aspect'];
+  $config_data['refCahier'];
+  $config_data['nomenclature'];
+  $config_data['solvantsDeSolubilisation'];
+  */
+}
+else {
+  $config_data['etapeSynthese'] = 0;
+  $config_data['couleur'] = 0;
+  $config_data['typePurif'] = 0;
+  $config_data['aspect'] = 0;
+  $config_data['refCahier'] = 0;
+  $config_data['nomenclature'] = 0;
+  $config_data['solvantsDeSolubilisation'] = 0;
+}
+
+
 date_default_timezone_set('Europe/Paris');
 echo "<!DOCTYPE html>";
 echo "<html>

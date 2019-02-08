@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -74,6 +74,83 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	$formulaire->ajout_button (SUBMIT,"","submit","");
 	//fin du formulaire
 	$formulaire->fin();
+?>
+
+	<hr>
+	<h3 align="center">Champs obligatoires</h3>
+
+	<form>
+		<?php
+		if ($config_data['etapeSynthese'] == 1)
+	  	print "<input type='checkbox' name='etapeSynthese' value='1' checked>Etape de synthèse de la molécule<br>";
+		else
+			print "<input type='checkbox' name='etapeSynthese' value='1'>Etape de synthèse de la molécule<br>";
+
+		if ($config_data['couleur'] == 1)
+	  	print "<input type='checkbox' name='couleur' value='1' checked>Couleur du produit<br>";
+		else
+		print "<input type='checkbox' name='couleur' value='1' >Couleur du produit<br>";
+
+		if ($config_data['typePurif'] == 1)
+		print "<input type='checkbox' name='typePurif' value='1' checked>Type de purification<br>";
+		else
+			print "<input type='checkbox' name='typePurif' value='1'>Type de purification<br>";
+
+		if ($config_data['aspect'] == 1)
+			print "<input type='checkbox' name='aspect' value='1' checked>Aspect<br>";
+		 else
+			 print"<input type='checkbox' name='aspect' value='1'>Aspect<br>";
+
+		if ($config_data['refCahier'] == 1)
+			print "<input type='checkbox' name='refCahier' value='1' checked>Référence cahier de laboratoire ou thèse<br>";
+		else
+			print "<input type='checkbox' name='refCahier' value='1'>Référence cahier de laboratoire ou thèse<br>";
+
+		if ($config_data['nomenclature'] == 1)
+			print "<input type='checkbox' name='nomenclature' value='1' checked>Nom en nomenclature IUPAC (anglaise)<br>";
+		else
+			print "<input type='checkbox' name='nomenclature' value='1'>Nom en nomenclature IUPAC (anglaise)<br>";
+
+		if ($config_data['solvantsDeSolubilisation'] == 1)
+			print "<input type='checkbox' name='solvantsDeSolubilisation' value='1' checked>Solvants de solubilisation<br>";
+		else
+			print "<input type='checkbox' name='solvantsDeSolubilisation' value='1'>Solvants de solubilisation<br>";
+			?>
+		<br>
+		<input type="hidden" name="valid" value="valid">
+		<input type="submit">
+	</form>
+
+	<?php
+	$configJSON = array();
+	$configJSON["etapeSynthese"] = 0;
+	$configJSON["couleur"] = 0;
+	$configJSON["typePurif"] = 0;
+	$configJSON["aspect"] = 0;
+	$configJSON["refCahier"] = 0;
+	$configJSON["nomenclature"] = 0;
+	$configJSON["solvantsDeSolubilisation"] = 0;
+
+	if (isset($_GET['etapeSynthese']))
+		$configJSON["etapeSynthese"] = 1;
+	if (isset($_GET['couleur']))
+		$configJSON["couleur"] = 1;
+	if (isset($_GET['typePurif']))
+		$configJSON["typePurif"] = 1;
+	if (isset($_GET['aspect']))
+		$configJSON["aspect"] = 1;
+	if (isset($_GET['refCahier']))
+		$configJSON["refCahier"] = 1;
+	if (isset($_GET['nomenclature']))
+		$configJSON["nomenclature"] = 1;
+	if (isset($_GET['solvantsDeSolubilisation']))
+		$configJSON["solvantsDeSolubilisation"] = 1;
+	if (isset($_GET['valid'])){
+		$myJSON = json_encode($configJSON);
+		file_put_contents('script/config.json', $myJSON);
+	 	echo " <script> location.replace('parametres.php'); </script>";
+	}
+
 }
 else require 'deconnexion.php';
 unset($dbh);

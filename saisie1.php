@@ -53,7 +53,7 @@ function GetSmiles(theForm){
   else {
 	if (document.saisie.origimol.value==\"\"){alert(\"".ORIGABS."\");}
 	else {
-		if (document.saisie.etapmol.value==\"\"){alert(\"".ETAPGABS."\");}";
+		if (document.saisie.etapmol.value==\"\" && document.saisie.config_etapeSynthese.value== '1'){alert(\"".ETAPGABS."\");}";
 if ($row[0]=="{ADMINISTRATEUR}" or $row[0]=="{CHEF}")  print"else {
                                          if (document.saisie.equipe.value==\"\"){alert(\"".EQUIPEABS."\");}";
 print"  else {
@@ -79,6 +79,8 @@ print"    }
 
 $formulaire1=new formulaire ("saisie","saisie2.php","POST",true);
 $formulaire1->affiche_formulaire();
+print"<input type='hidden' name='config_etapeSynthese' value='".$config_data['etapeSynthese']."'>";
+
 print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr>\n<td width=\"500\" height=\"500\">";
 if(isset($erreur)) print"<p class=\"erreur\">$erreur</p>";
 
