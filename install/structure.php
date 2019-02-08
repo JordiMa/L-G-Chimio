@@ -870,7 +870,7 @@ CREATE OR REPLACE FUNCTION ajoute_pro_date_ctrl_purete() RETURNS trigger AS $$
     END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER ajoute_pro_date_ctrl_purete
+CREATE TRIGGER ajoute_pro_date_ctrl_purete
 AFTER UPDATE OF pro_date_controle_purete ON produit
 FOR EACH ROW
 EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();";
