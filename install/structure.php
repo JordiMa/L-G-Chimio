@@ -302,7 +302,7 @@ CREATE TABLE produit (
   pro_observation text,
   pro_etape_mol character varying(13)[],
   pro_configuration character varying(255),
-  pro_numero character varying(35),
+  pro_numero character varying(35) NOT NULL,
   pro_num_boite smallint,
   pro_num_position character varying(3),
   pro_num_incremental smallint,

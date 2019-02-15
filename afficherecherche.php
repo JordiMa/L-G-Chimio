@@ -216,7 +216,7 @@ if (!empty($id_sql)) {
 			<td><table width=\"300\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 			<tr>
 			<td width=\"150\"><strong>".COULEUR."</strong></td>";
-		if ($row2[9]=="INCOL") print"<td width=\"150\">".constant($row2[9])."</td>";
+		if ($row2[9]=="INCOL" || $row2[9]=="INCON") print"<td width=\"150\">".constant($row2[9])."</td>";
 		else print"<td bgcolor=\"#".$row2[9]."\" width=\"150\" class=bord>&nbsp;</td>";
 		$sql="SELECT distinct(pla_identifiant_local) FROM position,plaque WHERE pos_id_produit='$id_sql' and pla_id_plaque_mere='0' and position.pos_id_plaque=plaque.pla_id_plaque";
 		$result5=$dbh->query($sql);

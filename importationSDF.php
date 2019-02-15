@@ -28,54 +28,13 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
+include_once 'script/administrateur.php';
+include_once 'script/secure.php';
+include_once 'autoload.php';
+include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
+include_once 'presentation/entete.php';
+$menu=9;
+include_once 'presentation/gauche.php';
+include_once 'importSDF.php';
+include_once 'presentation/pied.php';
 ?>
-<div class="divmenu">
-<table width="95%" border="0" cellspacing="0" cellpadding="0" >
-  <tr align="center">
-    <td class=cellulebleu>
-<?php
-echo LOGIN;
-?>
-    </td>
-  </tr>
-  <tr>
-    <td class=celluleblanche style="text-align: center;">
-	<!-- <script language="javascript" src="md5.js"></script> -->
-	<!-- <script language="javascript">
-
-	  function CResponsemd() {
-		str = document.conec.password_chimiste.value;
-		document.conec.reponse.value = MD5(str,document.conec.name_chimiste.value);
-		document.conec.password_chimiste.value = "";
-		conec.submit();
-	  }
-
-	</script> -->
-
-<?php
-if (isset ($message)) print"<p align=\"center\" class=messagederreur>".constant($message)."</p>";
-$formulaire=new formulaire ("conec","session.php","POST",true);
-$formulaire->affiche_formulaire();
-echo NAMEPASS;
-echo "</br>";
-$formulaire->ajout_text (20, "", 20,"name_chimiste","","","");
-echo "</br>";
-echo PASSWORD;
-echo "</br>";
-$formulaire->ajout_password (20, "", 50,"password_chimiste","","");
-// $formulaire->ajout_cache ("","reponse");
-print"<p align=\"center\">";
-$formulaire->ajout_button (LOGIN,"","submit","");
-print"</p>";
-$formulaire->fin();
-print"<p align=\"center\"><a href=\"oublie.php\">".LOSS."</a></p>";
-?>
-    </td>
-  </tr>
-</table>
-</div>
-<br/>
-<!--
-<a href="./wiki" target="_blank"><img border="0" src="images/wiki.gif" width="20" height="20" alt="Wiki"></a>
-<a href="presentation/credit.html" target="_blank"><img border="0" src="images/credit.gif" width="20" height="20" alt="Crédits"></a>
--->

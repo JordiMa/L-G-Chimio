@@ -100,27 +100,33 @@ if (!empty($_POST['id'])) {
 
 				  function GetSmiles(theForm) {
 					var i=0;
-					var top=false;
-					while ( document.saisie2[\"solvant\"+i] ) {
-					  if(document.saisie2[\"solvant\"+i].checked) {
-						top=true;
-						break;
+					var top=true;
+					if (document.saisie2.config_solvantsDeSolubilisation.value == '1')
+					{
+						top = false;
+						while (document.saisie2[\"solvant\"+i] )
+						{
+							if (document.saisie2[\"solvant\"+i].checked)
+							{
+								top = true;
+								break;
+							}
+							i++;
 						}
-					  i++;
-					  }
-					if (CKEDITOR.instances.nomiupac.getData()==\"\") {alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");}
+					}
+					if (CKEDITOR.instances.nomiupac.getData()==\"\" && document.saisie2.config_nomenclature.value== '1') {alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");}
 					else {
 					  if (document.saisie2.masse.value==\"\") {alert(\"".CHAMP." \'".MASS."\' ".RENSEIGNE."\");}
 					  else {
 						if((isNaN(document.saisie2.masse.value)) || (contains(\".\",saisie2.masse.value))) {alert(\"".CHAMP." \'".MASS."\' ".ERREURMASSE."\");}
 						else {
-						  if (document.saisie2.couleur.value==\"\") {alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");}
+						  if (document.saisie2.couleur.value==\"\" && document.saisie2.config_couleur.value== '1') {alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");}
 						  else {
-							if (document.saisie2.ref.value==\"\") {alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");}
+							if (document.saisie2.ref.value==\"\" && document.saisie2.config_refCahier.value== '1') {alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");}
 							else {
-							  if (document.saisie2.aspect.value==\"\") {alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");}
+							  if (document.saisie2.aspect.value==\"\" && document.saisie2.config_aspect.value== '1') {alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");}
 							  else {
-								if (document.saisie2.purification.value==\"\") {alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");}
+								if (document.saisie2.purification.value==\"\" && document.saisie2.config_typePurif.value== '1') {alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");}
 								else {
 									if((document.saisie2.purification.value==\"recristallisation\" || document.saisie2.purification.value==\"précipitation\") && (document.saisie2.aspect.value==\"liquide\")){alert(\"".RECRISTALISE."\");}
 									else {
@@ -147,6 +153,13 @@ if (!empty($_POST['id'])) {
 			$formulaire=new formulaire ("saisie2","transfertmodif.php","POST",true);
 			$formulaire->affiche_formulaire();
 
+			print"<input type='hidden' name='config_couleur' value='".$config_data['couleur']."'>";
+			print"<input type='hidden' name='config_typePurif' value='".$config_data['typePurif']."'>";
+			print"<input type='hidden' name='config_aspect' value='".$config_data['aspect']."'>";
+			print"<input type='hidden' name='config_refCahier' value='".$config_data['refCahier']."'>";
+			print"<input type='hidden' name='config_nomenclature' value='".$config_data['nomenclature']."'>";
+			print"<input type='hidden' name='config_solvantsDeSolubilisation' value='".$config_data['solvantsDeSolubilisation']."'>";
+
 			if (isset($_POST["chx_purete"]) && $_POST["chx_purete"] == "chx_purete"){
 				print
 					"<div>
@@ -161,7 +174,7 @@ if (!empty($_POST['id'])) {
 							<label for='chx_purete'>Pureté contrôlée</label>
 						</div>";
 					}
-					
+
 			if (isset($_POST["chx_structure"]) && $_POST["chx_structure"] == "chx_structure"){
 				print
 					"<div>
@@ -505,7 +518,11 @@ if (!empty($_POST['id'])) {
 				$tabsolvant[$isolvant]=$rowsolvant[0];
 				$isolvant++;
 			}
-			$formulaire->ajout_checkbox ("solvant",$tab2,$tabsolvant,SOLVANTS."<br/>",false);
+			if (isset($tabsolvant))
+				$formulaire->ajout_checkbox ("solvant",$tab2,$tabsolvant,SOLVANTS."<br/>",false);
+				else {
+					$formulaire->ajout_checkbox ("solvant",$tab2,'',SOLVANTS."<br/>",false);
+				}
 
 			print"</td>\n</tr>\n<tr valign=\"top\">\n<td>";
 			$formulaire->ajout_textarea ("nomiupac",36,$rowselect[1],12,true,NOM."<br/>");

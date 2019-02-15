@@ -247,57 +247,62 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 					{
 						alert(\"".CHAMP." \'".MASS."\' ".RENSEIGNE."\");
 					}
-					else
-					{
-						if ((isNaN(document.saisie2.masse.value)) || (contains(\".\",saisie2.masse.value)))
-						{
-							alert(\"".CHAMP." \'".MASS."\' ".ERREURMASSE."\");
+					else {
+						if (document.saisie2.numerocomplet.value == \"\") {
+							alert(\"".CHAMP." \'".NBPILLULIER."\' ".RENSEIGNE."\");
 						}
 						else
 						{
-							if (document.saisie2.couleur.value == \"\" && document.saisie2.config_couleur.value== '1')
+							if ((isNaN(document.saisie2.masse.value)) || (contains(\".\",saisie2.masse.value)))
 							{
-								alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");
+								alert(\"".CHAMP." \'".MASS."\' ".ERREURMASSE."\");
 							}
 							else
 							{
-								if (document.saisie2.ref.value == \"\" && document.saisie2.config_refCahier.value== '1')
+								if (document.saisie2.couleur.value == \"\" && document.saisie2.config_couleur.value== '1')
 								{
-									alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");
+									alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");
 								}
 								else
 								{
-									if (document.saisie2.aspect.value == \"\" && document.saisie2.config_aspect.value== '1')
+									if (document.saisie2.ref.value == \"\" && document.saisie2.config_refCahier.value== '1')
 									{
-										alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");
+										alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");
 									}
 									else
 									{
-										if (document.saisie2.purification.value == \"\" && document.saisie2.config_typePurif.value== '1')
+										if (document.saisie2.aspect.value == \"\" && document.saisie2.config_aspect.value== '1')
 										{
-											alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");
+											alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");
 										}
 										else
 										{
-											if ((document.saisie2.purification.value == \"".RECRISTALLISATION. "\" || document.saisie2.purification.value==\"".PRECIPITATION."\") && (document.saisie2.aspect.value==\"".LIQUIDE."\"))
+											if (document.saisie2.purification.value == \"\" && document.saisie2.config_typePurif.value== '1')
 											{
-												alert(\"".RECRISTALISE."\");
+												alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");
 											}
 											else
 											{
-												if (document.saisie2.purification.value == \"".DISTILLATION."\" && document.saisie2.aspect.value==\"".SOLIDE."\")
+												if ((document.saisie2.purification.value == \"".RECRISTALLISATION. "\" || document.saisie2.purification.value==\"".PRECIPITATION."\") && (document.saisie2.aspect.value==\"".LIQUIDE."\"))
 												{
-													alert(\"".DISTILATION."\");
+													alert(\"".RECRISTALISE."\");
 												}
 												else
 												{
-													if (!top)
+													if (document.saisie2.purification.value == \"".DISTILLATION."\" && document.saisie2.aspect.value==\"".SOLIDE."\")
 													{
-														alert(\"".CHAMP." \'".SOLVANTS."\' ".RENSEIGNE."\");
+														alert(\"".DISTILATION."\");
 													}
 													else
 													{
-														theForm.submit();
+														if (!top)
+														{
+															alert(\"".CHAMP." \'".SOLVANTS."\' ".RENSEIGNE."\");
+														}
+														else
+														{
+															theForm.submit();
+														}
 													}
 												}
 											}
@@ -418,7 +423,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$result25=$dbh->query($sql);
 			//Les résultats sont mis sous forme de tableau
 			$rop25=$result25->fetch(PDO::FETCH_NUM);
-			$formulaire->ajout_text ($rop25[0], $_POST['numerocomplet'], $rop25[0], "numerocomplet", NBPILLULIER."<br/>","","");
+			$formulaire->ajout_text ($rop25[0], $_POST['numerocomplet'], $rop25[0], "numerocomplet", "* ".NBPILLULIER."<br/>","","");
 			print"<br/><br/>";
 		}
 

@@ -43,26 +43,27 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		<tr>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importation.php\">".IMPORTCN."</a></td>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationtare.php\">".IMPORTTARE."</a></td>
-		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationevo.php\">".IMPORTEVO."</a></td>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF</a></td>
+		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationevo.php\">".IMPORTEVO."</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF</a></td>
 		  </tr>
 		  </table>";
 	print"<div id=\"dhtmltooltip\"></div>
 		<script language=\"javascript\" src=\"ttip.js\"></script>";
-	echo "<br/><h3 align=\"center\">".TITREEVO."</h3>";
+	echo "<br/><h3 align=\"center\">Importation de fichier SDF</h3>";
+
+	echo "<br/><h1 align=\"center\">EN COURS</h1>";
+
 	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".constant($erreur)."</p>";
 	//formulaire d'importatio du fichier
-	$formulaire=new formulaire ("evo","evoimport.php","POST",true);
-	$formulaire->affiche_formulaire();
-	echo "<br/>";
-	$formulaire->ajout_file (30, "filevo",true,FICHIERIMPORTCSV."<br/>","");
-	echo "<br/><br/>";
-	$tab9[1]=DEFALK;
-	$formulaire->ajout_checkbox ("massetran",$tab9,0,"","false");
-	echo "<br/><br/>";
-	$formulaire->ajout_button (SUBMIT,"","submit","");
-	print"<a href=\"#\" onmouseover=\"ddrivetip('<p align=\'justify\'>".AddSlashes(AIDEVO)."</p>')\" onmouseout=\"hideddrivetip()\"><img border=\"0\" src=\"images/aide.gif\" /></a>";
-	$formulaire->fin();
+
+?>
+<!--
+<form action="enregistrement.php" method="post" enctype="multipart/form-data">
+		<input type="file" id="fichier" name="file_name" /><br>
+		<input type="submit" value="TRAITEMENT" id="envoyer" class="centre"/>
+</form>
+-->
+<?php
 }
 else require 'deconnexion.php';
 unset($dbh);

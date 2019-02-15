@@ -132,12 +132,25 @@ if (!empty($_GET['id'])) {
 		if (!empty($rowrmnh[0])) $rowrmnh[0]=str_replace("\r","<br/>",$rowrmnh[0]);
 		if (!empty($rowrmnc[0])) $rowrmnc[0]=str_replace("\r","<br/>",$rowrmnc[0]);
 		if (!empty($rowir[0])) $rowir[0]=str_replace("\r","<br/>",$rowir[0]);
-		if (!isset($rowuv[2])) $rowsm[3] = "";
+
+		if (!isset($rowuv[2])) $rowuv[2] = "";
+		if (!isset($rowuv[0])) $rowuv[0] = "";
+
 		if (!isset($rowsm[3])) $rowsm[3] = "";
-		if (!isset($rowhrms[3])) $rowsm[3] = "";
-		if (!isset($rowrmnc[2])) $rowsm[3] = "";
-		if (!isset($rowir[2])) $rowsm[3] = "";
-		if (!isset($rowrmnh[2])) $rowsm[3] = "";
+		if (!isset($rowsm[0])) $rowsm[0] = "";
+
+		if (!isset($rowhrms[3])) $rowhrms[3] = "";
+		if (!isset($rowhrms[0])) $rowhrms[0] = "";
+
+		if (!isset($rowrmnc[2])) $rowrmnc[2] = "";
+		if (!isset($rowrmnc[0])) $rowrmnc[0] = "";
+
+		if (!isset($rowir[2])) $rowir[2] = "";
+		if (!isset($rowir[0])) $rowir[0] = "";
+
+		if (!isset($rowrmnh[2])) $rowrmnh[2] = "";
+		if (!isset($rowrmnh[0])) $rowrmnh[0] = "";
+
 		print"<tr><td><div style=\"width:500px; height:100px; overflow:auto; border:solid 1px black;\"><strong>".PURETE."</strong>&nbsp;".$row2[6]."&nbsp;".POURCENT."<br/><br/><strong>".METHOPURETE."</strong>&nbsp;".$row2[7]."</div></td><td>&nbsp;</td></tr>";
 		print"<tr><td><div style=\"width:500px; height:200px; overflow:auto; border:solid 1px black;\"><strong>".UV."</strong><br/>".$rowuv[2]."<br/><br/>".$rowuv[0]."</div></td><td>";
 		if (!empty($rowuv[1])) print "<a href=\"telecharge.php?id=".$_GET['id']."&rank=uv\" target=\"_blank\">".FICHIERTEL."</a>";

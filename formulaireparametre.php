@@ -66,7 +66,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			<tr>
 			<td>";
 	$formulaire->ajout_file (30, "logo",true,LOGO."<br/>","");
-	print"</td><td><img src=\"$row1[3]\"></td></tr></table>";
+	print"</td><td><img src=\"$row1[3]\" style=\"width: 150px;\"></td></tr></table>";
 	print"<br/><br/>";
 	$formulaire->ajout_text (50, $row1[8], 50, "email", MAILLOC."<br/>","","");
 	print"<br/><br/>";

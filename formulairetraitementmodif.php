@@ -456,13 +456,16 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 		$i++;
 	}
 
-	for ($i=0; $i<$countsol[0]; $i++) {
-		if (isset($_POST["solvant$i"]) and !empty ($_POST["solvant$i"])) {
-			$y++;
-			if (in_array($_POST["solvant$i"],$tabsolubi)) $changeok=false;
-			else {
-				$changeok=true;
-				break;
+	$changeok=false;
+	if(isset($tabsolubi)){		
+		for ($i=0; $i<$countsol[0]; $i++) {
+			if (isset($_POST["solvant$i"]) and !empty ($_POST["solvant$i"])) {
+				$y++;
+				if (in_array($_POST["solvant$i"],$tabsolubi)) $changeok=false;
+				else {
+					$changeok=true;
+					break;
+				}
 			}
 		}
 	}
