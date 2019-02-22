@@ -58,6 +58,10 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 	$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom, chi_id_responsable, chi_id_equipe FROM chimiste WHERE chi_statut='{CHIMISTE}'";
 	$result_chimiste = $dbh->query($sql_chimiste);
+
+	suppression("files");
+	suppression("files/sdf");
+	suppression("files/rdf");
 ?>
 
 <form action="importationSDF_enregistrement.php" method="post" enctype="multipart/form-data">

@@ -1,34 +1,55 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Universitï¿½ d'Orlï¿½ans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
 Institut de Chimie Organique et Analytique
-Université d’Orléans
-Rue de Chartre – BP6759
-45067 Orléans Cedex 2
+Universitï¿½ dï¿½Orlï¿½ans
+Rue de Chartre ï¿½ BP6759
+45067 Orlï¿½ans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant ï¿½ la gestion d'une chimiothï¿½que de produits de synthï¿½ses.
 
-Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
-Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
+Ce logiciel est rï¿½gi par la licence CeCILL soumise au droit franï¿½ais et respectant les principes de diffusion des logiciels libres.
+Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusï¿½e par le CEA,
  le CNRS et l'INRIA sur le site "http://www.cecill.info".
 
-En contrepartie de l'accessibilité au code source et des droits de copie, de modification et de redistribution accordés par cette licence,
- il n'est offert aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l'auteur du
- programme, le titulaire des droits patrimoniaux et les concédants successifs.
+En contrepartie de l'accessibilitï¿½ au code source et des droits de copie, de modification et de redistribution accordï¿½s par cette licence,
+ il n'est offert aux utilisateurs qu'une garantie limitï¿½e. Pour les mï¿½mes raisons, seule une responsabilitï¿½ restreinte pï¿½se sur l'auteur du
+ programme, le titulaire des droits patrimoniaux et les concï¿½dants successifs.
 
-A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
- et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
-invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+A cet ï¿½gard l'attention de l'utilisateur est attirï¿½e sur les risques associï¿½s au chargement, ï¿½ l'utilisation, ï¿½ la modification et/ou au dï¿½veloppement
+ et ï¿½ la reproduction du logiciel par l'utilisateur ï¿½tant donnï¿½ sa spï¿½cificitï¿½ de logiciel libre, qui peut le rendre complexe ï¿½ manipuler et qui le
+rï¿½serve donc ï¿½ des dï¿½veloppeurs et des professionnels avertis possï¿½dant des connaissances informatiques approfondies. Les utilisateurs sont donc
+invitï¿½s ï¿½ charger et tester l'adï¿½quation du logiciel ï¿½ leurs besoins dans des conditions permettant d'assurer la sï¿½curitï¿½ de leurs systï¿½mes et ou de
+ leurs donnï¿½es et, plus gï¿½nï¿½ralement, ï¿½ l'utiliser et l'exploiter dans les mï¿½mes conditions de sï¿½curitï¿½.
 
-Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
+Le fait que vous puissiez accï¿½der ï¿½ cet en-tï¿½te signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez acceptï¿½ les
 termes.
 */
 function __autoload ($classe) {
 	require_once 'class/'.$classe.'.class.php';
+}
+
+function suppression($dossier_traite){
+	// On ouvre le dossier.
+	$repertoire = opendir($dossier_traite);
+	// On lance notre boucle qui lira les fichiers un par un.
+	while(false !== ($fichier = readdir($repertoire))){
+		// On met le chemin du fichier dans une variable simple
+		$chemin = $dossier_traite."/".$fichier;
+		// Les variables qui contiennent toutes les infos nÃ©cessaires.
+		$infos = pathinfo($chemin);
+		$extension = "";
+		if (isset($infos['extension']))
+			$extension = $infos['extension'];
+
+		// On n'oublie pas LA condition sous peine d'avoir quelques surprises. :p
+		if($fichier!="." && $fichier!=".." && !is_dir($chemin) && $extension != "php"){
+			unlink($chemin);
+		}
+	}
+	closedir($repertoire); // On ferme !
 }
 ?>

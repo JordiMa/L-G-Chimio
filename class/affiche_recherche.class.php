@@ -47,7 +47,7 @@ class affiche_recherche {
 
 
   function __construct ($resultatsql,$str_inchi_md5,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$recherche) {
-	$this->resultatsql=$resultatsql;
+	  $this->resultatsql=$resultatsql;
     $this->str_inchi_md5=$str_inchi_md5;
     $this->formbrute=$formbrute;
     $this->massemol=$massemol;
@@ -60,7 +60,7 @@ class affiche_recherche {
     $this->typechimiste=$typechimiste;
     $this->chimiste=$chimiste;
     $this->numero=$numero;
-	$this->recherche=$recherche;
+	  $this->recherche=$recherche;
   }
 
   function imprime() {
@@ -90,9 +90,9 @@ class affiche_recherche {
 						$rom[1]=str_replace($k,"<SUB>".$k."</SUB>",$rom[1]);
 					}
 					print"<br/>".$rom[1]."<br/>".$rom[2]." ".GMOL."</td>\n<td width=\"30%\"><div style=\"width:300px; height:200px; overflow:auto; border:solid 1px black;\"><table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">\n";
-					$sql= "SELECT chi_nom, chi_prenom, pro_date_entree, pro_numero, pro_masse, equi_nom_equipe, pro_unite_masse, pro_controle_purete, pro_controle_structure FROM produit,chimiste,equipe WHERE pro_id_produit=$key and produit.pro_id_chimiste=chimiste.chi_id_chimiste and pro_id_equipe=equi_id_equipe";
+					$sql= "SELECT chi_nom, chi_prenom, pro_date_entree, pro_numero, pro_masse, equi_nom_equipe, pro_unite_masse, pro_controle_purete, pro_controle_structure FROM produit,chimiste,equipe WHERE pro_id_produit=$key and produit.pro_id_chimiste=chimiste.chi_id_chimiste and (pro_id_equipe=equi_id_equipe OR pro_id_equipe is null)";
 					$result1 = $dbh->query($sql);
-					$ror =$result1->fetch(PDO::FETCH_NUM);
+					$ror = $result1->fetch(PDO::FETCH_NUM);
 
 					$sql="SELECT chi_nom, chi_prenom FROM produit,chimiste WHERE pro_id_produit='$key' and produit.pro_id_responsable=chimiste.chi_id_chimiste";
 					$result2 = $dbh->query($sql);

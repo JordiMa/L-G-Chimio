@@ -100,6 +100,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			global $transformation;
 			global $contenuFichier_csv;
 			global $array_afficheListe;
+			global $valueBar;
 
 			$aEnvoyer = [];
 
@@ -148,6 +149,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			</script>";
 			if ($valueBar == ($_POST['nbrMol']-1)){
 				echo "<br/><h1 align=\"center\">Traitement terminé !</h1>";
+				if (sizeof($array_afficheListe) > 0){
 
 					$timestamp = time();
 
@@ -158,11 +160,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					foreach($contenuFichier_csv as $ligne){
 						fputcsv($fichier_csv, $ligne, ";");
 					}
+
 					echo "<a class='download-file' href='temp/".$timestamp.".csv' download='Log_Importaiton_".date("Y-m-d").".csv'></a>";
 					echo "
 					<script type='text/javascript'>
 						$('.download-file').get(0).click();
 					</script>";
+					}
 
 					if (sizeof($array_afficheListe) == 0)
 						echo "Aucune erreur trouvée<br>";
@@ -181,6 +185,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						}
 						echo "</textarea>";
 					}
+
 			}
 
 		}
@@ -1119,6 +1124,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			echo "</div>";
 		}
 
+
+
+		if (count(glob("files/sdf/*")) <= 1 && count(glob("files/rdf/*")) <= 1){
+			echo '<meta http-equiv="refresh" content="0;URL=importationSDF.php">';
+			die();
+		}
+
 		try{
 			$baseDonnees = $dbh;
 		}catch(PDOException $e){
@@ -1133,6 +1145,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$decoupage = [];
 		$transformation = [];
 		$equivalence = [];
+		$valueBar;
 
 		foreach($_POST as $key => $value){ // récupération des infos de traitement
 			if(strpos($key, 'cor_')===0){
@@ -1160,15 +1173,11 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		//données récupérés après une correction de molécule
 		$id_molecule = -1;
 		if(isset($_POST["id_mol"])){
-
 			$id_molecule = $_POST["id_mol"];
 			$mol_corrigee = $_POST["mol"];
 		}
-
-
 			//SDF
 			if($_POST['extension'] === 'sdf'){
-
 
 				for($i=1;$i<=$_POST['nbrMol'];$i++){
 					if($valid){
@@ -1224,9 +1233,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 								${"donnees".$i}[$categories[$j]] = rtrim(${"donnees".$i}[$categories[$j]]);
 							}
 
-
-					traitement(${"donnees".$i},$i); //insertion dans la base de donnée, molécule par molécule
-
+							traitement(${"donnees".$i},$i); //insertion dans la base de donnée, molécule par molécule
+							fclose($file);
 						}
 					}else{echo'Erreur lecture : '.$path;}
 
@@ -1294,15 +1302,22 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 								}
 							}
 
-					traitement(${"donnees".$i},$i);	//insertion dans la base de donnée, molécule par molécule
-
-
-					}else{echo'Erreur lecture : '.$path;}
-
+						traitement(${"donnees".$i},$i);	//insertion dans la base de donnée, molécule par molécule
+						fclose($file);
+					}
+						else{
+							echo'Erreur lecture : '.$path;
+						}
 					}
 				}
 
 				}
+			}
+
+			if ($valueBar == ($_POST['nbrMol']-1)){
+				suppression("files");
+				suppression("files/sdf");
+				suppression("files/rdf");
 			}
 
 	echo'
