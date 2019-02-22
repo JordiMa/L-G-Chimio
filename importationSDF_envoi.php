@@ -1124,7 +1124,31 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			echo "</div>";
 		}
 
+<<<<<<< HEAD
 
+=======
+		// La fonction en question.
+		function suppression($dossier_traite){
+			// On ouvre le dossier.
+			$repertoire = opendir($dossier_traite);
+			// On lance notre boucle qui lira les fichiers un par un.
+		  while(false !== ($fichier = readdir($repertoire))){
+				// On met le chemin du fichier dans une variable simple
+		    $chemin = $dossier_traite."/".$fichier;
+				// Les variables qui contiennent toutes les infos nécessaires.
+		    $infos = pathinfo($chemin);
+				$extension = "";
+				if (isset($infos['extension']))
+		    	$extension = $infos['extension'];
+
+				// On n'oublie pas LA condition sous peine d'avoir quelques surprises. :p
+		    if($fichier!="." && $fichier!=".." && !is_dir($chemin) && $extension != "php"){
+					unlink($chemin);
+				}
+			}
+			closedir($repertoire); // On ferme !
+		}
+>>>>>>> f178a95d1281d7160d6585a5d4ba5ca1c3fa1738
 
 		if (count(glob("files/sdf/*")) <= 1 && count(glob("files/rdf/*")) <= 1){
 			echo '<meta http-equiv="refresh" content="0;URL=importationSDF.php">';
@@ -1314,11 +1338,17 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				}
 			}
 
+<<<<<<< HEAD
 			if ($valueBar == ($_POST['nbrMol']-1)){
 				suppression("files");
 				suppression("files/sdf");
 				suppression("files/rdf");
 			}
+=======
+			suppression("files");
+			suppression("files/sdf");
+			suppression("files/rdf");
+>>>>>>> f178a95d1281d7160d6585a5d4ba5ca1c3fa1738
 
 	echo'
 				<meta charset="UTF-8">
