@@ -28,13 +28,21 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
+include_once 'script/administrateur.php';
+include_once 'script/secure.php';
+include_once 'autoload.php';
+include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
+include_once 'presentation/entete.php';
+$menu=9;
+include_once 'presentation/gauche.php';
+
 include_once 'script/secure.php';
 include_once 'protection.php';
 include_once 'langues/'.$_SESSION['langue'].'/lang_import.php';
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
-$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."' AND chi_passif = FALSE";
+$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
 //les résultats sont retournées dans la variable $result
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
@@ -49,32 +57,66 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		  </table>";
 	print"<div id=\"dhtmltooltip\"></div>
 		<script language=\"javascript\" src=\"ttip.js\"></script>";
-
 	echo "<br/><h3 align=\"center\">Importation de fichier SDF</h3>";
 
 	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".constant($erreur)."</p>";
 	//formulaire d'importatio du fichier
 
+  $extensions_voulues = ["sdf","rdf"];
+  $compat = false;
 
-	$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom, chi_id_responsable, chi_id_equipe FROM chimiste WHERE chi_statut='{CHIMISTE}'";
-	$result_chimiste = $dbh->query($sql_chimiste);
+  if (isset($_FILES['file_name']) AND $_FILES['file_name']['error'] == 0) {
+
+  	$infos_file = pathinfo($_FILES['file_name']['name']);
+  	$extension_file = $infos_file['extension'];
+
+  	for($i=0;$i<count($extensions_voulues);$i++){
+  		if($extension_file===$extensions_voulues[$i]){
+  			$compat = true;
+  		}
+  	}
+
+  	if($compat){
+  		move_uploaded_file($_FILES['file_name']['tmp_name'], 'files/'.basename($_FILES['file_name']['name']));
+
+  		$fichier = $_FILES['file_name']['name'];
+
+  			echo'
+  				<body>
+  					<form action="importationSDF_decoupage.php" method="post">
+
+  						<p id="extension" class="centre">Extension du fichier : '.$extension_file.'<p/>
+
+
+  						<input type="hidden" name="file2Read" value="'.$fichier.'" />
+  						<input type="hidden" name="extension" value="'.$extension_file.'"/>
+							';
+
+							if (isset($_POST["correctionOnLive"]))
+								echo '<input type="hidden" name="correctionOnLive" value="'.$_POST["correctionOnLive"].'"/>';
+
+							echo'
+  						<div>
+  							<input type="submit" class="centre" id="lire" value="Lire"/>
+  						</div>
+  					</form>
+  			';
+
+  	}else{
+  		echo'<input type="text" id="erreur" class="centre" value="Format du fichier invalide" disabled />';
+  	}
+  }else{
+  	echo'<input type="text" id="erreur" class="centre" value="ERREUR" disabled />';
+  }
 ?>
 
-<form action="importationSDF_enregistrement.php" method="post" enctype="multipart/form-data">
-		<label>Fichier de type SDF ou RDF :</br></br></label>
-		<input type="file" id="fichier" name="file_name" /><br>
-		<br>
-		<br>
-		<label>&nbsp;Correction des structures :</label><br>
-		<br>
-		<input type="radio" name="correctionOnLive" value="true" >Pendant l'importation<br>
-  	<input type="radio" name="correctionOnLive" value="false" checked>Après l'importation<br>
-		<br>
-		<input type="submit" value="Envoyer" id="envoyer" class="centre"/>
-</form>
+
 
 <?php
 }
 else require 'deconnexion.php';
 unset($dbh);
+
+
+include_once 'presentation/pied.php';
 ?>

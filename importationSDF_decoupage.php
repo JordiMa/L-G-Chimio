@@ -28,13 +28,21 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
+include_once 'script/administrateur.php';
+include_once 'script/secure.php';
+include_once 'autoload.php';
+include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
+include_once 'presentation/entete.php';
+$menu=9;
+include_once 'presentation/gauche.php';
+
 include_once 'script/secure.php';
 include_once 'protection.php';
 include_once 'langues/'.$_SESSION['langue'].'/lang_import.php';
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
-$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."' AND chi_passif = FALSE";
+$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
 //les résultats sont retournées dans la variable $result
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
@@ -49,32 +57,101 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		  </table>";
 	print"<div id=\"dhtmltooltip\"></div>
 		<script language=\"javascript\" src=\"ttip.js\"></script>";
-
 	echo "<br/><h3 align=\"center\">Importation de fichier SDF</h3>";
 
 	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".constant($erreur)."</p>";
 	//formulaire d'importatio du fichier
 
+	if(is_readable('files/'.$_POST['file2Read'])){
+		$file = fopen('files/'.$_POST['file2Read'],"r");
 
-	$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom, chi_id_responsable, chi_id_equipe FROM chimiste WHERE chi_statut='{CHIMISTE}'";
-	$result_chimiste = $dbh->query($sql_chimiste);
-?>
+		if($_POST['extension'] === 'sdf'){
+			$contenu = "";
+			$num = 1;
+			$finMolecule = false;
+			while(!feof($file)){
+				$finMolecule = false;
+				$molecule = fopen('files/sdf/molecule'.($num++),"w");
+				while(!$finMolecule){
+					$contenu = fgets($file);
+					if(rtrim($contenu) === '$$$$'){
+						$finMolecule = true;
+					}else{
+						/*echo $contenu;*/
+						fwrite($molecule,$contenu);
+						if(feof($file)){
+							$finMolecule = true;
+						}
+					}
+				}
+			}
+		}
 
-<form action="importationSDF_enregistrement.php" method="post" enctype="multipart/form-data">
-		<label>Fichier de type SDF ou RDF :</br></br></label>
-		<input type="file" id="fichier" name="file_name" /><br>
-		<br>
-		<br>
-		<label>&nbsp;Correction des structures :</label><br>
-		<br>
-		<input type="radio" name="correctionOnLive" value="true" >Pendant l'importation<br>
-  	<input type="radio" name="correctionOnLive" value="false" checked>Après l'importation<br>
-		<br>
-		<input type="submit" value="Envoyer" id="envoyer" class="centre"/>
-</form>
+		if($_POST['extension'] === 'rdf'){
+			$contenu = "";
+			$num = 0;
+			$finMolecule = false;
+			while(!feof($file)){
+				$finMolecule = false;
+				if($num === 0){
+					$molecule = fopen('files/rdf/molecule1',"w");
+				}else{
+					$molecule = fopen('files/rdf/molecule'.$num,"w");
+				}
 
-<?php
+				while(!$finMolecule){
+					$contenu = fgets($file);
+					$debut = explode(" ",$contenu);
+					if($debut[0] === '$MFMT'){
+						$finMolecule = true;
+						$num++;
+					}else{
+						if(!($num === 0)){
+							fwrite($molecule,$contenu);
+						}
+						if(feof($file)){
+							$finMolecule = true;
+						}
+
+					}
+
+				}
+			}
+		}
+
+		echo'
+			<form action="importationSDF_traitement.php" method="post">
+				<input type="hidden" name="extension" value="'.$_POST['extension'].'"/>
+		';
+
+		if($_POST['extension'] === 'sdf'){
+			echo'
+			<p id="info" class="centre">MOLÉCULES À TRAITER : '.(--$num).'<p/>
+			<input type="hidden" name="nbrMol" value="'.$num.'"/>
+			';
+		}
+
+		if($_POST['extension'] === 'rdf'){
+			echo'
+			<p id="info" class="centre">MOLÉCULES À TRAITER : '.$num.'<p/>
+			<input type="hidden" name="nbrMol" value="'.$num.'"/>
+			';
+		}
+		if (isset($_POST["correctionOnLive"]))
+			echo '<input type="hidden" name="correctionOnLive" value="'.$_POST["correctionOnLive"].'"/>';
+
+		echo'
+			<input type="submit" id="continuer" class="centre" value="CONTINUER"/>
+		</form>
+		';
+	}else{
+		echo'ERREUR';
+	}
+
 }
 else require 'deconnexion.php';
 unset($dbh);
+
+
+include_once 'presentation/pied.php';
 ?>
