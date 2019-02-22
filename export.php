@@ -224,23 +224,23 @@ if(isset($_GET['chx_typeContrat'])){
 				$contenuFichier_sdf .= $value['str_mol'];
 
 				$contenuFichier_sdf .= "\n";
-				$contenuFichier_sdf .= "\n> <identificateur_local> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n>  <identificateur_local> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_numero'];
 
 				// [JM - 24/01/2019] Imprime le numero permanent dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
-				$contenuFichier_sdf .= "\n> <identificateur> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n>  <identificateur> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_num_constant'];
 
 
 				// [JM - 24/01/2019] Imprime la masse du produit dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
-				$contenuFichier_sdf .= "\n> <vrac> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n>  <vrac> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_masse'];
 
 
 				$contenuFichier_sdf .= "\n";
-				$contenuFichier_sdf .= "\n> <plaque> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n>  <plaque> (".($key + 1) .")";
 				// [JM - 24/01/2019] Boucle sur la liste des produits en plaque
 				foreach ($row_plaque as $key_plaque => $value_plaque) {
 					// [JM - 24/01/2019] Imprime le numero de plaque dans le fichier SDF
@@ -271,19 +271,19 @@ if(isset($_GET['chx_typeContrat'])){
 
 				// [JM - 24/01/2019] Imprime la purete dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
-				$contenuFichier_sdf .= "\n> <purete> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n>  <purete> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_purete'];
 				$contenuFichier_csv[$key+1][6] = $value['pro_purete'];
 
 				// [JM - 24/01/2019] Imprime la methode de mesure de la purete dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
-				$contenuFichier_sdf .= "\n> <methode_mesure_purete> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n>  <methode_mesure_purete> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_methode_purete'];
 				$contenuFichier_csv[$key+1][7] = $value['pro_methode_purete'];
 
 				// [JM - 24/01/2019] Imprime l'origine de la substance dans le fichier SDF
 				$contenuFichier_sdf .= "\n";
-				$contenuFichier_sdf .= "\n> <origine> (".($key + 1) .")";
+				$contenuFichier_sdf .= "\n>  <origine> (".($key + 1) .")";
 				$contenuFichier_sdf .= "\n".$value['pro_origine_substance'];
 				$contenuFichier_csv[$key+1][8] = $value['pro_origine_substance'];
 
@@ -325,7 +325,7 @@ if(isset($_GET['chx_typeContrat'])){
 					if (sizeof($array_afficheListe) == 1)
 						echo "Un résultat trouvé<br>";
 				else
-					echo sizeof($array_afficheListe)." résultats trouvé<br>";
+					echo sizeof($array_afficheListe)." résultats trouvés<br>";
 
 				if (sizeof($array_afficheListe) >= 1){
 					echo "<br>";

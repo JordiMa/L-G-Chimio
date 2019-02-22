@@ -50,15 +50,19 @@ if (isset($_GET['produit'])){
 	$result_equipe = $dbh->query($sql_equipe);
 
 	// [JM - 01/02/2019] le responsable
-	$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_statut='{RESPONSABLE}' AND chi_id_equipe =".$row1[2];
-	if (isset($_GET['equipe']))
+		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_statut='{RESPONSABLE}' AND chi_id_equipe = -1";
+	if (!empty($row1[2]))
+		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_statut='{RESPONSABLE}' AND chi_id_equipe =".$row1[2];
+	if (isset($_GET['equipe']) && !empty($_GET['equipe']))
 		// [JM - 01/02/2019] Si l'utilisateur selectionne une autre equipe, on recherche les responsables correspondant
 		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_statut='{RESPONSABLE}' AND chi_id_equipe =".$_GET['equipe'];
 	$result_responsable = $dbh->query($sql_responsable);
 
 	// [JM - 01/02/2019] et le chimiste
-	$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$row1[3];
-	if (isset($_GET['responsable']))
+	$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste";
+	if (!empty($row1[3]))
+		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$row1[3];
+	if (isset($_GET['responsable']) && !empty($_GET['responsable']))
 		// [JM - 01/02/2019] Si l'utilisateur selectionne un autre responsable, on recherche les chimistes correspondant
 		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$_GET['responsable'];
 	$result_chimiste = $dbh->query($sql_chimiste);
