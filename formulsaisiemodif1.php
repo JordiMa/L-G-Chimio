@@ -1,4 +1,5 @@
-﻿<?php
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
@@ -565,7 +566,7 @@ if (!empty($_POST['id'])) {
 			}
 
 			//*********Section analyse du formulaire***********
-			print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><hr><h3>".ANALYSE."</h3><br/></td>\n</tr>\n<tr valign=\"top\">\n<td>";
+			print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><div class='hr click_analyses'>".ANALYSE."</div><hr id='arrow_analyses' class='arrow click_analyses'></td>\n</tr>\n<tr class='hr_analyses' valign=\"top\">\n<td><h3>".ANALYSE."</h3><br/>";
 			//recherche des informations sur le champ pro_analyse_elem_trouve
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_analyse_elem_trouve'";
 			//les résultats sont retournées dans la variable $result
@@ -633,7 +634,7 @@ if (!empty($_POST['id'])) {
 				$formulaire->ajout_checkbox ("supuv",$tabsup,'','',false);
 			}
 			//##############  SM  #####################
-			print"</td>\n</tr>\n</table>\n</td>\n</tr>\n<tr valign=\"top\">\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
+			print"</td>\n</tr>\n</table>\n</td>\n</tr>\n<tr class='hr_analyses' valign=\"top\">\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
 					<tr>
 					<td class=\"blocformulaire\">\n<div align=\"center\">".SM."</div>\n<br/>";
 			$sqlsm="SELECT sm_text, sm_type, sm_nom_fichier FROM produit P
@@ -770,7 +771,7 @@ if (!empty($_POST['id'])) {
 				  </tr>
 				</table>";
 			//##############  RMNH  #####################
-			print"\n</td>\n</tr>\n<tr valign=\"top\">\n<td colspan=\"3\">\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
+			print"\n</td>\n</tr>\n<tr class='hr_analyses' valign=\"top\">\n<td colspan=\"3\">\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
 				<tr>
 				<td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN."</div>\n<br/>";
 			$sqlrmnh="SELECT rmnh_text, rmnh_nom_fichier FROM produit P
@@ -809,12 +810,12 @@ if (!empty($_POST['id'])) {
 			//********fin de la section analyse********
 
 			//*********Section Bibliographie du formulaire***********
-			print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><hr>
-				  <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
+			print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><div class='hr click_bibliographie'>".BIBLIO." & ".OBSERVATION."</div><hr id='arrow_bibliographie' class='arrow click_bibliographie'>
+				  <table class='hr_bibliographie' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
 				  <h3>".BIBLIO."</h3><br/></td><td width=\"50%\"><h3>".OBSERVATION."</h3></td></tr>
 				  <tr><td width=\"50%\">
 				  <table width=\"250\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				   <tr>
+				   <tr >
 					 <td class=\"blocformulaire\">\n<div align=\"center\">".PUB."</div>\n<br/>";
 			//recherche des informations sur le champ pro_doi
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_doi'";
@@ -900,6 +901,40 @@ if (!empty($_POST['id'])) {
 					CKEDITOR.inline( 'hsm' );
 					CKEDITOR.inline( 'sm' );
 				</script>";
+
+				echo "
+				<script>
+					$('.hr_analyses').slideToggle();
+					$('.hr_bibliographie').slideToggle();
+
+					$('.click_analyses').click(function(){
+						$('.hr_analyses').slideToggle();
+
+						if (document.getElementById('arrow_analyses').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_analyses').style.borderWidth == ''){
+							document.getElementById('arrow_analyses').style.borderWidth = '0px 20px 20px 20px';
+							document.getElementById('arrow_analyses').style.borderColor = 'transparent transparent #99CC99 transparent';
+						}
+						else
+						if (document.getElementById('arrow_analyses').style.borderWidth == '0px 20px 20px'){
+							document.getElementById('arrow_analyses').style.borderWidth = '20px 20px 0 20px';
+							document.getElementById('arrow_analyses').style.borderColor = '#99CC99 transparent transparent transparent';
+						}
+					});
+					$('.click_bibliographie').click(function(){
+						$('.hr_bibliographie').slideToggle();
+
+						if (document.getElementById('arrow_bibliographie').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_bibliographie').style.borderWidth == ''){
+							document.getElementById('arrow_bibliographie').style.borderWidth = '0px 20px 20px 20px';
+							document.getElementById('arrow_bibliographie').style.borderColor = 'transparent transparent #99CC99 transparent';
+						}
+						else
+						if (document.getElementById('arrow_bibliographie').style.borderWidth == '0px 20px 20px'){
+							document.getElementById('arrow_bibliographie').style.borderWidth = '20px 20px 0 20px';
+							document.getElementById('arrow_bibliographie').style.borderColor = '#99CC99 transparent transparent transparent';
+						}
+					});
+				</script>
+				";
 		}
 		else {
 			$erreur=STRUC;
