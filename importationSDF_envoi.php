@@ -1120,7 +1120,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		}
 
 		try{
-			$baseDonnees = new PDO("pgsql:host=192.168.70.48;dbname=TestLGC1",'postgres','ugcn');
+			$baseDonnees = $dbh;
 		}catch(PDOException $e){
 			echo'<br>Erreur accès à la base de données !<br>'.$e;
 			die();
