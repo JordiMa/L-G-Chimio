@@ -122,6 +122,9 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	</form>
 
 	<?php
+
+	// initialisation de la variable $configJSON pour chaque champ
+	// valeur = 0 car par défaut les champs sont facultatifs
 	$configJSON = array();
 	$configJSON["etapeSynthese"] = 0;
 	$configJSON["couleur"] = 0;
@@ -131,6 +134,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	$configJSON["nomenclature"] = 0;
 	$configJSON["solvantsDeSolubilisation"] = 0;
 
+// on regarde les cases qui ont été cocher
+// et on met valeur = 1 pour les rendre obligatoires
 	if (isset($_GET['etapeSynthese']))
 		$configJSON["etapeSynthese"] = 1;
 	if (isset($_GET['couleur']))
@@ -145,9 +150,16 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$configJSON["nomenclature"] = 1;
 	if (isset($_GET['solvantsDeSolubilisation']))
 		$configJSON["solvantsDeSolubilisation"] = 1;
+
+		// valid = bouton du formulaire
 	if (isset($_GET['valid'])){
+
+		// on encode la variable $configJSON au format JSON,
+		// puis on écrit dans le fichier config.json
 		$myJSON = json_encode($configJSON);
 		file_put_contents('script/config.json', $myJSON);
+
+		// on recharge la page des configurations
 	 	echo " <script> location.replace('parametres.php'); </script>";
 	}
 

@@ -53,3 +53,9 @@ function suppression($dossier_traite){
 	closedir($repertoire); // On ferme !
 }
 ?>
+
+<div id ="loader" class="loader">
+  <div class="inner one"></div>
+  <div class="inner two"></div>
+  <div class="inner three"></div>
+</div>

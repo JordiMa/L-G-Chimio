@@ -231,6 +231,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 				if(document.getElementById("quant_cat_'.$keys[$i].'").value === ""){
 					alert("Entrer un nombre valide de catégories !");
+					document.getElementById(\'loader\').style.visibility = \'hidden\';
+					document.getElementById(\'table_principal\').style.filter = \'none\';"
 
 					return false;
 				}
@@ -239,6 +241,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					if(document.forms["selection"]["sep_cat_'.$keys[$i].'1"].value===""){
 						alert("Entrer un séparateur de catégorie valide !");
+						document.getElementById(\'loader\').style.visibility = \'hidden\';
+						document.getElementById(\'table_principal\').style.filter = \'none\';"
 						return false;
 					}
 
@@ -250,6 +254,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					if(document.forms["selection"]["sep_cat_'.$keys[$i].'1"].value==="" || document.forms["selection"]["sep_cat_'.$keys[$i].'2"].value===""){
 						alert("Entrer un séparateur de catégorie valide !");
+						document.getElementById(\'loader\').style.visibility = \'hidden\';
+						document.getElementById(\'table_principal\').style.filter = \'none\';"
 						return false;
 					}
 
@@ -262,6 +268,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					if(document.forms["selection"]["sep_cat_'.$keys[$i].'1"].value==="" || document.forms["selection"]["sep_cat_'.$keys[$i].'2"].value==="" || document.forms["selection"]["sep_cat_'.$keys[$i].'3"].value===""){
 						alert("Entrer un séparateur de catégorie valide !");
+						document.getElementById(\'loader\').style.visibility = \'hidden\';
+						document.getElementById(\'table_principal\').style.filter = \'none\';"
 						return false;
 					}
 
@@ -286,6 +294,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				if( selectionnees[i] === selectionnees[j] && selectionnees[i] != "plusieurs" && selectionnees[i] != "null" && selectionnees[i] != "pro_observation"){
 
 					alert(selectionnees[i]+" sélectionné plusieurs fois !");	//MESSAGE CONFLIT DE SELECTION
+					document.getElementById(\'loader\').style.visibility = \'hidden\';
+					document.getElementById(\'table_principal\').style.filter = \'none\';"
 
 					return false;
 				}
@@ -294,6 +304,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		}
 		if(!numero){
 			alert("Il doit y avoir un identifiant/numéro de molécule ! Traitement impossible !");
+			document.getElementById(\'loader\').style.visibility = \'hidden\';
+			document.getElementById(\'table_principal\').style.filter = \'none\';"
 			return false;
 		}
 	}
@@ -366,6 +378,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 				default:
 				alert("erreur");
+				document.getElementById(\'loader\').style.visibility = \'hidden\';
+				document.getElementById(\'table_principal\').style.filter = \'none\';"
 
 			}
 
@@ -837,7 +851,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	echo'
 	</div>
 	<div>
-	<input type="submit" id="send" value="Envoyer"/>
+	<input onClick="document.getElementById(\'loader\').style.visibility = \'visible\';document.getElementById(\'table_principal\').style.filter = \'blur(5px)\';" type="submit" id="send" value="Envoyer"/>
 	</div>
 	</form>';
 

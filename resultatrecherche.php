@@ -333,7 +333,7 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 			$formulaire->ajout_cache ($numero,"numero");
 			$formulaire->ajout_cache ($nbpage,"nbpage");
 			$formulaire->ajout_cache ($recherche,"recherche");
-			$formulaire->ajout_text (4,"",3,"page","","","");
+			$formulaire->ajout_text (4,"",6,"page","","","");
 			if ($typechimiste="{RESPONSABLE}" or $typechimiste="{CHEF}") $formulaire->ajout_cache ($chimiste,"{CHIMISTE}");
 			$formulaire->ajout_button (RENDRE,"","submit","");
 			$formulaire->fin();

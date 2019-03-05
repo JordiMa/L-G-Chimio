@@ -97,7 +97,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 							echo'
   						<div>
-  							<input type="submit" class="centre" id="lire" value="Lire"/>
+  							<input onClick="document.getElementById(\'loader\').style.visibility = \'visible\';document.getElementById(\'table_principal\').style.filter = \'blur(5px)\';" type="submit" class="centre" id="lire" value="Lire"/>
   						</div>
   					</form>
   			';

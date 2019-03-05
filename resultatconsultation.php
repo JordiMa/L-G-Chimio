@@ -1032,16 +1032,20 @@ function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,
         $formulaire->ajout_cache ($supinf,"supinf");
         $formulaire->ajout_cache ($massexact,"massexact");
         $formulaire->ajout_cache ($forbrutexact,"forbrutexact");
-		$formulaire->ajout_cache ($numero,"numero");
-		$formulaire->ajout_cache ($refcah,"refcahier");
+				$formulaire->ajout_cache ($numero,"numero");
+				$formulaire->ajout_cache ($refcah,"refcahier");
         $formulaire->ajout_cache (($page-1),"page");
-		$formulaire->ajout_cache (($nbpage),"nbpage");
-		$formulaire->ajout_cache ($recherche,"recherche");
+				$formulaire->ajout_cache (($nbpage),"nbpage");
+				$formulaire->ajout_cache ($recherche,"recherche");
         $formulaire->ajout_button (PAGE.($page-1),"","submit","");
-        if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}") $formulaire->ajout_cache ($chimiste,"chimiste");
-        if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}") $formulaire->ajout_cache ($equipechi,"equipechi");
+        if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
+					$formulaire->ajout_cache ($chimiste,"chimiste");
+        if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
+					$formulaire->ajout_cache ($equipechi,"equipechi");
         $formulaire->fin();
     }
+
+
     if ($nbrs>0)  print"</td><td width=\"9%\" valign=\"top\"><strong>".PAGE."$page</strong></td>
 						<td width=\"9%\">";
     if ($page<($nbpage)) {
@@ -1054,16 +1058,20 @@ function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,
         $formulaire->ajout_cache ($supinf,"supinf");
         $formulaire->ajout_cache ($massexact,"massexact");
         $formulaire->ajout_cache ($forbrutexact,"forbrutexact");
-		$formulaire->ajout_cache ($numero,"numero");
-		$formulaire->ajout_cache ($refcah,"refcahier");
+				$formulaire->ajout_cache ($numero,"numero");
+				$formulaire->ajout_cache ($refcah,"refcahier");
         $formulaire->ajout_cache (($page+1),"page");
-		$formulaire->ajout_cache (($nbpage),"nbpage");
-		$formulaire->ajout_cache ($recherche,"recherche");
-        if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}") $formulaire->ajout_cache ($chimiste,"chimiste");
-        if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}") $formulaire->ajout_cache ($equipechi,"equipechi");
+				$formulaire->ajout_cache (($nbpage),"nbpage");
+				$formulaire->ajout_cache ($recherche,"recherche");
+        if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
+					$formulaire->ajout_cache ($chimiste,"chimiste");
+        if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
+					$formulaire->ajout_cache ($equipechi,"equipechi");
         $formulaire->ajout_button (PAGE.($page+1),"","submit","");
         $formulaire->fin();
     }
+
+
     if ($nbrs>0)  print"</td>
 					<td width=\"29%\">
 					<div align=\"right\">";
@@ -1077,13 +1085,15 @@ function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,
         $formulaire->ajout_cache ($supinf,"supinf");
         $formulaire->ajout_cache ($massexact,"massexact");
         $formulaire->ajout_cache ($forbrutexact,"forbrutexact");
-		$formulaire->ajout_cache ($numero,"numero");
-		$formulaire->ajout_cache ($refcah,"refcahier");
-        $formulaire->ajout_text (4,"",3,"page","","","");
-		$formulaire->ajout_cache (($nbpage),"nbpage");
-		$formulaire->ajout_cache ($recherche,"recherche");
-        if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}") $formulaire->ajout_cache ($chimiste,"chimiste");
-        if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}") $formulaire->ajout_cache ($equipechi,"equipechi");
+				$formulaire->ajout_cache ($numero,"numero");
+				$formulaire->ajout_cache ($refcah,"refcahier");
+        $formulaire->ajout_text (4,"",6,"page","","","");
+				$formulaire->ajout_cache (($nbpage),"nbpage");
+				$formulaire->ajout_cache ($recherche,"recherche");
+        if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
+					$formulaire->ajout_cache ($chimiste,"chimiste");
+        if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
+					$formulaire->ajout_cache ($equipechi,"equipechi");
         $formulaire->ajout_button (RENDRE,"","submit","");
         $formulaire->fin();
     }

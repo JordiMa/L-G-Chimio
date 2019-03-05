@@ -47,6 +47,7 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
+	set_time_limit(0);
 	print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 		<tr>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importation.php\">".IMPORTCN."</a></td>
@@ -141,7 +142,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			echo '<input type="hidden" name="correctionOnLive" value="'.$_POST["correctionOnLive"].'"/>';
 
 		echo'
-			<input type="submit" id="continuer" class="centre" value="CONTINUER"/>
+			<input onClick="document.getElementById(\'loader\').style.visibility = \'visible\';document.getElementById(\'table_principal\').style.filter = \'blur(5px)\';" type="submit" id="continuer" class="centre" value="CONTINUER"/>
 		</form>
 		';
 	}else{
@@ -151,7 +152,10 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 }
 else require 'deconnexion.php';
 unset($dbh);
-
+set_time_limit(120);
 
 include_once 'presentation/pied.php';
 ?>
+<script>
+	document.getElementById('loader').style.visibility = 'hidden';
+</script>

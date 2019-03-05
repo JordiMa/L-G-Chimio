@@ -143,7 +143,7 @@ if (isset($transfert)) {
 
 </head>
 <body>
-<table width="98%" height="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+<table id="table_principal" width="98%" height="95%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td height="10%" colspan="2">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">

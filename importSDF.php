@@ -62,6 +62,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	suppression("files");
 	suppression("files/sdf");
 	suppression("files/rdf");
+
 ?>
 
 <form action="importationSDF_enregistrement.php" method="post" enctype="multipart/form-data">

@@ -28,12 +28,13 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans des co
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
-include_once 'script/administrateur.php'; //Charge les parametrages de l'application
-include_once 'script/secure.php'; //Appel du script qui sert à gérer les session
-include_once 'autoload.php'; //Charge les classe applicative
+
+include_once 'script/administrateur.php'; //Charge les paramétrages de l'application
+include_once 'script/secure.php'; //Appel du script qui sert à gérer les sessions
+include_once 'autoload.php'; //Charge les classes applicatives
 include_once 'langues/'.$_SESSION['langue'].'/presentation.php'; //Charge le fichier de langue
 include_once 'presentation/entete.php'; //Affichage de l'entête
-$menu=2; //Selection du menu
+$menu=2; //Sélection du menu
 include_once 'presentation/gauche.php'; //Affichage du menu
 include_once 'resultatconsultation.php'; //Code principal de la page
 include_once 'presentation/pied.php'; //Affichage du pied de pages

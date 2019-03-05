@@ -1,4 +1,14 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+	document.getElementById('loader').style.visibility = 'visible';
+	document.getElementById('table_principal').style.filter = 'blur(5px)';
+
+	function ready() {
+		document.getElementById('loader').style.visibility = 'hidden';
+		document.getElementById('table_principal').style.filter = 'none';
+	}
+	document.addEventListener("DOMContentLoaded", ready);
+</script>
 <?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
@@ -40,6 +50,7 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
+set_time_limit(0);
 
 if(isset($_GET['chx_equipe'])){
 	// [JM - 24/01/2019] Selectionne toute les equipes
@@ -139,9 +150,9 @@ if(isset($_GET['chx_typeContrat'])){
 
 	<br><br>
 	<?php if(isset($_GET['rad_format'])) { ?>
-		<input type="image" name="download" value="download" src="images/charge.gif" alt="Télécharger le fichier" title="Télécharger le fichier">
+		<input type="image" name="download" value="download" src="images/charge.gif" alt="Télécharger le fichier" title="Télécharger le fichier" onClick="document.getElementById('loader').style.visibility = 'visible';document.getElementById('table_principal').style.filter = 'blur(5px)';">
 	<?php } ?>
-	<input type="image" name="liste" value="liste" src="images/liste.gif" alt="Afficher les resultats" title="Afficher les resultats">
+	<input type="image" name="liste" value="liste" src="images/liste.gif" alt="Afficher les resultats" title="Afficher les resultats" onClick="document.getElementById('loader').style.visibility = 'visible';document.getElementById('table_principal').style.filter = 'blur(5px)';">
 
 	</form>
 
@@ -338,9 +349,11 @@ if(isset($_GET['chx_typeContrat'])){
 				}
 			}
 		}
+
 	}
 else require 'deconnexion.php';
 unset($dbh);
+set_time_limit(120);
 ?>
 <!-- Auto click sur la balise <a class='download-file'> ci dessus -->
 <script type="text/javascript">

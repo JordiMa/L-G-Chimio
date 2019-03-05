@@ -106,7 +106,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 			$key = array_search('pro_numero', $correspondance);
 
-			// TODO: true/false
 			if (isset($_POST["correctionOnLive"])){
 				if ($_POST["correctionOnLive"] == "false") {
 					$donnees["molecule"] = validite_mol($donnees["molecule"],$i,false, $donnees[$key]);
@@ -841,47 +840,48 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			$table = "produit";
 			$id = "pro_id_produit";
 			$num_const = numero_constant();
-			if(!(check("produit","pro_numero",$infos["pro_numero"]))){
 
-				//TODO select chimiste, responsable, equipe
+			if (isset($infos["pro_numero"])){
+				if(!(check("produit","pro_numero",$infos["pro_numero"]))){
 
-				$sql = "INSERT INTO produit(pro_id_type,pro_id_equipe,pro_id_responsable,pro_id_chimiste,pro_id_couleur,pro_id_structure,pro_purification,pro_masse,pro_unite_masse,pro_aspect,pro_date_entree,pro_ref_cahier_labo,pro_etape_mol,pro_numero,pro_num_constant) VALUES('".$infos["pro_id_type"]."',".$infos["pro_id_equipe"].",".$infos["pro_id_responsable"].",".$infos["pro_id_chimiste"].",'".$infos["pro_id_couleur"]."','".$infos["pro_id_structure"]."','".$infos["pro_purification"]."','".$infos["pro_masse"]."','".$infos["pro_unite_masse"]."','".$infos["pro_aspect"]."','".$infos["pro_date_entree"]."',E'".addslashes($infos["pro_ref_cahier_labo"])."','".$infos["pro_etape_mol"]."','".$infos["pro_numero"]."','".$num_const."');";
+					$sql = "INSERT INTO produit(pro_id_type,pro_id_equipe,pro_id_responsable,pro_id_chimiste,pro_id_couleur,pro_id_structure,pro_purification,pro_masse,pro_unite_masse,pro_aspect,pro_date_entree,pro_ref_cahier_labo,pro_etape_mol,pro_numero,pro_num_constant) VALUES('".$infos["pro_id_type"]."',".$infos["pro_id_equipe"].",".$infos["pro_id_responsable"].",".$infos["pro_id_chimiste"].",'".$infos["pro_id_couleur"]."','".$infos["pro_id_structure"]."','".$infos["pro_purification"]."','".$infos["pro_masse"]."','".$infos["pro_unite_masse"]."','".$infos["pro_aspect"]."','".$infos["pro_date_entree"]."',E'".addslashes($infos["pro_ref_cahier_labo"])."','".$infos["pro_etape_mol"]."','".$infos["pro_numero"]."','".$num_const."');";
 
-				$sql = utf8_encode($sql);
-				$result = $baseDonnees->exec($sql);
-				$ID_produit = getID("produit","pro_id_produit","pro_numero",$infos["pro_numero"]);
+					$sql = utf8_encode($sql);
+					$result = $baseDonnees->exec($sql);
+					$ID_produit = getID("produit","pro_id_produit","pro_numero",$infos["pro_numero"]);
 
-				if(!(check("solubilite","sol_id_produit",$ID_produit))){
-					if($infos["sol_solvant"] == "INCONNU")
+					if(!(check("solubilite","sol_id_produit",$ID_produit))){
+						if($infos["sol_solvant"] == "INCONNU")
 						$infos["sol_solvant"] = "18";
-				$baseDonnees->exec(utf8_encode("INSERT INTO solubilite(sol_id_solvant,sol_id_produit) VALUES ('".$infos["sol_solvant"]."','".$ID_produit."');"));
-				}
+						$baseDonnees->exec(utf8_encode("INSERT INTO solubilite(sol_id_solvant,sol_id_produit) VALUES ('".$infos["sol_solvant"]."','".$ID_produit."');"));
+					}
 
-				insert_plaque($plaque,$ID_produit);
-				insert_solvant($infos["sol_solvant"],$ID_produit);
+					insert_plaque($plaque,$ID_produit);
+					insert_solvant($infos["sol_solvant"],$ID_produit);
 
-				if(array_key_exists("pro_origine_substance",$infos)){
-					insert_origine_substance($infos["pro_origine_substance"],$ID_produit);
-				}else{
-					insert_origine_substance("INCONNU",$ID_produit);
-				}
+					if(array_key_exists("pro_origine_substance",$infos)){
+						insert_origine_substance($infos["pro_origine_substance"],$ID_produit);
+					}else{
+						insert_origine_substance("INCONNU",$ID_produit);
+					}
 
-				$observations="";
-				$observations = getValeur("produit","pro_id_produit",$ID_produit,"pro_observation");
-				foreach($infos as $key => $value){
-					if(getTable($key)==="produit"){
-						if($key === "pro_observation"){
+					$observations="";
+					$observations = getValeur("produit","pro_id_produit",$ID_produit,"pro_observation");
+					foreach($infos as $key => $value){
+						if(getTable($key)==="produit"){
+							if($key === "pro_observation"){
 								$observations = $observations."<br><br>".$value;
+							}
 						}
 					}
-				}
-				$observations = utf8_encode($observations);
-				$observations = addslashes($observations);
-				$sql2 = "UPDATE produit SET pro_observation = E'".$observations."' WHERE pro_numero = '".$infos["pro_numero"]."'";
-				$result2 = $baseDonnees->exec(utf8_encode($sql2));
+					$observations = utf8_encode($observations);
+					$observations = addslashes($observations);
+					$sql2 = "UPDATE produit SET pro_observation = E'".$observations."' WHERE pro_numero = '".$infos["pro_numero"]."'";
+					$result2 = $baseDonnees->exec(utf8_encode($sql2));
 
-				// fonctionne pas ?
-				//update("produit","pro_id_produit",$ID_produit,"pro_observation",$observations);
+					// fonctionne pas ?
+					//update("produit","pro_id_produit",$ID_produit,"pro_observation",$observations);
+				}
 			}
 		}
 
@@ -1067,9 +1067,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					correction_mol($mol,$i);
 					$valid = false;
 				}
-				// TODO
-				// Cree un fichier de log pour tracer les erreurs
-				// $identifiant_molecule
+
 				end($contenuFichier_csv);
 				$key = key($contenuFichier_csv);
 				$contenuFichier_csv[$key+1][0] = $identifiant_molecule;
@@ -1123,32 +1121,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			echo "<param name=\"options\" value=\"polarnitro\">";
 			echo "</div>";
 		}
-
-<<<<<<< HEAD
-
-=======
-		// La fonction en question.
-		function suppression($dossier_traite){
-			// On ouvre le dossier.
-			$repertoire = opendir($dossier_traite);
-			// On lance notre boucle qui lira les fichiers un par un.
-		  while(false !== ($fichier = readdir($repertoire))){
-				// On met le chemin du fichier dans une variable simple
-		    $chemin = $dossier_traite."/".$fichier;
-				// Les variables qui contiennent toutes les infos nécessaires.
-		    $infos = pathinfo($chemin);
-				$extension = "";
-				if (isset($infos['extension']))
-		    	$extension = $infos['extension'];
-
-				// On n'oublie pas LA condition sous peine d'avoir quelques surprises. :p
-		    if($fichier!="." && $fichier!=".." && !is_dir($chemin) && $extension != "php"){
-					unlink($chemin);
-				}
-			}
-			closedir($repertoire); // On ferme !
-		}
->>>>>>> f178a95d1281d7160d6585a5d4ba5ca1c3fa1738
 
 		if (count(glob("files/sdf/*")) <= 1 && count(glob("files/rdf/*")) <= 1){
 			echo '<meta http-equiv="refresh" content="0;URL=importationSDF.php">';
@@ -1338,17 +1310,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				}
 			}
 
-<<<<<<< HEAD
-			if ($valueBar == ($_POST['nbrMol']-1)){
+
+			if ($valueBar >= ($_POST['nbrMol']-1)){
 				suppression("files");
 				suppression("files/sdf");
 				suppression("files/rdf");
 			}
-=======
-			suppression("files");
-			suppression("files/sdf");
-			suppression("files/rdf");
->>>>>>> f178a95d1281d7160d6585a5d4ba5ca1c3fa1738
+
 
 	echo'
 				<meta charset="UTF-8">
@@ -1378,5 +1346,5 @@ unset($dbh);
 
 include_once 'presentation/pied.php';
 //remet le timeout
-set_time_limit(30);
+set_time_limit(120);
 ?>
