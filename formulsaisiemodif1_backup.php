@@ -136,17 +136,16 @@ if (!empty($_POST['id'])) {
 										if (!top) {alert(\"".CHAMP." \'".SOLVANTS."\' ".RENSEIGNE."\");}
 										else {
 											var verifRequired = true;
-											var all = document.getElementsByClassName(\"fld-required\");
+											var all = document.getElementsByClassName(\"form-control\");
 
 											for (var i=0, max=all.length; i < max; i++) {
-													if(document.getElementsByClassName(\"fld-required\")[i].checked){
-														if(document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"form-control\")[0].value == \"\"){
+													if(document.getElementsByClassName(\"form-control\")[i].required){
+														if(document.getElementsByClassName(\"form-control\")[i].value == \"\"){
 															verifRequired = false;
-															alert('\'' + document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"field-label\")[0].innerHTML + '\' n\'est pas renseigné (Volet déroulant \'ANNEXE\')' );
 														}
 													}
 											}
-											document.getElementById('champsAnnexe').value = window.JSON.stringify(formBuilder.actions.getData('json', true));
+											document.getElementById('champsAnnexe').value = window.JSON.stringify($(fbRender).formRender(\"userData\"));
 											if(verifRequired){
 												theForm.submit();
 											}
@@ -900,72 +899,47 @@ if (!empty($_POST['id'])) {
 			print"</td>\n</tr>\n</table>\n
 			<tr>
 			<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
-			<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div>";
+			<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-render\"></div>";
 
-			$sql_para1="SELECT pro_champsAnnexe FROM produit WHERE pro_id_produit='".$_POST['id']."'";
-			$result_para1 = $dbh->query($sql_para1);
-			$rowPara1=$result_para1->fetch(PDO::FETCH_NUM);
-
-			$sql_para2="SELECT para_champs FROM parametres WHERE para_id_parametre = 1";
-		  $result_para2 = $dbh->query($sql_para2);
-		  $rowPara2=$result_para2->fetch(PDO::FETCH_NUM);
+			$sql_para="SELECT pro_champsAnnexe FROM produit WHERE pro_id_produit='".$_POST['id']."'";
+			$result_para = $dbh->query($sql_para);
+			$rowPara=$result_para->fetch(PDO::FETCH_NUM);
 			?>
 
-		  <script src="js/jquery.min.js"></script>
-		  <script src="js/jquery-ui.min.js"></script>
-		  <script src="js/form-builder.min.js"></script>
+			<script src="js/jquery.min.js"></script>
+			<script src="js/jquery-ui.min.js"></script>
+			<script src="js/form-builder.min.js"></script>
+			<script src="js/form-render.min.js"></script>
 
-		  <script>
-		    jQuery(function($) {
-		      var options = {
-		          i18n: {
-		            locale: 'fr-FR'
-		          },
-		          disableFields: [
-		            'file',
-		            'hidden',
-		            'button'
-		          ],
-		          disabledAttrs: [
-		            'className',
-		            'access',
-		            'name'
-		          ],
-							disabledActionButtons: [
-								'data',
-								'save',
-								'clear'
-						]
-		        },
-		        $fbTemplate = $(document.getElementById('fb-editor'));
-		        formBuilder = $fbTemplate.formBuilder(options);
+			<script>
+			/*
+			This has been updated to use the new userData method available in formRender
+			*/
+			const getUserDataBtn = document.getElementById("get-user-data");
+			const fbRender = document.getElementById("fb-render");
+			const originalFormData =
+			<?php
+				if(isset($_POST["champsAnnexe"]))
+					echo $_POST["champsAnnexe"];
+				else
+					echo $rowPara[0] ;
+			?>;
+			jQuery(function($) {
+				const formData = JSON.stringify(originalFormData);
 
-		        var formData =
-						<?php
-							if(isset($_POST["champsAnnexe"]))
-								echo $_POST["champsAnnexe"];
-							else
-								if ($rowPara1[0] != '[]') {
-									echo $rowPara1[0];
-								}
-								else {
-									echo $rowPara2[0];
-								}
+				$(fbRender).formRender({ formData });
+			});
 
-						?>;
-		        setTimeout(function(){ formBuilder.actions.setData(formData); }, 1000);
-		    });
-		  </script>
+			</script>
 
 			<?php
-
 			print"
 			</tr></table></table>\n<p align=\"right\">";
 			unset($dbh);
 
 			echo "<input id=\"champsAnnexe\" name=\"champsAnnexe\" type=\"hidden\" value=\"\">";
 
-			$formulaire->ajout_button (SUBMIT,"","button","onClick=\"GetSmiles(form,2)\"");
+			$formulaire->ajout_button (SUBMIT,"","submit","onClick=\"GetSmiles(form,2)\"");
 			print"</p>";
 			//fin du formulaire
 
@@ -988,12 +962,12 @@ if (!empty($_POST['id'])) {
 
 				echo "
 				<script>
-					$('.hr_analyses').slideToggle(0);
-					$('.hr_bibliographie').slideToggle(0);
-					$('.hr_annexe').slideToggle(0);
+					$('.hr_analyses').slideToggle();
+					$('.hr_bibliographie').slideToggle();
+					$('.hr_annexe').slideToggle();
 
 					$('.click_analyses').click(function(){
-						$('.hr_analyses').slideToggle(0);
+						$('.hr_analyses').slideToggle();
 
 						if (document.getElementById('arrow_analyses').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_analyses').style.borderWidth == ''){
 							document.getElementById('arrow_analyses').style.borderWidth = '0px 20px 20px 20px';
@@ -1006,7 +980,7 @@ if (!empty($_POST['id'])) {
 						}
 					});
 					$('.click_bibliographie').click(function(){
-						$('.hr_bibliographie').slideToggle(0);
+						$('.hr_bibliographie').slideToggle();
 
 						if (document.getElementById('arrow_bibliographie').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_bibliographie').style.borderWidth == ''){
 							document.getElementById('arrow_bibliographie').style.borderWidth = '0px 20px 20px 20px';
@@ -1019,7 +993,7 @@ if (!empty($_POST['id'])) {
 						}
 					});
 					$('.click_annexe').click(function(){
-						$('.hr_annexe').slideToggle(0);
+						$('.hr_annexe').slideToggle();
 
 						if (document.getElementById('arrow_annexe').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_annexe').style.borderWidth == ''){
 							document.getElementById('arrow_annexe').style.borderWidth = '0px 20px 20px 20px';

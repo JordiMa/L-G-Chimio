@@ -33,14 +33,14 @@ include_once 'protection.php';
 include_once 'langues/'.$_SESSION['langue'].'/lang_formulaire.php';
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
-if ($_POST['masse']=="" || empty($_POST['couleur']) || empty($_POST['purification']) || empty($_POST['aspect']) || empty($_POST['ref']) || empty($_POST['nomiupac'])) {
+if ($_POST['masse']=="" || empty($_POST['couleur']) || empty($_POST['purification']) || empty($_POST['aspect'])) {
 	$erreur="<p align=\"center\" class=\"erreur\">";
 	if ($_POST['masse']=="") $erreur.=CHAMP." ".MASS." ".RENSEIGNE."<br/>";
 	if ($_POST['couleur']=="-- ".SELECCOULEUR." --") $erreur.=CHAMP." ".COULEUR." ".RENSEIGNE."<br/>";
 	if ($_POST['purification']=="-- ".SELECPURIFICATION." --") $erreur.=CHAMP." ".PURIFICATION." ".RENSEIGNE."<br/>";
 	if ($_POST['aspect']=="-- ".SELECASPECT." --") $erreur.=CHAMP." ".ASPECT." ".RENSEIGNE."<br/>";
-	if (empty($_POST['ref'])) $erreur.=CHAMP." ".REFERENCECAHIER." ".RENSEIGNE."<br/>";
-	if (empty($_POST['nomiupac'])) $erreur.=CHAMP." ".NOM." ".RENSEIGNE."<br/>";
+	//if (empty($_POST['ref'])) $erreur.=CHAMP." ".REFERENCECAHIER." ".RENSEIGNE."<br/>";
+	//if (empty($_POST['nomiupac'])) $erreur.=CHAMP." ".NOM." ".RENSEIGNE."<br/>";
 
 	//recherche de solvants sur la table solvant
 	$sql="SELECT count(sol_id_solvant) FROM solvant";
@@ -60,6 +60,9 @@ if ($_POST['masse']=="" || empty($_POST['couleur']) || empty($_POST['purificatio
 	include_once('formulsaisiemodif1.php');
 }
 else {
+	if (empty($_POST['ref'])) $_POST['ref'] = "";
+	if (empty($_POST['nomiupac'])) $_POST['nomiupac'] = "";
+
 	$sql="SELECT pro_suivi_modification FROM produit WHERE pro_id_produit='".$_POST['id']."'";
 	$resultchangement=$dbh->query($sql);
 	$rowchangement=$resultchangement->fetch(PDO::FETCH_NUM);
@@ -269,6 +272,7 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	else {
 		$sql.=", pro_controle_structure = FALSE";
 	}
+	 $sql.=", pro_champsAnnexe = '".$_POST["champsAnnexe"]."'";
 
 	$sql.=" where pro_id_produit='".$_POST['id']."'";
 	$insert=$dbh->exec($sql);
@@ -457,7 +461,7 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	}
 
 	$changeok=false;
-	if(isset($tabsolubi)){		
+	if(isset($tabsolubi)){
 		for ($i=0; $i<$countsol[0]; $i++) {
 			if (isset($_POST["solvant$i"]) and !empty ($_POST["solvant$i"])) {
 				$y++;

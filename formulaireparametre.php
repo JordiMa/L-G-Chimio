@@ -162,7 +162,20 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		// on recharge la page des configurations
 	 	echo " <script> location.replace('parametres.php'); </script>";
 	}
+?>
 
+	<hr>
+	<h3 align="center">Champs personnalisés</h3>
+<center>
+	En cliquant sur le bouton ci-dessous, vous accéderez à une page où vous pourrez ajouter des champs à la fenêtre de saisie de produit.<br>
+
+
+	<br><input type="button" value="Continuer" onClick="javascript:document.location.href='gestionChamps.php'" /><br>
+</center>
+
+<h3></h3>
+
+<?php
 }
 else require 'deconnexion.php';
 unset($dbh);

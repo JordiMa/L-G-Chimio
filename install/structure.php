@@ -196,7 +196,8 @@ CREATE TABLE parametres (
   para_num_exportation boolean,
   para_email_envoie character varying(50),
   para_version character varying(7),
-  para_origin_defaut character varying(12)
+  para_origin_defaut character varying(12),
+  para_champs character varying DEFAULT '[]'
 );
 
 CREATE SEQUENCE parametres_para_id_parametre_seq
@@ -336,6 +337,7 @@ CREATE TABLE produit (
   pro_controle_purete boolean,
   pro_date_controle_purete date,
   pro_controle_structure boolean,
+  pro_champsAnnexe character varying DEFAULT '[]',
   CONSTRAINT contrainte_aspect CHECK ((pro_aspect <@ ARRAY['GOMME'::character varying, 'HUILE'::character varying, 'LIQUIDE'::character varying, 'MOUSSE'::character varying, 'SOLIDE'::character varying, 'INCONNU'::character varying])),
   CONSTRAINT contrainte_originesubstance CHECK ((pro_origine_substance <@ ARRAY['SYNTHESE'::character varying, 'HEMISYNTHESE'::character varying, 'NATURELLE'::character varying, 'INCONNU'::character varying])),
   CONSTRAINT contrainte_purification CHECK ((pro_purification <@ ARRAY['AUCUNE'::character varying, 'COLONNE'::character varying, 'DISTILLATION'::character varying, 'EXTRACTION'::character varying, 'FILTRATION'::character varying, 'FILTRATIONCEL'::character varying, 'HPLC'::character varying, 'PRECIPITATION'::character varying, 'RECRISTALLISATION'::character varying, 'RESINE'::character varying, 'INCONNUE'::character varying])),

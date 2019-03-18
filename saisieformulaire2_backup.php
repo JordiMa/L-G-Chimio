@@ -304,17 +304,16 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 														else
 														{
 															var verifRequired = true;
-															var all = document.getElementsByClassName(\"fld-required\");
+															var all = document.getElementsByClassName(\"form-control\");
 
 															for (var i=0, max=all.length; i < max; i++) {
-																	if(document.getElementsByClassName(\"fld-required\")[i].checked){
-																		if(document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"form-control\")[0].value == \"\"){
+																	if(document.getElementsByClassName(\"form-control\")[i].required){
+																		if(document.getElementsByClassName(\"form-control\")[i].value == \"\"){
 																			verifRequired = false;
-																			alert('\'' + document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"field-label\")[0].innerHTML + '\' n\'est pas renseigné (Volet déroulant \'ANNEXE\')' );
 																		}
 																	}
 															}
-															document.getElementById('champsAnnexe').value = window.JSON.stringify(formBuilder.actions.getData('json', true));
+															document.getElementById('champsAnnexe').value = window.JSON.stringify($(fbRender).formRender(\"userData\"));
 															if(verifRequired){
 																theForm.submit();
 															}
@@ -337,7 +336,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 					if ((document.saisie2.masse.value >= 5 && document.saisie2.massehold.value < 5) || (document.saisie2.masse.value < 5 && document.saisie2.massehold.value >= 5))
 					{
 						document.saisie2.action = \"saisie2.php\";
-						document.getElementById('champsAnnexe').value = window.JSON.stringify(formBuilder.actions.getData('json', true));
+						document.getElementById('champsAnnexe').value = window.JSON.stringify($(fbRender).formRender(\"userData\"));
 						theForm.submit();
 					}
 				}
@@ -813,51 +812,36 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		print"</td>\n</tr>\n</table>\n
 		<tr>
 		<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
-		<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div>";
+		<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-render\"></div>";
 
 		$sql_para="SELECT para_champs FROM parametres WHERE para_id_parametre = 1";
 		$result_para = $dbh->query($sql_para);
 		$rowPara=$result_para->fetch(PDO::FETCH_NUM);
+
+
 		?>
-
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery-ui.min.js"></script>
-		<script src="js/form-builder.min.js"></script>
-
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+		<script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
+		<script src="https://formbuilder.online/assets/js/form-render.min.js"></script>
 		<script>
-			jQuery(function($) {
-				var options = {
-						i18n: {
-							locale: 'fr-FR'
-						},
-						disableFields: [
-							'file',
-							'hidden',
-							'button'
-						],
-						disabledAttrs: [
-							'className',
-							'access',
-							'name'
-						],
-						disabledActionButtons: [
-							'data',
-							'save',
-							'clear'
-					]
-					},
-					$fbTemplate = $(document.getElementById('fb-editor'));
-					formBuilder = $fbTemplate.formBuilder(options);
+		/*
+		This has been updated to use the new userData method available in formRender
+		*/
+		const getUserDataBtn = document.getElementById("get-user-data");
+		const fbRender = document.getElementById("fb-render");
+		const originalFormData =
+		<?php
+			if(isset($_POST["champsAnnexe"]))
+				echo $_POST["champsAnnexe"];
+			else
+				echo $rowPara[0] ;
+		?>;
+		jQuery(function($) {
+		  const formData = JSON.stringify(originalFormData);
 
-					var formData =
-					<?php
-						if(isset($_POST["champsAnnexe"]))
-							echo $_POST["champsAnnexe"];
-						else
-								echo $rowPara[0];
-					?>;
-					setTimeout(function(){ formBuilder.actions.setData(formData); }, 1000);
-			});
+		  $(fbRender).formRender({ formData });
+		});
 		</script>
 
 

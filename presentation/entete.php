@@ -60,7 +60,7 @@ date_default_timezone_set('Europe/Paris');
 echo "<!DOCTYPE html>";
 echo "<html>
 <head>
-  <meta http-equiv=\"Content-Type\" content=\"text/html; UTF-8\"/>
+  <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />
   <meta name=\"copyright\" content=\"Laurent ROBIN CNRS-Université d'Orléans 2011\">
   <meta name=\"author\" content=\"Laurent Robin (ICOA, Orléans)- Fanny Bonachera (Institut Pasteur, Lille)- Denis Charapoff (LEDSS, Grenoble)- Nicolas Foulon (LMASO, Lyon)- Philippe Jauffret (UGCN, Montpellier)- Jean-Christophe Jullian (Laboratoire de Pharmacognosie - Biocis, Châtenay-Malabry)- Aurélien Lesnard (CERMN, Caen) - Alain Montagnac (ICSN, Gif-sur-Yvette) - Jean-Marc Paris (ENSCP, Paris)- Julien Peyre (ICSN, Gif-sur-Yvette)- Nicolas Saettel (CERMN, Caen)- Kiet Tran (UGCN, Montpellier)\">";
 

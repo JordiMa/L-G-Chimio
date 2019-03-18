@@ -381,8 +381,119 @@ if (!empty($id_sql)) {
 			if (!empty($row2[18])) print"<a href=\"http://dx.doi.org/".$row2[18]."\" target=\"_blank\">".$row2[18]."</a>";
 			print"</td><td><strong>".CAS."</strong>&nbsp;".$row2[19]."</td><td><strong>".HAL."</strong>&nbsp;";
 			if (!empty($row2[20])) print"<a href=\"http://hal.archives-ouvertes.fr/".$row2[20]."/fr/\" target=\"_blank\">".$row2[20]."</a>";
+
 			print"</td></tr>
-				</table>";
+
+				<tr>
+				<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
+				<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div><div id=\"fb-rendered-form\"><form action=\"#\"></form></div>";
+
+				$sql_para="SELECT pro_champsAnnexe FROM produit WHERE pro_id_produit='".$id_sql."'";
+				$result_para = $dbh->query($sql_para);
+				$rowPara=$result_para->fetch(PDO::FETCH_NUM);
+
+				?>
+				<script src="js/jquery.min.js"></script>
+				<script src="js/jquery-ui.min.js"></script>
+				<script src="js/form-builder.min.js"></script>
+				<script src="js/form-render.min.js"></script>
+
+				<script>
+					jQuery(function($) {
+						var options = {
+								i18n: {
+									locale: 'fr-FR'
+								},
+								disableFields: [
+									'file',
+									'hidden',
+									'button'
+								],
+								disabledAttrs: [
+									'className',
+									'access',
+									'name'
+								],
+								disabledActionButtons: [
+									'data',
+									'save',
+									'clear'
+							]
+							},
+							$fbTemplate = $(document.getElementById('fb-editor'));
+							$formContainer = $(document.getElementById('fb-rendered-form')),
+							formBuilder = $fbTemplate.formBuilder(options);
+
+							var formData = <?php echo $rowPara[0];?>;
+
+							setTimeout(function(){ formBuilder.actions.setData(formData); }, 1000);
+							setTimeout(function(){ $fbTemplate.toggle(); }, 1010);
+							setTimeout(function(){
+			        $('form', $formContainer).formRender({
+			          formData: formBuilder.formData
+			        }); }, 1020);
+
+					});
+				</script>
+
+				<?php
+				print"
+				</tr></table></table>";
+
+				echo "
+				<script>
+				setTimeout(function(){
+					var all = document.getElementsByClassName(\"form-control\");
+
+					for (var i=0, max=all.length; i < max; i++) {
+					     document.getElementsByClassName(\"form-control\")[i].disabled = true;
+					}; }, 1100);
+
+					$('.hr_analyses').slideToggle(0);
+					$('.hr_bibliographie').slideToggle(0);
+					$('.hr_annexe').slideToggle(0);
+
+					$('.click_analyses').click(function(){
+						$('.hr_analyses').slideToggle(0);
+
+						if (document.getElementById('arrow_analyses').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_analyses').style.borderWidth == ''){
+							document.getElementById('arrow_analyses').style.borderWidth = '0px 20px 20px 20px';
+							document.getElementById('arrow_analyses').style.borderColor = 'transparent transparent #99CC99 transparent';
+						}
+						else
+						if (document.getElementById('arrow_analyses').style.borderWidth == '0px 20px 20px'){
+							document.getElementById('arrow_analyses').style.borderWidth = '20px 20px 0 20px';
+							document.getElementById('arrow_analyses').style.borderColor = '#99CC99 transparent transparent transparent';
+						}
+					});
+					$('.click_bibliographie').click(function(){
+						$('.hr_bibliographie').slideToggle(0);
+
+						if (document.getElementById('arrow_bibliographie').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_bibliographie').style.borderWidth == ''){
+							document.getElementById('arrow_bibliographie').style.borderWidth = '0px 20px 20px 20px';
+							document.getElementById('arrow_bibliographie').style.borderColor = 'transparent transparent #99CC99 transparent';
+						}
+						else
+						if (document.getElementById('arrow_bibliographie').style.borderWidth == '0px 20px 20px'){
+							document.getElementById('arrow_bibliographie').style.borderWidth = '20px 20px 0 20px';
+							document.getElementById('arrow_bibliographie').style.borderColor = '#99CC99 transparent transparent transparent';
+						}
+					});
+					$('.click_annexe').click(function(){
+						$('.hr_annexe').slideToggle(0);
+
+						if (document.getElementById('arrow_annexe').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_annexe').style.borderWidth == ''){
+							document.getElementById('arrow_annexe').style.borderWidth = '0px 20px 20px 20px';
+							document.getElementById('arrow_annexe').style.borderColor = 'transparent transparent #99CC99 transparent';
+						}
+						else
+						if (document.getElementById('arrow_annexe').style.borderWidth == '0px 20px 20px'){
+							document.getElementById('arrow_annexe').style.borderWidth = '20px 20px 0 20px';
+							document.getElementById('arrow_annexe').style.borderColor = '#99CC99 transparent transparent transparent';
+						}
+					});
+				</script>";
+
 			//fermeture de la connexion à la base de données
 			unset($dbh);
 	}
