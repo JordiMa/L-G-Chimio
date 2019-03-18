@@ -1,4 +1,4 @@
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script>
 	document.getElementById('loader').style.visibility = 'visible';
 	document.getElementById('table_principal').style.filter = 'blur(5px)';
@@ -50,6 +50,7 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
+
 set_time_limit(0);
 
 if(isset($_GET['chx_equipe'])){
@@ -86,21 +87,79 @@ if(isset($_GET['chx_typeContrat'])){
 
 	<!-- [JM - 24/01/2019] Debut du formulaire -->
 	<form action="exportation.php" method="get">
+		<div>
+			<input type="radio" name="rad_format" value="SDF" onchange="this.form.submit()" <?php if(isset($_GET['rad_format']) && $_GET['rad_format'] == "SDF") echo "checked"; ?> >SDF<br>
+			<input type="radio" name="rad_format" value="CSV" onchange="this.form.submit()" <?php if(isset($_GET['rad_format']) && $_GET['rad_format'] == "CSV") echo "checked"; ?> >CSV<br>
+		</div>
 
-		<input type="radio" name="rad_format" value="SDF" onchange="this.form.submit()" <?php if(isset($_GET['rad_format']) && $_GET['rad_format'] == "SDF") echo "checked"; ?> >SDF<br>
-		<input type="radio" name="rad_format" value="CSV" onchange="this.form.submit()" <?php if(isset($_GET['rad_format']) && $_GET['rad_format'] == "CSV") echo "checked"; ?> >CSV<br>
+		<div>
+			<br>Sélectionnez les champs à exporter : (*non fonctionnel, en cours)<br>
+				<?php
+					$arrayChampsBDD = [
+						"Type",
+						"Equipe",
+						"Responsable",
+						"Chimiste",
+						"Couleur",
+						"Pureté",
+						"Purification",
+						"Masse",
+						"Aspect",
+						"Date de saisie",
+						"Reference cahier de labo",
+						"Observation",
+						"Identificateur",
+						"Numero constant",
+						"Point de fusion",
+						"Point d'ebullition",
+						"Methode de messure de la purete",
+						"Numero CN",
+						"Origine de la substance",
+						"QR code",
+						"Pureté contrôlée",
+						"Date de contrôle pureté",
+						"Structure contrôlée"
+					];
+				?>
 
-		<br>Sélectionnez vos critères de sélection :<br>
-		<input type="checkbox" name="chx_equipe" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_equipe'])) echo "checked"; ?> >Equipe<br>
-		<input type="checkbox" name="chx_utilisateur" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_utilisateur'])) echo "checked"; ?> >Utilisateur<br>
-		<input type="checkbox" name="chx_typeContrat" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_typeContrat'])) echo "checked"; ?> >Type de contrat<br>
-		<input type="checkbox" name="chx_masseDispo" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_masseDispo'])) echo "checked"; ?> >Masse disponible<br>
-		<input type="checkbox" name="chx_plaqueNonVrac" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_plaqueNonVrac'])) echo "checked"; ?> >Produits en plaque mais pas en vrac<br>
-		<input type="checkbox" name="chx_evotec" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_evotec'])) echo "checked"; ?> >Chez Evotec<br>
+				<div id="multi-select-plugin" aria-labeledby="multi-select-plugin-label">
+					<span class="toggle">
+						<label>Sélectionnez les champs souhaité</label>
+						<span class="chevron">&lt;</span>
+					</span>
+					<ul>
+
+						<?php
+							foreach ($arrayChampsBDD as $key => $value) {
+								echo'
+								<li>
+									<label>
+										<input type="checkbox" name="chx_ChampsBDD_'.$key.'" value="'.$value.'" ';if(isset($_GET['chx_ChampsBDD_'.$key])) echo "checked";echo'/>
+										'.$value.'
+									</label>
+								</li>
+								';
+							}
+						?>
+					</ul>
+				</div>
+			<br>
+		</div>
+
+		<div>
+			<br>Sélectionnez vos critères de sélection :<br>
+			<input type="checkbox" name="chx_equipe" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_equipe'])) echo "checked"; ?> >Equipe<br>
+			<input type="checkbox" name="chx_utilisateur" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_utilisateur'])) echo "checked"; ?> >Utilisateur<br>
+			<input type="checkbox" name="chx_typeContrat" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_typeContrat'])) echo "checked"; ?> >Type de contrat<br>
+			<input type="checkbox" name="chx_masseDispo" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_masseDispo'])) echo "checked"; ?> >Masse disponible<br>
+			<input type="checkbox" name="chx_plaqueNonVrac" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_plaqueNonVrac'])) echo "checked"; ?> >Produits en plaque mais pas en vrac<br>
+			<input type="checkbox" name="chx_evotec" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_evotec'])) echo "checked"; ?> >Chez Evotec<br>
+			<input type="checkbox" name="chx_liste" value="1" onchange="this.form.submit()" <?php if(isset($_GET['chx_liste'])) echo "checked"; ?> >Depuis une liste d'identificateurs<br>
+		</div>
 
 		<br>
 		<?php if(isset($_GET['chx_equipe'])) { ?>
-			Sélectionnez une équipe :<br>
+			<label>Sélectionnez une équipe :</label><br>
 			<select name="equipe" size="4" onchange="this.form.submit()" style="width: 150px;">
 				<!-- [JM - 24/01/2019] Affiche les equipes dans une liste box -->
 				<?php
@@ -112,7 +171,7 @@ if(isset($_GET['chx_typeContrat'])){
 		<?php } ?>
 
 		<?php if(isset($_GET['chx_utilisateur'])) { ?>
-			Sélectionnez un utilisateur :<br>
+			<label>Sélectionnez un utilisateur :</label><br>
 			<select name="utilisateur" size="4" onchange="this.form.submit()" style="width: 150px;">
 				<!-- [JM - 24/01/2019] Affiche les utilisateurs dans une liste box -->
 				<?php
@@ -124,7 +183,7 @@ if(isset($_GET['chx_typeContrat'])){
 		<?php } ?>
 
 		<?php if(isset($_GET['chx_typeContrat'])) { ?>
-			Sélectionnez un type de contrat :<br>
+			<label>Sélectionnez un type de contrat :</label><br>
 			<select name="typeContrat" size="3" onchange="this.form.submit()" style="width: 150px;">
 				<!-- [JM - 24/01/2019] Affiche les utilisateurs dans une liste box -->
 				<?php
@@ -136,7 +195,7 @@ if(isset($_GET['chx_typeContrat'])){
 		<?php } ?>
 
 		<?php if(isset($_GET['chx_masseDispo'])) { ?>
-			masse disponible : <br>
+			<label>masse disponible : </label><br>
 			<select name="masseOperateur" size="1"  onchange="this.form.submit()">
 				<option value=">" <?php if(isset($_GET['masseOperateur']) and $_GET['masseOperateur'] == ">") echo "selected='selected'"; ?> >&gt;</option>
 				<option value=">=" <?php if(isset($_GET['masseOperateur']) and $_GET['masseOperateur'] == ">=") echo "selected='selected'"; ?> >≥</option>
@@ -145,7 +204,21 @@ if(isset($_GET['chx_typeContrat'])){
 				<option value="=" <?php if(isset($_GET['masseOperateur']) and $_GET['masseOperateur'] == "=") echo "selected='selected'"; ?> >=</option>
 			</select>
 
-			<label><input type="number" name="masse" value="-1" style="width: 110px;"> mg</label>
+			<label><input type="number" name="masse" value="-1" style="width: 110px;"> mg</label><br><br>
+		<?php } ?>
+
+		<?php if(isset($_GET['chx_liste'])) { ?>
+			<label>Liste d'identificateurs :</label><br>
+			<textarea name="listeID" rows="8" cols="80" onchange="this.form.submit()"><?php if(isset($_GET['listeID'])) echo $_GET['listeID']; ?></textarea><br>
+
+			<label>Séparateur utilisé pour la liste :<br>
+				<select name="listeID_separateur" size="1" onchange="this.form.submit()">
+					<option value=";" <?php if(isset($_GET['listeID_separateur']) and $_GET['listeID_separateur'] == ";") echo "selected='selected'"; ?>>;</option>
+					<option value="," <?php if(isset($_GET['listeID_separateur']) and $_GET['listeID_separateur'] == ",") echo "selected='selected'"; ?>>,</option>
+					<option value="espace" <?php if(isset($_GET['listeID_separateur']) and $_GET['listeID_separateur'] == "espace") echo "selected='selected'"; ?>>Espace</option>
+					<option value="ligne" <?php if(isset($_GET['listeID_separateur']) and $_GET['listeID_separateur'] == "ligne") echo "selected='selected'"; ?>>Retour à la ligne</option>
+				</select>
+			</label><br><br>
 		<?php } ?>
 
 	<br><br>
@@ -187,6 +260,49 @@ if(isset($_GET['chx_typeContrat'])){
 			$sql_sdf .= " AND (pro_id_produit IN (SELECT pos_id_produit FROM position) AND pro_masse >".$row_stockParametre[0].")";
 		}
 
+		if(isset($_GET['chx_liste'])){
+			switch ($_GET['listeID_separateur']) {
+				case ';':
+						$listeID_value = str_replace(';', ',', $_GET['listeID']);
+					break;
+				case ',':
+						$listeID_value = $_GET['listeID'];
+					break;
+				case 'espace':
+							$listeID_value = str_replace(' ', ',', $_GET['listeID']);
+					break;
+				case 'ligne':
+								$listeID_value = str_replace(array("\r\n","\n"), ',', $_GET['listeID']);
+
+					break;
+			}
+
+			$listeID_array = explode(",",$listeID_value);
+			$listeID_value = "";
+			$listeID_value_num = "";
+			foreach ($listeID_array as $key => $value) {
+				$listeID_value.= "'".trim($value)."'";
+				if (count($listeID_array) != ($key+1)) {
+					$listeID_value .= ",";
+				}
+				// TODO
+				if (is_numeric(trim($value))){
+					$listeID_value_num.= trim($value);
+					if (count($listeID_array) != ($key+1)) {
+						$listeID_value_num .= ",";
+					}
+				}
+			}
+
+			$sql_sdf .= " AND (pro_numero IN (".$listeID_value.")";
+
+			if(!empty($listeID_value_num)){
+				$sql_sdf .= " OR pro_num_constant IN (".$listeID_value_num.")";
+			}
+
+			$sql_sdf .= ")";
+		}
+
 			// [JM - 24/01/2019] Preparation du contenue du fichier SDF
 			$contenuFichier_sdf = "";
 			$result_sdf = $dbh->query($sql_sdf);
@@ -215,6 +331,8 @@ if(isset($_GET['chx_typeContrat'])){
 
 			// [JM - 24/01/2019] Boucle sur chaque produit
 			foreach ($result_sdf as $key => $value) {
+
+				if (isset($_GET['download_x'])){
 
 				$contenuFichier_csv[$key+1][0] = " ";
 				$contenuFichier_csv[$key+1][1] = " ";
@@ -253,13 +371,12 @@ if(isset($_GET['chx_typeContrat'])){
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n>  <plaque> (".($key + 1) .")";
 				// [JM - 24/01/2019] Boucle sur la liste des produits en plaque
-				foreach ($row_plaque as $key_plaque => $value_plaque) {
-					// [JM - 24/01/2019] Imprime le numero de plaque dans le fichier SDF
-					if(in_array($value[0], $value_plaque)){
-						$contenuFichier_sdf .= "\n". $value_plaque[0];
-						$contenuFichier_csv[$key+1][4] = $value_plaque[0];
-						break;
-					}
+
+				$key_arr = array_search($value[0], array_column($row_plaque, 0));
+				if ($key_arr)
+				{
+					$contenuFichier_sdf .= "\n". $row_plaque[$key_arr][0];
+					$contenuFichier_csv[$key+1][4] = $row_plaque[$key_arr][0];
 				}
 
 				//[JM - 24/01/2019] Si contrainte Evotec cocher
@@ -300,8 +417,7 @@ if(isset($_GET['chx_typeContrat'])){
 
 				$contenuFichier_sdf .= "\n";
 				$contenuFichier_sdf .= "\n$$$$\n";
-
-
+			}
 				if (isset($_GET['liste_x'])){
 					$array_afficheListe[] = $value['pro_numero'];
 				}
@@ -358,4 +474,314 @@ set_time_limit(120);
 <!-- Auto click sur la balise <a class='download-file'> ci dessus -->
 <script type="text/javascript">
 	$('.download-file').get(0).click();
+</script>
+
+<script>
+	(function($){
+	'use strict';
+
+	const DataStatePropertyName = 'multiselect';
+	const EventNamespace = '.multiselect';
+	const PluginName = 'MultiSelect';
+
+	var old = $.fn[PluginName];
+	$.fn[PluginName] = plugin;
+	$.fn[PluginName].Constructor = MultiSelect;
+	$.fn[PluginName].noConflict = function () {
+	$.fn[PluginName] = old;
+	return this;
+	};
+
+	// Defaults
+	$.fn[PluginName].defaults = {
+
+	};
+
+	// Static members
+	$.fn[PluginName].EventNamespace = function () {
+	return EventNamespace.replace(/^\./ig, '');
+	};
+	$.fn[PluginName].GetNamespacedEvents = function (eventsArray) {
+	return getNamespacedEvents(eventsArray);
+	};
+
+	function getNamespacedEvents(eventsArray) {
+	var event;
+	var namespacedEvents = "";
+	while (event = eventsArray.shift()) {
+			namespacedEvents += event + EventNamespace + " ";
+	}
+	return namespacedEvents.replace(/\s+$/g, '');
+	}
+
+	function plugin(option) {
+	this.each(function () {
+			var $target = $(this);
+			var multiSelect = $target.data(DataStatePropertyName);
+			var options = (typeof option === typeof {} && option) || {};
+
+			if (!multiSelect) {
+					$target.data(DataStatePropertyName, multiSelect = new MultiSelect(this, options));
+			}
+
+			if (typeof option === typeof "") {
+					if (!(option in multiSelect)) {
+							throw "MultiSelect does not contain a method named '" + option + "'";
+					}
+					return multiSelect[option]();
+			}
+	});
+	}
+
+	function MultiSelect(element, options) {
+	this.$element = $(element);
+	this.options = $.extend({}, $.fn[PluginName].defaults, options);
+	this.destroyFns = [];
+
+	this.$toggle = this.$element.children('.toggle');
+	this.$toggle.attr('id', this.$element.attr('id') + 'multi-select-label');
+	this.$backdrop = null;
+	this.$allToggle = null;
+
+	init.apply(this);
+	}
+
+	MultiSelect.prototype.open = open;
+	MultiSelect.prototype.close = close;
+
+	function init() {
+	this.$element
+	.addClass('multi-select')
+	.attr('tabindex', 0);
+
+	initAria.apply(this);
+	initEvents.apply(this);
+	updateLabel.apply(this);
+	injectToggleAll.apply(this);
+
+	this.destroyFns.push(function() {
+	return '|'
+	});
+	}
+
+	function injectToggleAll() {
+	if(this.$allToggle && !this.$allToggle.parent()) {
+	this.$allToggle = null;
+	}
+
+	this.$allToggle = $("<li><label><input type='checkbox'/>(Tout)</label><li>");
+
+	this.$element
+	.children('ul:first')
+	.prepend(this.$allToggle);
+	}
+
+	function initAria() {
+	this.$element
+	.attr('role', 'combobox')
+	.attr('aria-multiselect', true)
+	.attr('aria-expanded', false)
+	.attr('aria-haspopup', false)
+	.attr('aria-labeledby', this.$element.attr("aria-labeledby") + " " + this.$toggle.attr('id'));
+
+	this.$toggle
+	.attr('aria-label', '');
+	}
+
+	function initEvents() {
+	var that = this;
+	this.$element
+	.on(getNamespacedEvents(['click']), function($event) {
+	if($event.target !== that.$toggle[0] && !that.$toggle.has($event.target).length) {
+	return;
+	}
+
+	if($(this).hasClass('in')) {
+	that.close();
+	} else {
+	that.open();
+	}
+	})
+	.on(getNamespacedEvents(['keydown']), function($event) {
+	var next = false;
+	switch($event.keyCode) {
+	case 13:
+		if($(this).hasClass('in')) {
+			that.close();
+		} else {
+			that.open();
+		}
+		break;
+	case 9:
+		if($event.target !== that.$element[0]	) {
+			$event.preventDefault();
+		}
+	case 27:
+		that.close();
+		break;
+	case 40:
+		next = true;
+	case 38:
+		var $items = $(this)
+		.children("ul:first")
+		.find(":input, button, a");
+
+		var foundAt = $.inArray(document.activeElement, $items);
+		if(next && ++foundAt === $items.length) {
+			foundAt = 0;
+		} else if(!next && --foundAt < 0) {
+			foundAt = $items.length - 1;
+		}
+
+		$($items[foundAt])
+		.trigger('focus');
+	}
+	})
+	.on(getNamespacedEvents(['focus']), 'a, button, :input', function() {
+	$(this)
+	.parents('li:last')
+	.addClass('focused');
+	})
+	.on(getNamespacedEvents(['blur']), 'a, button, :input', function() {
+	$(this)
+	.parents('li:last')
+	.removeClass('focused');
+	})
+	.on(getNamespacedEvents(['change']), ':checkbox', function() {
+	if(that.$allToggle && $(this).is(that.$allToggle.find(':checkbox'))) {
+	var allChecked = that.$allToggle
+	.find(':checkbox')
+	.prop("checked");
+
+	that.$element
+	.find(':checkbox')
+	.not(that.$allToggle.find(":checkbox"))
+	.each(function(){
+		$(this).prop("checked", allChecked);
+		$(this)
+		.parents('li:last')
+		.toggleClass('selected', $(this).prop('checked'));
+	});
+
+	updateLabel.apply(that);
+	return;
+	}
+
+	$(this)
+	.parents('li:last')
+	.toggleClass('selected', $(this).prop('checked'));
+
+	var checkboxes = that.$element
+	.find(":checkbox")
+	.not(that.$allToggle.find(":checkbox"))
+	.filter(":checked");
+
+	that.$allToggle.find(":checkbox").prop("checked", checkboxes.length === checkboxes.end().length);
+
+	updateLabel.apply(that);
+	})
+	.on(getNamespacedEvents(['mouseover']), 'ul', function() {
+	$(this)
+	.children(".focused")
+	.removeClass("focused");
+	});
+	}
+
+	function updateLabel() {
+	var pluralize = function(wordSingular, count) {
+	if(count !== 1) {
+	switch(true) {
+		case /y$/.test(wordSingular):
+			wordSingular = wordSingular.replace(/y$/, "ies");
+		default:
+			wordSingular = wordSingular + "s";
+	}
+	}
+	return wordSingular;
+	}
+
+	var $checkboxes = this.$element
+	.find('ul :checkbox');
+
+	var allCount = $checkboxes.length;
+	var checkedCount = $checkboxes.filter(":checked").length
+	var label = checkedCount + " " + pluralize("champ", checkedCount) + pluralize(" sélectionné", checkedCount);
+
+	this.$toggle
+	.children("label")
+	.text(checkedCount ? (checkedCount === allCount ? '(Tout)' : label) : 'Sélectionnez les champs souhaité');
+
+	this.$element
+	.children('ul')
+	.attr("aria-label", label + " of " + allCount + " " + pluralize("champs", allCount));
+	}
+
+	function ensureFocus() {
+	this.$element
+	.children("ul:first")
+	.find(":input, button, a")
+	.first()
+	.trigger('focus')
+	.end()
+	.end()
+	.find(":checked")
+	.first()
+	.trigger('focus');
+	}
+
+	function addBackdrop() {
+	if(this.$backdrop) {
+	return;
+	}
+
+	var that = this;
+	this.$backdrop = $("<div class='multi-select-backdrop'/>");
+	this.$element.append(this.$backdrop);
+
+	this.$backdrop
+	.on('click', function() {
+	$(this)
+	.off('click')
+	.remove();
+
+	that.$backdrop = null;
+	that.close();
+	});
+	}
+
+	function open() {
+	if(this.$element.hasClass('in')) {
+	return;
+	}
+
+	this.$element
+	.addClass('in');
+
+	this.$element
+	.attr('aria-expanded', true)
+	.attr('aria-haspopup', true);
+
+	addBackdrop.apply(this);
+	//ensureFocus.apply(this);
+	}
+
+	function close() {
+	this.$element
+	.removeClass('in')
+	.trigger('focus');
+
+	this.$element
+	.attr('aria-expanded', false)
+	.attr('aria-haspopup', false);
+
+	if(this.$backdrop) {
+	this.$backdrop.trigger('click');
+	}
+	}
+	})(jQuery);
+
+	$(document).ready(function(){
+	$('#multi-select-plugin')
+	.MultiSelect();
+	});
 </script>

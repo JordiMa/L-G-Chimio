@@ -303,6 +303,11 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			"extraire_annee" => "Année",
 		),
 
+		"pro_champsannexe|Date" => array(
+			"date_jour_mois_annee_sans_heure" => "Format jour/mois/année",
+			"date_moi_jour_annee_sans_heure" => "Format mois/jour/année",
+		),
+
 		);
 
 
@@ -353,11 +358,14 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				';
 			}
 
-			echo'
+			if (preg_match('/pro_champsannexe/', $value)) {
+				echo'<input type="hidden" name="cor_'.$key.'" value="'.$value.'{{'.$key.'" />';
+			}
+			else {
+				echo'<input type="hidden" name="cor_'.$key.'" value="'.$value.'" />';
+			}
 
-			<input type="hidden" name="cor_'.$key.'" value="'.$value.'" />
 
-			';
 		}
 		$nbrDecoupage = count($decoupage);
 		$aDecouper = array_keys($decoupage);

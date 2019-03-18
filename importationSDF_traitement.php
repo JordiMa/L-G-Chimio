@@ -78,6 +78,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					while(!feof($file)){
 						$contenu = fgets($file);
+						$contenu = utf8_encode($contenu);
 						$category = strpos($contenu,">  <"); // ">  <" est le symbole caractéristique précédent une catégorie dans les fichiers SDF
 						if(!($category===0)){
 							if(!(rtrim($contenu) === "" OR $lastCategory == "molecule" OR rtrim($contenu) === "(null)")){ //éviter l'insertion de lignes vides (ou contenant seulement des sauts de ligne (\n)), ainsi que la molécule, dont on connaît déjà la nature
@@ -130,6 +131,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					while(!feof($file)){
 						$contenu = fgets($file);
+						$contenu = utf8_encode($contenu);
 						$category = strpos($contenu,"\$DTYPE ROOT:"); // "$DTYPE ROOT:" est le symbole caractéristique précédent une catégorie dans les fichiers RDF
 						if(!($category===0)){ //si c'est une nouvelle catégorie
 
@@ -155,6 +157,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 							$newCategory = trim(substr_replace($contenu, "",0, 12)); // on retire le "$DTYPE ROOT:" caractéristique des catégories
 							$newCategory = str_replace(".","_",$newCategory); // IMPORTANT ! le "." étant symbole de la concaténation en php, sa présence dans un string fait que le POST semble automatiquement le remplacer par un "_". Pour éviter les inconsistences, on le remple nous même.
+							$newCategory = utf8_encode($newCategory);
 							$keys = array_keys($categories);
 							$nbrKeys = count($keys);
 							$filtre = ["#BIOLOGY\(\d+\):[TARGETS\(\d+\):|PROJECT]#"];  // /!\ CHAMPS INFORMATIONS AVEC PLUSIEURS ENTREES : le modèle qui va dicter si oui on non on doit passer cette catégorie. Toutes les catégories suivant ce modèle seront par la suite traiter de manière identique à celle de la première rencontrée.
@@ -208,7 +211,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	//(la syntaxe suivante survient plusieurs fois et vient de ma découverte tardive de foreach(), code optimisable donc
 	$nbrCategories = count($categories);
 	$keys = array_keys($categories);
-
 
 	//VERIF_SELECTION : on s'assure que la sélection est valide, c'est-à-dire : un champ correspond à l'identifiant de la molécule, aucun champ sélectionné plusieurs fois, excepté "Observation". La validation se fait via un script javascript vérifiant le formulaire
 	echo'
@@ -512,6 +514,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		<option value="pro_qrcode">QR CODE</option>
 		</optgroup>
 		<option value="pro_observation">OBSERVATION</option>
+
+		<optgroup label="Champ annexe :">
+			<option value="pro_champsannexe|Text">Text</option>
+			<option value="pro_champsannexe|Nombre">Nombre</option>
+			<option value="pro_champsannexe|Date">Date</option>
+		</optgroup>
 
 		<option value="plusieurs")">PLUSIEURS</option>
 

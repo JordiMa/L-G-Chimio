@@ -1,4 +1,4 @@
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
@@ -101,7 +101,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			global $contenuFichier_csv;
 			global $array_afficheListe;
 			global $valueBar;
-
+			//$donnees = array_map('utf8_encode', $donnees);
 			$aEnvoyer = [];
 
 			$key = array_search('pro_numero', $correspondance);
@@ -120,9 +120,15 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 			if($valid){
 			foreach($donnees as $key => $value){
-				$infos = decoupe($key,$value);
+				$infos = decoupe(utf8_encode($key),utf8_encode($value));
 
 				foreach($infos as $key2 => $value2){
+					if(preg_match('/pro_champsannexe/', $key2)){
+						$content = explode("{{", $key2);
+								if(array_key_exists($content[0],$transformation)){
+									$infos[$key2] = modification($content[0],$value2);
+							}
+						}
 
 					if(array_key_exists($key2,$transformation)){
 						$infos[$key2] = modification($key2,$value2);
@@ -136,8 +142,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				}
 			}
 
-
 			insertion($aEnvoyer);
+
 			}
 			$valueBar = ($_POST['nbrMol']-1)*$i/($_POST['nbrMol']-1);
 			//echo "<script>progressBar.value = ".$valueBar.";</script>";
@@ -240,7 +246,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					if(array_key_exists($category,$equivalence)){
 						$infos[$correspondance[$equivalence[$category]]] = $str;
 					}else{
-
 						if($correspondance[$category]==="pro_observation"){
 							$infos[$correspondance[$category]] = $category." : ".$str."<br><br>";
 						}else{
@@ -269,6 +274,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			$tab_structure = [];
 			$tab_plaque = [];
 			$tab_produit = [];
+			$champs_annexe ='[{"type": "header","subtype": "h2","label": "IMPORTATION"}';
 			/////////////////////////
 
 			foreach($infos as $key => $value){
@@ -291,6 +297,46 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					default:
 				}
+
+				if(preg_match('/pro_champsannexe/', $key)){
+					$content = explode("{{", $key);
+					$value=str_replace(array("\r\n","\n"),'&#13;&#10;',$value);
+					$nb_RC = explode("&#13;&#10;", $value);
+					if($content[0] == "pro_champsannexe|Text"){
+						$champs_annexe .= ',
+					  {
+					    "type": "textarea",
+					    "label": "'.$content[1].'",
+					    "className": "form-control",
+					    "name": "textarea-import-'.$content[1].'",
+					    "value": "'.$value.'",
+					    "subtype": "textarea",
+							"rows": "'.count($nb_RC).'"
+					  }';
+					}
+
+					if($content[0] == "pro_champsannexe|Nombre"){
+						$champs_annexe .= ',
+					  {
+					    "type": "number",
+					    "label": "'.$content[1].'",
+					    "className": "form-control",
+					    "name": "number-'.$content[1].'",
+					    "value": "'.$value.'"
+					  }';
+					}
+
+					if($content[0] == "pro_champsannexe|Date"){
+						$champs_annexe .= ',
+					  {
+					    "type": "date",
+					    "label": "'.$content[1].'",
+					    "className": "form-control",
+					    "name": "date-'.$content[1].'",
+					    "value": "'.$value.'"
+					  }';
+					}
+				}
 			}
 
 			$infos_chimiste = insert_chimiste($tab_chimiste);
@@ -310,9 +356,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			}else{
 				$tab_produit["pro_id_type"] = "1";
 			}
+
 			$tab_produit["pro_id_structure"] = insert_structure($tab_structure);
-
-
 
 			if(array_key_exists("pro_purification",$infos)){
 				$tab_produit["pro_purification"] = $infos["pro_purification"];
@@ -378,7 +423,18 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					$tab_produit["sol_solvant"] = "INCONNU";
 				}
 
-			insert_produit($tab_produit,$tab_plaque);
+
+				$champs_annexe .= ']';
+
+				if ($champs_annexe == '[{"type": "header","subtype": "h2","label": "IMPORTATION"}]') {
+					$champs_annexe = '[]';
+				}
+
+				//echo $champs_annexe;
+				//echo "<br><br>";
+
+			insert_produit($tab_produit,$tab_plaque,$champs_annexe);
+
 
 		}
 
@@ -706,6 +762,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			$table = "structure";
 			$id = "str_id_structure";
 			$mol = $infos["str_mol"];
+
 			if(!check($table,"str_mol",$mol)){
 				if(!(array_key_exists("str_nom",$infos))){
 					$infos["str_nom"] = "NON DEFINI";
@@ -835,7 +892,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		}
 
 
-		function insert_produit($infos,$plaque){
+		function insert_produit($infos,$plaque, $champs_annexe){
 			global $baseDonnees;
 			$table = "produit";
 			$id = "pro_id_produit";
@@ -846,14 +903,22 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					$sql = "INSERT INTO produit(pro_id_type,pro_id_equipe,pro_id_responsable,pro_id_chimiste,pro_id_couleur,pro_id_structure,pro_purification,pro_masse,pro_unite_masse,pro_aspect,pro_date_entree,pro_ref_cahier_labo,pro_etape_mol,pro_numero,pro_num_constant) VALUES('".$infos["pro_id_type"]."',".$infos["pro_id_equipe"].",".$infos["pro_id_responsable"].",".$infos["pro_id_chimiste"].",'".$infos["pro_id_couleur"]."','".$infos["pro_id_structure"]."','".$infos["pro_purification"]."','".$infos["pro_masse"]."','".$infos["pro_unite_masse"]."','".$infos["pro_aspect"]."','".$infos["pro_date_entree"]."',E'".addslashes($infos["pro_ref_cahier_labo"])."','".$infos["pro_etape_mol"]."','".$infos["pro_numero"]."','".$num_const."');";
 
-					$sql = utf8_encode($sql);
+					$sql = $sql;
 					$result = $baseDonnees->exec($sql);
+					}
+					else {
+						$sql = "UPDATE produit SET pro_id_type = '".$infos["pro_id_type"]."', pro_id_equipe = ".$infos["pro_id_equipe"].", pro_id_responsable = ".$infos["pro_id_responsable"].", pro_id_chimiste = ".$infos["pro_id_chimiste"].", pro_id_couleur = '".$infos["pro_id_couleur"]."', pro_id_structure = '".$infos["pro_id_structure"]."', pro_purification = '".$infos["pro_purification"]."', pro_masse = '".$infos["pro_masse"]."', pro_unite_masse = '".$infos["pro_unite_masse"]."', pro_aspect = '".$infos["pro_aspect"]."', pro_date_entree = '".$infos["pro_date_entree"]."', pro_ref_cahier_labo = E'".addslashes($infos["pro_ref_cahier_labo"])."', pro_etape_mol = '".$infos["pro_etape_mol"]."', pro_num_constant = '".$num_const."' WHERE pro_numero = '".$infos["pro_numero"]."';";
+
+						$sql = $sql;
+						$result = $baseDonnees->exec($sql);
+					}
+
 					$ID_produit = getID("produit","pro_id_produit","pro_numero",$infos["pro_numero"]);
 
 					if(!(check("solubilite","sol_id_produit",$ID_produit))){
 						if($infos["sol_solvant"] == "INCONNU")
 						$infos["sol_solvant"] = "18";
-						$baseDonnees->exec(utf8_encode("INSERT INTO solubilite(sol_id_solvant,sol_id_produit) VALUES ('".$infos["sol_solvant"]."','".$ID_produit."');"));
+						$baseDonnees->exec("INSERT INTO solubilite(sol_id_solvant,sol_id_produit) VALUES ('".$infos["sol_solvant"]."','".$ID_produit."');");
 					}
 
 					insert_plaque($plaque,$ID_produit);
@@ -866,22 +931,28 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					}
 
 					$observations="";
-					$observations = getValeur("produit","pro_id_produit",$ID_produit,"pro_observation");
+					$qrcode="";
+					//$observations = getValeur("produit","pro_id_produit",$ID_produit,"pro_observation");
 					foreach($infos as $key => $value){
 						if(getTable($key)==="produit"){
 							if($key === "pro_observation"){
 								$observations = $observations."<br><br>".$value;
 							}
+							if($key === "pro_qrcode"){
+								$qrcode = $value;
+							}
 						}
 					}
-					$observations = utf8_encode($observations);
+					$observations = $observations;
 					$observations = addslashes($observations);
-					$sql2 = "UPDATE produit SET pro_observation = E'".$observations."' WHERE pro_numero = '".$infos["pro_numero"]."'";
-					$result2 = $baseDonnees->exec(utf8_encode($sql2));
+
+					// TODO
+					$sql2 = "UPDATE produit SET pro_observation = E'".$observations."', pro_qrcode = '".$qrcode."', pro_champsannexe = E'".$champs_annexe."' WHERE pro_numero = '".$infos["pro_numero"]."'";
+					$result2 = $baseDonnees->exec($sql2);
 
 					// fonctionne pas ?
 					//update("produit","pro_id_produit",$ID_produit,"pro_observation",$observations);
-				}
+
 			}
 		}
 
@@ -1038,6 +1109,26 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				}
 			}
 			return $infos[2]."-".$infos[0]."-".$infos[1]." 00:00:00";
+		}
+
+		function date_jour_mois_annee_sans_heure($str){
+			$infos = explode('/',$str);
+			foreach($infos as $key => $value){
+				if(strlen($value)===1){
+					$infos[$key] = "0".$value;
+				}
+			}
+			return $infos[2]."-".$infos[1]."-".$infos[0];
+		}
+
+		function date_mois_jour_annee_sans_heure($str){
+			$infos = explode('/',$str);
+			foreach($infos as $key => $value){
+				if(strlen($value)===1){
+					$infos[$key] = "0".$value;
+				}
+			}
+			return $infos[2]."-".$infos[0]."-".$infos[1];
 		}
 
 		function caracteres_speciaux($str){
@@ -1310,13 +1401,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				}
 			}
 
-
+/*
 			if ($valueBar >= ($_POST['nbrMol']-1)){
 				suppression("files");
 				suppression("files/sdf");
 				suppression("files/rdf");
 			}
-
+*/
 
 	echo'
 				<meta charset="UTF-8">

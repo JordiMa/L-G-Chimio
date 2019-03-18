@@ -67,7 +67,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 <form action="importationSDF_enregistrement.php" method="post" enctype="multipart/form-data">
 		<label>Fichier de type SDF ou RDF :</br></br></label>
-		<input type="file" id="fichier" name="file_name" /><br>
+		<input type="file" id="fichier" name="file_name" required/><br>
 		<br>
 		<br>
 		<label>&nbsp;Correction des structures :</label><br>
