@@ -43,6 +43,11 @@ class dessinmoleculejsme {
 
   function imprime() {
     echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";
+	echo "<script language=\"JavaScript\">
+		function openHelpWindow() {	
+			window.open(\"https://www.molinspiration.com/jme/help/jme2008hints.html\",\"jmehelp\",\"toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=510,height=675,left=400,top=20\");
+		}
+	</script>";
 	echo "<div code=\"JME.class\" name=\"JME\" archive=\"JME.jar\" width=\"$this->dimL\" height=\"$this->dimH\" id=\"JME\">";
 	if (!empty($this->mol)) {
 		echo "<param name=\"smiles\" value=\"";
@@ -51,6 +56,7 @@ class dessinmoleculejsme {
 	}
 	echo "<param name=\"options\" value=\"polarnitro\">";
 	echo "</div>";
+	echo "<a href=\"javascript:openHelpWindow();\">JME Help</a>";
   }
 }
 ?>
