@@ -100,8 +100,8 @@ if (!empty($_GET['id'])) {
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td valign=\"top\">
 			<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 			<tr>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"fiche.php?id=".$_GET['id']."&menu=".$_GET['menu']."&mol=".$_GET['mol']."&formbrute=".$_GET['formbrute']."&massemol=".$_GET['massemol']."&supinf=".$_GET['supinf']."&massexact=".$_GET['massexact']."&numero=".$_GET['numero']."&forbrutexact=".$_GET['forbrutexact']."&page=".$_GET['page']."&nbrs=".$_GET['nbrs']."&nbpage=".$_GET['nbpage']."&typechimiste=".$_GET['typechimiste']."&chimiste=".$_GET['chimiste']."&recherche=".$_GET['recherche']."\">".STRUCTURE."</a></td>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"ficheana.php?id=".$_GET['id']."&menu=".$_GET['menu']."&mol=".$_GET['mol']."&formbrute=".$_GET['formbrute']."&massemol=".$_GET['massemol']."&supinf=".$_GET['supinf']."&massexact=".$_GET['massexact']."&numero=".$_GET['numero']."&forbrutexact=".$_GET['forbrutexact']."&page=".$_GET['page']."&nbrs=".$_GET['nbrs']."&nbpage=".$_GET['nbpage']."&typechimiste=".$_GET['typechimiste']."&chimiste=".$_GET['chimiste']."&recherche=".$_GET['recherche']."\">".ANALYSE."</a></td>";
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"fiche.php?id=".$_GET['id']."&menu=".$_GET['menu']."&mol=".$_GET['mol']."&formbrute=".$_GET['formbrute']."&massemol=".$_GET['massemol']."&supinf=".$_GET['supinf']."&massexact=".$_GET['massexact']."&numero=".$_GET['numero']."&forbrutexact=".$_GET['forbrutexact']."&page=".$_GET['page']."&nbrs=".$_GET['nbrs']."&nbpage=".$_GET['nbpage']."&typechimiste=".$_GET['typechimiste']."&chimiste=".$_GET['chimiste']."&recherche=".$_GET['recherche']."&valtanimoto=".$_GET['valtanimoto']."\">".STRUCTURE."</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"ficheana.php?id=".$_GET['id']."&menu=".$_GET['menu']."&mol=".$_GET['mol']."&formbrute=".$_GET['formbrute']."&massemol=".$_GET['massemol']."&supinf=".$_GET['supinf']."&massexact=".$_GET['massexact']."&numero=".$_GET['numero']."&forbrutexact=".$_GET['forbrutexact']."&page=".$_GET['page']."&nbrs=".$_GET['nbrs']."&nbpage=".$_GET['nbpage']."&typechimiste=".$_GET['typechimiste']."&chimiste=".$_GET['chimiste']."&recherche=".$_GET['recherche']."&valtanimoto=".$_GET['valtanimoto']."\">".ANALYSE."</a></td>";
 		print"</tr>
 			</table></td><td><div align=\"center\">
 			<form method=\"post\" action=\"consultation1.php\">
@@ -120,6 +120,7 @@ if (!empty($_GET['id'])) {
 			<input type=\"hidden\" name=\"typechimiste\" value=\"".$_GET['typechimiste']."\">
 			<input type=\"hidden\" name=\"chimiste\" value=\"".$_GET['chimiste']."\">
 			<input type=\"hidden\" name=\"recherche\" value=\"".$_GET['recherche']."\">
+			<input type=\"hidden\" name=\"valtanimoto\" value=\"".$_GET['valtanimoto']."\">
 			</form>
 			</div>
 			</td></tr></table>";

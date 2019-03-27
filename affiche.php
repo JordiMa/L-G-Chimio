@@ -113,6 +113,9 @@ if (!empty($id_sql)) {
 		if (isset($_POST['recherche'])) $recherche=rawurlencode($_POST['recherche']);
 		elseif(isset($_GET['recherche'])) $recherche=$_GET['recherche'];
 		else $recherche="";
+		if (isset($_POST['valtanimoto'])) $valtanimoto=rawurlencode($_POST['valtanimoto']);
+		elseif(isset($_GET['valtanimoto'])) $valtanimoto=$_GET['valtanimoto'];
+		else $valtanimoto="";
 
 		//mise en indice des chiffres pour l'affichage de la formule brute
 		for ($k=0; $k<10; $k++) {
@@ -121,11 +124,11 @@ if (!empty($id_sql)) {
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td valign=\"top\">
 			<table width=\"328\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 		  <tr>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"fiche.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."\">".STRUCTURE."</a></td>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"ficheana.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."\">".ANALYSE."</a></td>";
-		if (($row[0]=="{RESPONSABLE}" and $menu==2 and $row[2]==$row1[0]) or ($row[0]=="{ADMINISTRATEUR}" and $menu==2) or ($row[0]=="{CHEF}" and $menu==2)) print"<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"fichebio.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&massemol=".$massemol."&numero=".$numero."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."\">".ANABIO."</a></td>";
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"fiche.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."&valtanimoto=".$valtanimoto."\">".STRUCTURE."</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"ficheana.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."&valtanimoto=".$valtanimoto."\">".ANALYSE."</a></td>";
+		if (($row[0]=="{RESPONSABLE}" and $menu==2 and $row[2]==$row1[0]) or ($row[0]=="{ADMINISTRATEUR}" and $menu==2) or ($row[0]=="{CHEF}" and $menu==2)) print"<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"fichebio.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&massemol=".$massemol."&numero=".$numero."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."&valtanimoto=".$valtanimoto."\">".ANABIO."</a></td>";
 		else print"<td width=\"82\" height=\"23\"></td>";
-		if ($row[0]=="{ADMINISTRATEUR}" and $menu==2) print"<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"fichehistorique.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&massemol=".$massemol."&numero=".$numero."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."\">".CHANGEMENT."</a></td>";
+		if ($row[0]=="{ADMINISTRATEUR}" and $menu==2) print"<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"fichehistorique.php?id=".$id_sql."&menu=".$menu."&type=".$type."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&massemol=".$massemol."&numero=".$numero."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&typechimiste=".$typechimiste."&chimiste=".$chimiste."&equipechi=".$equipechi."&refcahier=".$refcahier."&recherche=".$recherche."&valtanimoto=".$valtanimoto."\">".CHANGEMENT."</a></td>";
 		else print"<td width=\"82\" height=\"23\"></td>";
 		print"</tr>
 			</table></td><td><div align=\"center\">
@@ -148,6 +151,7 @@ if (!empty($id_sql)) {
 			<input type=\"hidden\" name=\"numero\" value=\"".$numero."\">
 			<input type=\"hidden\" name=\"refcahier\" value=\"".$refcahier."\">
 			<input type=\"hidden\" name=\"recherche\" value=\"".$recherche."\">
+			<input type=\"hidden\" name=\"valtanimoto\" value=\"".$valtanimoto."\">
 			</form>
 			</div>
 			</td></tr></table>";

@@ -41,6 +41,8 @@ if(!isset($_POST['forbrutexact'])) $_POST['forbrutexact']="";
 if(!isset($_POST['numero'])) $_POST['numero']="";
 if(!isset($_POST['chimiste'])) $_POST['chimiste']="";
 if(!isset($_POST['mol'])) $_POST['mol']="";
+if(!isset($_POST['recherche'])) $_POST['recherche']="";
+if(!isset($_POST['valtanimoto'])) $_POST['valtanimoto']="";
 
 
 //définition des paramètres de la page $limitepage définit le nombre de résultats par page et $page définit la page à afficher
@@ -267,15 +269,15 @@ else {
 	unset($dbh);
 	if (!isset($nbrs)) $nbrs=0;
 	if (!isset($nbpage)) $nbpage=0;
-	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche']);
-	$recherche= new affiche_recherche ($tab,$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche']);
+	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
+	$recherche= new affiche_recherche ($tab,$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
 	$recherche->imprime();
-	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche']);
+	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
 }
 
 
 
-function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$recherche) {
+function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$recherche,$valtanimoto) {
 
 		if ($nbrs>0) print"<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 						  <tr valign=\"middle\">
@@ -294,6 +296,7 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 			$formulaire->ajout_cache (($page-1),"page");
 			$formulaire->ajout_cache ($nbpage,"nbpage");
 			$formulaire->ajout_cache ($recherche,"recherche");
+			$formulaire->ajout_cache ($valtanimoto,"valtanimoto");
 			$formulaire->ajout_button (PAGE.($page-1),"","submit","");
 
 			$formulaire->fin();
@@ -315,6 +318,7 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 			$formulaire->ajout_cache (($page+1),"page");
 			$formulaire->ajout_cache ($nbpage,"nbpage");
 			$formulaire->ajout_cache ($recherche,"recherche");
+			$formulaire->ajout_cache ($valtanimoto,"valtanimoto");
 			$formulaire->ajout_button (PAGE.($page+1),"","submit","");
 			$formulaire->fin();
         }
@@ -333,6 +337,7 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 			$formulaire->ajout_cache ($numero,"numero");
 			$formulaire->ajout_cache ($nbpage,"nbpage");
 			$formulaire->ajout_cache ($recherche,"recherche");
+			$formulaire->ajout_cache ($valtanimoto,"valtanimoto");
 			$formulaire->ajout_text (4,"",6,"page","","","");
 			if ($typechimiste="{RESPONSABLE}" or $typechimiste="{CHEF}") $formulaire->ajout_cache ($chimiste,"{CHIMISTE}");
 			$formulaire->ajout_button (RENDRE,"","submit","");
