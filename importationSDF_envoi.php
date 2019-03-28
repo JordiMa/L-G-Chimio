@@ -91,7 +91,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		</script>';
 
-	require 'importationSDF_massemolaire.php';
+	require 'corps/importationSDF_massemolaire.php';
 
 		function traitement($donnees,$i){ //formatage des données
 			global $valid;

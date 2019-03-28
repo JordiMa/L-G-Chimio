@@ -40,17 +40,6 @@ echo LOGIN;
   </tr>
   <tr>
     <td class=celluleblanche style="text-align: center;">
-	<!-- <script language="javascript" src="md5.js"></script> -->
-	<!-- <script language="javascript">
-
-	  function CResponsemd() {
-		str = document.conec.password_chimiste.value;
-		document.conec.reponse.value = MD5(str,document.conec.name_chimiste.value);
-		document.conec.password_chimiste.value = "";
-		conec.submit();
-	  }
-
-	</script> -->
 
 <?php
 if (isset ($message)) print"<p align=\"center\" class=messagederreur>".constant($message)."</p>";

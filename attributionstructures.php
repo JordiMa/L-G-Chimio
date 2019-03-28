@@ -33,7 +33,7 @@ include_once 'script/secure.php';
 include_once 'autoload.php';
 include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
 include_once 'presentation/entete.php';
-$menu=12;
+$menu=11;
 include_once 'presentation/gauche.php';
 include_once 'corps/attributionstructures_page.php';
 include_once 'presentation/pied.php';

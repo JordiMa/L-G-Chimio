@@ -56,6 +56,7 @@ define ('EXPORTATION','Export');
 define ('IMPORTATION','Import');
 define ('UTILISATEUR','Users');
 define ('PARAMETRES','Settings');
+define ('ATTRIBU','Assigning a structure');
 define ('UPDAT','Your new password has been sent');
 define ('ECHECUP','Failed to change your password, contact the administrator');
 define ('MR','Mr or Mrs ');

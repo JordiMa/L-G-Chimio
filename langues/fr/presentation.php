@@ -56,6 +56,7 @@ define ('EXPORTATION','Exportation');
 define ('IMPORTATION','Importation');
 define ('UTILISATEUR','Utilisateurs');
 define ('PARAMETRES','Paramètres');
+define ('ATTRIBU','Attribution structures');
 define ('UPDAT','Votre nouveau mot de passe vous a été envoyé');
 define ('ECHECUP','Echec du changement de votre mot passe, contactez l\'administrateur');
 define ('MR','M. ou Mme ');
