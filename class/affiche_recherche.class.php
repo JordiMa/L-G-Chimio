@@ -44,9 +44,10 @@ class affiche_recherche {
   public $chimiste;
   public $numero;
   public $recherche;
+  public $valtanimoto;
 
 
-  function __construct ($resultatsql,$str_inchi_md5,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$recherche) {
+  function __construct ($resultatsql,$str_inchi_md5,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$recherche,$valtanimoto) {
 	  $this->resultatsql=$resultatsql;
     $this->str_inchi_md5=$str_inchi_md5;
     $this->formbrute=$formbrute;
@@ -60,7 +61,8 @@ class affiche_recherche {
     $this->typechimiste=$typechimiste;
     $this->chimiste=$chimiste;
     $this->numero=$numero;
-	  $this->recherche=$recherche;
+	$this->recherche=$recherche;
+	$this->valtanimoto=$valtanimoto;
   }
 
   function imprime() {
@@ -123,15 +125,16 @@ class affiche_recherche {
       						    <input type=\"hidden\" name=\"formbrute\" value=\"$this->formbrute\">
       						    <input type=\"hidden\" name=\"massemol\" value=\"$this->massemol\">
       						    <input type=\"hidden\" name=\"supinf\" value=\"$this->supinf\">
-        						  <input type=\"hidden\" name=\"massexac\" value=\"$this->massexact\">
-        						  <input type=\"hidden\" name=\"forbrutexact\" value=\"$this->forbrutexact\">
-        						  <input type=\"hidden\" name=\"numero\" value=\"$this->numero\">
-        						  <input type=\"hidden\" name=\"page\" value=\"$this->page\">
-        						  <input type=\"hidden\" name=\"nbrs\" value=\"$this->nbrs\">
-        						  <input type=\"hidden\" name=\"nbpage\" value=\"$this->nbpage\">
-        						  <input type=\"hidden\" name=\"typechimiste\" value=\"$this->typechimiste\">
-        						  <input type=\"hidden\" name=\"chimiste\" value=\"$this->chimiste\">
-        						  <input type=\"hidden\" name=\"recherche\" value=\"$this->recherche\">
+        						<input type=\"hidden\" name=\"massexac\" value=\"$this->massexact\">
+        						<input type=\"hidden\" name=\"forbrutexact\" value=\"$this->forbrutexact\">
+        						<input type=\"hidden\" name=\"numero\" value=\"$this->numero\">
+        						<input type=\"hidden\" name=\"page\" value=\"$this->page\">
+        						<input type=\"hidden\" name=\"nbrs\" value=\"$this->nbrs\">
+        						<input type=\"hidden\" name=\"nbpage\" value=\"$this->nbpage\">
+        						<input type=\"hidden\" name=\"typechimiste\" value=\"$this->typechimiste\">
+        						<input type=\"hidden\" name=\"chimiste\" value=\"$this->chimiste\">
+        						<input type=\"hidden\" name=\"recherche\" value=\"$this->recherche\">
+								<input type=\"hidden\" name=\"valtanimoto\" value=\"$this->valtanimoto\">
       						  </form>
                   </td>
                 </tr>";
@@ -183,6 +186,7 @@ class affiche_recherche {
         						  <input type=\"hidden\" name=\"typechimiste\" value=\"$this->typechimiste\">
         						  <input type=\"hidden\" name=\"chimiste\" value=\"$this->chimiste\">
         						  <input type=\"hidden\" name=\"recherche\" value=\"$this->recherche\">
+								  <input type=\"hidden\" name=\"valtanimoto\" value=\"$this->valtanimoto\">
 						        </form>
                   </td>
                 </tr>";

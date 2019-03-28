@@ -59,6 +59,7 @@ if(!isset($_POST['numero'])) $_POST['numero']="";
 if(!isset($_POST['refcahier'])) $_POST['refcahier']="";
 if(!isset($_POST['mol'])) $_POST['mol']="";
 if(!isset($_POST['recherche'])) $_POST['recherche']="";
+if(!isset($_POST['valtanimoto'])) $_POST['valtanimoto']="";
 $tab="";
 
 //traitement des deux variables pour supprimer l'utilisation du % et remplace la , par .
@@ -1011,12 +1012,12 @@ elseif (!empty ($_POST['formbrute']) or $_POST['massemol']!="" or !empty($_POST[
 unset($dbh);
 if (!isset($nbrs)) $nbrs=0;
 if (!isset($nbpage)) $nbpage=0;
-page ($_POST['type'],$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['massexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['equipechi'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche']);
-$recherche= new affiche_modification ($tab,$_POST['type'],$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['massexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['equipechi'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche']);
+page ($_POST['type'],$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['massexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['equipechi'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
+$recherche= new affiche_modification ($tab,$_POST['type'],$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['massexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['equipechi'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
 $recherche->imprime();
-page ($_POST['type'],$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['massexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['equipechi'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche']);
+page ($_POST['type'],$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['massexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['equipechi'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
 
-function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$equipechi,$numero,$refcah,$recherche) {
+function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$equipechi,$numero,$refcah,$recherche,$valtanimoto) {
 
     if ($nbrs>0) print"<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 					  <tr valign=\"middle\">
@@ -1032,11 +1033,12 @@ function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,
         $formulaire->ajout_cache ($supinf,"supinf");
         $formulaire->ajout_cache ($massexact,"massexact");
         $formulaire->ajout_cache ($forbrutexact,"forbrutexact");
-				$formulaire->ajout_cache ($numero,"numero");
-				$formulaire->ajout_cache ($refcah,"refcahier");
+		$formulaire->ajout_cache ($numero,"numero");
+		$formulaire->ajout_cache ($refcah,"refcahier");
         $formulaire->ajout_cache (($page-1),"page");
-				$formulaire->ajout_cache (($nbpage),"nbpage");
-				$formulaire->ajout_cache ($recherche,"recherche");
+		$formulaire->ajout_cache (($nbpage),"nbpage");
+		$formulaire->ajout_cache ($recherche,"recherche");
+		$formulaire->ajout_cache ($valtanimoto,"valtanimoto");
         $formulaire->ajout_button (PAGE.($page-1),"","submit","");
         if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
 					$formulaire->ajout_cache ($chimiste,"chimiste");
@@ -1058,11 +1060,12 @@ function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,
         $formulaire->ajout_cache ($supinf,"supinf");
         $formulaire->ajout_cache ($massexact,"massexact");
         $formulaire->ajout_cache ($forbrutexact,"forbrutexact");
-				$formulaire->ajout_cache ($numero,"numero");
-				$formulaire->ajout_cache ($refcah,"refcahier");
+		$formulaire->ajout_cache ($numero,"numero");
+		$formulaire->ajout_cache ($refcah,"refcahier");
         $formulaire->ajout_cache (($page+1),"page");
-				$formulaire->ajout_cache (($nbpage),"nbpage");
-				$formulaire->ajout_cache ($recherche,"recherche");
+		$formulaire->ajout_cache (($nbpage),"nbpage");
+		$formulaire->ajout_cache ($recherche,"recherche");
+		$formulaire->ajout_cache ($valtanimoto,"valtanimoto");
         if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
 					$formulaire->ajout_cache ($chimiste,"chimiste");
         if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
@@ -1085,11 +1088,12 @@ function page ($type,$mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,
         $formulaire->ajout_cache ($supinf,"supinf");
         $formulaire->ajout_cache ($massexact,"massexact");
         $formulaire->ajout_cache ($forbrutexact,"forbrutexact");
-				$formulaire->ajout_cache ($numero,"numero");
-				$formulaire->ajout_cache ($refcah,"refcahier");
+		$formulaire->ajout_cache ($numero,"numero");
+		$formulaire->ajout_cache ($refcah,"refcahier");
         $formulaire->ajout_text (4,"",6,"page","","","");
-				$formulaire->ajout_cache (($nbpage),"nbpage");
-				$formulaire->ajout_cache ($recherche,"recherche");
+		$formulaire->ajout_cache (($nbpage),"nbpage");
+		$formulaire->ajout_cache ($recherche,"recherche");
+		$formulaire->ajout_cache ($valtanimoto,"valtanimoto");
         if ($typechimiste=="{RESPONSABLE}" or $typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")
 					$formulaire->ajout_cache ($chimiste,"chimiste");
         if ($typechimiste=="{ADMINISTRATEUR}" or $typechimiste=="{CHEF}")

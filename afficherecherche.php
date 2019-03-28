@@ -107,6 +107,10 @@ if (!empty($id_sql)) {
 		if (isset($_POST['recherche'])) $recherche=rawurlencode($_POST['recherche']);
 		elseif(isset($_GET['recherche'])) $recherche=$_GET['recherche'];
 		else $recherche="";
+		
+		if (isset($_POST['valtanimoto'])) $valtanimoto=rawurlencode($_POST['valtanimoto']);
+		elseif(isset($_GET['valtanimoto'])) $valtanimoto=$_GET['valtanimoto'];
+		else $valtanimoto="";
 
 		//mise en indice des chiffres pour l'affichage de la formule brute
 		for ($k=0; $k<10; $k++) {
@@ -116,8 +120,8 @@ if (!empty($id_sql)) {
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td valign=\"top\">
 			<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 			<tr>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"fiche.php?id=".$id_sql."&menu=".$menu."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&recherche=".$recherche."\">".STRUCTURE."</a></td>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"ficheana.php?id=".$id_sql."&menu=".$menu."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&recherche=".$recherche."\">".ANALYSE."</a></td>";
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"fiche.php?id=".$id_sql."&menu=".$menu."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&recherche=".$recherche."&valtanimoto=".$valtanimoto."\">".STRUCTURE."</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"ficheana.php?id=".$id_sql."&menu=".$menu."&mol=".Base64_encode($mol)."&formbrute=".$formbrute."&numero=".$numero."&massemol=".$massemol."&supinf=".$supinf."&massexact=".$massexact."&forbrutexact=".$forbrutexact."&page=".$page."&nbrs=".$nbrs."&nbpage=".$nbpage."&recherche=".$recherche."&valtanimoto=".$valtanimoto."\">".ANALYSE."</a></td>";
 		print"</tr>
 			</table></td><td><div align=\"center\">
 			<form method=\"post\" action=\"consultation1.php\">
@@ -134,6 +138,7 @@ if (!empty($id_sql)) {
 			<input type=\"hidden\" name=\"nbrs\" value=\"".$nbrs."\">
 			<input type=\"hidden\" name=\"nbpage\" value=\"".$nbpage."\">
 			<input type=\"hidden\" name=\"recherche\" value=\"".$recherche."\">
+			<input type=\"hidden\" name=\"valtanimoto\" value=\"".$valtanimoto."\">
 			</form>
 			</div>
 			</td></tr></table>";

@@ -47,8 +47,9 @@ class affiche_modification {
   public $numero;
   public $refcahier;
   public $recherche;
+  public $valtanimoto;
 
-  function __construct ($resultatsql,$type,$str_inchi_md5,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$equipechi,$numero,$refcahier,$recherche) {
+  function __construct ($resultatsql,$type,$str_inchi_md5,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$equipechi,$numero,$refcahier,$recherche,$valtanimoto) {
     $this->resultatsql=$resultatsql;
     $this->type=$type;
     $this->str_inchi_md5=$str_inchi_md5;
@@ -66,6 +67,7 @@ class affiche_modification {
 	$this->numero=$numero;
 	$this->refcahier=$refcahier;
 	$this->recherche=$recherche;
+	$this->valtanimoto=$valtanimoto;
   }
 
   function imprime() {
@@ -143,7 +145,9 @@ class affiche_modification {
           				  <input type=\"hidden\" name=\"typechimiste\" value=\"$this->typechimiste\">
           				  <input type=\"hidden\" name=\"chimiste\" value=\"$this->chimiste\">
           				  <input type=\"hidden\" name=\"equipechi\" value=\"$this->equipechi\">
-          				  <input type=\"hidden\" name=\"recherche\" value=\"$this->recherche\"></form></td>
+          				  <input type=\"hidden\" name=\"recherche\" value=\"$this->recherche\">
+						  <input type=\"hidden\" name=\"valtanimoto\" value=\"$this->valtanimoto\">
+						  </form></td>
           				  <td align=\"right\"><form method=\"post\" action=\"saisiemodif1.php\">
           				  <input type=\"image\" src=\"images/modifier.gif\" alt=\"".MODIFIER."\" title=\"".MODIFIER."\">
           				  <input type=\"hidden\" name=\"id\" value=\"$key\">
@@ -199,6 +203,7 @@ class affiche_modification {
           			  <input type=\"hidden\" name=\"chimiste\" value=\"$this->chimiste\">
           			  <input type=\"hidden\" name=\"equipechi\" value=\"$this->equipechi\">
           			  <input type=\"hidden\" name=\"recherche\" value=\"$this->recherche\">
+					  <input type=\"hidden\" name=\"valtanimoto\" value=\"$this->valtanimoto\">
           			</form></td>
 			        <td align=\"right\">
                 <form method=\"post\" action=\"saisiemodif1.php\">
