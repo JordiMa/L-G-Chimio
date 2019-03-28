@@ -187,11 +187,34 @@ class affiche_recherche {
                   </td>
                 </tr>";
 				}
+        //$this->listeID .= $ror[3] . ";";
 			}
 			//fermeture de la connexion à la base de données
 			unset($dbhh);
 			print"</table></div></td></tr>\n</table>";
+      //$this->listeID = substr($this->listeID,0,-1);
 		}
+    }
+
+    function getListeID(){
+      require 'script/connectionb.php';
+
+      $listeKey="";
+      $listeID="";
+      foreach($this->resultatsql as $key=>$element) {
+        $listeKey .= "'" . $key . "',";
+      }
+      $listeKey = substr($listeKey,0,-1);
+
+      $sql= "SELECT pro_numero FROM produit WHERE pro_id_produit in ($listeKey)";
+      $result1 = $dbh->query($sql);
+
+      foreach ($result1 as $key => $value) {
+        $listeID .= $value[0] . ";";
+      }
+      $listeID = substr($listeID,0,-1);
+
+      return $listeID;
     }
 }
 ?>
