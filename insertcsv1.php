@@ -40,7 +40,7 @@ while ($i<$_POST['nbcol']) {
     else $coll=false;
     $i++;
 }
-if ((!isset($col) or (isset($col) and !empty($_POST["elem+"]) and !empty($_POST["elem-"]))) and ($coll==false or $_POST["param"]==true)) include_once 'traitresult.php';
+if ((!isset($col) or (isset($col) and !empty($_POST["elem+"]) and !empty($_POST["elem-"]))) and ($coll==false or $_POST["param"]==true)) include_once 'corps/traitresult.php';
 include_once 'presentation/entete.php';
 include_once 'presentation/gauche.php';
 
@@ -54,7 +54,7 @@ if ((!isset($col) or (isset($col) and !empty($_POST["elem+"]) and !empty($_POST[
   if (isset($transfert) and $transfert==true) print "<br/><br/><br/><br/><br/><br/><br/><br/><p align=\"center\" class=\"sauvegarde\">".SAUVDONNE."</p>";
   else print "<br/><br/><br/><br/><br/><br/><br/><br/><p align=\"center\" class=\"messagederreur\">".ECHECSAUVDONNE."</p>";
 }
-elseif ($col==true) include_once 'insertresult1.php';
+elseif ($col==true) include_once 'corps/insertresult1.php';
 
 include_once 'presentation/pied.php';
 ?>

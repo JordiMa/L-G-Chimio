@@ -35,7 +35,7 @@ include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
 include_once 'presentation/entete.php';
 $menu=6;
 include_once 'presentation/gauche.php';
-if (isset($_GET['idmodif']) and !empty($_GET['idmodif'])) include_once 'modif_plaque.php';
-else include_once 'listeplaque.php';
+if (isset($_GET['idmodif']) and !empty($_GET['idmodif'])) include_once 'corps/modif_plaque.php';
+else include_once 'corps/listeplaque.php';
 include_once 'presentation/pied.php';
 ?>

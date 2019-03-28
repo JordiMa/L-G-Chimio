@@ -37,7 +37,7 @@ include_once 'presentation/entete.php';
 if(!empty($_POST['menu'])) $menu=$_POST['menu'];
 if(!empty($_GET['menu'])) $menu=$_GET['menu'];
 include_once 'presentation/gauche.php';
-if ($menu==3) include_once 'afficherecherche.php';
-if ($menu==2) include_once 'affiche.php';
+if ($menu==3) include_once 'corps/afficherecherche.php';
+if ($menu==2) include_once 'corps/affiche.php';
 include_once 'presentation/pied.php';
 ?>

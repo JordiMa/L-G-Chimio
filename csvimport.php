@@ -55,13 +55,13 @@ $ssmenu=10;
 if (($_FILES['fileCN']['type']=="application/vnd.ms-excel" or $_FILES['fileCN']['type']=="text/csv" or $_FILES['fileCN']['type']=="text/x-comma-separated-values" or $_FILES['fileCN']['type']=="text/comma-separated-values" or $_FILES['fileCN']['type']=="application/force-download") and $_FILES['fileCN']['size']<=$maxup) {
 	include_once 'presentation/entete.php';
 	include_once 'presentation/gauche.php';
-	include_once 'insertcsvcn.php';
+	include_once 'corps/insertcsvcn.php';
 	}
 else {
 	include_once 'presentation/entete.php';
 	include_once 'presentation/gauche.php';
 	$erreur="ERREFILECSV";
-	include_once 'import.php';
+	include_once 'corps/import.php';
 	}
 include_once 'presentation/pied.php';
 ?>

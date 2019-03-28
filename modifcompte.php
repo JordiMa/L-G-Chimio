@@ -36,6 +36,6 @@ $transfert=true;
 $menu=4;
 include_once 'presentation/entete.php';
 include_once 'presentation/gauche.php';
-include_once 'traitementmodifcompte.php';
+include_once 'corps/traitementmodifcompte.php';
 include_once 'presentation/pied.php';
 ?>

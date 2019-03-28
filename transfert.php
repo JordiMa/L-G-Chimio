@@ -72,14 +72,14 @@ if ($_POST['masse']=="" || (empty($_POST['couleur']) && $_POST['config_couleur']
 	$menu=1;
 	include_once 'presentation/entete.php';
 	include_once 'presentation/gauche.php';
-	include_once 'saisieformulaire2.php';
+	include_once 'corps/saisieformulaire2.php';
 }
 else {
   $transfert=1;
   $menu=1;
   include_once 'presentation/entete.php';
   include_once 'presentation/gauche.php';
-  include_once 'traitement.php';
+  include_once 'corps/traitement.php';
 }
 include_once 'presentation/pied.php';
 ?>

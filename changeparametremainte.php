@@ -59,7 +59,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   if (!isset($erreur)) $transfert=true;
   include_once 'presentation/entete.php';
   include_once 'presentation/gauche.php';
-  if (isset($erreur)) include_once 'formulaireparamainte.php';
+  if (isset($erreur)) include_once 'corps/formulaireparamainte.php';
   elseif (!empty($update)) print "<br/><br/><br/><br/><br/><br/><br/><br/><p align=\"center\" class=\"sauvegarde\">".SAUVDONNE."</p>";
   elseif (isset($_POST['vide'])) print "<br/><br/><br/><br/><br/><br/><br/><br/><p align=\"center\" class=\"sauvegarde\">".VIDETEMP."</p>";
 }

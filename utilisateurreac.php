@@ -47,6 +47,6 @@ if (isset($_GET["idutil"]) and !empty($_GET["idutil"])) {
 		}
 	unset($dbh);
 }
-include_once 'reacutilisateur.php';
+include_once 'corps/reacutilisateur.php';
 include_once 'presentation/pied.php';
 ?>

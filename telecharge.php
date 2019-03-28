@@ -59,7 +59,7 @@ if (!empty($_GET['id']) and !empty($_GET['rank'])) {
 		header("Content-Length: ".strlen($donne));
 		echo $donne;
 	}
-	else include_once('presentatio.php');
+	else include_once('corps/presentatio.php');
 }
-else include_once('presentatio.php');
+else include_once('corps/presentatio.php');
 ?>

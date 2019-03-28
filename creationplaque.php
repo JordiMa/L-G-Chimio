@@ -37,7 +37,7 @@ $menu=6;
 include_once 'presentation/gauche.php';
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
-include 'numero.php';
+include 'corps/numero.php';
 $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe,chi_prenom FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
 //les résultats sont retournées dans la variable $result
 $result=$dbh->query($sql);
@@ -324,6 +324,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 }
 else require 'deconnexion.php';
 unset($dbh);
-include_once 'geneplaque.php';
+include_once 'corps/geneplaque.php';
 include_once 'presentation/pied.php';
 ?>

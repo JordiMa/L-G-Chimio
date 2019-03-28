@@ -87,9 +87,9 @@ elseif (!empty($_POST["idutil"]) and $_POST["param"]=="false") {
 		$updat=$dbh->exec($sql);
 	}
 	unset($dbh);
-	include_once 'modifutilisateur.php';
+	include_once 'corps/modifutilisateur.php';
 }
-elseif ((isset($_GET["idutil"]) and !empty($_GET["idutil"]) and $_GET["param"]==true) or (isset($_POST["idutil"]) and !empty($_POST["idutil"]) and $_POST["param"]==true)) include_once 'modifutil.php';
-else include_once 'modifutilisateur.php';
+elseif ((isset($_GET["idutil"]) and !empty($_GET["idutil"]) and $_GET["param"]==true) or (isset($_POST["idutil"]) and !empty($_POST["idutil"]) and $_POST["param"]==true)) include_once 'corps/modifutil.php';
+else include_once 'corps/modifutilisateur.php';
 include_once 'presentation/pied.php';
 ?>

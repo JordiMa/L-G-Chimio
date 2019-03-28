@@ -76,6 +76,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 }
 else require 'deconnexion.php';
 unset($dbh);
-include_once 'modif_plaque_faite.php';
+include_once 'corps/modif_plaque_faite.php';
 include_once 'presentation/pied.php';
 ?>

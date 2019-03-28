@@ -33,6 +33,6 @@ include_once 'autoload.php';
 include_once 'langues/fr/presentation.php';
 include_once 'presentation/entete.php';
 include_once 'presentation/gauche.php';
-include_once 'modifpass.php';
+include_once 'corps/modifpass.php';
 include_once 'presentation/pied.php';
 ?>

@@ -39,7 +39,7 @@ include_once 'presentation/gauche.php';
 if (($_FILES['filebio']['type']=="application/vnd.ms-excel" or $_FILES['filebio']['type']=="text/csv" or $_FILES['filebio']['type']=="application/force-download" or $_FILES['filebio']['type']=="text/x-comma-separated-values" or $_FILES['filebio']['type']=="text/comma-separated-values") and $_FILES['filebio']['size']<2000000 ) include_once 'insertresult.php';
 else {
   $erreur=TYPETAILLE;
-  include_once 'importresbio.php';
+  include_once 'corps/importresbio.php';
 }
 include_once 'presentation/pied.php';
 ?>

@@ -36,6 +36,6 @@ include_once 'presentation/entete.php';
 $menu=6;
 $transfert=1;
 include_once 'presentation/gauche.php';
-include_once 'produitplaque.php';
+include_once 'corps/produitplaque.php';
 include_once 'presentation/pied.php';
 ?>

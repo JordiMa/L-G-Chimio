@@ -36,7 +36,7 @@ include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
 include_once 'presentation/entete.php';
 $menu=$_GET['menu'];
 include_once 'presentation/gauche.php';
-if ($menu==3) include_once 'afficheanarecherche.php';
-if ($menu==2) include_once 'afficheana.php';
+if ($menu==3) include_once 'corps/afficheanarecherche.php';
+if ($menu==2) include_once 'corps/afficheana.php';
 include_once 'presentation/pied.php';
 ?>

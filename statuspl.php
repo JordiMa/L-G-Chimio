@@ -56,6 +56,6 @@ if (isset($_POST['nomcible']) and !empty($_POST['nomcible']) and isset($_POST['c
   unset($_POST['labocible']);
 }
 unset($dbh);
-include_once 'statusplaque.php';
+include_once 'corps/statusplaque.php';
 include_once 'presentation/pied.php';
 ?>

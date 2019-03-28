@@ -220,7 +220,7 @@ if (!empty($_GET['id'])) {
 		print"</table>";
 		unset($dbh);
 	}
-	else include_once('presentatio.php');
+	else include_once('corps/presentatio.php');
 }
-else include_once('presentatio.php');
+else include_once('corps/presentatio.php');
 ?>

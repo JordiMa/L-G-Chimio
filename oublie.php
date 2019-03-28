@@ -34,6 +34,6 @@ include_once 'autoload.php';
 include_once 'langues/fr/presentation.php';
 include_once 'presentation/entete.php';
 include_once 'presentation/gauche.php';
-include_once 'oubliepass.php';
+include_once 'corps/oubliepass.php';
 include_once 'presentation/pied.php';
 ?>

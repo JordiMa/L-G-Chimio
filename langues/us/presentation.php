@@ -68,4 +68,5 @@ define ('DON','which');
 define ('STR','unique structures');
 define('MESSAGEERREUR','<br>Error message:<br>');
 define ('ERREUR_MODIF','Failed to change');
+define ('AIDE','Help');
 ?>

@@ -50,7 +50,7 @@ else
 	include_once 'langues/'.$Lang.'/presentation.php';
 	include_once 'presentation/entete.php';
 	include_once 'presentation/gauche.php';
-	include_once 'presentatio.php';
+	include_once 'corps/presentatio.php';
 	include_once 'presentation/pied.php';
 	}
 ?>

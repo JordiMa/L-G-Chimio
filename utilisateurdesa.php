@@ -47,6 +47,6 @@ if (isset($_GET["idutil"]) and !empty($_GET["idutil"])) {
 		}
 	unset($dbh);
 }
-include_once 'desautilisateur.php';
+include_once 'corps/desautilisateur.php';
 include_once 'presentation/pied.php';
 ?>

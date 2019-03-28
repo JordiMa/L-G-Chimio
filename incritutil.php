@@ -37,6 +37,6 @@ $menu=10;
 $transfert=true;
 include_once 'presentation/entete.php';
 include_once 'presentation/gauche.php';
-include_once 'valideutil.php';
+include_once 'corps/valideutil.php';
 include_once 'presentation/pied.php';
 ?>

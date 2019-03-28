@@ -501,7 +501,7 @@ if (!empty($id_sql)) {
 			//fermeture de la connexion à la base de données
 			unset($dbh);
 	}
-	else include_once('presentatio.php');
+	else include_once('corps/presentatio.php');
 }
-else include_once('presentatio.php');
+else include_once('corps/presentatio.php');
 ?>

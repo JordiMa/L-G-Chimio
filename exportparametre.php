@@ -41,6 +41,6 @@ if (isset($_POST['emailexpor']) and isset($_POST['numexpor'])) {
 	$update=$dbh->exec($sql);
 	unset ($dbh);
 }
-include_once 'exportpara.php';
+include_once 'corps/exportpara.php';
 include_once 'presentation/pied.php';
 ?>

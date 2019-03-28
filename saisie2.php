@@ -65,10 +65,10 @@ if ($row2[0]){
 	echo '</script>';
 }
 
-if ($check[0]==NULL) include_once 'saisieformulaire2.php';
+if ($check[0]==NULL) include_once 'corps/saisieformulaire2.php';
 else {
 	$erreur=$check[0];
-	include_once 'saisie1.php';
+	include_once 'corps/saisie1.php';
 }
 
 include_once 'presentation/pied.php';

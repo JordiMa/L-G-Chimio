@@ -36,6 +36,6 @@ include_once 'presentation/entete.php';
 $menu=3;
 include_once 'presentation/gauche.php';
 $transfert=false;
-include_once 'rechercheformul.php';
+include_once 'corps/rechercheformul.php';
 include_once 'presentation/pied.php';
 ?>

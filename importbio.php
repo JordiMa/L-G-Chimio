@@ -61,6 +61,6 @@ if (isset($_POST['nomcible']) and !empty($_POST['nomcible']) and isset($_POST['c
 	$_POST['labo'] = $dbh->lastInsertId('labocible_lab_id_labocible_seq');
  } 
 unset ($dbh);
-include_once 'importresbio.php';
+include_once 'corps/importresbio.php';
 include_once 'presentation/pied.php';
 ?>

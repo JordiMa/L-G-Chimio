@@ -36,6 +36,6 @@ include_once 'langues/'.$_SESSION['langue'].'/presentation.php'; //Charge le fic
 include_once 'presentation/entete.php'; //Affichage de l'entête
 $menu=2; //Sélection du menu
 include_once 'presentation/gauche.php'; //Affichage du menu
-include_once 'resultatconsultation.php'; //Code principal de la page
+include_once 'corps/resultatconsultation.php'; //Code principal de la page
 include_once 'presentation/pied.php'; //Affichage du pied de pages
 ?>

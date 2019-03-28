@@ -36,6 +36,6 @@ include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
 include_once 'presentation/entete.php';
 $menu=10;
 include_once 'presentation/gauche.php';
-include_once 'gestionequip.php';
+include_once 'corps/gestionequip.php';
 include_once 'presentation/pied.php';
 ?>

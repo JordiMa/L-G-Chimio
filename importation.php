@@ -37,7 +37,7 @@ $menu=9;
 include_once 'presentation/gauche.php';
 $mask = REPTEMP."*.tmp";
 $nb=count(glob( $mask ));
-if ($nb>0) include_once 'listimport.php';
-else include_once 'import.php';
+if ($nb>0) include_once 'corps/listimport.php';
+else include_once 'corps/import.php';
 include_once 'presentation/pied.php';
 ?>

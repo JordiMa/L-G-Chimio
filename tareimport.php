@@ -53,10 +53,10 @@ $menu=9;
 $ssmenu=11;
 include_once 'presentation/entete.php';
 include_once 'presentation/gauche.php';
-if (($_FILES['filetare']['type']=="application/vnd.ms-excel" or $_FILES['filetare']['type']=="text/csv" or $_FILES['filetare']['type']=="text/x-comma-separated-values" or $_FILES['filetare']['type']=="application/force-download" or $_FILES['filetare']['type']=="text/comma-separated-values") and $_FILES['filetare']['size']<=$maxup) include_once 'insertcsvtare.php';
+if (($_FILES['filetare']['type']=="application/vnd.ms-excel" or $_FILES['filetare']['type']=="text/csv" or $_FILES['filetare']['type']=="text/x-comma-separated-values" or $_FILES['filetare']['type']=="application/force-download" or $_FILES['filetare']['type']=="text/comma-separated-values") and $_FILES['filetare']['size']<=$maxup) include_once 'corps/insertcsvtare.php';
 else {
   $erreur="ERREFILECSV";
-  include_once 'importare.php';
+  include_once 'corps/importare.php';
 }
 include_once 'presentation/pied.php';
 ?>
