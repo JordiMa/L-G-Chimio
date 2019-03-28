@@ -266,16 +266,28 @@ else {
 			// }
 		// }
 	}
-	unset($dbh);
+
 	if (!isset($nbrs)) $nbrs=0;
 	if (!isset($nbpage)) $nbpage=0;
+
+
+
 	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
 	$recherche= new affiche_recherche ($tab,$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
+
+	$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
+	//les résultats sont retournées dans la variable $result
+	$result =$dbh->query($sql);
+	$row =$result->fetch(PDO::FETCH_NUM);
+	if ($row[0]=='{ADMINISTRATEUR}') {
+		echo '<a class="btnlink" target="_blank" href="exportation.php?chx_liste=1&listeID_separateur=%3B&listeID='.$recherche->getListeID().'">Exporter la page</a>';
+	}
+
 	$recherche->imprime();
 	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
 }
 
-
+unset($dbh);
 
 function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$recherche,$valtanimoto) {
 
