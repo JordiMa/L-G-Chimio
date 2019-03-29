@@ -139,35 +139,29 @@ if (!empty($_POST['id'])) {
 			}
 			$formulaire1->ajout_select (1,"type",$tab,false,$row2[3],"",TYPE,false,"");
 
-			if ($row2[9]){
+			//if ($row2[9]){
 				print
-					"<div>
-						<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete' checked>
-						<label for='chx_purete'>Pureté contrôlée</label>
-					</div>";
-				}
-				else {
-					print
-						"<div>
-							<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete'>
-							<label for='chx_purete'>Pureté contrôlée</label>
-						</div>";
-					}
+					"<br><br>
+						<label for='chx_purete'>Pureté contrôlée :</label>
+						<select id='chx_purete' name='chx_purete'>
+						<option value='0' "; if ($row2[9] == 0) echo "selected"; echo ">Non contrôlée</option>
+						<option value='1' "; if ($row2[9] == 1) echo "selected"; echo ">Contrôle en cours</option>
+						<option value='2' "; if ($row2[9] == 2) echo "selected"; echo ">Contrôlée et validé</option>
+						<option value='3' "; if ($row2[9] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
+					</select>";
 
-			if ($row2[8]){
-				print
-					"<div>
-						<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure' checked>
-						<label for='chx_tructure'>Structure contrôlée</label>
-					</div>";
-				}
-				else {
+
+			//if ($row2[8]){
 					print
-						"<div>
-							<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure'>
-							<label for='chx_tructure'>Structure contrôlée</label>
-						</div>";
-					}
+						"<br><br>
+							<label for='chx_structure'>Structure contrôlée :</label>
+							<select id='chx_structure' name='chx_structure'>
+								<option value='0' "; if ($row2[8] == 0) echo "selected"; echo ">Non contrôlée</option>
+								<option value='1' "; if ($row2[8] == 1) echo "selected"; echo ">Contrôle en cours</option>
+								<option value='2' "; if ($row2[8] == 2) echo "selected"; echo ">Contrôlée et validé</option>
+								<option value='3' "; if ($row2[8] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
+						</select>";
+
 		}
 		else {
 			print"<strong>".TYPE."</strong> ".constant ($row2[2]);

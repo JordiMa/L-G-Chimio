@@ -863,16 +863,17 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION ajoute_pro_date_ctrl_purete() RETURNS trigger AS $$
     BEGIN
-		IF NEW.pro_controle_purete IS TRUE THEN
-			IF OLD.pro_date_controle_purete IS NULL THEN
+		IF NEW.pro_controle_purete <> 0 THEN
 				UPDATE produit SET pro_date_controle_purete = now() where pro_id_produit = OLD.pro_id_produit;
-			END IF;
+		END IF;
+		IF NEW.pro_controle_purete = 0 THEN
+				UPDATE produit SET pro_date_controle_purete = NULL where pro_id_produit = OLD.pro_id_produit;
 		END IF;
         RETURN NEW;
     END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER ajoute_pro_date_ctrl_purete
-AFTER UPDATE OF pro_date_controle_purete ON produit
+AFTER UPDATE OF pro_controle_purete ON produit
 FOR EACH ROW
-EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();";
+EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();

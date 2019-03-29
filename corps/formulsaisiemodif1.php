@@ -177,36 +177,6 @@ if (!empty($_POST['id'])) {
 			print"<input type='hidden' name='config_nomenclature' value='".$config_data['nomenclature']."'>";
 			print"<input type='hidden' name='config_solvantsDeSolubilisation' value='".$config_data['solvantsDeSolubilisation']."'>";
 
-			if (isset($_POST["chx_purete"]) && $_POST["chx_purete"] == "chx_purete"){
-				print
-					"<div>
-						<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete' checked>
-						<label for='chx_purete'>Pureté contrôlée</label>
-					</div>";
-				}
-				else {
-					print
-						"<div>
-							<input type='checkbox' id='chx_purete' name='chx_purete' value='chx_purete'>
-							<label for='chx_purete'>Pureté contrôlée</label>
-						</div>";
-					}
-
-			if (isset($_POST["chx_structure"]) && $_POST["chx_structure"] == "chx_structure"){
-				print
-					"<div>
-						<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure' checked>
-						<label for='chx_tructure'>Structure contrôlée</label>
-					</div>";
-				}
-				else {
-					print
-						"<div>
-							<input type='checkbox' id='chx_structure' name='chx_structure' value='chx_structure'>
-							<label for='chx_tructure'>Structure contrôlée</label>
-						</div>";
-					}
-
 			//selection des résultats de l'ID demandé dans la table produit
 			$sql="SELECT
 				  pro_id_produit,
@@ -539,6 +509,28 @@ if (!empty($_POST['id'])) {
 				$formulaire->ajout_checkbox ("solvant",$tab2,$tabsolvant,SOLVANTS."<br/>",false);
 				else {
 					$formulaire->ajout_checkbox ("solvant",$tab2,'',SOLVANTS."<br/>",false);
+				}
+				if (isset($_POST["chx_purete"])){
+					print
+					"<br><br>
+					<label for='chx_purete'>Pureté contrôlée :</label>
+					<select id='chx_purete' name='chx_purete'>
+						<option value='0' "; if ($_POST["chx_purete"] == 0) echo "selected"; echo ">Non contrôlée</option>
+						<option value='1' "; if ($_POST["chx_purete"] == 1) echo "selected"; echo ">Contrôle en cours</option>
+						<option value='2' "; if ($_POST["chx_purete"] == 2) echo "selected"; echo ">Contrôlée et validé</option>
+						<option value='3' "; if ($_POST["chx_purete"] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
+					</select>";
+				}
+				if (isset($_POST["chx_structure"])){
+					print
+					"<br><br>
+					<label for='chx_structure'>Structure contrôlée :</label>
+					<select id='chx_structure' name='chx_structure'>
+						<option value='0' "; if ($_POST["chx_structure"] == 0) echo "selected"; echo ">Non contrôlée</option>
+						<option value='1' "; if ($_POST["chx_structure"] == 1) echo "selected"; echo ">Contrôle en cours</option>
+						<option value='2' "; if ($_POST["chx_structure"] == 2) echo "selected"; echo ">Contrôlée et validé</option>
+						<option value='3' "; if ($_POST["chx_structure"] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
+					</select>";
 				}
 
 			print"</td>\n</tr>\n<tr valign=\"top\">\n<td>";

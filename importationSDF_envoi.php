@@ -91,7 +91,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		</script>';
 
-	require 'corps/importationSDF_massemolaire.php';
 
 		function traitement($donnees,$i){ //formatage des données
 			global $valid;
@@ -1401,13 +1400,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				}
 			}
 
-/*
+
 			if ($valueBar >= ($_POST['nbrMol']-1)){
 				suppression("files");
 				suppression("files/sdf");
 				suppression("files/rdf");
 			}
-*/
+
 
 	echo'
 				<meta charset="UTF-8">

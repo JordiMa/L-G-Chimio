@@ -209,8 +209,9 @@ else {
 			$sql.=") VALUES ('$fichier','$extension_fichier[1]','".$_POST['donnees'.$filetype[$ifile]]."'";
 			if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",'{".$_POST[$filetype[$ifile].'type']."}'";
 			$sql.=")";
+
 			$fichierinsert=$dbh->exec($sql);
-			print_r ($dbh->errorInfo());
+
 			if($fichierinsert==false) {
 				$erreur=1;
 				echo "<p align=\"center\" class=\"erreur\">";
@@ -258,23 +259,15 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	if($id{'uv'}>0) $sql.=", pro_id_uv='".$id{'uv'}."'";
 	if($id{'sm'}>0) $sql.=", pro_id_sm='".$id{'sm'}."'";
 	if($id{'hrms'}>0) $sql.=", pro_id_hrms='".$id{'hrms'}."'";
-	if (isset($_POST["chx_purete"]) && $_POST["chx_purete"] == "chx_purete"){
-		$sql.=", pro_controle_purete = TRUE";
-		//$sql.=", pro_date_controle_purete = now()";
-	}
-	else {
-		$sql.=", pro_controle_purete = FALSE";
-	}
-	if (isset($_POST["chx_structure"]) && $_POST["chx_structure"] == "chx_structure"){
-			//$stmt->bindValue(':pro_controle_structure',TRUE);
-			$sql.=", pro_controle_structure = TRUE";
-	}
-	else {
-		$sql.=", pro_controle_structure = FALSE";
-	}
-	 $sql.=", pro_champsAnnexe = '".$_POST["champsAnnexe"]."'";
+
+	$sql.=", pro_controle_purete = ".$_POST['chx_purete'];
+
+	$sql.=", pro_controle_structure = ".$_POST['chx_structure'];
+
+	$sql.=", pro_champsAnnexe = '".$_POST["champsAnnexe"]."'";
 
 	$sql.=" where pro_id_produit='".$_POST['id']."'";
+	echo $sql;
 	$insert=$dbh->exec($sql);
 
 	/*désactivé passage à la version 1.3.2.1

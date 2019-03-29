@@ -172,16 +172,6 @@ if (!empty($id_sql)) {
 			}
 			else $nommol=$row2[0];
 
-			// [JM - 22/01/2019] affiche le contrôle de la pureté et de la strucutre
-			echo "<div style='text-align: center;'>";
-			if ($row2[43]) echo "<strong style='color: blue;'>".CONTROLE_STRUCT."<input type='checkbox' disabled checked></strong>";
-			else  echo "<strong style='color: blue;'>".CONTROLE_STRUCT."<input type='checkbox' disabled></strong>";
-			echo " | ";
-			if ($row2[42]) echo "<strong style='color: blue;'>".CONTROLE_PURETE."<input type='checkbox' disabled checked></strong>";
-			else  echo "<strong style='color: blue;'>".CONTROLE_PURETE."<input type='checkbox' disabled></strong>";
-			echo " | <strong style='color: blue;'>".DATE_CONTROLE_PURETE."</strong>&nbsp;".$row2[44];
-			echo "</div>";
-
 			// [JM - 22/01/2019] affiche date d'envoie chez evotec
 			// [JM - 22/01/2019] seulement pour les responsables, les chefs et les admins
 			if ($row[0]=="{RESPONSABLE}" || $row[0]=="{CHEF}" || $row[0]=="{ADMINISTRATEUR}"){
@@ -201,6 +191,20 @@ if (!empty($id_sql)) {
 				  </tr>
 				  <tr>
 					<td rowspan=\"12\" valign=\"top\">";
+					
+					// [JM - 22/01/2019] affiche le contrôle de la pureté et de la strucutre
+					if ($row2[43] == 0) echo "<strong>Structure contrôlée :</strong> Non contrôlée";
+					else if ($row2[43] == 1) echo "<strong>Structure contrôlée :</strong> Contrôle en cours";
+					else if ($row2[43] == 2) echo "<strong>Structure contrôlée :</strong> Contrôlée et validé";
+					else if ($row2[43] == 3) echo "<strong>Structure contrôlée :</strong> Contrôlée et invalidé";
+					echo "<br/>";
+					if ($row2[42] == 0) echo "<strong>Pureté contrôlée :</strong> Non contrôlée";
+					else if ($row2[42] == 1) echo "<strong>Pureté contrôlée :</strong> Contrôle en cours";
+					else if ($row2[42] == 2) echo "<strong>Pureté contrôlée :</strong> Contrôlée et validé";
+					else if ($row2[42] == 3) echo "<strong>Pureté contrôlée :</strong> Contrôlée et invalidé";
+					echo "<br/>";
+					echo "<strong>".DATE_CONTROLE_PURETE."</strong>&nbsp;".$row2[44];
+
 			echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";
 			$jme=new visualisationmoleculejme (250,250,$row2[1]);
 			$jme->imprime();

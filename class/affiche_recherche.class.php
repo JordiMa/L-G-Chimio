@@ -111,10 +111,15 @@ class affiche_recherche {
                     ".$ror[3]." : ".$ror[4].constant($ror[6])."<br/>
                     ".$ror[0]." ".$ror[1].",&nbsp;".$date."<br/>
                     ".EQUI." ".$ror2[1]." ".$ror2[0]."<br/>";
-                    if ($ror[7]) echo "pureté contrôlée : <input type='checkbox' disabled checked><br/>";
-                    else  echo "pureté contrôlée : <input type='checkbox' disabled><br/>";
-                    if ($ror[8]) echo "structure contrôlée : <input type='checkbox' disabled checked><br/>";
-                    else  echo "structure contrôlée : <input type='checkbox' disabled><br/>";
+                    if ($ror[7] == 0) echo "pureté contrôlée : Non contrôlée<br/>";
+                    else if ($ror[7] == 1) echo "pureté contrôlée : Contrôle en cours<br/>";
+                    else if ($ror[7] == 2) echo "pureté contrôlée : Contrôlée et validé<br/>";
+                    else if ($ror[7] == 3) echo "pureté contrôlée : Contrôlée et invalidé<br/>";
+
+                    if ($ror[8] == 0) echo "structure contrôlée : Non contrôlée<br/>";
+                    else if ($ror[8] == 1) echo "structure contrôlée : Contrôle en cours<br/>";
+                    else if ($ror[8] == 2) echo "structure contrôlée : Contrôlée et validé<br/>";
+                    else if ($ror[8] == 3) echo "structure contrôlée : Contrôlée et invalidé<br/>";
             echo "</td>
                   <td align=\"right\" valign=\"middle\">
                     <form method=\"post\" action=\"fiche.php\">
@@ -162,11 +167,15 @@ class affiche_recherche {
                   ".$ror[3]." - ".$ror[4].constant($ror[5])."<br/>
                   ".$ror[0]." ".$ror[1]."&nbsp;".$date."<br/>
                   ".EQUI." ".$ror2[1]." ".$ror2[0]."<br/>";
-                  if ($ror[6]) echo CONTROLE_PURETE."<input type='checkbox' disabled checked><br/>";
-                  else  echo CONTROLE_PURETE."<input type='checkbox' disabled><br/>";
-                  if ($ror[7]) echo CONTROLE_STRUCT."<input type='checkbox' disabled checked><br/>";
-                  else  echo CONTROLE_STRUCT."<input type='checkbox' disabled><br/>";
+                  if ($ror[6] == 0) echo "pureté contrôlée : Non contrôlée<br/>";
+                  else if ($ror[6] == 1) echo "pureté contrôlée : Contrôle en cours<br/>";
+                  else if ($ror[6] == 2) echo "pureté contrôlée : Contrôlée et validé<br/>";
+                  else if ($ror[6] == 3) echo "pureté contrôlée : Contrôlée et invalidé<br/>";
 
+                  if ($ror[7] == 0) echo "structure contrôlée : Non contrôlée<br/>";
+                  else if ($ror[7] == 1) echo "structure contrôlée : Contrôle en cours<br/>";
+                  else if ($ror[7] == 2) echo "structure contrôlée : Contrôlée et validé<br/>";
+                  else if ($ror[7] == 3) echo "structure contrôlée : Contrôlée et invalidé<br/>";
           echo "</td>
                   <td align=\"right\" valign=\"middle\">
                     <form method=\"post\" action=\"fiche.php\">
