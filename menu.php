@@ -144,9 +144,9 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			break;
 			case 10 : print"utilisateurs.php";
 			break;
-			case 11 : print"parametres.php";
+			case 11 : print"attributionstructures.php";
 			break;
-			case 12 : print"attributionstructures.php";
+			case 12 : print"parametres.php";
 		}
 		if(isset($menu) and $menu==$y) print"\"><img border=\"0\" src=\"images/pucerouge.gif\" width=\"9\" height=\"9\">&nbsp;";
 		else print"\" onMouseOut=\"MM_swapImgRestore()\" onMouseOver=\"MM_swapImage('Image$y','','images/pucerouge.gif',1)\">\n<img name=\"Image$y\" border=\"0\" src=\"images/pucebleu.gif\" width=\"9\" height=\"9\">&nbsp;";
@@ -161,9 +161,9 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			break;
 			case 10 : echo UTILISATEUR;
 			break;
-			case 11 : echo PARAMETRES;
+			case 11 : echo "Attribution structures";
 			break;
-			case 12 : echo "Attribution structures";
+			case 12 : echo PARAMETRES;
         }
 		print"</a>\n<br/>\n<br/>\n";
     }
