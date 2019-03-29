@@ -175,7 +175,11 @@ if(isset($_POST['chx_typeContrat'])){
 			<input type="checkbox" name="chx_typeContrat" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_typeContrat'])) echo "checked"; ?> >Type de contrat<br>
 			<input type="checkbox" name="chx_masseDispo" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_masseDispo'])) echo "checked"; ?> >Masse disponible<br>
 			<input type="checkbox" name="chx_plaqueNonVrac" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_plaqueNonVrac'])) echo "checked"; ?> >Produits en plaque mais pas en vrac<br>
-			<input type="checkbox" name="chx_evotec" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_evotec'])) echo "checked"; ?> >Chez Evotec<br>
+			<br>
+			<input type="radio" name="rad_evotec" <?php if (isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="evotec") echo "checked";?> value="evotec" onchange="this.form.submit()">Seulement les produits présents chez Evotec<br>
+  		<input type="radio" name="rad_evotec" <?php if (isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="pasEvotec") echo "checked";?> value="pasEvotec" onchange="this.form.submit()">Seulement les produits qui ne sont pas chez Evotec<br>
+  		<input type="radio" name="rad_evotec" <?php if ((isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="lesDeux") || !isset($_POST['rad_evotec'])) echo "checked";?> value="lesDeux" onchange="this.form.submit()">Les deux<br>
+			<br>
 			<input type="checkbox" name="chx_liste" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_liste']) || isset($_GET['chx_liste'])) echo "checked"; ?> >Depuis une liste d'identificateurs<br>
 		</div>
 
@@ -307,8 +311,16 @@ for ($i=0; $i < $countACB; $i++) {
 			if(isset($_POST['masseOperateur']) && isset($_POST['masse']))
 				$sql_sdf .= " AND pro_masse ". $_POST['masseOperateur'] . $_POST['masse'];
 
-		if(isset($_POST['chx_evotec']))
-			$sql_sdf .= " AND pro_num_constant IN (SELECT evo_numero_permanent FROM evotec)";
+		if(isset($_POST['rad_evotec'])){
+			if($_POST['rad_evotec'] == "evotec"){
+				$sql_sdf .= " AND pro_num_constant IN (SELECT evo_numero_permanent FROM evotec)";
+			}
+			else
+				if($_POST['rad_evotec'] == "pasEvotec"){
+					$sql_sdf .= " AND pro_num_constant NOT IN (SELECT evo_numero_permanent FROM evotec)";
+				}
+		}
+
 
 		if (isset($_POST['chx_plaqueNonVrac'])){
 			$sql_stockParametre = "SELECT para_stock FROM parametres;";
@@ -455,7 +467,7 @@ for ($i=0; $i < $countACB; $i++) {
 
 							if(in_array("Chez evotec (oui/non)", $arrayChampsExport)){
 								//[JM - 24/01/2019] Si contrainte Evotec cocher
-								if(isset($_POST['chx_evotec'])){
+								if(isset($_POST['rad_evotec']) && $_POST['rad_evotec'] == "evotec"){
 								// [JM - 24/01/2019] Imprime le TAG Evotec dans le fichier SDF
 									$contenuFichier_sdf .= "\nEvotec";
 								}
@@ -745,7 +757,7 @@ for ($i=0; $i < $countACB; $i++) {
 
 								if(in_array("Chez evotec (oui/non)", $arrayChampsExport)){
 									//[JM - 24/01/2019] Si contrainte Evotec cocher
-									if(isset($_POST['chx_evotec'])){
+									if(isset($_POST['rad_evotec']) && $_POST['rad_evotec'] == "evotec"){
 									// [JM - 24/01/2019] Imprime le TAG Evotec dans le fichier SDF
 										$contenuFichier_csv[$key+1][array_search("Chez Evotec", $contenuFichier_csv[0])] = "OUI";
 									}
