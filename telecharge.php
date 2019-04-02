@@ -1,6 +1,7 @@
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +10,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,14 +22,14 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
-session_cache_limiter('public');
+//session_cache_limiter('public');
 include_once 'script/secure.php';
 include_once 'protection.php';
 if (!empty($_GET['id']) and !empty($_GET['rank'])) {
@@ -48,18 +49,36 @@ if (!empty($_GET['id']) and !empty($_GET['rank'])) {
 		$champfile=$_GET['rank']."_fichier";
 		$chamextension=$_GET['rank']."_nom_fichier";
 		$sql="SELECT $chamextension,$champfile FROM produit P INNER JOIN ".$_GET['rank']." U ON P.pro_id_".$_GET['rank']."=U.".$_GET['rank']."_id_".$_GET['rank']." WHERE pro_id_produit='".$_GET['id']."';";
+
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
-		$nom_fichier_complet="fichier_".$_SESSION['nom']."_".$_GET['rank'].".".$row2[0];
+		$nom_fichier_complet="fichier_".$_SESSION['nom']."_".$_GET['rank']."_".$_GET['id'].".".$row2[0];
 		$donne=stream_get_contents ($row2[1]);
-		$donne=base64_decode($donne);
-		
-		header("Content-Type: application/force-download");
-		header("Content-Disposition: attachment; filename=".$nom_fichier_complet);
-		header("Content-Length: ".strlen($donne));
-		echo $donne;
+
+		//$donne=base64_decode($donne);
+
+		//header("Content-Type: application/force-download");
+		//header("Content-Disposition: attachment; filename=".$nom_fichier_complet);
+		//header("Content-Length: ".strlen($donne));
+		//echo $donne;
+
+		//echo'<a class="download-file" href="data:application/'.$row2[0].';base64,'.$donne.'" download="'.$nom_fichier_complet.'">test</a>';
+		echo'
+		<style>
+			body {
+				margin:0px;
+			}
+		</style>';
+		echo "<iframe width='100%' height='100%' style='border: 0px;' src='data:application/pdf;base64,$donne'></iframe>";
+
+
+		/*echo"
+		<script type=\"text/javascript\">
+			setInterval($('.download-file').get(0).click(), 1000);
+			setInterval(window.history.back(), 1500);
+		</script>";*/
 	}
-	else include_once('corps/presentatio.php');
+	else include_once('presentatio.php');
 }
-else include_once('corps/presentatio.php');
+else include_once('presentatio.php');
 ?>
