@@ -161,12 +161,14 @@ if (!empty($id_sql)) {
 		// [JM - 22/01/2019] affiche date d'envoie chez evotec
 		// [JM - 22/01/2019] seulement pour les responsables, les chefs et les admins
 		if ($row[0]=="{RESPONSABLE}" || $row[0]=="{CHEF}" || $row[0]=="{ADMINISTRATEUR}"){
-				$sql_evo="SELECT evo_date_envoie FROM evotec WHERE evo_numero_permanent=".$row2[26];
+				$sql_evo="SELECT evo_date_envoie, evo_insoluble FROM evotec WHERE evo_numero_permanent=".$row2[26];
 				$result_evo =$dbh->query($sql_evo);
 				$row_evo =$result_evo->fetch(PDO::FETCH_NUM);
 				if ($row_evo[0]){
 					echo "<div style='text-align: center;'>";
 					echo "<strong style='color: red;'>".DATE_ENVOIE_EVOTEC."</strong>&nbsp;".$row_evo[0];
+					if ($row_evo[1])
+						echo " (Insoluble)";
 					echo "</div>";
 				}
 		}

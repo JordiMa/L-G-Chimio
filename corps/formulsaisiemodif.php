@@ -76,10 +76,9 @@ if (!empty($_POST['id'])) {
           </script>\n";
 
 		require 'script/connectionb.php';
-		$sql="SELECT str_mol,pro_masse,typ_type,pro_id_type,pro_configuration,pro_origine_substance,pro_etape_mol,pro_unite_masse, pro_controle_structure,pro_controle_purete, pro_date_controle_purete, pro_numero from produit,structure,type where pro_id_produit='".$_POST['id']."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_type=type.typ_id_type";
+		$sql="SELECT str_mol,pro_masse,typ_type,pro_id_type,pro_configuration,pro_origine_substance,pro_etape_mol,pro_unite_masse, pro_controle_structure,pro_controle_purete, pro_date_controle_purete, pro_numero, pro_num_constant from produit,structure,type where pro_id_produit='".$_POST['id']."' and produit.pro_id_structure=structure.str_id_structure and produit.pro_id_type=type.typ_id_type";
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
-
 
 		if ($row[0]=="{ADMINISTRATEUR}") {
 			// [JM - 01/02/2019] bouton pour réattribuer la structure à un autre chimiste
@@ -161,6 +160,21 @@ if (!empty($_POST['id'])) {
 								<option value='2' "; if ($row2[8] == 2) echo "selected"; echo ">Contrôlée et validé</option>
 								<option value='3' "; if ($row2[8] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
 						</select>";
+
+						$sql_evotec = "select evo_date_envoie, evo_insoluble from evotec where evo_numero_permanent = $row2[12]";
+						$result_evotec = $dbh->query($sql_evotec);
+						$row_evotec = $result_evotec->fetch(PDO::FETCH_NUM);
+
+						if (count($row_evotec) > 1 ){
+							echo "<input type='hidden' id='chezEvo' name='chezEvo' value=1 />";
+							echo "<input type='hidden' id='pro_num_constant' name='pro_num_constant' value='$row2[12]' />";
+							echo "<br/><br/><label>" .DATE_ENVOIE_EVOTEC . "</label> " .$row_evotec[0];
+							echo "<br/><br/><label>Insoluble chez Evotec ?</label> ";
+							echo "<input type='checkbox' id='evo_insoluble' name='evo_insoluble' ";
+							if ($row_evotec[1])
+								echo "checked ";
+							echo "/>";
+						}
 
 		}
 		else {

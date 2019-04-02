@@ -532,6 +532,15 @@ if (!empty($_POST['id'])) {
 						<option value='3' "; if ($_POST["chx_structure"] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
 					</select>";
 				}
+					if (isset($_POST['chezEvo'])){
+					echo "<input type='hidden' id='chezEvo' name='chezEvo' value = 1 />";
+					echo "<input type='hidden' id='pro_num_constant' name='pro_num_constant' value='".$_POST['pro_num_constant']."' />";
+					echo "<br/><br/><label>Insoluble chez Evotec ?</label> ";
+					echo "<input type='checkbox' id='evo_insoluble' name='evo_insoluble' ";
+					if (isset($_POST['evo_insoluble']) && $_POST['evo_insoluble'])
+						echo "checked ";
+					echo "/>";
+				}
 
 			print"</td>\n</tr>\n<tr valign=\"top\">\n<td>";
 			$formulaire->ajout_textarea ("nomiupac",36,$rowselect[1],12,true,NOM."<br/>");

@@ -79,7 +79,6 @@ if(isset($_POST['chx_typeContrat'])){
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td width="82" height="23" align="center" valign="middle" background="images/onglet1.gif"><a class="onglet" href="exportation.php"><?php echo "EXPORT" ?></a></td>
-			<td width="82" height="23" align="center" valign="middle" background="images/onglet.gif"><a class="onglet" href="exportation.old.php"><?php echo SDF . " OLD" ?></a></td>
 			<td width="82" height="23" align="center" valign="middle" background="images/onglet.gif"><a class="onglet" href="exportationcsvpesee.php"><?php echo CSV ?></a></td>
 		</tr>
 	</table>
@@ -180,6 +179,16 @@ if(isset($_POST['chx_typeContrat'])){
   		<input type="radio" name="rad_evotec" <?php if (isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="pasEvotec") echo "checked";?> value="pasEvotec" onchange="this.form.submit()">Seulement les produits qui ne sont pas chez Evotec<br>
   		<input type="radio" name="rad_evotec" <?php if ((isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="lesDeux") || !isset($_POST['rad_evotec'])) echo "checked";?> value="lesDeux" onchange="this.form.submit()">Les deux<br>
 			<br>
+			<?php
+			if(isset($_POST['rad_evotec']) && ($_POST['rad_evotec'] == "evotec")){
+			?>
+			<input type="radio" name="rad_evotec_insoluble" <?php if (isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="evotec") echo "checked";?> value="evotec" onchange="this.form.submit()">Seulement les produits soluble (Evotec)<br>
+  		<input type="radio" name="rad_evotec_insoluble" <?php if (isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="pasEvotec") echo "checked";?> value="pasEvotec" onchange="this.form.submit()">Seulement les produits insoluble (Evotec)<br>
+  		<input type="radio" name="rad_evotec_insoluble" <?php if ((isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="lesDeux") || !isset($_POST['rad_evotec_insoluble'])) echo "checked";?> value="lesDeux" onchange="this.form.submit()">Les deux<br>
+			<br>
+			<?php
+			}
+			?>
 			<input type="checkbox" name="chx_liste" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_liste']) || isset($_GET['chx_liste'])) echo "checked"; ?> >Depuis une liste d'identificateurs<br>
 		</div>
 
@@ -312,6 +321,19 @@ for ($i=0; $i < $countACB; $i++) {
 				$sql_sdf .= " AND pro_masse ". $_POST['masseOperateur'] . $_POST['masse'];
 
 		if(isset($_POST['rad_evotec'])){
+			if(isset($_POST['rad_evotec_insoluble'])){
+				if($_POST['rad_evotec_insoluble'] == "evotec"){
+					$sql_sdf .= " AND pro_num_constant IN (SELECT evo_numero_permanent FROM evotec WHERE evo_insoluble = FALSE)";
+				}
+				else
+					if($_POST['rad_evotec_insoluble'] == "pasEvotec"){
+						$sql_sdf .= " AND pro_num_constant IN (SELECT evo_numero_permanent FROM evotec WHERE evo_insoluble = TRUE)";
+					}
+				else {
+					$sql_sdf .= " AND pro_num_constant IN (SELECT evo_numero_permanent FROM evotec)";
+				}
+			}
+			else
 			if($_POST['rad_evotec'] == "evotec"){
 				$sql_sdf .= " AND pro_num_constant IN (SELECT evo_numero_permanent FROM evotec)";
 			}

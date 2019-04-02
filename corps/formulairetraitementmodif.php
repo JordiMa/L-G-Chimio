@@ -267,7 +267,7 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	$sql.=", pro_champsAnnexe = '".$_POST["champsAnnexe"]."'";
 
 	$sql.=" where pro_id_produit='".$_POST['id']."'";
-	echo $sql;
+
 	$insert=$dbh->exec($sql);
 
 	/*désactivé passage à la version 1.3.2.1
@@ -435,6 +435,15 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 }
 */
 
+	//evotec
+	if (isset($_POST['chezEvo'])){
+		if (isset($_POST['evo_insoluble']) && $_POST['evo_insoluble'])
+			$sql_evo = "UPDATE evotec SET evo_insoluble = TRUE WHERE evo_numero_permanent = '".$_POST['pro_num_constant'] ."'";
+		else
+			$sql_evo= "UPDATE evotec SET evo_insoluble = FALSE WHERE evo_numero_permanent = '".$_POST['pro_num_constant'] ."'";
+
+		$insert_evo=$dbh->exec($sql_evo);
+	}
 	//recherche de solvants sur la table solvant
 	$sql="SELECT count(sol_id_solvant) FROM solvant";
 	//les résultats sont retournées dans la variable $result3
