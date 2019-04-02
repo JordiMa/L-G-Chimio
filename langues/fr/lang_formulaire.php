@@ -211,4 +211,5 @@ define('ERREUR_SUP_PRECAUTION','Echec de la suppression de la liste des précaut
 define('ERREUR_FICHIER','Echec de l\'insertion d\'un fichier d\'analyse dans la base de données');
 define('ERREURATTENTION',' Erreurs se sont produites durant la modification de la fiche');
 define('RETIRE','Retirer ce fichier');
+define('DATE_ENVOIE_EVOTEC','Date d\'envoi chez EVOTEC :');
 ?>

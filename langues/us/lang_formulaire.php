@@ -211,4 +211,5 @@ define('ERREUR_SUP_PRECAUTION','Failed to delete the list of precaution in the d
 define('ERREUR_FICHIER','Failure of the insertion of a analysis file in the database');
 define('ERREURATTENTION',' Errors occurred while modifying the record');
 define('RETIRE','Remove this file');
+define('DATE_ENVOIE_EVOTEC','Date sent to EVOTEC : ');
 ?>

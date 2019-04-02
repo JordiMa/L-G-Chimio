@@ -45,7 +45,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		while(($donne = fgetcsv($fic,90,";"))!==FALSE) {
 			$nb=count($donne);
 			for ($k=0; $k<$nb; $k++) {
-				if (strlen($donne[$k])==8) $numlocal=$donne[$k];
+				$donne[$k] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $donne[$k]);
+				if (strlen($donne[$k]) == 8) $numlocal=$donne[$k];
 				else $masse=$donne[$k];
 			}
 			$masse=str_replace("\,",".",$masse);
