@@ -195,7 +195,7 @@ CREATE TABLE parametres (
   para_email_national character varying(40),
   para_num_exportation boolean,
   para_email_envoie character varying(50),
-  para_version character varying(7),
+  para_version character varying(15),
   para_origin_defaut character varying(12),
   para_champs character varying DEFAULT '[]'
 );
@@ -877,3 +877,5 @@ CREATE TRIGGER ajoute_pro_date_ctrl_purete
 AFTER UPDATE OF pro_controle_purete ON produit
 FOR EACH ROW
 EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();
+";
+?>
