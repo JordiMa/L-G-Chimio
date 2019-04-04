@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
 Distributeur : UGCN - http://chimiotheque-nationale.enscm.fr
@@ -31,7 +31,7 @@ termes.
 ?>
 <tr>
     <td bgcolor="#FFFFFF" align="center" valign="middle" width="100%" colspan="2">
-<h3>Mise à jour de L-g-<I>Chimio</I> de la version 1.1 ou 1.2 ou 1.2.1 ou 1.3 vers la version 1.3.1</h3>
+<h3>Mise à jour de L-g-<I>Chimio</I> de la version 1.4 vers la version 1.5</h3>
 <p>( Réservé à l'administrateur )</p>
 <br><br><br><br>	
 <table width="150" border="0" cellspacing="0" cellpadding="0" >
@@ -44,16 +44,14 @@ echo LOGIN;
   </tr>
   <tr>
     <td class=celluleblanche>
-	<script language="javascript" src="../md5.js"></script>
+	<script language="javascript" src="md5.js"></script>
 	<script language="javascript">
-	<!--
 	  function CResponsemd() {
 		str = document.conec.password_chimiste.value;
 		document.conec.reponse.value = MD5(str,document.conec.name_chimiste.value);
 		document.conec.password_chimiste.value = "";
 		conec.submit();
 	  }
-	// -->
 	</script>
 
 <?php
@@ -61,7 +59,7 @@ if (isset ($message)) print"<p align=\"center\" class=messagederreur>".constant(
 $formulaire=new formulaire ("conec","session.php","POST",true);
 $formulaire->affiche_formulaire();
 $formulaire->ajout_text (20, "", 20,"name_chimiste",NAMEPASS,"","");
-$formulaire->ajout_password (20, "", 50,"password_chimiste",PASSWORD,"");
+$formulaire->ajout_password (20, "", 30,"password_chimiste",PASSWORD,"");
 $formulaire->ajout_cache ("","reponse");
 print"<p align=\"center\">";
 $formulaire->ajout_button (LOGIN,"","button","onClick=\"CResponsemd(); return false;\"");

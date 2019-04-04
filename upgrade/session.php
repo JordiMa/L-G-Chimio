@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
 Distributeur : UGCN - http://chimiotheque-nationale.enscm.fr
@@ -45,15 +45,15 @@ if (isset($_POST['name_chimiste']) && isset($_POST['reponse']) && !empty($_POST[
 		session_regenerate_id();
 		$_SESSION['nom']=$_POST['name_chimiste'];
 		//appel le fichier de connexion à la base de données
-		require '../script/connectiona.php';
+		require '../script/connectionb.php';
 		//préparation de la requète SQL
 		$sql = "SELECT chi_langue,chi_statut FROM chimiste WHERE chi_nom='".$_POST['name_chimiste']."' and chi_password='".$pass."'";
 		//les résultats sont retournées dans la variable $result
-		$result =mysql_query($sql);
-		$row =mysql_fetch_row($result);
-		if ($row[1]=='ADMINISTRATEUR') {
+		$result =$dbh->query($sql);
+		$row =$result->fetch(PDO::FETCH_NUM);
+		if ($row[1]=='{ADMINISTRATEUR}') {
 			$_SESSION['langue']=$row[0];
-			mysql_close($db);
+			unset($dbh);
 			include_once 'entre.php';
 		}
 		else {
@@ -83,16 +83,17 @@ else {
 
 function verification ($nom,$pass) {
 	//appel le fichier de connexion à la base de données
-	require '../script/connectiona.php';
+	require '../script/connectionb.php';
 	//préparation de la requète SQL
 	$sql = "SELECT chi_nom as nbres FROM chimiste WHERE chi_nom='$nom' and chi_password='".$pass."' and chi_passif='0'";
 	//les résultats sont retournées dans la variable $result
-	$result =mysql_query($sql);
-	$num=mysql_num_rows($result);
-	$row =mysql_fetch_row($result);
+	$result =$dbh->query($sql);
+	$num=$result->rowCount();
+	$row =$result->fetch(PDO::FETCH_NUM);
 	//fermeture de la connexion à la base de données
-	mysql_close($db);
-	if($num ==1 and $row[0]==$nom) return TRUE;
+	unset($dbh);
+
+	if($num == 1 and $row[0]==$nom) return TRUE;
 	else return FALSE;
 }
 ?>
