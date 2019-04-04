@@ -27,31 +27,18 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
+
 */
 //démarage de la session
 session_start();
+
 //vérification si les variables name_chimiste et reponse existe et si elles ne sont pas vide
 if (isset($_POST['name_chimiste']) && isset($_POST['password_chimiste']) && !empty($_POST['name_chimiste']) && !empty($_POST['password_chimiste'])) {
-	//traitement du mot de passe enlève le caractère suplémentaire en met en minuscule
-	// $pass=strtolower($_POST['reponse']);
-	// $nb=intval(strlen($_POST['name_chimiste'])/2);
-	// $carac=substr($_POST['name_chimiste'],$nb,0);
-	// $pass1=substr($pass,0,$nb);
-	// $pass2=substr($pass,$nb+1,32);
-	// $pass=$pass1.$pass2;
 	 $pass=$_POST['password_chimiste'];
 
-	//appel de la function vérification  si elle renvoie TRUE la session est générée
-	if (verification ($_POST['name_chimiste'],$pass)) {
+	if (verification($_POST['name_chimiste'],$pass)) {
 		session_regenerate_id();
 		$_SESSION['nom']=$nom_chim;
-		//appel le fichier de connexion à la base de données
-		// require 'script/connectionb.php';
-		//préparation de la requète SQL
-		// $sql = "SELECT chi_langue FROM chimiste WHERE chi_nom='".$_POST['name_chimiste']."' and chi_password='".$pass."'";
-		//les résultats sont retournées dans la variable $result
-		// $result =$dbh->query($sql);
-		// $row =$result->fetch(PDO::FETCH_NUM);
 		$_SESSION['langue']=$lang_chim;
 		// unset($dbh);
 		include_once 'entre.php';
@@ -72,16 +59,12 @@ else {
 	include_once 'index.php';
 }
 
-function verification ($nom,$pass) {
+function verification($nom,$pass){
 	//appel le fichier de connexion à la base de données
 	require 'script/connectionb.php';
-	//préparation de la requète SQL
-	// $sql = "SELECT chi_nom as nbres FROM chimiste WHERE chi_nom='$nom' and chi_password='".$pass."' and chi_passif='0'";
+
 	$sql = "SELECT chi_id_chimiste, chi_password, chi_langue, chi_nom as nbres FROM chimiste WHERE chi_nom='$nom' and chi_passif='0'";
-	//les résultats sont retournées dans la variable $result
-	// $result =$dbh->query($sql);
-	// $num=$result->rowCount();
-	// $row =$result->fetch(PDO::FETCH_NUM);
+
 	foreach  ($dbh->query($sql) as $row) {
 				if (password_verify($pass, $row['chi_password'])){
 					global $id_chim, $nom_chim, $lang_chim;
