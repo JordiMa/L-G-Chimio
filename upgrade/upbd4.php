@@ -234,7 +234,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   }
 
   if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification de la table « produit »";
+    echo "erreur lors de la modification des table de fichiers";
     print_r($dbh->errorInfo());
     $err = 1;
   }
@@ -249,7 +249,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   }
 
   if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification de la table « produit »";
+    echo "erreur lors de la modification des fonctions/trigger de contrôle";
     print_r($dbh->errorInfo());
     $err = 1;
   }
