@@ -44,13 +44,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importation.php\">".IMPORTCN."</a></td>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationtare.php\">".IMPORTTARE."</a></td>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationevo.php\">".IMPORTEVO."</a></td>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF/RDF</a></td>
 		  </tr>
 		  </table>";
 	print"<div id=\"dhtmltooltip\"></div>
 		<script language=\"javascript\" src=\"ttip.js\"></script>";
 
-	echo "<br/><h3 align=\"center\">Importation de fichier SDF</h3>";
+	echo "<br/><h3 align=\"center\">".TITREIMPORTSDFRDF."</h3>";
 
 	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".constant($erreur)."</p>";
 	//formulaire d'importatio du fichier
@@ -66,14 +66,14 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 ?>
 
 <form action="importationSDF_enregistrement.php" method="post" enctype="multipart/form-data">
-		<label>Fichier de type SDF ou RDF :</br></br></label>
+		<label><?php echo SDFRDF;?></br></br></label>
 		<input type="file" id="fichier" name="file_name" required/><br>
 		<br>
 		<br>
-		<label>&nbsp;Correction des structures :</label><br>
+		<label>&nbsp;<?php echo CORRECTIONSTRUCTURE;?></label><br>
 		<br>
-		<input type="radio" name="correctionOnLive" value="true" >Pendant l'importation<br>
-  	<input type="radio" name="correctionOnLive" value="false" checked>Après l'importation<br>
+		<input type="radio" name="correctionOnLive" value="true" ><?php echo PENDANTIMPORT;?><br>
+  	<input type="radio" name="correctionOnLive" value="false" checked><?php echo APRESIMPORT;?><br>
 		<br>
 		<input type="submit" value="Envoyer" id="envoyer" class="centre"/>
 </form>

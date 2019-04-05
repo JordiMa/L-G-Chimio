@@ -92,21 +92,11 @@ if(isset($_POST['chx_typeContrat'])){
 		</div>
 
 		<div>
-			<br>Sélectionnez les champs à exporter :
+			<br> <?php echo SELECTCHAMPSEXPORT; ?>
 			<?php
 				print"<div id=\"dhtmltooltip\"></div>
 			  			<script language=\"javascript\" src=\"ttip.js\"></script>";
-				$infoBule =
-				"Si rien n'est coché, les champs exporter par défaut sont :<br><br>
-				- Identificateur<br>
-				- Numéro constant<br>
-				- Inchi<br>
-				- Masse<br>
-				- Numéro de plaque<br>
-				- Chez evotec (oui/non)<br>
-				- Pureté<br>
-				- Methode de messure de la purete<br>
-				- Origine de la substance";
+				$infoBule = INFOBULEEXPORT;
 				$infoBule = str_replace(array("\n","\r","\t"),"",$infoBule);
 
 				print"<a href=\"#\" onmouseover=\"ddrivetip('<p>".AddSlashes($infoBule)."</p>')\" onmouseout=\"hideddrivetip()\"><img border=\"0\" src=\"images/aide.gif\" /></a>";
@@ -114,38 +104,38 @@ if(isset($_POST['chx_typeContrat'])){
 			<br>
 				<?php
 					$arrayChampsBDD = [
-						"Type",
-						"Equipe",
-						"Responsable",
-						"Chimiste",
-						"Couleur",
-						"Pureté",
-						"Purification",
-						"Masse",
-						"Aspect",
-						"Date de saisie",
-						"Reference cahier de labo",
-						"Observation",
-						"Identificateur",
-						"Numéro constant",
-						"Inchi",
-						"Point de fusion",
-						"Point d'ebullition",
-						"Methode de messure de la purete",
-						"Numéro CN",
-						"Origine de la substance",
-						"QR code",
-						"Pureté contrôlée (oui/non)",
-						"Date de contrôle pureté",
-						"Structure contrôlée (oui/non)",
-						"Numéro de plaque",
-						"Chez evotec (oui/non)"
+						SELECT_TYPE,
+						SELECT_EQUIPE,
+						SELECT_RESPONSABLE,
+						SELECT_CHIMISTE,
+						SELECT_COULEUR,
+						SELECT_PURETE,
+						SELECT_PURIFICATION,
+						SELECT_MASSE,
+						SELECT_ASPECT,
+						SELECT_DATESAISIE,
+						SELECT_REFLABO,
+						SELECT_OBSERVATION,
+						SELECT_IDENTIFICATEUR,
+						SELECT_NUMCONSTANT,
+						SELECT_INCHI,
+						SELECT_POINTFUSION,
+						SELECT_POINTEBULLITION,
+						SELECT_METHODEMESSUREPURETE,
+						SELECT_NUMCN,
+						SELECT_ORIGINESUBSTANCE,
+						SELECT_QRCODE,
+						SELECT_CONTROLEPURETE,
+						SELECT_DATECONTROLEPURETE,
+						SELECT_CONTROLESTRUCTURE,
+						SELECT_NUMPLAQUE,
+						SELECT_EVOTEC
 					];
 				?>
 
 				<div id="multi-select-plugin" aria-labeledby="multi-select-plugin-label">
 					<span class="toggle">
-						<label>Sélectionnez les champs souhaité</label>
+						<label><?php echo SELECT_CHAMPSSOUHAITE; ?></label>
 						<span class="chevron">&lt;</span>
 					</span>
 					<ul>
@@ -168,33 +158,33 @@ if(isset($_POST['chx_typeContrat'])){
 		</div>
 
 		<div>
-			<br>Sélectionnez vos critères de sélection :<br>
-			<input type="checkbox" name="chx_equipe" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_equipe'])) echo "checked"; ?> >Equipe<br>
-			<input type="checkbox" name="chx_utilisateur" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_utilisateur'])) echo "checked"; ?> >Utilisateur<br>
-			<input type="checkbox" name="chx_typeContrat" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_typeContrat'])) echo "checked"; ?> >Type de contrat<br>
-			<input type="checkbox" name="chx_masseDispo" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_masseDispo'])) echo "checked"; ?> >Masse disponible<br>
-			<input type="checkbox" name="chx_plaqueNonVrac" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_plaqueNonVrac'])) echo "checked"; ?> >Produits en plaque mais pas en vrac<br>
+			<br><?php echo SELECTCRITERESEXPORT; ?><br>
+			<input type="checkbox" name="chx_equipe" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_equipe'])) echo "checked"; ?> ><?php echo SELECT_EQUIPE; ?><br>
+			<input type="checkbox" name="chx_utilisateur" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_utilisateur'])) echo "checked"; ?> ><?php echo SELECT_UTILISATEUR; ?><br>
+			<input type="checkbox" name="chx_typeContrat" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_typeContrat'])) echo "checked"; ?> ><?php echo SELECT_TYPECONTRACT; ?><br>
+			<input type="checkbox" name="chx_masseDispo" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_masseDispo'])) echo "checked"; ?> ><?php echo SELECT_MASSEDISPO; ?><br>
+			<input type="checkbox" name="chx_plaqueNonVrac" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_plaqueNonVrac'])) echo "checked"; ?> ><?php echo SELECT_PLAQUENOVRAC; ?><br>
 			<br>
-			<input type="radio" name="rad_evotec" <?php if (isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="evotec") echo "checked";?> value="evotec" onchange="this.form.submit()">Seulement les produits présents chez Evotec<br>
-  		<input type="radio" name="rad_evotec" <?php if (isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="pasEvotec") echo "checked";?> value="pasEvotec" onchange="this.form.submit()">Seulement les produits qui ne sont pas chez Evotec<br>
-  		<input type="radio" name="rad_evotec" <?php if ((isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="lesDeux") || !isset($_POST['rad_evotec'])) echo "checked";?> value="lesDeux" onchange="this.form.submit()">Les deux<br>
+			<input type="radio" name="rad_evotec" <?php if (isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="evotec") echo "checked";?> value="evotec" onchange="this.form.submit()"><?php echo SELECT_CHEZEVOTEC; ?><br>
+  		<input type="radio" name="rad_evotec" <?php if (isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="pasEvotec") echo "checked";?> value="pasEvotec" onchange="this.form.submit()"><?php echo SELECT_PASCHEZEVOTEC; ?><br>
+  		<input type="radio" name="rad_evotec" <?php if ((isset($_POST['rad_evotec']) && $_POST['rad_evotec']=="lesDeux") || !isset($_POST['rad_evotec'])) echo "checked";?> value="lesDeux" onchange="this.form.submit()"><?php echo SELECT_LESDEUX; ?><br>
 			<br>
 			<?php
 			if(isset($_POST['rad_evotec']) && ($_POST['rad_evotec'] == "evotec")){
 			?>
-			<input type="radio" name="rad_evotec_insoluble" <?php if (isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="evotec") echo "checked";?> value="evotec" onchange="this.form.submit()">Seulement les produits soluble (Evotec)<br>
-  		<input type="radio" name="rad_evotec_insoluble" <?php if (isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="pasEvotec") echo "checked";?> value="pasEvotec" onchange="this.form.submit()">Seulement les produits insoluble (Evotec)<br>
-  		<input type="radio" name="rad_evotec_insoluble" <?php if ((isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="lesDeux") || !isset($_POST['rad_evotec_insoluble'])) echo "checked";?> value="lesDeux" onchange="this.form.submit()">Les deux<br>
+			<input type="radio" name="rad_evotec_insoluble" <?php if (isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="evotec") echo "checked";?> value="evotec" onchange="this.form.submit()"><?php echo SELECT_SOLUBLE; ?><br>
+  		<input type="radio" name="rad_evotec_insoluble" <?php if (isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="pasEvotec") echo "checked";?> value="pasEvotec" onchange="this.form.submit()"><?php echo SELECT_INSOLUBLE; ?><br>
+  		<input type="radio" name="rad_evotec_insoluble" <?php if ((isset($_POST['rad_evotec_insoluble']) && $_POST['rad_evotec_insoluble']=="lesDeux") || !isset($_POST['rad_evotec_insoluble'])) echo "checked";?> value="lesDeux" onchange="this.form.submit()"><?php echo SELECT_LESDEUX; ?><br>
 			<br>
 			<?php
 			}
 			?>
-			<input type="checkbox" name="chx_liste" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_liste']) || isset($_GET['chx_liste'])) echo "checked"; ?> >Depuis une liste d'identificateurs<br>
+			<input type="checkbox" name="chx_liste" value="1" onchange="this.form.submit()" <?php if(isset($_POST['chx_liste']) || isset($_GET['chx_liste'])) echo "checked"; ?> ><?php echo SELECT_LISTEID; ?><br>
 		</div>
 
 		<br>
 		<?php if(isset($_POST['chx_equipe'])) { ?>
-			<label>Sélectionnez une équipe :</label><br>
+			<label><?php echo SELECTEQUIPEEXPORT; ?></label><br>
 			<select name="equipe" size="4" onchange="this.form.submit()" style="width: 150px;">
 				<!-- [JM - 24/01/2019] Affiche les equipes dans une liste box -->
 				<?php
@@ -206,7 +196,7 @@ if(isset($_POST['chx_typeContrat'])){
 		<?php } ?>
 
 		<?php if(isset($_POST['chx_utilisateur'])) { ?>
-			<label>Sélectionnez un utilisateur :</label><br>
+			<label><?php echo SELECTUTILISATEUREXPORT; ?></label><br>
 			<select name="utilisateur" size="4" onchange="this.form.submit()" style="width: 150px;">
 				<!-- [JM - 24/01/2019] Affiche les utilisateurs dans une liste box -->
 				<?php
@@ -218,7 +208,7 @@ if(isset($_POST['chx_typeContrat'])){
 		<?php } ?>
 
 		<?php if(isset($_POST['chx_typeContrat'])) { ?>
-			<label>Sélectionnez un type de contrat :</label><br>
+			<label><?php echo SELECTCONTRACTEXPORT; ?></label><br>
 			<select name="typeContrat" size="3" onchange="this.form.submit()" style="width: 150px;">
 				<!-- [JM - 24/01/2019] Affiche les utilisateurs dans une liste box -->
 				<?php
@@ -230,7 +220,7 @@ if(isset($_POST['chx_typeContrat'])){
 		<?php } ?>
 
 		<?php if(isset($_POST['chx_masseDispo'])) { ?>
-			<label>masse disponible : </label><br>
+			<label><?php echo SELECT_MASSEDISPO; ?> : </label><br>
 			<select name="masseOperateur" size="1"  onchange="this.form.submit()">
 				<option value=">" <?php if(isset($_POST['masseOperateur']) and $_POST['masseOperateur'] == ">") echo "selected='selected'"; ?> >&gt;</option>
 				<option value=">=" <?php if(isset($_POST['masseOperateur']) and $_POST['masseOperateur'] == ">=") echo "selected='selected'"; ?> >≥</option>
@@ -243,21 +233,21 @@ if(isset($_POST['chx_typeContrat'])){
 		<?php } ?>
 
 		<?php if(isset($_POST['chx_liste']) || isset($_GET['chx_liste'])) { ?>
-			<label>Liste d'identificateurs :</label><br>
+			<label><?php echo SELECTLISTEIDEXPORT; ?></label><br>
 			<textarea name="listeID" rows="8" cols="80" onchange="this.form.submit()"><?php if(isset($_POST['listeID'])) echo $_POST['listeID']; ?><?php if(isset($_GET['listeID'])) echo $_GET['listeID']; ?></textarea><br>
 
-			<label>Séparateur utilisé pour la liste :<br>
+			<label><?php echo SEPARATEUR; ?><br>
 				<select name="listeID_separateur" size="1" onchange="this.form.submit()">
 					<option value=";" <?php if(isset($_POST['listeID_separateur']) and $_POST['listeID_separateur'] == ";") echo "selected='selected'"; ?>>;</option>
 					<option value="," <?php if(isset($_POST['listeID_separateur']) and $_POST['listeID_separateur'] == ",") echo "selected='selected'"; ?>>,</option>
-					<option value="espace" <?php if(isset($_POST['listeID_separateur']) and $_POST['listeID_separateur'] == "espace") echo "selected='selected'"; ?>>Espace</option>
-					<option value="ligne" <?php if(isset($_POST['listeID_separateur']) and $_POST['listeID_separateur'] == "ligne") echo "selected='selected'"; ?>>Retour à la ligne</option>
+					<option value="espace" <?php if(isset($_POST['listeID_separateur']) and $_POST['listeID_separateur'] == "espace") echo "selected='selected'"; ?>><?php echo ESPACE; ?></option>
+					<option value="ligne" <?php if(isset($_POST['listeID_separateur']) and $_POST['listeID_separateur'] == "ligne") echo "selected='selected'"; ?>><?php echo RLIGNE; ?></option>
 				</select>
 			</label><br><br>
 		<?php } ?>
 
-		<br><B style="color: red;">Mot de passe :</B><br>
-		<input type="password" name="pass" placeholder="Mot de passe"><br>
+		<br><B style="color: red;"><?php echo MOTDEPASSE; ?> :</B><br>
+		<input type="password" name="pass" placeholder="<?php echo MOTDEPASSE; ?>"><br>
 
 	<br><br>
 	<?php if(isset($_POST['rad_format'])) { ?>
@@ -280,15 +270,15 @@ for ($i=0; $i < $countACB; $i++) {
 	}
 	if(!isset($arrayChampsExport)){
 		$arrayChampsExport = [
-			"Identificateur",
-			"Numéro constant",
-			"Inchi",
-			"Masse",
-			"Numéro de plaque",
-			"Chez evotec (oui/non)",
-			"Pureté",
-			"Methode de messure de la purete",
-			"Origine de la substance"
+			SELECT_IDENTIFICATEUR,
+			SELECT_NUMCONSTANT,
+			SELECT_INCHI,
+			SELECT_MASSE,
+			SELECT_NUMPLAQUE,
+			SELECT_EVOTEC,
+			SELECT_PURETE,
+			SELECT_METHODEMESSUREPURETE,
+			SELECT_ORIGINESUBSTANCE
 		];
 	}
 
@@ -418,16 +408,16 @@ for ($i=0; $i < $countACB; $i++) {
 				}
 
 				if (sizeof($array_afficheListe) == 0)
-					echo "Aucun résultat trouvé<br>";
+					echo ZERORESULTAT."<br>";
 				else
 					if (sizeof($array_afficheListe) == 1)
-						echo "Un résultat trouvé<br>";
+						echo UNRESULTAT."<br>";
 				else
-					echo sizeof($array_afficheListe)." résultats trouvés<br>";
+					echo sizeof($array_afficheListe)." ".XRESULTAT."<br>";
 
 				if (sizeof($array_afficheListe) >= 1){
 					echo "<br>";
-					echo "Numero d'identification local des composés :<br>";
+					echo LISTERESULTAT."<br>";
 					echo "<textarea rows='10' cols='29' disabled>";
 					foreach ($array_afficheListe as $key => $value) {
 						echo $value. "\n";
@@ -446,28 +436,28 @@ for ($i=0; $i < $countACB; $i++) {
 							$contenuFichier_sdf = $value['str_mol'];
 							unset($value['str_mol']);
 
-							if(in_array("Identificateur", $arrayChampsExport)){
+							if(in_array(SELECT_IDENTIFICATEUR, $arrayChampsExport)){
 								$contenuFichier_sdf .= "\n";
 								$contenuFichier_sdf .= "\n>  <identificateur_local> (".($key + 1) .")";
 								$contenuFichier_sdf .= "\n".$value['pro_numero'];
 							}
 							unset($value['pro_numero']);
 
-							if(in_array("Numéro constant", $arrayChampsExport)){
+							if(in_array(SELECT_NUMCONSTANT, $arrayChampsExport)){
 							// [JM - 24/01/2019] Imprime le numero permanent dans le fichier SDF
 								$contenuFichier_sdf .= "\n";
 								$contenuFichier_sdf .= "\n>  <identificateur> (".($key + 1) .")";
 								$contenuFichier_sdf .= "\n".$value['pro_num_constant'];
 							}
 
-							if(in_array("Inchi", $arrayChampsExport)){
+							if(in_array(SELECT_INCHI, $arrayChampsExport)){
 								$contenuFichier_sdf .= "\n";
 								$contenuFichier_sdf .= "\n>  <inchi> (".($key + 1) .")";
 								$contenuFichier_sdf .= "\n".$value['str_inchi'];
 							}
 							unset($value['str_inchi']);
 
-							if(in_array("Masse", $arrayChampsExport)){
+							if(in_array(SELECT_MASSE, $arrayChampsExport)){
 							// [JM - 24/01/2019] Imprime la masse du produit dans le fichier SDF
 								$contenuFichier_sdf .= "\n";
 								$contenuFichier_sdf .= "\n>  <vrac> (".($key + 1) .")";
@@ -475,7 +465,7 @@ for ($i=0; $i < $countACB; $i++) {
 							}
 							unset($value['pro_masse']);
 
-							if(in_array("Numéro de plaque", $arrayChampsExport)){
+							if(in_array(SELECT_NUMPLAQUE, $arrayChampsExport)){
 								$contenuFichier_sdf .= "\n";
 								$contenuFichier_sdf .= "\n>  <plaque> (".($key + 1) .")";
 								// [JM - 24/01/2019] Boucle sur la liste des produits en plaque
@@ -487,7 +477,7 @@ for ($i=0; $i < $countACB; $i++) {
 								unset($key_arr);
 							}
 
-							if(in_array("Chez evotec (oui/non)", $arrayChampsExport)){
+							if(in_array(SELECT_EVOTEC, $arrayChampsExport)){
 								//[JM - 24/01/2019] Si contrainte Evotec cocher
 								if(isset($_POST['rad_evotec']) && $_POST['rad_evotec'] == "evotec"){
 								// [JM - 24/01/2019] Imprime le TAG Evotec dans le fichier SDF
@@ -505,7 +495,7 @@ for ($i=0; $i < $countACB; $i++) {
 								}
 							}
 
-							if(in_array("Pureté", $arrayChampsExport)){
+							if(in_array(SELECT_PURETE, $arrayChampsExport)){
 							// [JM - 24/01/2019] Imprime la purete dans le fichier SDF
 								$contenuFichier_sdf .= "\n";
 								$contenuFichier_sdf .= "\n>  <purete> (".($key + 1) .")";
@@ -513,7 +503,7 @@ for ($i=0; $i < $countACB; $i++) {
 							}
 							unset($value['pro_purete']);
 
-							if(in_array("Methode de messure de la purete", $arrayChampsExport)){
+							if(in_array(SELECT_METHODEMESSUREPURETE, $arrayChampsExport)){
 							// [JM - 24/01/2019] Imprime la methode de mesure de la purete dans le fichier SDF
 								$contenuFichier_sdf .= "\n";
 								$contenuFichier_sdf .= "\n>  <methode_mesure_purete> (".($key + 1) .")";
@@ -521,7 +511,7 @@ for ($i=0; $i < $countACB; $i++) {
 							}
 							unset($value['pro_methode_purete']);
 
-							if(in_array("Origine de la substance", $arrayChampsExport)){
+							if(in_array(SELECT_ORIGINESUBSTANCE, $arrayChampsExport)){
 							// [JM - 24/01/2019] Imprime l'origine de la substance dans le fichier SDF
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <origine> (".($key + 1) .")";
@@ -529,21 +519,21 @@ for ($i=0; $i < $countACB; $i++) {
 						}
 						unset($value['pro_origine_substance']);
 
-						if(in_array("Type", $arrayChampsExport)){
+						if(in_array(SELECT_TYPE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Type> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['typ_type'];
 						}
 						unset($value['typ_type']);
 
-						if(in_array("Equipe", $arrayChampsExport)){
+						if(in_array(SELECT_EQUIPE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Equipe> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['equi_nom_equipe'];
 						}
 						unset($value['equi_nom_equipe']);
 
-						if(in_array("Responsable", $arrayChampsExport)){
+						if(in_array(SELECT_RESPONSABLE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Responsable> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['resp_nom'] . " " . $value['resp_prenom'];
@@ -551,7 +541,7 @@ for ($i=0; $i < $countACB; $i++) {
 						unset($value['resp_nom']);
 						unset($value['resp_prenom']);
 
-						if(in_array("Chimiste", $arrayChampsExport)){
+						if(in_array(SELECT_CHIMISTE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Chimiste> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['chim_nom'] . " " . $value['chim_prenom'];
@@ -559,91 +549,91 @@ for ($i=0; $i < $countACB; $i++) {
 						unset($value['chim_nom']);
 						unset($value['chim_prenom']);
 
-						if(in_array("Couleur", $arrayChampsExport)){
+						if(in_array(SELECT_COULEUR, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Couleur> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['cou_couleur'];
 						}
 						unset($value['cou_couleur']);
 
-						if(in_array("Purification", $arrayChampsExport)){
+						if(in_array(SELECT_PURIFICATION, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Purification> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_purification'];
 						}
 						unset($value['pro_purification']);
 
-						if(in_array("Aspect", $arrayChampsExport)){
+						if(in_array(SELECT_ASPECT, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Aspect> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_aspect'];
 						}
 						unset($value['pro_aspect']);
 
-						if(in_array("Date de saisie", $arrayChampsExport)){
+						if(in_array(SELECT_DATESAISIE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Date_de_saisie> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_date_entree'];
 						}
 						unset($value['pro_date_entree']);
 
-						if(in_array("Reference cahier de labo", $arrayChampsExport)){
+						if(in_array(SELECT_REFLABO, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Reference_cahier_de_labo> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_ref_cahier_labo'];
 						}
 						unset($value['pro_ref_cahier_labo']);
 
-						if(in_array("Observation", $arrayChampsExport)){
+						if(in_array(SELECT_OBSERVATION, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Observation> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_observation'];
 						}
 						unset($value['pro_observation']);
 
-						if(in_array("Point de fusion", $arrayChampsExport)){
+						if(in_array(SELECT_POINTFUSION, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Point_de_fusion> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_point_fusion'];
 						}
 						unset($value['pro_point_fusion']);
 
-						if(in_array("Point d'ebullition", $arrayChampsExport)){
+						if(in_array(SELECT_POINTEBULLITION, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Point_d'ebullition> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_point_ebullition'];
 						}
 						unset($value['pro_point_ebullition']);
 
-						if(in_array("Numéro CN", $arrayChampsExport)){
+						if(in_array(SELECT_NUMCN, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Numéro_CN> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_num_cn'];
 						}
 						unset($value['pro_num_cn']);
 
-						if(in_array("QR code", $arrayChampsExport)){
+						if(in_array(SELECT_QRCODE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <QR_code> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_qrcode'];
 						}
 						unset($value['pro_qrcode']);
 
-						if(in_array("Pureté contrôlée (oui/non)", $arrayChampsExport)){
+						if(in_array(SELECT_CONTROLEPURETE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Pureté_contrôlée> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_controle_purete'];
 						}
 						unset($value['pro_controle_purete']);
 
-						if(in_array("Date de contrôle pureté", $arrayChampsExport)){
+						if(in_array(SELECT_DATECONTROLEPURETE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Date_de_contrôle_pureté> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_date_controle_purete'];
 						}
 						unset($value['pro_date_controle_purete']);
 
-						if(in_array("Structure contrôlée (oui/non)", $arrayChampsExport)){
+						if(in_array(SELECT_CONTROLESTRUCTURE, $arrayChampsExport)){
 							$contenuFichier_sdf .= "\n";
 							$contenuFichier_sdf .= "\n>  <Structure_contrôlée> (".($key + 1) .")";
 							$contenuFichier_sdf .= "\n".$value['pro_controle_structure'];
@@ -663,82 +653,82 @@ for ($i=0; $i < $countACB; $i++) {
 					}
 					else
 						if ($_POST['rad_format'] == "CSV"){
-							if(in_array("Identificateur", $arrayChampsExport)){
+							if(in_array(SELECT_IDENTIFICATEUR, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Numéro local';
 							}
-							if(in_array("Numéro constant", $arrayChampsExport)){
+							if(in_array(SELECT_NUMCONSTANT, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Numéro constant';
 							}
-							if(in_array("Inchi", $arrayChampsExport)){
+							if(in_array(SELECT_INCHI, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Inchi';
 							}
-							if(in_array("Masse", $arrayChampsExport)){
+							if(in_array(SELECT_MASSE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Masse';
 							}
-							if(in_array("Numéro de plaque", $arrayChampsExport)){
+							if(in_array(SELECT_NUMPLAQUE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Numéro de plaque';
 							}
-							if(in_array("Chez evotec (oui/non)", $arrayChampsExport)){
+							if(in_array(SELECT_EVOTEC, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = "Chez Evotec";
 							}
-							if(in_array("Pureté", $arrayChampsExport)){
+							if(in_array(SELECT_PURETE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Pureté';
 							}
-							if(in_array("Methode de messure de la purete", $arrayChampsExport)){
+							if(in_array(SELECT_METHODEMESSUREPURETE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Méthode pureée';
 							}
-							if(in_array("Origine de la substance", $arrayChampsExport)){
+							if(in_array(SELECT_ORIGINESUBSTANCE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Origine substance';
 							}
-							if(in_array("Type", $arrayChampsExport)){
+							if(in_array(SELECT_TYPE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Type';
 							}
-							if(in_array("Equipe", $arrayChampsExport)){
+							if(in_array(SELECT_EQUIPE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Equipe';
 							}
-							if(in_array("Responsable", $arrayChampsExport)){
+							if(in_array(SELECT_RESPONSABLE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Responsable';
 							}
-							if(in_array("Chimiste", $arrayChampsExport)){
+							if(in_array(SELECT_CHIMISTE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Chimiste';
 							}
-							if(in_array("Couleur", $arrayChampsExport)){
+							if(in_array(SELECT_COULEUR, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Couleur';
 							}
-							if(in_array("Purification", $arrayChampsExport)){
+							if(in_array(SELECT_PURIFICATION, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Purification';
 							}
-							if(in_array("Aspect", $arrayChampsExport)){
+							if(in_array(SELECT_ASPECT, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Aspect';
 							}
-							if(in_array("Date de saisie", $arrayChampsExport)){
+							if(in_array(SELECT_DATESAISIE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Date de saisie';
 							}
-							if(in_array("Reference cahier de labo", $arrayChampsExport)){
+							if(in_array(SELECT_REFLABO, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Reference cahier de labo';
 							}
-							if(in_array("Observation", $arrayChampsExport)){
+							if(in_array(SELECT_OBSERVATION, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Observation';
 							}
-							if(in_array("Point de fusion", $arrayChampsExport)){
+							if(in_array(SELECT_POINTFUSION, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Point de fusion';
 							}
-							if(in_array("Point d'ebullition", $arrayChampsExport)){
+							if(in_array(SELECT_POINTEBULLITION, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Point d\'ebullition';
 							}
-							if(in_array("Numéro CN", $arrayChampsExport)){
+							if(in_array(SELECT_NUMCN, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Numéro CN';
 							}
-							if(in_array("QR code", $arrayChampsExport)){
+							if(in_array(SELECT_QRCODE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'QR code';
 							}
-							if(in_array("Pureté contrôlée (oui/non)", $arrayChampsExport)){
+							if(in_array(SELECT_CONTROLEPURETE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Pureté contrôlée';
 							}
-							if(in_array("Date de contrôle pureté", $arrayChampsExport)){
+							if(in_array(SELECT_DATECONTROLEPURETE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Date de contrôle pureté';
 							}
-							if(in_array("Structure contrôlée (oui/non)", $arrayChampsExport)){
+							if(in_array(SELECT_CONTROLESTRUCTURE, $arrayChampsExport)){
 								$contenuFichier_csv[0][] = 'Structure contrôlée';
 							}
 
@@ -748,28 +738,28 @@ for ($i=0; $i < $countACB; $i++) {
 									$contenuFichier_csv[$key+1][$key1] = " ";
 								}
 
-								if(in_array("Identificateur", $arrayChampsExport)){
+								if(in_array(SELECT_IDENTIFICATEUR, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Numéro local", $contenuFichier_csv[0])] = $value['pro_numero'];
 								}
 								unset($value['pro_numero']);
 
-								if(in_array("Numéro constant", $arrayChampsExport)){
+								if(in_array(SELECT_NUMCONSTANT, $arrayChampsExport)){
 								// [JM - 24/01/2019] Imprime le numero permanent dans le fichier SDF
 									$contenuFichier_csv[$key+1][array_search("Numéro constant", $contenuFichier_csv[0])] = $value['pro_num_constant'];
 								}
 
-								if(in_array("Inchi", $arrayChampsExport)){
+								if(in_array(SELECT_INCHI, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Inchi", $contenuFichier_csv[0])] = $value['str_inchi'];
 								}
 								unset($value['str_inchi']);
 
-								if(in_array("Masse", $arrayChampsExport)){
+								if(in_array(SELECT_MASSE, $arrayChampsExport)){
 								// [JM - 24/01/2019] Imprime la masse du produit dans le fichier SDF
 									$contenuFichier_csv[$key+1][array_search("Masse", $contenuFichier_csv[0])] = $value['pro_masse'];
 								}
 								unset($value['pro_masse']);
 
-								if(in_array("Numéro de plaque", $arrayChampsExport)){
+								if(in_array(SELECT_NUMPLAQUE, $arrayChampsExport)){
 									$key_arr = array_search($value[0], array_column($row_plaque, 0));
 									if ($key_arr){
 										$contenuFichier_csv[$key+1][array_search("Numéro de plaque", $contenuFichier_csv[0])] = $row_plaque[$key_arr][0];
@@ -777,7 +767,7 @@ for ($i=0; $i < $countACB; $i++) {
 									unset($key_arr);
 								}
 
-								if(in_array("Chez evotec (oui/non)", $arrayChampsExport)){
+								if(in_array(SELECT_EVOTEC, $arrayChampsExport)){
 									//[JM - 24/01/2019] Si contrainte Evotec cocher
 									if(isset($_POST['rad_evotec']) && $_POST['rad_evotec'] == "evotec"){
 									// [JM - 24/01/2019] Imprime le TAG Evotec dans le fichier SDF
@@ -795,107 +785,107 @@ for ($i=0; $i < $countACB; $i++) {
 									}
 								}
 
-								if(in_array("Pureté", $arrayChampsExport)){
+								if(in_array(SELECT_PURETE, $arrayChampsExport)){
 								// [JM - 24/01/2019] Imprime la purete dans le fichier SDF
 									$contenuFichier_csv[$key+1][array_search("Pureté", $contenuFichier_csv[0])] = $value['pro_purete'];
 								}
 								unset($value['pro_purete']);
 
-								if(in_array("Methode de messure de la purete", $arrayChampsExport)){
+								if(in_array(SELECT_METHODEMESSUREPURETE, $arrayChampsExport)){
 								// [JM - 24/01/2019] Imprime la methode de mesure de la purete dans le fichier SDF
 									$contenuFichier_csv[$key+1][array_search("Méthode pureée", $contenuFichier_csv[0])] = $value['pro_methode_purete'];
 								}
 								unset($value['pro_methode_purete']);
 
-								if(in_array("Origine de la substance", $arrayChampsExport)){
+								if(in_array(SELECT_ORIGINESUBSTANCE, $arrayChampsExport)){
 									// [JM - 24/01/2019] Imprime l'origine de la substance dans le fichier SDF
 									$contenuFichier_csv[$key+1][array_search("Origine substance", $contenuFichier_csv[0])] = $value['pro_origine_substance'];
 								}
 								unset($value['pro_origine_substance']);
 
-								if(in_array("Type", $arrayChampsExport)){
+								if(in_array(SELECT_TYPE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Type", $contenuFichier_csv[0])] = $value['typ_type'];
 								}
 								unset($value['typ_type']);
 
-								if(in_array("Equipe", $arrayChampsExport)){
+								if(in_array(SELECT_EQUIPE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Equipe", $contenuFichier_csv[0])] = $value['equi_nom_equipe'];
 								}
 								unset($value['equi_nom_equipe']);
 
-								if(in_array("Responsable", $arrayChampsExport)){
+								if(in_array(SELECT_RESPONSABLE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Responsable", $contenuFichier_csv[0])] = $value['resp_nom'] . " " . $value['resp_prenom'];
 								}
 								unset($value['resp_nom']);
 								unset($value['resp_prenom']);
 
-								if(in_array("Chimiste", $arrayChampsExport)){
+								if(in_array(SELECT_CHIMISTE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Chimiste", $contenuFichier_csv[0])] = $value['chim_nom'] . " " . $value['chim_prenom'];
 								}
 								unset($value['chim_nom']);
 								unset($value['chim_prenom']);
 
-								if(in_array("Couleur", $arrayChampsExport)){
+								if(in_array(SELECT_COULEUR, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Couleur", $contenuFichier_csv[0])] = $value['cou_couleur'];
 								}
 								unset($value['cou_couleur']);
 
-								if(in_array("Purification", $arrayChampsExport)){
+								if(in_array(SELECT_PURIFICATION, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Purification", $contenuFichier_csv[0])] = $value['pro_purification'];
 								}
 								unset($value['pro_purification']);
 
-								if(in_array("Aspect", $arrayChampsExport)){
+								if(in_array(SELECT_ASPECT, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Aspect", $contenuFichier_csv[0])] = $value['pro_aspect'];
 								}
 								unset($value['pro_aspect']);
 
-								if(in_array("Date de saisie", $arrayChampsExport)){
+								if(in_array(SELECT_DATESAISIE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Date de saisie", $contenuFichier_csv[0])] = $value['pro_date_entree'];
 								}
 								unset($value['pro_date_entree']);
 
-								if(in_array("Reference cahier de labo", $arrayChampsExport)){
+								if(in_array(SELECT_REFLABO, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Reference cahier de labo", $contenuFichier_csv[0])] = $value['pro_ref_cahier_labo'];
 								}
 								unset($value['pro_ref_cahier_labo']);
 
-								if(in_array("Observation", $arrayChampsExport)){
+								if(in_array(SELECT_OBSERVATION, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Observation", $contenuFichier_csv[0])] = $value['pro_observation'];
 								}
 								unset($value['pro_observation']);
 
-								if(in_array("Point de fusion", $arrayChampsExport)){
+								if(in_array(SELECT_POINTFUSION, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Point de fusion", $contenuFichier_csv[0])] = $value['pro_point_fusion'];
 								}
 								unset($value['pro_point_fusion']);
 
-								if(in_array("Point d'ebullition", $arrayChampsExport)){
+								if(in_array(SELECT_POINTEBULLITION, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Point d'ebullition", $contenuFichier_csv[0])] = $value['pro_point_ebullition'];
 								}
 								unset($value['pro_point_ebullition']);
 
-								if(in_array("Numéro CN", $arrayChampsExport)){
+								if(in_array(SELECT_NUMCN, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Numéro CN", $contenuFichier_csv[0])] = $value['pro_num_cn'];
 								}
 								unset($value['pro_num_cn']);
 
-								if(in_array("QR code", $arrayChampsExport)){
+								if(in_array(SELECT_QRCODE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("QR code", $contenuFichier_csv[0])] = $value['pro_qrcode'];
 								}
 								unset($value['pro_qrcode']);
 
-								if(in_array("Pureté contrôlée (oui/non)", $arrayChampsExport)){
+								if(in_array(SELECT_CONTROLEPURETE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Pureté contrôlée", $contenuFichier_csv[0])] = $value['pro_controle_purete'];
 								}
 								unset($value['pro_controle_purete']);
 
-								if(in_array("Date de contrôle pureté", $arrayChampsExport)){
+								if(in_array(SELECT_DATECONTROLEPURETE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Date de contrôle pureté", $contenuFichier_csv[0])] = $value['pro_date_controle_purete'];
 								}
 								unset($value['pro_date_controle_purete']);
 
-								if(in_array("Structure contrôlée (oui/non)", $arrayChampsExport)){
+								if(in_array(SELECT_CONTROLESTRUCTURE, $arrayChampsExport)){
 									$contenuFichier_csv[$key+1][array_search("Structure contrôlée", $contenuFichier_csv[0])] = $value['pro_controle_structure'];
 								}
 								unset($value['pro_controle_structure']);
@@ -1032,7 +1022,7 @@ set_time_limit(120);
 	this.$allToggle = null;
 	}
 
-	this.$allToggle = $("<li><label><input type='checkbox'/>(Tout)</label><li>");
+	this.$allToggle = $("<li><label><input type='checkbox'/>(<?php echo TOUT; ?>)</label><li>");
 
 	this.$element
 	.children('ul:first')
@@ -1168,15 +1158,15 @@ set_time_limit(120);
 
 	var allCount = $checkboxes.length;
 	var checkedCount = $checkboxes.filter(":checked").length
-	var label = checkedCount + " " + pluralize("champ", checkedCount) + pluralize(" sélectionné", checkedCount);
+	var label = checkedCount + " " + pluralize("<?php echo CHAMP;?>", checkedCount) + pluralize(" sélectionné", checkedCount);
 
 	this.$toggle
 	.children("label")
-	.text(checkedCount ? (checkedCount === allCount ? '(Tout)' : label) : 'Sélectionnez les champs souhaité');
+	.text(checkedCount ? (checkedCount === allCount ? '(<?php echo TOUT; ?>)' : label) : '<?php echo SELECT_CHAMPSSOUHAITE; ?>');
 
 	this.$element
 	.children('ul')
-	.attr("aria-label", label + " of " + allCount + " " + pluralize("champs", allCount));
+	.attr("aria-label", label + " of " + allCount + " " + pluralize("<?php echo CHAMP;?>", allCount));
 	}
 
 	function ensureFocus() {

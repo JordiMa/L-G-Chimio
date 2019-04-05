@@ -72,7 +72,7 @@ if (isset($_GET['produit'])){
 
 <form id="myForm" action="attributionstructures.php" method="get">
 	<!-- [JM - 01/02/2019] Recherche du produit -->
-	<br>Veuillez saisir l'identifiant local du produit : <input type="text" name="produit" <?php if (isset($_GET['produit'])) echo "value='".$_GET['produit']."'"; ?>> 	<input type="submit" name="Rechercher" value="Rechercher">	<br><br>
+	<br><?php echo SAISIEIDPRODUIT; ?> <input type="text" name="produit" <?php if (isset($_GET['produit'])) echo "value='".$_GET['produit']."'"; ?>> 	<input type="submit" name="Rechercher" value="<?php echo RECHERCHER;?>">	<br><br>
 
 	<?php
 	if (isset($row1) && $row1 && isset($_GET['produit'])) {
@@ -85,7 +85,7 @@ if (isset($_GET['produit'])){
 		}
 		?>
 
-		Sélectionnez une equipe :<br>
+		<?php echo SELECTEQUIPEEXPORT;?><br>
 		<select name="equipe" size="4" onchange="this.form.submit()" style="width: 150px;">
 			<!-- [JM - 01/02/2019] Affiche les equipes dans une liste box -->
 			<?php
@@ -95,7 +95,7 @@ if (isset($_GET['produit'])){
 			?>
 		</select><br><br>
 
-		Sélectionnez un responsable :<br>
+		<?php echo SELECTRESPONSABLEEXPORT;?><br>
 		<select name="responsable" size="4" onchange="this.form.submit()" style="width: 150px;">
 			<!-- [JM - 01/02/2019] Affiche les responsables dans une liste box -->
 			<?php
@@ -105,7 +105,7 @@ if (isset($_GET['produit'])){
 			?>
 		</select><br><br>
 
-		Sélectionnez un chimiste :<br>
+		<?php echo SELECTCHIMISTEEXPORT;?><br>
 		<select name="chimiste" size="4" onchange="this.form.submit()" style="width: 150px;">
 			<!-- [JM - 01/02/2019] Affiche les chimistes dans une liste box -->
 			<?php
@@ -127,7 +127,7 @@ if (isset($_GET['produit'])){
 		// [JM - 01/02/2019] demande de confirmation
 		echo '<script language="javascript">';
 		// [JM - 01/02/2019] Si l'utilisateur annule, l'opération est stoppé
-		echo 'if(confirm("Voulez vous enregistrer les modifications apportées ?")){
+		echo 'if(confirm("'.CONFIRMSAVE.'")){
 
 		}
 		else{
@@ -140,9 +140,9 @@ if (isset($_GET['produit'])){
 		$update1=$dbh->exec($update);
 
 		if ($update1)
-			echo "Sauvegarde effectuée";
+			echo SAVEOK;
 		else
-			echo "Echec de la sauvegarde";
+			echo SAVEECHEC;
 	}
 
 }

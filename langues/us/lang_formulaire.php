@@ -212,4 +212,5 @@ define('ERREUR_FICHIER','Failure of the insertion of a analysis file in the data
 define('ERREURATTENTION',' Errors occurred while modifying the record');
 define('RETIRE','Remove this file');
 define('DATE_ENVOIE_EVOTEC','Date sent to EVOTEC : ');
+define('EQU_RES_CHI','Team - Manager - Chimist');
 ?>

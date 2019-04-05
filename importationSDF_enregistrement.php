@@ -52,12 +52,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importation.php\">".IMPORTCN."</a></td>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationtare.php\">".IMPORTTARE."</a></td>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationevo.php\">".IMPORTEVO."</a></td>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF/RDF</a></td>
 		  </tr>
 		  </table>";
 	print"<div id=\"dhtmltooltip\"></div>
 		<script language=\"javascript\" src=\"ttip.js\"></script>";
-	echo "<br/><h3 align=\"center\">Importation de fichier SDF</h3>";
+	echo "<br/><h3 align=\"center\">".TITREIMPORTSDFRDF."</h3>";
 
 	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".constant($erreur)."</p>";
 	//formulaire d'importatio du fichier
@@ -85,7 +85,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   				<body>
   					<form action="importationSDF_decoupage.php" method="post">
 
-  						<p id="extension" class="centre">Extension du fichier : '.$extension_file.'<p/>
+  						<p id="extension" class="centre">'.EXTENSIONFICHIER.' : '.$extension_file.'<p/>
 
 
   						<input type="hidden" name="file2Read" value="'.$fichier.'" />
@@ -97,7 +97,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 							echo'
   						<div>
-  							<input onClick="document.getElementById(\'loader\').style.visibility = \'visible\';document.getElementById(\'table_principal\').style.filter = \'blur(5px)\';" type="submit" class="centre" id="lire" value="Lire"/>
+  							<input onClick="document.getElementById(\'loader\').style.visibility = \'visible\';document.getElementById(\'table_principal\').style.filter = \'blur(5px)\';" type="submit" class="centre" id="lire" />
   						</div>
   					</form>
   			';

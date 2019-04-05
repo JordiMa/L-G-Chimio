@@ -53,12 +53,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importation.php\">".IMPORTCN."</a></td>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationtare.php\">".IMPORTTARE."</a></td>
 		  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"importationevo.php\">".IMPORTEVO."</a></td>
-			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"importationSDF.php\">SDF/RDF</a></td>
 		  </tr>
 		  </table>";
 	print"<div id=\"dhtmltooltip\"></div>
 		<script language=\"javascript\" src=\"ttip.js\"></script>";
-	echo "<br/><h3 align=\"center\">Importation de fichier SDF</h3>";
+	echo "<br/><h3 align=\"center\">".TITREIMPORTSDFRDF."</h3>";
 
 	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".constant($erreur)."</p>";
 	//formulaire d'importatio du fichier
@@ -127,14 +127,14 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		if($_POST['extension'] === 'sdf'){
 			echo'
-			<p id="info" class="centre">MOLÉCULES À TRAITER : '.(--$num).'<p/>
+			<p id="info" class="centre">'.MOLECULEATRAITER.' : '.(--$num).'<p/>
 			<input type="hidden" name="nbrMol" value="'.$num.'"/>
 			';
 		}
 
 		if($_POST['extension'] === 'rdf'){
 			echo'
-			<p id="info" class="centre">MOLÉCULES À TRAITER : '.$num.'<p/>
+			<p id="info" class="centre">'.MOLECULEATRAITER.' : '.$num.'<p/>
 			<input type="hidden" name="nbrMol" value="'.$num.'"/>
 			';
 		}

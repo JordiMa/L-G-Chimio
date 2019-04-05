@@ -161,7 +161,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			break;
 			case 10 : echo UTILISATEUR;
 			break;
-			case 11 : echo "Attribution structures";
+			case 11 : echo ATRIB_STRUCTURE;
 			break;
 			case 12 : echo PARAMETRES;
         }
