@@ -154,14 +154,20 @@ if (isset($transfert)) {
 <?php
 echo CHIMIOTHEQUE."<br/><br/>";
 //appel le fichier de connexion à la base de données
-require 'script/connectionb.php';
+if(is_file('script/connectionb.php')){
+	require 'script/connectionb.php';
+}
+else{
+	header('Location: install/');
+	exit();
+}
 //préparation de la requète SQL
 $sql = "SELECT para_nom_labo,para_logo FROM parametres";
 //les résultats sont retournées dans la variable $result
 $result =$dbh->query($sql);
 $row=$result->fetch(PDO::FETCH_NUM);
 print $row[0]."</td>\n<td align=\"right\" width=\"132\">\n<img src=\"".$row[1]."\" height=\"85\" border=\"0\" />";
-unset($db);
+unset($dbh);
 ?>
           </td>
         </tr>
