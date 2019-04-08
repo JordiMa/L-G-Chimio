@@ -31,7 +31,7 @@ termes.
 define('SELECTLANGUE','Select language');
 define('LANGUE','Language :');
 define('PASSWORDCOMP','Change Password :');
-define('PASSWORDACTU','<strong style="color: red;"Current password :</strong>');
+define('PASSWORDACTU','<strong style="color: red;">Current password :</strong>');
 define('PASSWORDMOD','Enter the new password :');
 define('PASSWORDVER','Confirm new password :');
 define('RECEVOIR','Send an email for each structure entry for your team :');

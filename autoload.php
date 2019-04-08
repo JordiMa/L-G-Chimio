@@ -46,7 +46,7 @@ function suppression($dossier_traite){
 			$extension = $infos['extension'];
 
 		// On n'oublie pas LA condition sous peine d'avoir quelques surprises. :p
-		if($fichier!="." && $fichier!=".." && !is_dir($chemin) && $extension != "php"){
+		if($fichier!="." && $fichier!=".." && !is_dir($chemin) && $extension != "php" && $extension != "htaccess"){
 			unlink($chemin);
 		}
 	}
