@@ -286,7 +286,7 @@ CREATE TABLE produit (
   pro_id_chimiste smallint,
   pro_id_couleur smallint,
   pro_id_structure integer NOT NULL,
-  pro_purete integer,
+  pro_purete character varying,
   pro_purification character varying(17)[],
   pro_pourcentage_actif character varying(5),
   pro_sel character varying(5),

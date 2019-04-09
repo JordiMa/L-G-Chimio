@@ -624,7 +624,7 @@ if (!empty($_POST['id'])) {
 			  <tr>
 				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
 			if($rowselect[34]==0) $rowselect[34]="";
-			$formulaire->ajout_text (3, $rowselect[34], 2, "purete", PURETE,"","");
+			$formulaire->ajout_text (4, $rowselect[34], 15, "purete", PURETE,"","");
 			echo POURCENT;
 			print"<br/>\n<br/>\n";
 			$formulaire->ajout_text (21, $rowselect[35], 20, "methopurete", METHOPURETE,"","");

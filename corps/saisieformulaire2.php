@@ -603,7 +603,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		print"<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
 			  <tr>
 				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
-		$formulaire->ajout_text (3, $_POST['purete'], 2, "purete", PURETE,"","");
+		$formulaire->ajout_text (4, $_POST['purete'], 15, "purete", PURETE,"","");
 		echo POURCENT;
 		print"<br/>\n<br/>\n";
 		$formulaire->ajout_text (21, $_POST['methopurete'], 20, "methopurete", METHOPURETE,"","");

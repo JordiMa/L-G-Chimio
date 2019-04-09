@@ -18,6 +18,7 @@ Tous les changements notables apportés à ce projet seront documentés dans ce 
 - Contrôle de la structure
 - Contrôle de la pureté
 - Désactivation automatique des comptes chimiste (1 an après l'activation)
+- Choix des champs obligatoire
 
 ### Modifications :
 - Renforcement de la sécurité
