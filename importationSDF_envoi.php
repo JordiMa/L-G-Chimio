@@ -141,7 +141,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					}
 				}
 			}
-
 			insertion($aEnvoyer);
 
 			}
@@ -348,13 +347,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			if(array_key_exists("cou_couleur",$infos)){
 				$tab_produit["pro_id_couleur"] = getID("couleur","cou_id_couleur","cou_couleur",$infos["cou_couleur"]);
 			}else{
-				$tab_produit["pro_id_couleur"] = "218";
+				$tab_produit["pro_id_couleur"] = 218;
 			}
 
 			if(array_key_exists("typ_type",$infos)){
 				$tab_produit["pro_id_type"] = insert_type($infos["typ_type"]);
 			}else{
-				$tab_produit["pro_id_type"] = "1";
+				$tab_produit["pro_id_type"] = 1;
 			}
 
 			$tab_produit["pro_id_structure"] = insert_structure($tab_structure);
@@ -417,14 +416,147 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			}else{
 				$tab_produit["pro_date_entree"] = date("Y")."-".date("m")."-".date("d")." ".date("g").":".date("i").":".date("s");
 			}
-				if(array_key_exists("sol_solvant",$infos)){
-			$tab_produit["sol_solvant"] = $infos["sol_solvant"];
-				}else{
-					$tab_produit["sol_solvant"] = "INCONNU";
-				}
+
+			if(array_key_exists("sol_solvant",$infos)){
+				$tab_produit["sol_solvant"] = $infos["sol_solvant"];
+			}else{
+				$tab_produit["sol_solvant"] = "INCONNU";
+			}
+
+			if(array_key_exists("pro_purete",$infos)){
+				$tab_produit["pro_purete"] = $infos["pro_purete"];
+			}else{
+				$tab_produit["pro_purete"] = "";
+			}
+
+			if(array_key_exists("pro_pourcentage_actif",$infos)){
+				$tab_produit["pro_pourcentage_actif"] = $infos["pro_pourcentage_actif"];
+			}else{
+				$tab_produit["pro_pourcentage_actif"] = "";
+			}
+
+			if(array_key_exists("pro_sel",$infos)){
+				$tab_produit["pro_sel"] = $infos["pro_sel"];
+			}else{
+				$tab_produit["pro_sel"] = "";
+			}
+
+			if(array_key_exists("pro_modop",$infos)){
+				$tab_produit["pro_modop"] = $infos["pro_modop"];
+			}else{
+				$tab_produit["pro_modop"] = "";
+			}
+
+			if(array_key_exists("pro_statut",$infos)){
+				$tab_produit["pro_statut"] = $infos["pro_statut"];
+			}else{
+				$tab_produit["pro_statut"] = "";
+			}
+
+			if(array_key_exists("pro_num_brevet",$infos)){
+				$tab_produit["pro_num_brevet"] = $infos["pro_num_brevet"];
+			}else{
+				$tab_produit["pro_num_brevet"] = "";
+			}
+
+			if(array_key_exists("pro_ref_contrat",$infos)){
+				$tab_produit["pro_ref_contrat"] = $infos["pro_ref_contrat"];
+			}else{
+				$tab_produit["pro_ref_contrat"] = "";
+			}
+
+			if(array_key_exists("pro_date_contrat",$infos)){
+				$tab_produit["pro_date_contrat"] = $infos["pro_date_contrat"];
+			}else{
+				$tab_produit["pro_date_contrat"] = NULL;
+			}
 
 
-				$champs_annexe .= ']';
+			if(array_key_exists("pro_configuration",$infos)){
+				$tab_produit["pro_configuration"] = $infos["pro_configuration"];
+			}else{
+				$tab_produit["pro_configuration"] = "";
+			}
+
+			if(array_key_exists("pro_analyse_elem_trouve",$infos)){
+				$tab_produit["pro_analyse_elem_trouve"] = $infos["pro_analyse_elem_trouve"];
+			}else{
+				$tab_produit["pro_analyse_elem_trouve"] = "";
+			}
+
+			if(array_key_exists("pro_point_fusion",$infos)){
+				$tab_produit["pro_point_fusion"] = $infos["pro_point_fusion"];
+			}else{
+				$tab_produit["pro_point_fusion"] = "";
+			}
+
+			if(array_key_exists("pro_point_ebullition",$infos)){
+				$tab_produit["pro_point_ebullition"] = $infos["pro_point_ebullition"];
+			}else{
+				$tab_produit["pro_point_ebullition"] = "";
+			}
+
+			if(array_key_exists("pro_pression_pb",$infos)){
+				$tab_produit["pro_pression_pb"] = $infos["pro_pression_pb"];
+			}else{
+				$tab_produit["pro_pression_pb"] = "";
+			}
+
+			if(array_key_exists("pro_rf",$infos)){
+				$tab_produit["pro_rf"] = $infos["pro_rf"];
+			}else{
+				$tab_produit["pro_rf"] = NULL;
+			}
+
+			if(array_key_exists("pro_rf_solvant",$infos)){
+				$tab_produit["pro_rf_solvant"] = $infos["pro_rf_solvant"];
+			}else{
+				$tab_produit["pro_rf_solvant"] = "";
+			}
+
+			if(array_key_exists("pro_doi",$infos)){
+				$tab_produit["pro_doi"] = $infos["pro_doi"];
+			}else{
+				$tab_produit["pro_doi"] = "";
+			}
+
+			if(array_key_exists("pro_hal",$infos)){
+				$tab_produit["pro_hal"] = $infos["pro_hal"];
+			}else{
+				$tab_produit["pro_hal"] = "";
+			}
+
+			if(array_key_exists("pro_cas",$infos)){
+				$tab_produit["pro_cas"] = $infos["pro_cas"];
+			}else{
+				$tab_produit["pro_cas"] = "";
+			}
+
+			if(array_key_exists("pro_suivi_modification",$infos)){
+				$tab_produit["pro_suivi_modification"] = $infos["pro_suivi_modification"];
+			}else{
+				$tab_produit["pro_suivi_modification"] = "";
+			}
+
+			if(array_key_exists("pro_methode_purete",$infos)){
+				$tab_produit["pro_methode_purete"] = $infos["pro_methode_purete"];
+			}else{
+				$tab_produit["pro_methode_purete"] = "";
+			}
+
+			if(array_key_exists("pro_num_cn",$infos)){
+				$tab_produit["pro_num_cn"] = $infos["pro_num_cn"];
+			}else{
+				$tab_produit["pro_num_cn"] = "";
+			}
+
+			if(array_key_exists("pro_tare_pilulier",$infos)){
+				$tab_produit["pro_tare_pilulier"] = $infos["pro_tare_pilulier"];
+			}else{
+				$tab_produit["pro_tare_pilulier"] = NULL;
+			}
+
+			$champs_annexe .= ']';
 
 				if ($champs_annexe == '[{"type": "header","subtype": "h2","label": "IMPORTATION"}]') {
 					$champs_annexe = '[]';
@@ -610,7 +742,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function insert_chimiste($tab_chimiste){ //insert dans la base de donnée les infos concernant le chimiste et le responsable et les renvoie
 			global $baseDonnees;
-			$infos_chimiste = ["pro_id_chimiste" => "", "pro_id_responsable" => "Null", "pro_id_equipe" => "Null"];
+			$infos_chimiste = ["pro_id_chimiste" => "", "pro_id_responsable" => NULL, "pro_id_equipe" => NULL];
 			$id = "chi_id_chimiste";
 			$table = "chimiste";
 
@@ -901,16 +1033,99 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			if (isset($infos["pro_numero"])){
 				if(!(check("produit","pro_numero",$infos["pro_numero"]))){
 
-					$sql = "INSERT INTO produit(pro_id_type,pro_id_equipe,pro_id_responsable,pro_id_chimiste,pro_id_couleur,pro_id_structure,pro_purification,pro_masse,pro_unite_masse,pro_aspect,pro_date_entree,pro_ref_cahier_labo,pro_etape_mol,pro_numero,pro_num_constant) VALUES('".$infos["pro_id_type"]."',".$infos["pro_id_equipe"].",".$infos["pro_id_responsable"].",".$infos["pro_id_chimiste"].",'".$infos["pro_id_couleur"]."','".$infos["pro_id_structure"]."','".$infos["pro_purification"]."','".$infos["pro_masse"]."','".$infos["pro_unite_masse"]."','".$infos["pro_aspect"]."','".$infos["pro_date_entree"]."',E'".addslashes($infos["pro_ref_cahier_labo"])."','".$infos["pro_etape_mol"]."','".$infos["pro_numero"]."','".$num_const."');";
+					//$sql = "INSERT INTO produit(pro_id_type,pro_id_equipe,pro_id_responsable,pro_id_chimiste,pro_id_couleur,pro_id_structure,pro_purification,pro_masse,pro_unite_masse,pro_aspect,pro_date_entree,pro_ref_cahier_labo,pro_etape_mol,pro_numero,pro_num_constant, pro_purete) VALUES('".$infos["pro_id_type"]."',".$infos["pro_id_equipe"].",".$infos["pro_id_responsable"].",".$infos["pro_id_chimiste"].",'".$infos["pro_id_couleur"]."','".$infos["pro_id_structure"]."','".$infos["pro_purification"]."','".$infos["pro_masse"]."','".$infos["pro_unite_masse"]."','".$infos["pro_aspect"]."','".$infos["pro_date_entree"]."',E'".addslashes($infos["pro_ref_cahier_labo"])."','".$infos["pro_etape_mol"]."','".$infos["pro_numero"]."','".$num_const."', '".$infos["pro_purete"]."');";
 
-					$sql = $sql;
-					$result = $baseDonnees->exec($sql);
+					$stmt = $baseDonnees->prepare("INSERT INTO produit(pro_id_type, pro_id_equipe, pro_id_responsable, pro_id_chimiste, pro_id_couleur, pro_id_structure, pro_purification, pro_masse, pro_unite_masse, pro_aspect, pro_date_entree, pro_ref_cahier_labo, pro_etape_mol, pro_numero, pro_num_constant, pro_purete, pro_pourcentage_actif, pro_sel, pro_modop, pro_statut, pro_num_brevet, pro_ref_contrat, pro_date_contrat, pro_configuration, pro_analyse_elem_trouve, pro_point_fusion, pro_point_ebullition, pro_pression_pb, pro_rf, pro_rf_solvant, pro_doi, pro_hal, pro_cas, pro_suivi_modification, pro_methode_purete, pro_num_cn, pro_tare_pilulier) VALUES (:pro_id_type, :pro_id_equipe, :pro_id_responsable, :pro_id_chimiste, :pro_id_couleur, :pro_id_structure, :pro_purification, :pro_masse, :pro_unite_masse, :pro_aspect, :pro_date_entree, :pro_ref_cahier_labo, :pro_etape_mol, :pro_numero, :pro_num_constant, :pro_purete, :pro_pourcentage_actif, :pro_sel, :pro_modop, :pro_statut, :pro_num_brevet, :pro_ref_contrat, :pro_date_contrat, :pro_configuration, :pro_analyse_elem_trouve, :pro_point_fusion, :pro_point_ebullition, :pro_pression_pb, :pro_rf, :pro_rf_solvant, :pro_doi, :pro_hal, :pro_cas, :pro_suivi_modification, :pro_methode_purete, :pro_num_cn, :pro_tare_pilulier)");
+
+					$stmt->bindParam(':pro_id_type', $infos["pro_id_type"]);
+					$stmt->bindParam(':pro_id_equipe', $infos["pro_id_equipe"]);
+					$stmt->bindParam(':pro_id_responsable', $infos["pro_id_responsable"]);
+					$stmt->bindParam(':pro_id_chimiste', $infos["pro_id_chimiste"]);
+					$stmt->bindParam(':pro_id_couleur', $infos["pro_id_couleur"]);
+					$stmt->bindParam(':pro_id_structure', $infos["pro_id_structure"]);
+					$stmt->bindParam(':pro_purification', $infos["pro_purification"]);
+					$stmt->bindParam(':pro_masse', $infos["pro_masse"]);
+					$stmt->bindParam(':pro_unite_masse', $infos["pro_unite_masse"]);
+					$stmt->bindParam(':pro_aspect', $infos["pro_aspect"]);
+					$stmt->bindParam(':pro_date_entree', $infos["pro_date_entree"]);
+					$stmt->bindParam(':pro_ref_cahier_labo', $infos["pro_ref_cahier_labo"]);
+					$stmt->bindParam(':pro_etape_mol', $infos["pro_etape_mol"]);
+					$stmt->bindParam(':pro_numero', $infos["pro_numero"]);
+					$stmt->bindParam(':pro_num_constant', $num_const);
+
+					$stmt->bindParam(':pro_purete', $infos["pro_purete"]);
+					$stmt->bindParam(':pro_pourcentage_actif', $infos["pro_pourcentage_actif"]);
+					$stmt->bindParam(':pro_sel', $infos["pro_sel"]);
+					$stmt->bindParam(':pro_modop', $infos["pro_modop"]);
+					$stmt->bindParam(':pro_statut', $infos["pro_statut"]);
+					$stmt->bindParam(':pro_num_brevet', $infos["pro_num_brevet"]);
+					$stmt->bindParam(':pro_ref_contrat', $infos["pro_ref_contrat"]);
+					$stmt->bindParam(':pro_date_contrat', $infos["pro_date_contrat"]);
+					$stmt->bindParam(':pro_configuration', $infos["pro_configuration"]);
+					$stmt->bindParam(':pro_analyse_elem_trouve', $infos["pro_analyse_elem_trouve"]);
+					$stmt->bindParam(':pro_point_fusion', $infos["pro_point_fusion"]);
+					$stmt->bindParam(':pro_point_ebullition', $infos["pro_point_ebullition"]);
+					$stmt->bindParam(':pro_pression_pb', $infos["pro_pression_pb"]);
+					$stmt->bindParam(':pro_rf', $infos["pro_rf"]);
+					$stmt->bindParam(':pro_rf_solvant', $infos["pro_rf_solvant"]);
+					$stmt->bindParam(':pro_doi', $infos["pro_doi"]);
+					$stmt->bindParam(':pro_hal', $infos["pro_hal"]);
+					$stmt->bindParam(':pro_cas', $infos["pro_cas"]);
+					$stmt->bindParam(':pro_suivi_modification', $infos["pro_suivi_modification"]);
+					$stmt->bindParam(':pro_methode_purete', $infos["pro_methode_purete"]);
+					$stmt->bindParam(':pro_num_cn', $infos["pro_num_cn"]);
+					$stmt->bindParam(':pro_tare_pilulier', $infos["pro_tare_pilulier"]);
+
+					$stmt->execute();
+					//$result = $baseDonnees->exec($sql);
 					}
 					else {
-						$sql = "UPDATE produit SET pro_id_type = '".$infos["pro_id_type"]."', pro_id_equipe = ".$infos["pro_id_equipe"].", pro_id_responsable = ".$infos["pro_id_responsable"].", pro_id_chimiste = ".$infos["pro_id_chimiste"].", pro_id_couleur = '".$infos["pro_id_couleur"]."', pro_id_structure = '".$infos["pro_id_structure"]."', pro_purification = '".$infos["pro_purification"]."', pro_masse = '".$infos["pro_masse"]."', pro_unite_masse = '".$infos["pro_unite_masse"]."', pro_aspect = '".$infos["pro_aspect"]."', pro_date_entree = '".$infos["pro_date_entree"]."', pro_ref_cahier_labo = E'".addslashes($infos["pro_ref_cahier_labo"])."', pro_etape_mol = '".$infos["pro_etape_mol"]."', pro_num_constant = '".$num_const."' WHERE pro_numero = '".$infos["pro_numero"]."';";
+						//$sql = "UPDATE produit SET pro_id_type = '".$infos["pro_id_type"]."', pro_id_equipe = ".$infos["pro_id_equipe"].", pro_id_responsable = ".$infos["pro_id_responsable"].", pro_id_chimiste = ".$infos["pro_id_chimiste"].", pro_id_couleur = '".$infos["pro_id_couleur"]."', pro_id_structure = '".$infos["pro_id_structure"]."', pro_purification = '".$infos["pro_purification"]."', pro_masse = '".$infos["pro_masse"]."', pro_unite_masse = '".$infos["pro_unite_masse"]."', pro_aspect = '".$infos["pro_aspect"]."', pro_date_entree = '".$infos["pro_date_entree"]."', pro_ref_cahier_labo = E'".addslashes($infos["pro_ref_cahier_labo"])."', pro_etape_mol = '".$infos["pro_etape_mol"]."', pro_num_constant = '".$num_const."', pro_purete = '".$infos["pro_purete"]."' WHERE pro_numero = '".$infos["pro_numero"]."';";
 
-						$sql = $sql;
-						$result = $baseDonnees->exec($sql);
+						$stmt = $baseDonnees->prepare("UPDATE produit SET pro_id_type = :pro_id_type, pro_id_equipe = :pro_id_equipe, pro_id_responsable = :pro_id_responsable, pro_id_chimiste = :pro_id_chimiste, pro_id_couleur = :pro_id_couleur, pro_id_structure = :pro_id_structure, pro_purification = :pro_purification, pro_masse = :pro_masse, pro_unite_masse = :pro_unite_masse, pro_aspect = :pro_aspect, pro_date_entree = :pro_date_entree, pro_ref_cahier_labo = :pro_ref_cahier_labo, pro_etape_mol = :pro_etape_mol, pro_numero = :pro_numero, pro_num_constant = :pro_num_constant, pro_purete = :pro_purete, pro_pourcentage_actif = :pro_pourcentage_actif, pro_sel = :pro_sel, pro_modop = :pro_modop, pro_statut = :pro_statut, pro_num_brevet = :pro_num_brevet, pro_ref_contrat = :pro_ref_contrat, pro_date_contrat = :pro_date_contrat, pro_configuration = :pro_configuration, pro_analyse_elem_trouve = :pro_analyse_elem_trouve, pro_point_fusion = :pro_point_fusion, pro_point_ebullition = :pro_point_ebullition, pro_pression_pb = :pro_pression_pb, pro_rf = :pro_rf, pro_rf_solvant = :pro_rf_solvant, pro_doi = :pro_doi, pro_hal = :pro_hal, pro_cas = :pro_cas, pro_suivi_modification = :pro_suivi_modification, pro_methode_purete = :pro_methode_purete, pro_num_cn = :pro_num_cn, pro_tare_pilulier = :pro_tare_pilulier WHERE pro_numero = '".$infos["pro_numero"]."';");
+
+						$stmt->bindParam(':pro_id_type', $infos["pro_id_type"]);
+						$stmt->bindParam(':pro_id_equipe', $infos["pro_id_equipe"]);
+						$stmt->bindParam(':pro_id_responsable', $infos["pro_id_responsable"]);
+						$stmt->bindParam(':pro_id_chimiste', $infos["pro_id_chimiste"]);
+						$stmt->bindParam(':pro_id_couleur', $infos["pro_id_couleur"]);
+						$stmt->bindParam(':pro_id_structure', $infos["pro_id_structure"]);
+						$stmt->bindParam(':pro_purification', $infos["pro_purification"]);
+						$stmt->bindParam(':pro_masse', $infos["pro_masse"]);
+						$stmt->bindParam(':pro_unite_masse', $infos["pro_unite_masse"]);
+						$stmt->bindParam(':pro_aspect', $infos["pro_aspect"]);
+						$stmt->bindParam(':pro_date_entree', $infos["pro_date_entree"]);
+						$stmt->bindParam(':pro_ref_cahier_labo', $infos["pro_ref_cahier_labo"]);
+						$stmt->bindParam(':pro_etape_mol', $infos["pro_etape_mol"]);
+						$stmt->bindParam(':pro_numero', $infos["pro_numero"]);
+						$stmt->bindParam(':pro_num_constant', $num_const);
+
+						$stmt->bindParam(':pro_purete', $infos["pro_purete"]);
+						$stmt->bindParam(':pro_pourcentage_actif', $infos["pro_pourcentage_actif"]);
+						$stmt->bindParam(':pro_sel', $infos["pro_sel"]);
+						$stmt->bindParam(':pro_modop', $infos["pro_modop"]);
+						$stmt->bindParam(':pro_statut', $infos["pro_statut"]);
+						$stmt->bindParam(':pro_num_brevet', $infos["pro_num_brevet"]);
+						$stmt->bindParam(':pro_ref_contrat', $infos["pro_ref_contrat"]);
+						$stmt->bindParam(':pro_date_contrat', $infos["pro_date_contrat"]);
+						$stmt->bindParam(':pro_configuration', $infos["pro_configuration"]);
+						$stmt->bindParam(':pro_analyse_elem_trouve', $infos["pro_analyse_elem_trouve"]);
+						$stmt->bindParam(':pro_point_fusion', $infos["pro_point_fusion"]);
+						$stmt->bindParam(':pro_point_ebullition', $infos["pro_point_ebullition"]);
+						$stmt->bindParam(':pro_pression_pb', $infos["pro_pression_pb"]);
+						$stmt->bindParam(':pro_rf', $infos["pro_rf"]);
+						$stmt->bindParam(':pro_rf_solvant', $infos["pro_rf_solvant"]);
+						$stmt->bindParam(':pro_doi', $infos["pro_doi"]);
+						$stmt->bindParam(':pro_hal', $infos["pro_hal"]);
+						$stmt->bindParam(':pro_cas', $infos["pro_cas"]);
+						$stmt->bindParam(':pro_suivi_modification', $infos["pro_suivi_modification"]);
+						$stmt->bindParam(':pro_methode_purete', $infos["pro_methode_purete"]);
+						$stmt->bindParam(':pro_num_cn', $infos["pro_num_cn"]);
+						$stmt->bindParam(':pro_tare_pilulier', $infos["pro_tare_pilulier"]);
+
+						$stmt->execute();
+
+						//$result = $baseDonnees->exec($sql);
 					}
 
 					$ID_produit = getID("produit","pro_id_produit","pro_numero",$infos["pro_numero"]);
@@ -943,7 +1158,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 							}
 						}
 					}
-					$observations = $observations;
 					$observations = addslashes($observations);
 
 					// TODO
@@ -1403,9 +1617,11 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 
 			if ($valueBar >= ($_POST['nbrMol']-1)){
+				/*
 				suppression("files");
 				suppression("files/sdf");
 				suppression("files/rdf");
+				*/
 			}
 
 

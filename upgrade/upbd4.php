@@ -64,6 +64,10 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   ALTER TABLE produit ALTER COLUMN pro_numero DROP NOT NULL;
 
   ALTER TABLE produit ALTER COLUMN pro_purete TYPE character varying;
+  ALTER TABLE produit ALTER COLUMN pro_point_fusion TYPE character varying;
+  ALTER TABLE produit ALTER COLUMN pro_point_ebullition TYPE character varying;
+  ALTER TABLE produit ALTER COLUMN pro_pression_pb TYPE character varying;
+  ALTER TABLE produit ALTER COLUMN pro_sel TYPE character varying(15);
 
   ALTER TABLE produit DROP CONSTRAINT IF EXISTS contrainte_aspect;
   ALTER TABLE produit ADD CONSTRAINT contrainte_aspect CHECK ((pro_aspect <@ ARRAY['GOMME'::character varying, 'HUILE'::character varying, 'LIQUIDE'::character varying, 'MOUSSE'::character varying, 'SOLIDE'::character varying, 'INCONNU'::character varying]));
