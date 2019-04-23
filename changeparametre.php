@@ -50,7 +50,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		elseif ($_FILES['logo']['size']>10000000) $erreur=TAILLEERREUR;
 	}
 	if (!isset($erreur)) {
-		$sql="UPDATE parametres SET para_nom_labo='".$_POST['nom']."', para_acronyme='".$_POST['acronyme']."', para_email_envoie='".$_POST['email']."'";
+		$sql="UPDATE parametres SET para_nom_labo=E'".addslashes($_POST['nom'])."', para_acronyme='".$_POST['acronyme']."', para_email_envoie='".$_POST['email']."'";
 		$update=$dbh->exec($sql);
 		if (!empty($_FILES['logo']['tmp_name']) and !$_FILES['logo']['error']) {
 			//Suppression de l'ancien fichier logo

@@ -1,4 +1,3 @@
-<script type="text/javascript" src="js/jquery.min.js"></script>
 <?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
@@ -53,7 +52,8 @@ if (!empty($_GET['id']) and !empty($_GET['rank'])) {
 		$result2 =$dbh->query($sql);
 		$row2 =$result2->fetch(PDO::FETCH_NUM);
 		$nom_fichier_complet="fichier_".$_SESSION['nom']."_".$_GET['rank']."_".$_GET['id'].".".$row2[0];
-		$donne=stream_get_contents ($row2[1]);
+		//$donne=stream_get_contents($row2[1]);
+		$donne=$row2[1];
 
 		//$donne=base64_decode($donne);
 
@@ -62,7 +62,6 @@ if (!empty($_GET['id']) and !empty($_GET['rank'])) {
 		//header("Content-Length: ".strlen($donne));
 		//echo $donne;
 
-		//echo'<a class="download-file" href="data:application/'.$row2[0].';base64,'.$donne.'" download="'.$nom_fichier_complet.'">test</a>';
 		echo'
 		<style>
 			body {
@@ -70,13 +69,6 @@ if (!empty($_GET['id']) and !empty($_GET['rank'])) {
 			}
 		</style>';
 		echo "<iframe width='100%' height='100%' style='border: 0px;' src='data:application/pdf;base64,$donne'></iframe>";
-
-
-		/*echo"
-		<script type=\"text/javascript\">
-			setInterval($('.download-file').get(0).click(), 1000);
-			setInterval(window.history.back(), 1500);
-		</script>";*/
 	}
 	else include_once('presentatio.php');
 }

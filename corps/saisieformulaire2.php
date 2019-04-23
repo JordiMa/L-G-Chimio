@@ -868,7 +868,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 
 		echo "<input id=\"champsAnnexe\" name=\"champsAnnexe\" type=\"hidden\" value=\"\">";
 
-		$formulaire->ajout_button (SUBMIT,"","submit","onClick=\"GetSmiles(form,2)\"");
+		$formulaire->ajout_button (SUBMIT,"","button","onClick=\"GetSmiles(form,2)\"");
 		print"</p>";
 		//fin du formulaire
 

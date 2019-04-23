@@ -36,9 +36,6 @@ $sql="SELECT chi_id_chimiste,chi_nom FROM chimiste WHERE chi_email='".$_POST['em
 $result=$dbh->query($sql);
 if ($result->rowCount()==0)
 	print"<br/><br/><p align=\"center\"><font color=\"#CC0000\"><strong>". NOEXISTE."</strong></font></p>";
-else if (strtolower($_POST['captcha']) != strtolower($_POST['captcha_code'])) {
-	print"<br/><br/><p align=\"center\"><font color=\"#CC0000\"><strong>Le captcha est incorrecte</strong></font></p>";
-}
 else {
 	$row=$result->fetch(PDO::FETCH_NUM);
 	$pass=subStr(md5($row[1].$row[0].date("j-m-Y H:i:s")),1,12);

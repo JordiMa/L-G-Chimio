@@ -946,7 +946,7 @@ if (!empty($_POST['id'])) {
 							if(isset($_POST["champsAnnexe"]))
 								echo $_POST["champsAnnexe"];
 							else
-								if ($rowPara1[0] != '[]') {
+								if ($rowPara1[0] != '[]' && $rowPara1[0] != '') {
 									echo $rowPara1[0];
 								}
 								else {

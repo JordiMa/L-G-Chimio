@@ -45,9 +45,9 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   $update ="
   BEGIN;
-  ALTER TABLE produit ADD pro_controle_purete boolean;
+  ALTER TABLE produit ADD pro_controle_purete integer;
   ALTER TABLE produit ADD pro_date_controle_purete date;
-  ALTER TABLE produit ADD pro_controle_structure boolean;
+  ALTER TABLE produit ADD pro_controle_structure integer;
 
   ALTER TABLE produit ALTER COLUMN pro_id_type DROP NOT NULL;
   ALTER TABLE produit ALTER COLUMN pro_id_equipe DROP NOT NULL;
@@ -107,6 +107,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   ALTER TABLE rmnh ADD rmnh_date date DEFAULT now();
   ALTER TABLE sm ADD sm_date date DEFAULT now();
   ALTER TABLE uv ADD uv_date date DEFAULT now();
+
+  ALTER TABLE hrms ALTER COLUMN hrms_fichier type text;
+  ALTER TABLE ir ALTER COLUMN ir_fichier type text;
+  ALTER TABLE rmnc ALTER COLUMN rmnc_fichier type text;
+  ALTER TABLE rmnh ALTER COLUMN rmnh_fichier type text;
+  ALTER TABLE sm ALTER COLUMN sm_fichier type text;
+  ALTER TABLE uv ALTER COLUMN uv_fichier type text;
 
   CREATE OR REPLACE FUNCTION ajoute_pro_date_ctrl_purete() RETURNS trigger AS $$
       BEGIN

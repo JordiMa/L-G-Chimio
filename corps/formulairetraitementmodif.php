@@ -191,8 +191,9 @@ else {
 				$id{$filetype[$ifile]}=$row['pro_id_'.$filetype[$ifile]];
 			}
 			else {
-				$sql="DELETE FROM ".$filetype[$ifile]." WHERE ".$filetype[$ifile]."_id_".$filetype[$ifile]."=".$row['pro_id_'.$filetype[$ifile]].";";
+				$sql="UPDATE produit SET pro_id_".$filetype[$ifile]." = NULL WHERE pro_id_produit='".$_POST['id']."';";
 				$id{$filetype[$ifile]}=0;
+				$sql="DELETE FROM ".$filetype[$ifile]." WHERE ".$filetype[$ifile]."_id_".$filetype[$ifile]."=".$row['pro_id_'.$filetype[$ifile]].";";
 			}
 			$fichierinsert=$dbh->exec($sql);
 			if($fichierinsert==false) {
