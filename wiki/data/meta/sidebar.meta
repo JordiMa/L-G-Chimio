@@ -1,8 +1,9 @@
-a:2:{s:7:"current";a:8:{s:4:"date";a:2:{s:7:"created";i:1544086456;s:8:"modified";i:1544111838;}s:7:"creator";s:5:"Jordi";s:4:"user";s:5:"jordi";s:11:"last_change";a:8:{s:4:"date";i:1544111838;s:2:"ip";s:3:"::1";s:4:"type";s:1:"E";s:2:"id";s:7:"sidebar";s:4:"user";s:5:"jordi";s:3:"sum";s:0:"";s:5:"extra";s:0:"";s:10:"sizechange";i:54;}s:11:"contributor";a:1:{s:5:"jordi";s:5:"Jordi";}s:8:"relation";a:2:{s:10:"references";a:6:{s:5:"start";b:1;s:12:"installation";b:1;s:13:"configuration";b:1;s:18:"manuel_utilisation";b:1;s:21:"manuel_administration";b:1;s:6:"credit";b:1;}s:10:"firstimage";s:0:"";}s:8:"internal";a:2:{s:5:"cache";b:1;s:3:"toc";b:1;}s:11:"description";a:1:{s:8:"abstract";s:129:"L-G-Chimio
+a:2:{s:7:"current";a:8:{s:4:"date";a:2:{s:7:"created";i:1544086456;s:8:"modified";i:1555060969;}s:7:"creator";s:5:"Jordi";s:4:"user";s:5:"jordi";s:11:"last_change";a:8:{s:4:"date";i:1555060969;s:2:"ip";s:3:"::1";s:4:"type";s:1:"E";s:2:"id";s:7:"sidebar";s:4:"user";s:5:"jordi";s:3:"sum";s:0:"";s:5:"extra";s:0:"";s:10:"sizechange";i:0;}s:11:"contributor";a:1:{s:5:"jordi";s:11:"Jordi Marzo";}s:8:"relation";a:2:{s:10:"references";a:7:{s:5:"start";b:1;s:12:"installation";b:1;s:7:"upgrade";b:1;s:13:"configuration";b:1;s:18:"manuel_utilisation";b:1;s:21:"manuel_administration";b:1;s:6:"credit";b:1;}s:10:"firstimage";s:0:"";}s:8:"internal";a:2:{s:5:"cache";b:1;s:3:"toc";b:1;}s:11:"description";a:1:{s:8:"abstract";s:141:"L-G-Chimio
 
 	*  Présentation
 	*  Installation
+	*  Upgrade
 	*  Configuration
 	*  Manuel d'utilisation
 	*  Manuel d'administration
-	*  Crédit";}}s:10:"persistent";a:5:{s:4:"date";a:2:{s:7:"created";i:1544086456;s:8:"modified";i:1544111838;}s:7:"creator";s:5:"Jordi";s:4:"user";s:5:"jordi";s:11:"last_change";a:8:{s:4:"date";i:1544111838;s:2:"ip";s:3:"::1";s:4:"type";s:1:"E";s:2:"id";s:7:"sidebar";s:4:"user";s:5:"jordi";s:3:"sum";s:0:"";s:5:"extra";s:0:"";s:10:"sizechange";i:54;}s:11:"contributor";a:1:{s:5:"jordi";s:5:"Jordi";}}}
+	*  Crédit";}}s:10:"persistent";a:5:{s:4:"date";a:2:{s:7:"created";i:1544086456;s:8:"modified";i:1555060969;}s:7:"creator";s:5:"Jordi";s:4:"user";s:5:"jordi";s:11:"last_change";a:8:{s:4:"date";i:1555060969;s:2:"ip";s:3:"::1";s:4:"type";s:1:"E";s:2:"id";s:7:"sidebar";s:4:"user";s:5:"jordi";s:3:"sum";s:0:"";s:5:"extra";s:0:"";s:10:"sizechange";i:0;}s:11:"contributor";a:1:{s:5:"jordi";s:11:"Jordi Marzo";}}}

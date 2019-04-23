@@ -1,7 +1,8 @@
 L-G-Chimio
   * [[start|Présentation]]
-  * [[Installation|Installation]]
-  * [[Configuration|Configuration]]
+  * [[installation|Installation]]
+  * [[upgrade|Upgrade]]
+  * [[configuration|Configuration]]
   * [[manuel_utilisation|Manuel d'utilisation]]
   * [[manuel_administration|Manuel d'administration]]
-  * [[Credit|Crédit]]
+  * [[credit|Crédit]]

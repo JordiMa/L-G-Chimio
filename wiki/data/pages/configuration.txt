@@ -4,11 +4,13 @@ Tous les administrateurs ont accès aux paramétrages de l’application via le 
 
 ===== Généraux =====
 
-Dans l’onglet ''Généraux'' de la section paramétrage, vous retrouvez les informations relatives au laboratoire que vous avez entrées à l’installation. 
+Dans l’onglet ''Généraux'' de la section ''paramétrage'', vous retrouvez les informations relatives au laboratoire que vous avez entrées à l’installation. 
 
 Grâce à cette section, vous pouvez les modifier.
 
 {{ :conf1.1.png?nolink&600 |}}
+
+la sous-section ''champs obligatoires'' vous permet de choisir quels champs devront être obligatoirement renseigné lors de la saisie ou de la modification des produits.
 
 ----
 
@@ -76,6 +78,8 @@ Pour rendre le sous-répertoire ''script'' ainsi que leurs fichiers en lecture s
 ===== Utilisateur =====
 
 Cette section est accessible uniquement aux administrateurs. Elle permet de gérer les utilisateurs ayant accès à l’application.
+
+//**Tout compte chimiste ayant été activé il y a plus d'un an, sera automatiquement déactiver.**//
 
 ==== Visualiser ====
 
