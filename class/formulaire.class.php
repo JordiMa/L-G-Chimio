@@ -155,7 +155,7 @@ class champ {
   function imprime () {
       $html="";
       if (!empty($this->label_champ)) $html.="<label>$this->label_champ\n";
-      $html.= "<input type=\"$this->type_champ\" name=\"$this->name_champ\"";
+      $html.= "<input type=\"$this->type_champ\" id=\"$this->name_champ\" name=\"$this->name_champ\"";
       if (!empty($this->size_champ)) $html.=" size=\"$this->size_champ\"";
       if ($this->value_champ!="") $html.=" value=\"$this->value_champ\"";
       if (!empty($this->maxlenght_champ)) $html.=" maxlength=\"$this->maxlenght_champ\"";

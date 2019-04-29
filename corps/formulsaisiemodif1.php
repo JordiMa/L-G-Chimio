@@ -958,8 +958,59 @@ if (!empty($_POST['id'])) {
 		    });
 		  </script>
 
-			<?php
+			<script>
+				var filehrms = document.getElementById('filehrms');
+				var filesm = document.getElementById('filesm');
+				var fileir = document.getElementById('fileir');
+				var fileuv = document.getElementById('fileuv');
+				var filermnh = document.getElementById('filermnh');
+				var filermnc = document.getElementById('filermnc');
 
+				filehrms.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier HRMS est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+
+				filesm.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier SM est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+
+				fileir.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier IR est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+
+				fileuv.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier UV est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+
+				filermnh.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier RMNH est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+
+				filermnc.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier RMNC est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+			</script>
+
+
+			<?php
 			print"
 			</tr></table></table>\n<p align=\"right\">";
 			unset($dbh);

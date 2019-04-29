@@ -203,7 +203,6 @@ else {
 				echo "</p>";
 			}
 		}
-		//Probleme ici ??? // TODO:
 		elseif ((!empty($fichier) or !empty ($extension_fichier[1]) or !empty ($_POST['donnees'.$filetype[$ifile]])) or (isset($_POST[$filetype[$ifile].'type']) and !empty($_POST[$filetype[$ifile].'type']))) {
 			$sql="INSERT INTO ".$filetype[$ifile]." ($fichiertype,$extensiontype,$text";
 			if ($filetype[$ifile]=="sm" or $filetype[$ifile]=="hrms") $sql.=",$typesm";

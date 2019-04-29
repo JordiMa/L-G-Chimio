@@ -31,7 +31,7 @@ termes.
 define('DEUXPOINTS',' :');
 define('CONFIG','Note sur la configuration :');
 define('MASS','* Masse de produit disponible : ');
-define('TYPE','* Type de structure : ');
+define('TYPE','Type de structure : ');
 define('CHARG','Charger la structure');
 define('CHARGESTRUC','Rechercher une structure au format mol à charger');
 define('DESSINSTRUC','Vous devez dessiner une molécules');
@@ -174,7 +174,7 @@ define('MESSAUTO','Courriel automatique envoyé par L-g-Chimio depuis l\'adresse
 define('PLUSRECEPTION','Si vous ne souhaitez plus recevoir de courriels, vous pouvez désactiver cette fonction dans votre compte Chimiothèque.');
 define('EXFICHIER','Voir le fichier existant');
 define('OBSERVATION','Observations');
-define('EQUIPE','* Equipe --- Responsable :');
+define('EQUIPE','Equipe --- Responsable :');
 define('SELECTEQUIPE','Sélectionez le couple équipe --- responsable');
 define('EQUIPEABS','Le champ équipe doit être renseigné');
 define('OBLIGATOIRE','* : champ obligatoire');
@@ -185,7 +185,7 @@ define('SYNTHESE','synthèse');
 define('HEMISYNTHESE','hémisynthèse');
 define('NATURELLE','naturelle');
 define('INCONNUE','inconnue');
-define('ORIGINEMOL','* Origine de la molécule :');
+define('ORIGINEMOL','Origine de la molécule :');
 define('SELECTORIGINEMOL','Sélectionnez une origine');
 define('ORIGABS','L\'origine de la molécule n\'est pas renseignée!');
 define('PURETESUB','Pureté de la substance');
