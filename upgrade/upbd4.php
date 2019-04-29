@@ -141,7 +141,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   $upd=$dbh->exec($update);
   if ($dbh->errorInfo()[0] == 42701){
-    $update = str_replace("ALTER TABLE produit ADD pro_controle_purete boolean;","",$update);
+    $update = str_replace("ALTER TABLE produit ADD pro_controle_purete integer;","",$update);
     $upd=$dbh->exec($update);
   }
 
@@ -151,7 +151,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   }
 
   if ($dbh->errorInfo()[0] == 42701){
-    $update = str_replace("ALTER TABLE produit ADD pro_controle_structure boolean;","",$update);
+    $update = str_replace("ALTER TABLE produit ADD pro_controle_structure integer;","",$update);
     $upd=$dbh->exec($update);
   }
 
