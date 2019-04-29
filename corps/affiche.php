@@ -388,7 +388,7 @@ if (!empty($id_sql)) {
 			print"<td><strong>".SOLVANT."</strong>&nbsp;".$solvant."</td>
 				  </tr>
 				  <tr><td><strong>".DOI."</strong>&nbsp;";
-			if (!empty($row2[18])) print"<a href=\"http://dx.doi.org/".$row2[18]."\" target=\"_blank\">".$row2[18]."</a>";
+			if (!empty($row2[18])) print"<a href=\"https://doi.org/".$row2[18]."\" target=\"_blank\">".$row2[18]."</a>";
 			print"</td><td><strong>".CAS."</strong>&nbsp;".$row2[19]."</td><td><strong>".HAL."</strong>&nbsp;";
 			if (!empty($row2[20])) print"<a href=\"http://hal.archives-ouvertes.fr/".$row2[20]."/fr/\" target=\"_blank\">".$row2[20]."</a>";
 
