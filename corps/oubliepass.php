@@ -45,6 +45,10 @@ $sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLU
 $result1=$dbh->query($sql);
 //Les résultats son mis sous forme de tableau
 $rop=$result1->fetch(PDO::FETCH_NUM);
+echo "<label>".NAMEPASS."</label>";
+echo "<br/>";
+echo "<input type='text' name='nom'/>";
+echo "<br/><br/>";
 $formulaire->ajout_text ($rop[0]+1,'',$rop[0],"email",EMAIL."<br/>","","");
 echo "<br><br>";
 $formulaire->ajout_button (SUBMIT,"","submit","");
