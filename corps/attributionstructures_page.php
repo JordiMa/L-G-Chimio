@@ -147,6 +147,9 @@ if (isset($_GET['produit'])){
 
 ?>
 
+<h3 align="center">Attribution de structure</h3>
+<hr>
+
 <form id="myForm" action="attributionstructures.php" method="get">
 	<!-- [JM - 01/02/2019] Recherche du produit -->
 	<div class="autocomplete" style="width:325px;">

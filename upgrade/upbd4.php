@@ -139,125 +139,134 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   $err = 0;
 
+  $dbh->beginTransaction();
   $upd=$dbh->exec($update);
+  
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE produit ADD pro_controle_purete integer;","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
-
+  
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE produit ADD pro_date_controle_purete date;","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE produit ADD pro_controle_structure integer;","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
-
-  if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification de la table « produit »";
-    print_r($dbh->errorInfo());
-    $err = 1;
-  }
-
-  $upd=$dbh->exec($update);
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE evotec ADD evo_date_envoie date DEFAULT now();","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE evotec ADD evo_insoluble boolean DEFAULT FALSE;","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
-
-  if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification de la table « evotec »";
-    print_r($dbh->errorInfo());
-    $err = 1;
-  }
-
-  $upd=$dbh->exec($update);
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE chimiste ADD chi_date_expiration date DEFAULT (now() + '1 year'::interval);","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
-  if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification de la table « chimiste »";
-    print_r($dbh->errorInfo());
-    $err = 1;
-  }
-
-  $upd=$dbh->exec($update);
   if ($dbh->errorInfo()[0] == 23505){
     $update = str_replace("INSERT INTO couleur (cou_id_couleur, cou_couleur) VALUES (218, 'INCON');","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
-  if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification de la table « couleur »";
-    print_r($dbh->errorInfo());
-    $err = 1;
-  }
-
-  $upd=$dbh->exec($update);
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE hrms ADD hrms_date date DEFAULT now();","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE ir ADD ir_date date DEFAULT now();","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE rmnc ADD rmnc_date date DEFAULT now();","",$update);
-    $upd=$dbh->exec($update);
+    
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE rmnh ADD rmnh_date date DEFAULT now();","",$update);
-    $upd=$dbh->exec($update);
+        
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE sm ADD sm_date date DEFAULT now();","",$update);
-    $upd=$dbh->exec($update);
+        
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE uv ADD uv_date date DEFAULT now();","",$update);
-    $upd=$dbh->exec($update);
+        
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
-  if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification des table de fichiers";
-    print_r($dbh->errorInfo());
-    $err = 1;
-  }
-
-  $upd=$dbh->exec($update);
-  if ($dbh->errorInfo()[0] == 42701){
+  if ($dbh->errorInfo()[0] == 42710){
     $update = str_replace("CREATE TRIGGER ajoute_pro_date_ctrl_purete
   AFTER UPDATE OF pro_controle_purete ON produit
   FOR EACH ROW
   EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();","",$update);
-    $upd=$dbh->exec($update);
+        
+	$dbh->rollBack();
+	$dbh->beginTransaction();
+	$upd=$dbh->exec($update);
   }
 
-  if ($dbh->errorInfo()[2] != 00000){
-    echo "erreur lors de la modification des fonctions/trigger de contrôle";
+  if ($dbh->errorInfo()[0] != 00000){
+	$dbh->rollBack();
+    echo "Une erreur est survenue !<br/>";
     print_r($dbh->errorInfo());
     $err = 1;
   }
 
   if($err == 0){
     $upd=$dbh->exec($update);
+	$dbh->commit();
     echo "<h2>Mises à jour effectué avec succès !</h2>";
   	echo "<h3>Vous pouvez maintenant supprimer le dossier 'upgrade'</h3>";
   	echo "<br/>";

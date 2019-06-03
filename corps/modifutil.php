@@ -101,7 +101,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	$row1=$result1->fetch(PDO::FETCH_NUM);
 	if (!empty($_POST["nom"])) $nomutil=$_POST["nom"];
 	else $nomutil=$row[1];
-	$formulaire->ajout_text ($row1[0]+1,$nomutil,$row1[0],"nom",NOM.DEUX."<br/>","","onBlur=\"Verif(form)\"");
+	$formulaire->ajout_text ($row1[0]+1,$nomutil,$row1[0],"nom",NOM.DEUX."<br/>","","onChange=\"Verif(form)\"");
 	print"<br/><br/>";
 	$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='chi_prenom'";
 	//les résultats sont retournées dans la variable $result2
@@ -110,7 +110,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	$row2=$result2->fetch(PDO::FETCH_NUM);
 	if (!empty($_POST["prenom"])) $prenomutil=$_POST["prenom"];
 	else $prenomutil=$row[2];
-	$formulaire->ajout_text ($row2[0]+1,$prenomutil,$row2[0],"prenom",PRENOM.DEUX."<br/>","","onBlur=\"Verif(form)\"");
+	$formulaire->ajout_text ($row2[0]+1,$prenomutil,$row2[0],"prenom",PRENOM.DEUX."<br/>","","onChange=\"Verif(form)\"");
 	print"<br/><br/>";
 
 	$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='chi_email'";
@@ -120,7 +120,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	$row3=$result3->fetch(PDO::FETCH_NUM);
 	if (!empty($_POST["email"])) $emailutil=$_POST["email"];
 	else $emailutil=$row[4];
-	$formulaire->ajout_text ($row3[0]+1,$emailutil,$row3[0],"email",COURRIEL.DEUX."<br/>","","onBlur=\"Verif(form)\"");
+	$formulaire->ajout_text ($row3[0]+1,$emailutil,$row3[0],"email",COURRIEL.DEUX."<br/>","","onChange=\"Verif(form)\"");
 	print"<br/><br/>";
 	if (!empty($_POST["langue"])) $lang=$_POST["langue"];
 	else $lang=$row[6];

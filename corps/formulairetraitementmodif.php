@@ -165,7 +165,7 @@ else {
 			}
 			elseif ($lefichier!=False) {
 
-				$fichier=stream_get_contents (${"fichier$filetype[$ifile]"}[0]);
+				$fichier=${"fichier$filetype[$ifile]"}[0];
 				$extension_fichier[1]=${"fichier$filetype[$ifile]"}[1];
 			}
 			else {
@@ -192,8 +192,8 @@ else {
 			}
 			else {
 				$sql="UPDATE produit SET pro_id_".$filetype[$ifile]." = NULL WHERE pro_id_produit='".$_POST['id']."';";
+				$sql.="DELETE FROM ".$filetype[$ifile]." cascade WHERE ".$filetype[$ifile]."_id_".$filetype[$ifile]."=".$row['pro_id_'.$filetype[$ifile]].";";
 				$id{$filetype[$ifile]}=0;
-				$sql="DELETE FROM ".$filetype[$ifile]." WHERE ".$filetype[$ifile]."_id_".$filetype[$ifile]."=".$row['pro_id_'.$filetype[$ifile]].";";
 			}
 			$fichierinsert=$dbh->exec($sql);
 			if($fichierinsert==false) {
@@ -260,9 +260,10 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	if($id{'sm'}>0) $sql.=", pro_id_sm='".$id{'sm'}."'";
 	if($id{'hrms'}>0) $sql.=", pro_id_hrms='".$id{'hrms'}."'";
 
-	$sql.=", pro_controle_purete = ".$_POST['chx_purete'];
-
-	$sql.=", pro_controle_structure = ".$_POST['chx_structure'];
+	if(isset($_POST['chx_purete']))
+		$sql.=", pro_controle_purete = ".$_POST['chx_purete'];
+	if(isset($_POST['chx_structure']))
+		$sql.=", pro_controle_structure = ".$_POST['chx_structure'];
 
 	$sql.=", pro_champsAnnexe = '".$_POST["champsAnnexe"]."'";
 
@@ -579,6 +580,32 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	}
 	//fin Section traitement des précautions
 	//**********************************
+
+
+	$sql_annexe="SELECT * FROM \"champsAnnexe\"";
+	//les résultats sont retournées dans la variable $result
+	$result_annexe = $dbh->query($sql_annexe);
+	$result_annexe->execute();
+	$r_annexe = $result_annexe->fetchAll();
+
+	function customSearch($keyword, $arrayToSearch){
+		foreach($arrayToSearch as $key => $arrayItem){
+			if(stristr( $arrayItem, $keyword)){
+				return $key;
+			}
+		}
+	}
+
+	foreach ($_POST as $key => $value) {
+		if (strstr($key, "champsAnnexe_")){
+			$keyid = customSearch($key, array_column($r_annexe, 'HTML'));
+			$insert_annexe = "INSERT INTO \"champsProduit\" VALUES (".$_POST['id'].",".$r_annexe[$keyid][0].",E'".addslashes($value)."');";
+			$dbh->exec($insert_annexe);
+			$insert_annexe = "UPDATE \"champsProduit\" SET \"data\" = E'".addslashes($value)."' WHERE \"cha_ID\" = ".$r_annexe[$keyid][0]." and  \"pro_id_produit\" = ".$_POST['id'].";";
+			$dbh->exec($insert_annexe);
+		}
+	}
+
 
 
 	if (!empty($change)) {

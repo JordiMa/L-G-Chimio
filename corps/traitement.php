@@ -390,6 +390,28 @@ while($countsol=$result3->fetch(PDO::FETCH_NUM)) {
 
  //'".AddSlashes($_POST['donneesrmnh'])."','".AddSlashes($_POST['donneesrmnc'])."','".AddSlashes($_POST['donneesir'])."','".AddSlashes($_POST['sm'])."','".AddSlashes($_POST['smtype'])."','".AddSlashes($_POST['hsm'])."','".AddSlashes($_POST['hsmtype'])."','".AddSlashes($_POST['donneesuv'])."'
 
+ $sql_annexe="SELECT * FROM \"champsAnnexe\"";
+ //les résultats sont retournées dans la variable $result
+ $result_annexe = $dbh->query($sql_annexe);
+ $result_annexe->execute();
+ $r_annexe = $result_annexe->fetchAll();
+
+ function customSearch($keyword, $arrayToSearch){
+   foreach($arrayToSearch as $key => $arrayItem){
+     if(stristr( $arrayItem, $keyword)){
+       return $key;
+     }
+   }
+ }
+
+ foreach ($_POST as $key => $value) {
+   if (strstr($key, "champsAnnexe_")){
+     $keyid = customSearch($key, array_column($r_annexe, 'HTML'));
+     $insert_annexe = "INSERT INTO \"champsProduit\" VALUES (".$lastIdinsertion.",".$r_annexe[$keyid][0].",'".addslashes($value)."');";
+     $dbh->exec($insert_annexe);
+   }
+ }
+
 
 
 if ($erreur=='') {
