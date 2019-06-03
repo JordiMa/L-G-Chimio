@@ -99,6 +99,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			global $correspondance;
 			global $transformation;
 			global $contenuFichier_csv;
+			global $contenuFichier_logSQL;
 			global $array_afficheListe;
 			global $valueBar;
 			//$donnees = array_map('utf8_encode', $donnees);
@@ -165,13 +166,29 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						fputcsv($fichier_csv, $ligne, ";");
 					}
 
-					echo "<a class='download-file' href='temp/".$timestamp.".csv' download='Log_Importaiton_".date("Y-m-d").".csv'></a>";
+					echo "<a class='download-file' href='temp/".$timestamp.".csv' download='Log_Importaiton_".date("Y-m-d").".csv'>Télécharger les erreurs de structures</a><br/>";
 					echo "
 					<script type='text/javascript'>
 						$('.download-file').get(0).click();
 					</script>";
 					}
 
+					if(count($contenuFichier_logSQL) > 1){
+						$timestamp2 = time()."SQL";
+						$fichier_logSQL = fopen('temp/'.$timestamp2.'.csv', 'w+');
+						fprintf($fichier_logSQL, chr(0xEF).chr(0xBB).chr(0xBF));
+						foreach($contenuFichier_logSQL as $ligne){
+							fputcsv($fichier_logSQL, $ligne, ";");
+						}
+
+						echo "<a class='download-file2' href='temp/".$timestamp2.".csv' download='LogSQL_Importaiton_".date("Y-m-d").".csv'>Télécharger les logs SQL</a><br/>";
+						echo "
+						<script type='text/javascript'>
+							$('.download-file2').get(0).click();
+						</script>";
+					}
+
+					echo "<br/>";
 					if (sizeof($array_afficheListe) == 0)
 						echo "Aucune erreur trouvée<br>";
 					else
@@ -405,7 +422,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			}
 
 			if(array_key_exists("pro_masse",$infos)){
-				$tab_produit["pro_masse"] = $infos["pro_masse"];
+				if ($infos["pro_masse"] != ''){
+					$tab_produit["pro_masse"] = $infos["pro_masse"];
+				}
+				else {
+					$tab_produit["pro_masse"] = 0.0;
+				}
 			}else{
 				$tab_produit["pro_masse"] = 0.0;
 			}
@@ -572,24 +594,42 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		//OBTENIR ID
 		function getID($table, $id, $nom, $valeur){ //récupère l'ID d'une ligne où "$nom = $valeur" ou la crée si elle n'existe pas
-
+			global $contenuFichier_logSQL;
 			global $baseDonnees;
-			$sql = "SELECT * FROM ".$table." WHERE ".$nom." = '".$valeur."';";
+			$sql = "SELECT * FROM ".$table." WHERE ".$nom." = E'".addslashes($valeur)."';";
 
 			$req = $baseDonnees->query(utf8_encode($sql));
 			$num=$req->rowCount();
+			if ($baseDonnees->errorInfo()[0] != 00000){
+				 end($contenuFichier_logSQL);
+				 $key = key($contenuFichier_logSQL);
+				 $contenuFichier_logSQL[$key+1][0] = "?";
+				 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+			 }
 
 			if($num>0){
 
-				$sql = "SELECT ".$id." FROM ".$table." WHERE ".$nom." = '".$valeur."';";
+				$sql = "SELECT ".$id." FROM ".$table." WHERE ".$nom." = E'".addslashes($valeur)."';";
 				$req = $baseDonnees->query(utf8_encode($sql));
 				$val = $req->fetch();
+				if ($baseDonnees->errorInfo()[0] != 00000){
+					 end($contenuFichier_logSQL);
+					 $key = key($contenuFichier_logSQL);
+					 $contenuFichier_logSQL[$key+1][0] = "?";
+					 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+				 }
 				return $val[$id];
 
 			}else{
 
 				$sql = "INSERT INTO ".$table." (".$nom.") VALUES (E'".addslashes($valeur)."');";
 				$result = $baseDonnees->exec(utf8_encode($sql));
+				if ($baseDonnees->errorInfo()[0] != 00000){
+					 end($contenuFichier_logSQL);
+					 $key = key($contenuFichier_logSQL);
+					 $contenuFichier_logSQL[$key+1][0] = "?";
+					 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+				 }
 				$insertedID = $baseDonnees->lastInsertId($table."_".$id."_seq");
 				return $insertedID;
 
@@ -599,9 +639,16 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		//GET VALEUR
 		function getValeur($table,$id,$valId,$nom){ //récupère la valeur de $nom dans la ligne de "$table" où "$id = $valId"
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 
 			$sql = "SELECT ".$nom." FROM ".$table." WHERE ".$id." = '".$valId."';";
 			$result = $baseDonnees->query($sql);
+			if ($baseDonnees->errorInfo()[0] != 00000){
+				 end($contenuFichier_logSQL);
+				 $key = key($contenuFichier_logSQL);
+				 $contenuFichier_logSQL[$key+1][0] = "?";
+				 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+			 }
 
 			$valeur = $result->fetch();
 
@@ -614,18 +661,32 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		//AJOUTER INFO
 		function update($table, $id, $valId, $nom, $valeur){ //change la ligne de "$table" où "$id = $valId" pour que "$nom = $valeur"
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 
 			$sql = "UPDATE ".$table." SET ".$nom." = E'".addslashes($valeur)."' WHERE ".$id." = '".$valId."';";
 			$baseDonnees->exec(utf8_encode($sql));
+			if ($baseDonnees->errorInfo()[0] != 00000){
+				 end($contenuFichier_logSQL);
+				 $key = key($contenuFichier_logSQL);
+				 $contenuFichier_logSQL[$key+1][0] = "?";
+				 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+			 }
 		}
 
 		//CHECK INFO
 		function check($table, $nom, $valeur){ //renvoie TRUE si il existe une ligne où "$nom = $valeur" dans la table "$table"
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 
-			$sql = "SELECT * FROM ".$table." WHERE ".$nom." = '".$valeur."';";
+			$sql = "SELECT * FROM ".$table." WHERE ".$nom." = E'".addslashes($valeur)."';";
 			$req = $baseDonnees->query($sql);
 			$resultat = $req->fetch();
+			if ($baseDonnees->errorInfo()[0] != 00000){
+				 end($contenuFichier_logSQL);
+				 $key = key($contenuFichier_logSQL);
+				 $contenuFichier_logSQL[$key+1][0] = "?";
+				 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+			 }
 
 			if ($resultat[0] != null) {
 				return true;
@@ -637,10 +698,17 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		//CHECK SI INFO
 		function checkIf($table,$id,$valId, $nom, $valeur){ //renvoie TRUE si dans la ligne de "$table" où "$id = $valId", on a "$nom = $valeur"
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 
-			$sql = "SELECT * FROM ".$table." WHERE ".$nom." = '".$valeur."' AND ".$id." = '".$valId."';";
+			$sql = "SELECT * FROM ".$table." WHERE ".$nom." = E'".addslashes($valeur)."' AND ".$id." = '".$valId."';";
 			$req = $baseDonnees->query($sql);
 			$resultat = $req->fetch();
+			if ($baseDonnees->errorInfo()[0] != 00000){
+				 end($contenuFichier_logSQL);
+				 $key = key($contenuFichier_logSQL);
+				 $contenuFichier_logSQL[$key+1][0] = "?";
+				 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+			 }
 			if ($resultat[0] != null) {
 				return true;
 			}
@@ -812,6 +880,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function insert_plaque($infos,$id_produit){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 			$table = "plaque";
 			$id = "pla_id_plaque";
 
@@ -860,14 +929,32 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				update($table,$id,$ID_plaque,"pla_id_plaque_mere",0);
 
 				$baseDonnees->exec(utf8_encode("INSERT INTO position(pos_id_plaque,pos_id_produit,pos_coordonnees) VALUES ('".$ID_plaque."','".$id_produit."','".strtolower($infos["pla_pos_coordonnees"])."');"));
+				if ($baseDonnees->errorInfo()[0] != 00000){
+					 end($contenuFichier_logSQL);
+					 $key = key($contenuFichier_logSQL);
+					 $contenuFichier_logSQL[$key+1][0] = "ID Produit :" .$id_produit;
+					 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+				 }
 				if(array_key_exists("pla_lot_num_lot",$infos)){
 					$ID_lot = getID("lot","lot_id_lot","lot_num_lot",$infos["pla_lot_num_lot"]);
 
 					$sql = "SELECT * FROM lotplaque WHERE lopla_id_lot = '".$ID_lot."' AND lopla_id_plaque = '".$ID_plaque."';";
 					$req = $baseDonnees->query($sql);
+					if ($baseDonnees->errorInfo()[0] != 00000){
+						 end($contenuFichier_logSQL);
+						 $key = key($contenuFichier_logSQL);
+						 $contenuFichier_logSQL[$key+1][0] = "ID Plaque : " .$ID_plaque;
+						 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+					 }
 					$result = $req->fetch();
 					if($result[0] == null){
 						$baseDonnees->exec(utf8_encode("INSERT INTO lotplaque(lopla_id_lot,lopla_id_plaque) VALUES ('".$ID_lot."','".$ID_plaque."');"));
+						if ($baseDonnees->errorInfo()[0] != 00000){
+							 end($contenuFichier_logSQL);
+							 $key = key($contenuFichier_logSQL);
+							 $contenuFichier_logSQL[$key+1][0] = "ID Plaque :" .$ID_plaque;
+							 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+						 }
 					}
 
 				}
@@ -891,6 +978,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function insert_structure($infos){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 			$table = "structure";
 			$id = "str_id_structure";
 			$mol = $infos["str_mol"];
@@ -914,6 +1002,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function insert_solvant($str,$id_produit){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 			$table = "solvant";
 			$id = "sol_id_solvant";
 
@@ -947,6 +1036,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					$sql = "INSERT INTO solubilite(sol_id_solvant,sol_id_produit) VALUES ('".$ID_solvant."','".$id_produit."');";
 
 						$baseDonnees->exec(utf8_encode($sql));
+						if ($baseDonnees->errorInfo()[0] != 00000){
+							 end($contenuFichier_logSQL);
+							 $key = key($contenuFichier_logSQL);
+							 $contenuFichier_logSQL[$key+1][0] = "ID Produit :" .$id_produit;
+							 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+						 }
 
 				}
 			}
@@ -980,6 +1075,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function formule_brute($mol){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 			$sql="SELECT bingo.Gross ('".$mol."');";
 	        $result21=$baseDonnees->query($sql);
 	        $formulebrute=$result21->fetch(PDO::FETCH_NUM);
@@ -992,6 +1088,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function masse_molaire($mol){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 			$sql="SELECT bingo.getWeight ('".$mol."','molecular-weight');";
 	        $result22=$baseDonnees->query($sql);
 	        $massemolaire=$result22->fetch(PDO::FETCH_NUM);
@@ -1008,6 +1105,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function inchi($mol){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 
 			$sql="SELECT Bingo.InchI('".$mol."','')";
 	        $resultinchi=$baseDonnees->query($sql);
@@ -1017,6 +1115,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function inchi_md5($mol){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 	        $sql="SELECT bingo.InChIKey ('".inchi($mol)."')";
 	        $resultinchikey=$baseDonnees->query($sql);
 	        $rowinchikey=$resultinchikey->fetch(PDO::FETCH_NUM);
@@ -1026,6 +1125,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function insert_produit($infos,$plaque, $champs_annexe){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 			$table = "produit";
 			$id = "pro_id_produit";
 			$num_const = numero_constant();
@@ -1078,6 +1178,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 					$stmt->execute();
 					//$result = $baseDonnees->exec($sql);
+					if ($stmt->errorInfo()[0] != 00000){
+						 end($contenuFichier_logSQL);
+						 $key = key($contenuFichier_logSQL);
+						 $contenuFichier_logSQL[$key+1][0] = $infos["pro_numero"];
+						 $contenuFichier_logSQL[$key+1][1] = $stmt->errorInfo()[0] . " : " . $stmt->errorInfo()[2];
+					 }
+
 					}
 					else {
 						//$sql = "UPDATE produit SET pro_id_type = '".$infos["pro_id_type"]."', pro_id_equipe = ".$infos["pro_id_equipe"].", pro_id_responsable = ".$infos["pro_id_responsable"].", pro_id_chimiste = ".$infos["pro_id_chimiste"].", pro_id_couleur = '".$infos["pro_id_couleur"]."', pro_id_structure = '".$infos["pro_id_structure"]."', pro_purification = '".$infos["pro_purification"]."', pro_masse = '".$infos["pro_masse"]."', pro_unite_masse = '".$infos["pro_unite_masse"]."', pro_aspect = '".$infos["pro_aspect"]."', pro_date_entree = '".$infos["pro_date_entree"]."', pro_ref_cahier_labo = E'".addslashes($infos["pro_ref_cahier_labo"])."', pro_etape_mol = '".$infos["pro_etape_mol"]."', pro_num_constant = '".$num_const."', pro_purete = '".$infos["pro_purete"]."' WHERE pro_numero = '".$infos["pro_numero"]."';";
@@ -1126,6 +1233,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						$stmt->execute();
 
 						//$result = $baseDonnees->exec($sql);
+						if ($stmt->errorInfo()[0] != 00000){
+							 end($contenuFichier_logSQL);
+							 $key = key($contenuFichier_logSQL);
+							 $contenuFichier_logSQL[$key+1][0] = $infos["pro_numero"];
+							 $contenuFichier_logSQL[$key+1][1] = $stmt->errorInfo()[0] . " : " . $stmt->errorInfo()[2];
+						 }
+
 					}
 
 					$ID_produit = getID("produit","pro_id_produit","pro_numero",$infos["pro_numero"]);
@@ -1134,6 +1248,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						if($infos["sol_solvant"] == "INCONNU")
 						$infos["sol_solvant"] = "18";
 						$baseDonnees->exec("INSERT INTO solubilite(sol_id_solvant,sol_id_produit) VALUES ('".$infos["sol_solvant"]."','".$ID_produit."');");
+						if ($baseDonnees->errorInfo()[0] != 00000){
+							 end($contenuFichier_logSQL);
+							 $key = key($contenuFichier_logSQL);
+							 $contenuFichier_logSQL[$key+1][0] = $infos["pro_numero"];
+							 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+						 }
 					}
 
 					insert_plaque($plaque,$ID_produit);
@@ -1163,6 +1283,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					// TODO
 					$sql2 = "UPDATE produit SET pro_observation = E'".$observations."', pro_qrcode = '".$qrcode."', pro_champsannexe = E'".$champs_annexe."' WHERE pro_numero = '".$infos["pro_numero"]."'";
 					$result2 = $baseDonnees->exec($sql2);
+					if ($baseDonnees->errorInfo()[0] != 00000){
+						 end($contenuFichier_logSQL);
+						 $key = key($contenuFichier_logSQL);
+						 $contenuFichier_logSQL[$key+1][0] = $infos["pro_numero"];
+						 $contenuFichier_logSQL[$key+1][1] = $baseDonnees->errorInfo()[0] . " : " . $baseDonnees->errorInfo()[2];
+					 }
 
 					// fonctionne pas ?
 					//update("produit","pro_id_produit",$ID_produit,"pro_observation",$observations);
@@ -1173,6 +1299,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 		function numero_constant(){
 			global $baseDonnees;
+			global $contenuFichier_logSQL;
 			//génère un chiffre aléatoire entre 10000000 et 9999999 (pro_num_constant)
 			mt_srand(microtime()*10000);
 			$o=0;
@@ -1239,7 +1366,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					return $value;
 				}
 			}
-			return "ND";
+			return "INCON";
 		}
 
 		function G_to_MG($str){
@@ -1440,6 +1567,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		}
 		$contenuFichier_csv[0][0] = "Identifiant de la molecule";
 		$contenuFichier_csv[0][1] = "Erreur";
+		$contenuFichier_logSQL[0][0] = "Identifiant de la molecule";
+		$contenuFichier_logSQL[0][1] = "Erreur SQL";
 		$array_afficheListe = [];
 		$valid = true; //condition de validité de la molécule, permet la pause du code en cas de besoin de correction
 		$correspondance = [];
