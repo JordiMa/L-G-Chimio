@@ -145,7 +145,7 @@ if ($row[0]=="{CHEF}") {
 }
 
 if ($row[0]=="{ADMINISTRATEUR}") {
-  $sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste WHERE chi_statut = '{CHIMISTE}' AND chi_passif = FALSE order by chi_nom, chi_prenom";
+  $sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste Inner Join equipe on chimiste.chi_id_equipe = equipe.equi_id_equipe WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = FALSE order by chi_nom, chi_prenom";
   $result_autocomplete = $dbh->query($sql_autocomplete);
 
   $var_id_produit = "[";
@@ -167,7 +167,7 @@ if ($row[0]=="{ADMINISTRATEUR}") {
   ?>
   <label>* nom du chimiste :</label>
   <div class="autocomplete">
-    <input id="myInput" placeholder="Nom Prenom" type="text" name="produit" onfocus="this.select()" autofocus>
+    <input id="myInput" placeholder="Nom Prenom" type="text" name="equipe" onfocus="this.select()" autofocus>
   </div>
   <?php
 	//$formulaire1->ajout_select (1,"equipe",$tab1,false,$_POST['equipe'], EQU_RES_CHI, EQU_RES_CHI ." :",false,"");

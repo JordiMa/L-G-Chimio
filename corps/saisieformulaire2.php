@@ -82,9 +82,15 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 	$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
 	$result22=$dbh->query($sql);
 	$row22 =$result22->fetch(PDO::FETCH_NUM);
-	if ($row22[0]=="{ADMINISTRATEUR}" or $row22[0]=="{CHEF}") {
+	if ($row22[0]=="{CHEF}") {
 		$tabequipe=explode ('/',$_POST['equipe']);
 		$equipe=$tabequipe[0];
+	}
+	elseif ($row22[0]=="{ADMINISTRATEUR}") {
+		$sql_chi="SELECT chi_id_equipe FROM chimiste WHERE chi_statut = '{CHIMISTE}' AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
+		$result_chi=$dbh->query($sql_chi);
+		$row_chi = $result_chi->fetch(PDO::FETCH_NUM);
+		$equipe = $row_chi[0];
 	}
 	else $equipe=$row22[2];
 
@@ -883,12 +889,18 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$formulaire->ajout_cache ($_POST['unitmass'],"unitmass");
 
 
-		if ($row22[0]=="{ADMINISTRATEUR}" or $row22[0]=="{CHEF}") {
+		if ($row22[0]=="{CHEF}") {
 			$tabequipe=explode ("/",$_POST['equipe']);
 			$formulaire->ajout_cache ($tabequipe[0],"equipe");
 			$formulaire->ajout_cache ($tabequipe[1],"responsable");
-			if ($row22[0]=="{ADMINISTRATEUR}")
-				$formulaire->ajout_cache ($tabequipe[2],"chimiste");
+		}
+		elseif ($row22[0]=="{ADMINISTRATEUR}") {
+			$sql_chi="SELECT chi_id_chimiste, chi_id_responsable, chi_id_equipe FROM chimiste WHERE chi_statut = '{CHIMISTE}' AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
+			$result_chi=$dbh->query($sql_chi);
+			$row_chi = $result_chi->fetch(PDO::FETCH_NUM);
+			$formulaire->ajout_cache ($row_chi[2],"equipe");
+			$formulaire->ajout_cache ($row_chi[0],"chimiste");
+			$formulaire->ajout_cache ($row_chi[1],"responsable");
 		}
 		//fin de l'ajout des champs cachés
 

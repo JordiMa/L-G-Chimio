@@ -114,6 +114,17 @@ foreach ($result_autocomplete as $key => $value) {
 }
 $var_id_produit .= '""]';
 
+//----
+$sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste Inner Join equipe on chimiste.chi_id_equipe = equipe.equi_id_equipe WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') order by chi_nom, chi_prenom";
+$result_autocomplete = $dbh->query($sql_autocomplete);
+
+$var_chim = "[";
+
+foreach ($result_autocomplete as $key => $value) {
+  $var_chim .=  '"'.$value[0]. " " .$value[1].'",';
+}
+$var_chim .= '""]';
+//----
 
 // [JM - 01/02/2019] Si l'administrateur a effectuée une recherche sur un produit
 if (isset($_GET['produit'])){
@@ -127,21 +138,21 @@ if (isset($_GET['produit'])){
 	$result_equipe = $dbh->query($sql_equipe);
 
 	// [JM - 01/02/2019] le responsable
-		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_statut='{RESPONSABLE}' AND chi_id_equipe = -1";
+		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE (chi_statut='{RESPONSABLE}' AND chi_id_equipe = -1".") or chi_statut='{CHEF}'";
 	if (!empty($row1[2]))
-		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_statut='{RESPONSABLE}' AND chi_id_equipe =".$row1[2];
+		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE (chi_statut='{RESPONSABLE}' AND chi_id_equipe =".$row1[2].") or chi_statut='{CHEF}'";
 	if (isset($_GET['equipe']) && !empty($_GET['equipe']))
 		// [JM - 01/02/2019] Si l'utilisateur selectionne une autre equipe, on recherche les responsables correspondant
-		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_statut='{RESPONSABLE}' AND chi_id_equipe =".$_GET['equipe'];
+		$sql_responsable="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE (chi_statut='{RESPONSABLE}' AND chi_id_equipe =".$_GET['equipe'].") or chi_statut='{CHEF}'";
 	$result_responsable = $dbh->query($sql_responsable);
 
 	// [JM - 01/02/2019] et le chimiste
 	$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste";
 	if (!empty($row1[3]))
-		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$row1[3];
+		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$row1[3]." AND chi_id_equipe =".$row1[2];
 	if (isset($_GET['responsable']) && !empty($_GET['responsable']))
 		// [JM - 01/02/2019] Si l'utilisateur selectionne un autre responsable, on recherche les chimistes correspondant
-		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$_GET['responsable'];
+		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$_GET['responsable']." AND chi_id_equipe =".$_GET['equipe'];
 	$result_chimiste = $dbh->query($sql_chimiste);
 }
 
@@ -150,13 +161,15 @@ if (isset($_GET['produit'])){
 <h3 align="center">Attribution de structure</h3>
 <hr>
 
-<form id="myForm" action="attributionstructures.php" method="get">
+<form id="myForm" action="attributionstructures.php" method="get" style=" text-align: center;">
 	<!-- [JM - 01/02/2019] Recherche du produit -->
 	<div class="autocomplete" style="width:325px;">
 		<input id="myInput" placeholder="<?php echo SAISIEIDPRODUIT; ?>" type="text" name="produit" <?php if (isset($_GET['produit'])) echo "value='".$_GET['produit']."'"; ?> onfocus="this.select()" autofocus>
 	</div>
 	<input type="submit" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
 	<br><br>
+
+<div style="width: 25%; display: inline-table;">
 	<?php
 	if (isset($row1) && $row1 && isset($_GET['produit'])) {
 		//  [JM - 01/02/2019] sauvegarde les valeur de la recherche
@@ -164,6 +177,8 @@ if (isset($_GET['produit'])){
 			echo "<input type='hidden' name='equipe' value='".$row1[2]."'>";
 			echo "<input type='hidden' name='responsable' value='".$row1[3]."'>";
 			echo "<input type='hidden' name='chimiste' value='".$row1[4]."'>";
+      if(isset($_GET['err']))
+        echo "<input type='hidden' name='err' value='".$_GET['err']."'>";
 			echo '<script>document.forms.myForm.submit();</script>';
 		}
 		?>
@@ -198,27 +213,47 @@ if (isset($_GET['produit'])){
 			?>
 		</select><br><br>
 
-		<input type="image" name="save" value="download" src="images/charge.gif" alt="Sauvegarder" title="Sauvegarder">
-		<label id="lab_save" for="save"></label>
-	<?php }  ?>
 
+
+</div>
+<div style="margin-left: 11.75%;width: 12.5%;display: inline-table;border-left: 6px solid green;height: 275px; margin-top: 20px;">
+  &nbsp;
+</div>
+
+<div style="width: 25%; display: inline-table; height: 275px;">
+  <div style="position: absolute; top: 50%; transform: translateY(-50%);">
+
+    <label>nom du chimiste :</label><br/>
+    <div class="autocomplete">
+      <input id="myInput2" placeholder="Nom Prenom" type="text" name="chim_nom_prenom">
+    </div>
+
+  </div>
+</div>
+
+<div>
+  <input type="image" name="save" value="download" src="images/charge.gif" alt="Sauvegarder" title="Sauvegarder"><br/>
+  <label id="lab_save" for="save"></label>
+</div>
+
+
+
+	<?php }  ?>
 </form>
 
 <?php
 
 	if (isset($_GET['save_x']))
 	{
-		// [JM - 01/02/2019] demande de confirmation
-		echo '<script language="javascript">';
-		// [JM - 01/02/2019] Si l'utilisateur annule, l'opération est stoppé
-		/*echo 'if(confirm("'.CONFIRMSAVE.'")){
-
+    if(isset($_GET['chim_nom_prenom']) && $_GET['chim_nom_prenom'] != ""){
+			$sql_no_select = "SELECT chi_id_chimiste, chi_id_responsable, chi_id_equipe FROM chimiste WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}')AND chi_nom || ' ' || chi_prenom = '".$_GET['chim_nom_prenom']."'";
+			$result_no_select = $dbh->query($sql_no_select);
+			$row_no=$result_no_select->fetch(PDO::FETCH_NUM);
+			$_GET['equipe'] = $row_no[2];
+			$_GET['responsable'] = $row_no[1];
+      $_GET['chimiste'] = $row_no[0];
 		}
-		else{
-			window.stop();
-			history.back();
-		}';*/
-		echo '</script>';
+
 		if(!isset($_GET['equipe']) || !isset($_GET['responsable'])){
 			$sql_no_select = "SELECT chi_id_equipe,	chi_id_responsable FROM chimiste WHERE chi_id_chimiste =".$_GET['chimiste'];
 			$result_no_select = $dbh->query($sql_no_select);
@@ -227,24 +262,35 @@ if (isset($_GET['produit'])){
 			$_GET['responsable'] = $row_no[1];
 		}
 
+    if (!isset($_GET['chimiste'])) {
+      $_GET['chimiste'] = $_GET['responsable'];
+    }
+
 		// [JM - 01/02/2019] effectue la modification dans la base de donnée
 		$update = "UPDATE produit SET pro_id_equipe = ".$_GET['equipe'].", pro_id_responsable = ".$_GET['responsable'].", pro_id_chimiste = ".$_GET['chimiste']." WHERE pro_numero = '".$_GET['produit']."'";
 		$update1=$dbh->exec($update);
 
 		if ($update1){
-			echo "
-			<script>
-				document.getElementById('lab_save').innerHTML = '".SAVEOK."';
-			</script>";
-
+      echo "<script>window.location.replace(\"attributionstructures.php?produit=".$_GET['produit']."&Rechercher=Rechercher&err=no\")</script>";
 		}
 		else{
-			echo "
-			<script>
-				document.getElementById('lab_save').innerHTML = '".SAVEECHEC."';
-			</script>";
+      echo "<script>window.location.replace(\"attributionstructures.php?produit=".$_GET['produit']."&Rechercher=Rechercher&err=yes\")</script>";
 		}
 	}
+
+  if (isset($_GET['err']) AND $_GET['err'] = "no"){
+    echo "
+    <script>
+      document.getElementById('lab_save').innerHTML = '".SAVEOK."';
+    </script>";
+
+  }
+  elseif (isset($_GET['err']) AND $_GET['err'] = "yes"){
+    echo "
+    <script>
+      document.getElementById('lab_save').innerHTML = '".SAVEECHEC."';
+    </script>";
+  }
 
 }
 else require 'deconnexion.php';
@@ -355,7 +401,9 @@ function autocomplete(inp, arr) {
 
 /*An array containing all the country names in the world:*/
 var id_produit = <?php echo $var_id_produit;?>;
+var chim = <?php echo $var_chim;?>;
 
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 autocomplete(document.getElementById("myInput"), id_produit);
+autocomplete(document.getElementById("myInput2"), chim);
 </script>
