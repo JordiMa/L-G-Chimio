@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -41,6 +41,7 @@ if(!isset($_POST['supinflog'])) $_POST['supinflog']="";
 if(!isset($_POST['logp'])) $_POST['logp']="";
 if(!isset($_POST['logpexact'])) $_POST['logpexact']="";
 if(!isset($_POST['numero'])) $_POST['numero']="";
+if(!isset($_POST['refcahier'])) $_POST['refcahier']="";
 
 print"\n<script language=\"JavaScript\">
 function GetSmiles(theForm){
@@ -87,6 +88,16 @@ $formulaire1->ajout_checkbox ("forbrutexact",EXACTE,$_POST['forbrutexact'],"",tr
 print"<br/><br/>";
 $formulaire1->ajout_text (31, $_POST['numero'], 30, "numero", NUMERO."<br/>","","");
 print"<a href=\"#\" onmouseover=\"ddrivetip('<p align=\'center\'>".AddSlashes(AIDENUM)."</p>')\" onmouseout=\"hideddrivetip()\"><img border=\"0\" src=\"images/aide.gif\" /></a>";
+
+print"<br/><br/><br/>";
+$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_ref_cahier_labo'";
+//les résultats sont retournées dans la variable $result4
+$result4=$dbh->query($sql);
+//Les résultats son mis sous forme de tableau
+$row4=$result4->fetch(PDO::FETCH_NUM);
+$formulaire1->ajout_text (intval($row4[0]/1.5), $_POST['refcahier'], $row4[0], "refcahier", REFCAH."<br/>","","");
+
+
 print"</td>\n</tr>\n<tr>\n<td colspan=\"2\" align=\"left\">\n";
 $tab=array(EXACTSTRUC,SOUSSTRUC,SIMILARITE);
 $formulaire1->ajout_radio ('recherche',$tab,EXACTSTRUC,TYPERECHERCHE,true,'');
