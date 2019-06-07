@@ -312,11 +312,13 @@ print "<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 		$formulaire4->affiche_formulaire();
 		$formulaire4->ajout_file (30, "filecoor",true,CHARGERCOO."<br/>","");
 		$formulaire4->ajout_cache ($_GET['idmodif'],"id");
+		if(!isset($_GET['massety']))
+			$_GET['massety']=0;
 		$formulaire4->ajout_cache ($_GET['massety'],"massety");
 		if (isset($massetran) and $massetran==1) $formulaire4->ajout_cache ($massetran,"massetran");
 		$formulaire4->ajout_button (SAUVEGARDE,"produnique","submit","");
 		print "<a href=\"#\" onmouseover=\"ddrivetip('<p>";
-		if ($_POST["massety"]==2) echo addSlashes(AIDECSV1);
+		if (isset($_POST["massety"]) AND $_POST["massety"]==2) echo addSlashes(AIDECSV1);
 		else echo addSlashes(AIDECSV);
 		print "</p>')\" onmouseout=\"hideddrivetip()\"><img border=\"0\" src=\"images/aide.gif\" /></a>";
 

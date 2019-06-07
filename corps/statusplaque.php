@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -41,7 +41,7 @@ $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
 
 	if(!isset($_POST["cible"])) $_POST["cible"]="";
-	
+
 	print"<table width=\"164\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 	  <tr>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"plaques.php\">".CREA."</a></td>
@@ -75,7 +75,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		print"</table><hr>";
 	}
 	print"<br/><h3>".TEST."</h3>";
-  
+
 	if (isset($_POST["mois"]) and isset($_POST["jour"]) and isset($_POST["annee"])) $date=$_POST["jour"]."-".$_POST["mois"]."-".$_POST["annee"];
 	else {
 		$date=date("d-m-Y");
@@ -125,7 +125,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$formulaire->fin();
 
 		if (!empty($_POST["cible"])) {
-			$sql="SELECT lab_id_cible,lab_concentration,lab_protocol,lab_laboratoire FROM labocible WHERE lab_id_labocible='".$_POST["cible"]."'";
+			$sql="SELECT lab_id_cible,lab_concentration,lab_protocol,lab_laboratoire FROM labocible WHERE lab_id_cible='".$_POST["cible"]."'";
+			echo $_POST["cible"];
 			$resultat3=$dbh->query($sql);
 			$formulaire1=new formulaire ("cible","statuspl.php","POST",true);
 			$formulaire1->affiche_formulaire();
@@ -159,7 +160,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			$row4=$result4->fetch(PDO::FETCH_NUM);
 			$formulaire2->ajout_text ($row4[0]+1,$_POST['nomcible'],$row4[0],"nomcible",NVCIBLE."<br/>","","");
 			print"<br/>";
-			$formulaire2->ajout_text (6,$_POST['conccible'],5,"conccible",CONCEN."<br/>",MOL,"");
+
+			echo "<label for='conccible'>".CONCEN."</label>";
+			print"<br/>";
+			echo "<input type=\"number\" name=\"conccible\" min=\"0\" step=\"any\"";
+			if (isset($_POST['conccible'])) echo "value='".$_POST['conccible']."'";
+			echo "> ".MOL;
+
 			print"<br/>";
 			$formulaire2->ajout_textarea ("protocible",52,$_POST['protocible'],12,true,PROTOCOL."<br/>");
 			print"<br/>";
@@ -179,17 +186,27 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		$formulaire2=new formulaire ("cible","statuspl.php","POST",true);
 		$formulaire2->affiche_formulaire();
 		//recherche des informations sur le champ cib_nom
-		$sql="SHOW COLUMNS FROM cible LIKE 'cib_nom'";
+		//$sql="SHOW COLUMNS FROM cible LIKE 'cib_nom'";
+		$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='cib_nom'";
 		//les résultats sont retournées dans la variable $result
 		$result4=$dbh->query($sql);
 		//Les résultats son mis sous forme de tableau
 		$row4=$result4->fetch(PDO::FETCH_NUM);
-		//traitement du resultat afin de retourner la taille maximale du champ
-		$traitement=new traitement_requete_sql($row4[1]);
-		$tab4=$traitement->imprime();
-		$formulaire2->ajout_text ($tab4+1,$_POST['nomcible'],$tab4,"nomcible",NVCIBLE."<br/>","","");
+
+		if (!isset($_POST['nomcible'])) $_POST['nomcible'] = "";
+		if (!isset($_POST['conccible'])) $_POST['conccible'] = "";
+		if (!isset($_POST['protocible'])) $_POST['protocible'] = "";
+		if (!isset($_POST['labocible'])) $_POST['labocible'] = "";
+
+		$formulaire2->ajout_text ($row4[0]+1,$_POST['nomcible'],$row4[0],"nomcible",NVCIBLE."<br/>","","");
 		print"<br/>";
-		$formulaire2->ajout_text (6,$_POST['conccible'],5,"conccible",CONCEN."<br/>","","");
+
+		echo "<label for='conccible'>".CONCEN."</label>";
+		print"<br/>";
+		echo "<input type=\"number\" name=\"conccible\" min=\"0\" step=\"any\"";
+		if (isset($_POST['conccible'])) echo "value='".$_POST['conccible']."'";
+		echo "> ".MOL;
+
 		print"<br/>";
 		$formulaire2->ajout_textarea ("protocible",52,$_POST['protocible'],12,true,PROTOCOL."<br/>");
 		print"<br/>";

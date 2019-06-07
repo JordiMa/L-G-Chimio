@@ -58,6 +58,7 @@ define ('ERROREVOCSV3','La référence : ');
 define ('ERROREVOCSV4',' avec une masse de : ');
 define ('ERROREVOCSV5',' mg n\'a pas été entrée dans la base de données car c\'est un doublon de structure des références : ');
 define ('ERROREVOCSV6',' mg n\'a pas été entrée dans la base de données car la référence n\'existe pas');
+define ('ERROREVOCSV7',' mg à déjà été envoyée');
 define ('DEFALK','Défalquer le stock avec la masse prélévée pour chaque molécule');
 define ('SDFRDF','Fichier de type SDF ou RDF :');
 define ('CORRECTIONSTRUCTURE', 'Correction des structures :');

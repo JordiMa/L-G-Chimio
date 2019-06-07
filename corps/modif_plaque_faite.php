@@ -419,7 +419,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		
 		$formulaire4->ajout_button (SAUVEGARDE,"produnique","submit","");
 		print "<a href=\"#\" onmouseover=\"ddrivetip('<p>";
-		if ($_POST["massety"]==2) echo addSlashes(AIDECSV1);
+		if (isset($_POST["massety"]) AND $_POST["massety"]==2) echo addSlashes(AIDECSV1);
 		else echo addSlashes(AIDECSV);
 		print "</p>')\" onmouseout=\"hideddrivetip()\"><img border=\"0\" src=\"images/aide.gif\" /></a>";
 
@@ -479,7 +479,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		
 		//print"</td>";
 	}
-    print"</table>\n< br/>";
+    print"</table><br/>";
 }
 else require 'deconnexion.php';
 unset($dbh);

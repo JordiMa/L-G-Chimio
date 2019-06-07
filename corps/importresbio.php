@@ -86,7 +86,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		print"<br/>";
 		$formulaire3->ajout_text (7,$_POST['uniprot'],6,"uniprot","<a href=\"http://www.uniprot.org/\" target=\"_blank\">".UNIPROT."</a><br/>","","");
 		print"<br/>";
-		$formulaire3->ajout_text (6,$_POST['conccible'],5,"conccible",CONCEN."<br/>",MOL,"");
+
+		echo "<label for='conccible'>".CONCEN."</label>";
+		print"<br/>";
+		echo "<input type=\"number\" name=\"conccible\" min=\"0\" step=\"any\"";
+		if (isset($_POST['conccible'])) echo "value='".$_POST['conccible']."'";
+		echo "> ".MOL;
+
 		print"<br/>";
 		$formulaire3->ajout_textarea ("protocible",52,$_POST['protocible'],12,true,PROTOCOL."<br/>");
 		print"<br/>";
@@ -120,7 +126,13 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		print"</td><td><strong>".NEWTEST."</strong>";
 		$formulaire3=new formulaire ("cible","importbio.php","POST",true);
 		$formulaire3->affiche_formulaire();
-		$formulaire3->ajout_text (6,$_POST['conccible'],5,"conccible",CONCEN."<br/>",MOL,"");
+
+		echo "<label for='conccible'>".CONCEN."</label>";
+		print"<br/>";
+		echo "<input type=\"number\" name=\"conccible\" min=\"0\" step=\"any\"";
+		if (isset($_POST['conccible'])) echo "value='".$_POST['conccible']."'";
+		echo "> ".MOL;
+
 		print"<br/>";
 		$formulaire3->ajout_textarea ("protocible",52,$_POST['protocible'],12,true,PROTOCOL."<br/>");
 		print"<br/>";

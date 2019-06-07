@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -56,20 +56,20 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			else $sql="INSERT INTO position (pos_id_plaque,pos_id_produit,pos_coordonnees) VALUES ('".$_POST["id"]."','".$_POST["numero"]."','".$positionl.$_POST["H"]."')";
 		}
 		$insert=$dbh->exec($sql);
-		
+
 		if (isset($_POST['massetran']) and $_POST['massetran']==1) {
 			//Modification de la masse dans la table produit et insertion dans l'historique
 			$sql="SELECT pro_masse,pro_suivi_modification,pro_id_equipe,pro_id_type,pro_numero FROM produit WHERE pro_id_produit='".$_POST["numero"]."'";
 			$resultat2=$dbh->query($sql);
 			$row2=$resultat2->fetch(PDO::FETCH_NUM);
-			
+
 			$suivi=$row2[1];
 			$masse=$row2[0]-$_POST['massplaque'];
 			if ($masse<0) $masse=0;
 			$suivi.=$_SESSION['nom']." ".$_POST['massplaque']."@".date("Y-m-d H:i:s")."@MASSE@".$row2[0]."\n";
 			$sql="UPDATE produit SET pro_masse='".$masse."', pro_suivi_modification='".$suivi."' WHERE pro_id_produit='".$_POST["numero"]."'";
 			$upd=$dbh->exec($sql);
-		
+
 			//si la masse tombe à 0mg alors le numéro du produit est changé pour le type sans masse
 			if ($row2[0]-$row3[0]<1) {
 				$sql="SELECT para_stock,para_numerotation  FROM parametres";
@@ -114,7 +114,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						}
 						else $numeroassemble=numero(2);
 					}
-				
+
 					$numerocomplet="";
 					$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='2' ORDER BY num_id_numero";
 					$resultat25=$dbh->query($sql);
@@ -175,7 +175,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					$tabligne=fgetcsv($ft,1024,";");
 					$num = count($tabligne);
 					$numid="";
-					$masspuit="";
+					$masspuit="0";
 					$coor="";
 					//reconnaissance du type d'information : numéro - position - masse
 					for ($c=0; $c<$num; $c++) {
@@ -194,7 +194,11 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						else $numid=$tabligne[$c];
 					}
 					if (!empty($numid) and !empty($coor)) {
-						$sql="SELECT pro_id_produit FROM produit WHERE pro_numero='$numid' or pro_num_constant='$numid'";
+						$sql="SELECT pro_id_produit FROM produit WHERE pro_numero='$numid' ";
+						if (is_numeric($numid)){
+							$sql .= "or pro_num_constant='$numid'";
+						}
+						$sql .= ";";
 						$resultat=$dbh->query($sql);
 						$nbresultat=$resultat->rowCount();
 						if ($nbresultat>0) {
@@ -211,14 +215,14 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 									$resultat3=$dbh->query($sql);
 									$row3=$resultat3->fetch(PDO::FETCH_NUM);
 									$masse=$row2[0]-$row3[0];
-								}	
+								}
 								$suivi=$row2[1];
-								
+
 								if ($masse<0) $masse=0;
 								$suivi.=$_SESSION['nom']." ".$row[3]."@".date("Y-m-d H:i:s")."@MASSE@".$row2[0]."\n";
 								$sql="UPDATE produit SET pro_masse='".$masse."', pro_suivi_modification='".$suivi."' WHERE pro_id_produit='".$numeroid[0]."'";
 								$upd=$dbh->exec($sql);
-					
+
 								//si la masse tombe à 0mg alors le numéro du produit est changé pour le type sans masse
 								if ($row2[0]-$row3[0]<1) {
 									$sql="SELECT para_stock,para_numerotation  FROM parametres";
@@ -263,7 +267,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 											}
 											else $numeroassemble=numero(2);
 										}
-							
+
 										$numerocomplet="";
 										$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='2' ORDER BY num_id_numero";
 										$resultat25=$dbh->query($sql);

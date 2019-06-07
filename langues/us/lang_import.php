@@ -58,6 +58,7 @@ define ('ERROREVOCSV3','The reference : ');
 define ('ERROREVOCSV4',' with a mass of : ');
 define ('ERROREVOCSV5',' mg has not been entered in the database because it is a duplicate structure of references:');
 define ('ERROREVOCSV6',' mg has not been entered in the database because the reference does not exist');
+define ('ERROREVOCSV7',' mg has already been sent');
 define ('DEFALK','Defal the stock with the mass for each molecule');
 define ('SDFRDF','File type SDF or RDF :');
 define ('CORRECTIONSTRUCTURE', 'Correction of structures :');

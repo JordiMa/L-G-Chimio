@@ -56,16 +56,23 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			$nbexiste=$existancenumero->rowCount();
 			if ($nbexiste>0) {
 
+				/*
 				$sql="SELECT str_inchi_md5 FROM produit,structure WHERE pro_num_constant=$numlocal and produit.pro_id_structure=structure.str_id_structure and str_inchi_md5 not in (SELECT str_inchi_md5 FROM produit,structure,evotec WHERE evotec.evo_numero_permanent=produit.pro_num_constant and produit.pro_id_structure=structure.str_id_structure);";
 				$rechercheinchikey=$dbh->query($sql);
 				$rowinchi=$rechercheinchikey->fetch(PDO::FETCH_NUM);
 				$numinchi=$rechercheinchikey->rowCount();
+				*/
+				$numinchi=1;
 
 				if ($numinchi>0) {
 					$masse=str_replace(",",".",$masse);
 					$sql="INSERT INTO evotec (evo_numero_permanent,evo_masse) VALUES ('$numlocal','$masse')";
 					$numaff=$dbh->exec($sql);
-					if($numaff<1) $erreur.=ERROREVOCSV.$numlocal.ERROREVOCSV1.$masse.ERROREVOCSV2."<br/>";
+					if($numaff<1)
+						if ($dbh->errorinfo()[0] == 23505)
+							$erreur.=ERROREVOCSV.$numlocal.ERROREVOCSV1.$masse.ERROREVOCSV7."<br/>";
+						else
+							$erreur.=ERROREVOCSV.$numlocal.ERROREVOCSV1.$masse.ERROREVOCSV2."<br/>";
 					//modification de la masse de produit et changement du numéro si besoin
 					elseif (isset($_POST['massetran']) and $_POST['massetran']==1) {
 						//Modification de la masse dans la table produit et insertion dans l'historique
