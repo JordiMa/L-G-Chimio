@@ -63,6 +63,9 @@ function verification($nom,$pass){
 	//appel le fichier de connexion à la base de données
 	require 'script/connectionb.php';
 
+	// déactivation automatique des chimiste > 1 an
+	$dbh->query("SELECT pro_chi_deactive();");
+	
 	$sql = "SELECT chi_id_chimiste, chi_password, chi_langue, chi_nom as nbres FROM chimiste WHERE chi_nom='$nom' and chi_passif='0'";
 
 	foreach  ($dbh->query($sql) as $row) {
