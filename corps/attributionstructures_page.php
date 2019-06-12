@@ -150,9 +150,12 @@ if (isset($_GET['produit'])){
 	$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste";
 	if (!empty($row1[3]))
 		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$row1[3]." AND chi_id_equipe =".$row1[2];
-	if (isset($_GET['responsable']) && !empty($_GET['responsable']))
+	if (isset($_GET['responsable']) && !empty($_GET['responsable'])){
 		// [JM - 01/02/2019] Si l'utilisateur selectionne un autre responsable, on recherche les chimistes correspondant
-		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$_GET['responsable']." AND chi_id_equipe =".$_GET['equipe'];
+		$sql_chimiste="SELECT chi_id_chimiste, chi_nom, chi_prenom FROM chimiste WHERE chi_id_responsable =".$_GET['responsable'];
+    if (isset($_GET['equipe']) && !empty($_GET['equipe']))
+      $sql_chimiste .= " AND chi_id_equipe =".$_GET['equipe'];
+  }
 	$result_chimiste = $dbh->query($sql_chimiste);
 }
 
