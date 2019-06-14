@@ -1,0 +1,41 @@
+====== Upgrade ======
+
+Cette partie est réservée aux **administrateurs**, elle permet de mettre à jour L-g chimio.
+
+**Avant toutes choses, faite une sauvegarde intégrale de l'application et de la base de données.**
+
+----
+
+===== Version 1.4 vers 1.5 =====
+
+Des modifications importantes ont été apportées à cette version, il est donc nécessaire de suivre toute les étapes.
+
+==== Application WEB ====
+{{ ::upgr0.png?direct&200|}}
+
+Télécharger au préalable la nouvelle version de L-g Chimio.\\
+L’intégralité des fichiers de l'application doive être remplacée.
+
+Dans un premier temps, vous devez supprimer tous les fichiers présents dans le répertoire de l'application, __**SAUF les dossier SCRIPT et TEMP !**__
+
+Puis placer tout les nouveau fichier dans ce dossier.
+
+vous devez maintenant vous rendre depuis votre navigateur internet dans le dossier /upgrade de l'application, et de suivre les étapes ci-dessous.
+\\
+\\
+\\
+\\
+\\
+\\
+
+==== Base de données ====
+
+Vous devez être a présent sur la page ci-dessous. Renseigner votre nom d'utilisateur et votre mots de passe, puis cliquer sur ''connexion''.
+
+{{ :upgr1.png?direct&600 |}}
+
+Suivez les étapes, si tout son passe bien, un message de confirmation apparaîtra. Dans le cas contraire les erreurs rencontrées seront affichées.
+
+Pour pouvoir utiliser de nouveau L-g Chimio, vous devrez réinitialiser le mot de passe via le bouton ''Perdu le mot de passe ?'' présent lors de la connexion. (voir [[manuel_utilisation#mot_de_passe_perdu|Manuel d'utilisation : Mot de passe perdu]]).
+
+__**Tous les utilisateurs existants devront demander un nouveau mot de passe !**__

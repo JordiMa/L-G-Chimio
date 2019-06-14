@@ -38,7 +38,7 @@ $menu=10;
 include_once 'presentation/gauche.php';
 if (isset($_GET["idutil"]) and !empty($_GET["idutil"])) {
 	require 'script/connectionb.php';
-	$sql="UPDATE chimiste SET chi_passif='FALSE', chi_date_activation = now() WHERE chi_id_chimiste='".$_GET['idutil']."'";
+	$sql="UPDATE chimiste SET chi_passif='FALSE', chi_date_expiration = now() WHERE chi_id_chimiste='".$_GET['idutil']."'";
 	$update=$dbh->exec($sql);
 	if ($update==false) {
 			print"<li class=\"rouge\">".ERREUR_MODIF.MESSAGEERREUR;

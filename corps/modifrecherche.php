@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -58,7 +58,7 @@ print"\n<script language=\"JavaScript\">
 
 print"<div id=\"dhtmltooltip\"></div>
     <script language=\"javascript\" src=\"ttip.js\"></script>";
-	
+
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
 //initialisation du formulaire
@@ -112,7 +112,7 @@ if ($rop[0]=="{CHEF}") {
 }
 
 if($rop[0]=="{RESPONSABLE}") {
-  
+
 	$sql="(SELECT pro_id_chimiste, chi_nom, chi_prenom FROM chimiste, produit WHERE produit.pro_id_chimiste = chimiste.chi_id_chimiste AND pro_id_chimiste IN ( SELECT DISTINCT (pro_id_chimiste) FROM produit WHERE pro_id_equipe='".$rop[2]."' and pro_id_responsable='".$rop[1]."') GROUP BY pro_id_chimiste,chi_nom,chi_prenom) UNION (SELECT pro_id_chimiste, chi_nom, chi_prenom FROM chimiste, produit WHERE produit.pro_id_chimiste = chimiste.chi_id_chimiste AND chi_nom='".$_SESSION['nom']."') ORDER BY chi_nom, chi_prenom";
 	//les résultats sont retournées dans la variable $result2
 	$result2 =$dbh->query($sql);
@@ -196,9 +196,6 @@ $sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLU
 $result4=$dbh->query($sql);
 //Les résultats son mis sous forme de tableau
 $row4=$result4->fetch(PDO::FETCH_NUM);
-//$traitement=new traitement_requete_sql($row4[1]);
-//$tab4=$traitement->imprime();
-//$formulaire1->ajout_text (intval($tab4/1.5), $_POST['refcahier'], $tab4, "refcahier", REFCAH."<br/>","","");
 $formulaire1->ajout_text (intval($row4[0]/1.5), $_POST['refcahier'], $row4[0], "refcahier", REFCAH."<br/>","","");
 print"</td>\n</tr>\n<tr>\n<td colspan=\"2\" align=\"left\">\n";
 $tab=array(EXACTSTRUC,SOUSSTRUC,SIMILARITE);

@@ -214,19 +214,19 @@ class affiche_recherche {
 
       $listeKey="";
       $listeID="";
-      foreach($this->resultatsql as $key=>$element) {
-        $listeKey .= "'" . $key . "',";
+      if (!empty ($this->resultatsql)){
+        foreach($this->resultatsql as $key=>$element) {
+          $listeKey .= "'" . $key . "',";
+        }
+        $listeKey = substr($listeKey,0,-1);
+
+        $sql= "SELECT pro_numero FROM produit WHERE pro_id_produit in ($listeKey)";
+        $result1 = $dbh->query($sql);
+        foreach ($result1 as $key => $value) {
+          $listeID .= $value[0] . ";";
+        }
+        $listeID = substr($listeID,0,-1);
       }
-      $listeKey = substr($listeKey,0,-1);
-
-      $sql= "SELECT pro_numero FROM produit WHERE pro_id_produit in ($listeKey)";
-      $result1 = $dbh->query($sql);
-
-      foreach ($result1 as $key => $value) {
-        $listeID .= $value[0] . ";";
-      }
-      $listeID = substr($listeID,0,-1);
-
       return $listeID;
     }
 }

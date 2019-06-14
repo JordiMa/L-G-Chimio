@@ -1,4 +1,4 @@
-====== Qu'est-ce que L-G-Chimio ? ======
+====== Qu'est-ce que L-g Chimio ? ======
 
 C'est est un outil de gestion de chimiothèque, incluant de multiples fonctionnalités tel que :
   * Gestion de structure
@@ -9,4 +9,37 @@ C'est est un outil de gestion de chimiothèque, incluant de multiples fonctionna
   * Gestion d’équipe hiérarchisée (Chef/Responsable/Chimiste)
 
 Cette application a été réalisée par **''Laurent ROBIN''** dans le cadre d'un projet issu du ''GIS Chimiothèque Nationale'', il a pour but de mettre à disposition des laboratoires membres un logiciel permettant la gestion complète d'une chimiothèque d'un laboratoire. Ce projet a été réalisé en collaboration avec l'atelier ''Chimiothèque Départementale''.
-  
+
+----
+
+===== Les changement de la version 1.5 : =====
+cette version a réalisé par **''[[https://jordimarzo.fr|Jordi Marzo]]''** et **''Laurent ROBIN''**
+
+==== Ajouts : ====
+  * Alerte doublon
+  * Wiki accessible depuis L-g Chimio
+  * Exportation multicritères (CSV/SDF)
+    * Choix du format du fichier
+    * Choix des filtres de sélection
+    * Choix des champs à exporter
+  * Possibilité d'attribution des molécules par les administrateurs
+  * Module d'importation (SDF/RDF)
+  * Exportation via le module de recherche
+  * Date d'envoi chez Evotec
+  * Tag Evotec insoluble
+  * Contrôle de la structure
+  * Contrôle de la pureté
+  * Désactivation automatique des comptes chimiste (1 an après l'activation)
+  * Choix des champs obligatoires
+
+==== Modifications : ====
+  * Renforcement de la sécurité
+  * Modification de l'interface utilisateur
+  * Modification de la structure de la base de données
+  * Augmentation de la taille limite pour les envois de fichiers et de logo
+  * Correction de bug d'affichage de Mol v3000
+  * Correction de bug lors de d'insertion des numéro CN
+  * Correction de bug lors de d'insertion de fichier CSV dans les résultat bio
+  * Correction de bug lors de la modification du mot de passe par un chimiste
+  * Correction de bug lors de l'insertion de CSV pour les tags Evotec
+  * Amélioration de la partie téléchargement fichier pour les résultats d'analyses (Spectrométrie, RMN)

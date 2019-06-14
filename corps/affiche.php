@@ -1,3 +1,4 @@
+<script src="js/jquery.min.js"></script>
 <?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
@@ -388,7 +389,7 @@ if (!empty($id_sql)) {
 			print"<td><strong>".SOLVANT."</strong>&nbsp;".$solvant."</td>
 				  </tr>
 				  <tr><td><strong>".DOI."</strong>&nbsp;";
-			if (!empty($row2[18])) print"<a href=\"http://dx.doi.org/".$row2[18]."\" target=\"_blank\">".$row2[18]."</a>";
+			if (!empty($row2[18])) print"<a href=\"https://doi.org/".$row2[18]."\" target=\"_blank\">".$row2[18]."</a>";
 			print"</td><td><strong>".CAS."</strong>&nbsp;".$row2[19]."</td><td><strong>".HAL."</strong>&nbsp;";
 			if (!empty($row2[20])) print"<a href=\"http://hal.archives-ouvertes.fr/".$row2[20]."/fr/\" target=\"_blank\">".$row2[20]."</a>";
 
@@ -398,66 +399,42 @@ if (!empty($id_sql)) {
 				<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
 				<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div><div id=\"fb-rendered-form\"><form action=\"#\"></form></div>";
 
-				$sql_para="SELECT pro_champsAnnexe FROM produit WHERE pro_id_produit='".$id_sql."'";
-				$result_para = $dbh->query($sql_para);
-				$rowPara=$result_para->fetch(PDO::FETCH_NUM);
+				$sql_annexe="SELECT * FROM \"champsAnnexe\"";
+				//les résultats sont retournées dans la variable $result
+				$result_annexe = $dbh->query($sql_annexe);
+				if ($result_annexe){
+					foreach ($result_annexe as $key => $value) {
+						echo $value[1];
+						//echo substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'));
+						//echo "<script>document.getElementsByName('".substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'))."')[0].value = '$value[0]' </script>";
+						if (!strpos($value[1], 'checkbox'))
+							echo "<script>document.getElementsByName('".substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'))."')[0].disabled = true;</script>";
+						else
+							echo "<script>document.getElementsByName('".substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'))."')[1].disabled = true;</script>";
+					}
+				}
 
-				?>
-				<script src="js/jquery.min.js"></script>
-				<script src="js/jquery-ui.min.js"></script>
-				<script src="js/form-builder.min.js"></script>
-				<script src="js/form-render.min.js"></script>
+				$sql_data_annexe = 'Select "pro_id_produit", "cha_ID", "data", "HTML" FROM "champsProduit"
+														Inner join "champsAnnexe" on "champsProduit"."cha_ID"="champsAnnexe"."ID"
+														WHERE "pro_id_produit" = '. $id_sql;
 
-				<script>
-					jQuery(function($) {
-						var options = {
-								i18n: {
-									locale: 'fr-FR'
-								},
-								disableFields: [
-									'file',
-									'hidden',
-									'button'
-								],
-								disabledAttrs: [
-									'className',
-									'access',
-									'name'
-								],
-								disabledActionButtons: [
-									'data',
-									'save',
-									'clear'
-							]
-							},
-							$fbTemplate = $(document.getElementById('fb-editor'));
-							$formContainer = $(document.getElementById('fb-rendered-form')),
-							formBuilder = $fbTemplate.formBuilder(options);
+				$result_data_annexe = $dbh->query($sql_data_annexe);
+				if ($result_annexe){
+					foreach ($result_data_annexe as $key => $value) {
+						//echo substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'));
+						if (!strpos($value[3], 'checkbox'))
+							echo "<script>document.getElementsByName('".substr($value[3], intval(strpos($value[3], 'champsAnnexe_')),intval(strpos($value[3], '">')) - strpos($value[3], 'champsAnnexe_'))."')[0].value = '".str_replace("\r\n", "\\n", addslashes($value[2]))."' ;</script>";
+						else
+							if ($value[2] == 'true')
+								echo "<script>document.getElementsByName('".substr($value[3], intval(strpos($value[3], 'champsAnnexe_')),intval(strpos($value[3], '">')) - strpos($value[3], 'champsAnnexe_'))."')[1].checked = '".str_replace("\r\n", "\\n", addslashes($value[2]))."' ;</script>";
+					}
+				}
 
-							var formData = <?php echo $rowPara[0];?>;
-
-							setTimeout(function(){ formBuilder.actions.setData(formData); }, 1000);
-							setTimeout(function(){ $fbTemplate.toggle(); }, 1010);
-							setTimeout(function(){
-			        $('form', $formContainer).formRender({
-			          formData: formBuilder.formData
-			        }); }, 1020);
-
-					});
-				</script>
-
-				<?php
 				print"
 				</tr></table></table>";
 
 				echo "
 				<script>
-				setTimeout(function(){
-					var all = document.getElementsByClassName(\"form-control\");
-
-					for (var i=0, max=all.length; i < max; i++) {
-					     document.getElementsByClassName(\"form-control\")[i].disabled = true;
-					}; }, 1100);
 
 					$('.hr_analyses').slideToggle(0);
 					$('.hr_bibliographie').slideToggle(0);

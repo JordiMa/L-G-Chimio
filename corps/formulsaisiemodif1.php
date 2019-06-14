@@ -146,7 +146,7 @@ if (!empty($_POST['id'])) {
 														}
 													}
 											}
-											document.getElementById('champsAnnexe').value = window.JSON.stringify(formBuilder.actions.getData('json', true));
+
 											if(verifRequired){
 												theForm.submit();
 											}
@@ -258,149 +258,298 @@ if (!empty($_POST['id'])) {
 			if ($rowselect[33]>0) $typenumero1=2;
 			else  $typenumero1=1;
 
+			$var_option_numerotation = 0;// TODO:
 
 			if ($row21[1]=="AUTO") {
+				if ($var_option_numerotation){
+					if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
 
-				if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
-
-					//recherche des parametres du numero definient par l'administrateur
-					$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
-					$resultat24=$dbh->query($sql);
-					while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
-						$tab24[]=$row24[0];
-					}
-
-					if (in_array("{BOITE}",$tab24) and in_array("{COORDONEE}",$tab24)) {
-						//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-						$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
-						$result23=$dbh->query($sql);
-						$o=0;
-						while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-							if ($row23[0]<10) $row23[0]="0".$row23[0];
-							$tab23[$o]=$row23[0]."@".$row23[1];
-							$o++;
+						//recherche des parametres du numero definient par l'administrateur
+						$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
+						$resultat24=$dbh->query($sql);
+						while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
+							$tab24[]=$row24[0];
 						}
-						$numoboite="";
-						$numoposition="";
-					}
-					elseif (in_array("{BOITE}",$tab24) and in_array("{NUMERIC}",$tab24)) {
-						//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-						$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
-						$result23=$dbh->query($sql);
-						$o=0;
-						while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-							$tab23[$o]=$row23[0]."-".$row23[1];
-							$o++;
-						}
-						$numoboite="";
-						$numoincremental="";
-					}
-				elseif (in_array("{NUMERIC}",$tab24)) {
-						if ($typenumero==1) {
+
+						if (in_array("{BOITE}",$tab24) and in_array("{COORDONEE}",$tab24)) {
 							//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-							$sql="SELECT pro_num_incremental FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
+							$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
 							$result23=$dbh->query($sql);
 							$o=0;
 							while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-								$tab23[$o]=$row23[0];
+								if ($row23[0]<10) $row23[0]="0".$row23[0];
+								$tab23[$o]=$row23[0]."@".$row23[1];
 								$o++;
 							}
-							$numoincremental="";
+							$numoboite="";
+							$numoposition="";
 						}
-						elseif ($typenumero==2) {
+						elseif (in_array("{BOITE}",$tab24) and in_array("{NUMERIC}",$tab24)) {
 							//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-							$sql="SELECT pro_num_sansmasse FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental,pro_num_sansmasse";
+							$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
 							$result23=$dbh->query($sql);
 							$o=0;
 							while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-								$tab23[$o]=$row23[0];
+								$tab23[$o]=$row23[0]."-".$row23[1];
 								$o++;
 							}
+							$numoboite="";
 							$numoincremental="";
 						}
-					}
-					if(!isset($tab23)) $tab23[]="";
-					$nbtab23=count($tab23);
-					$o=0;
-					$numeroassemble=numero($typenumero);
+						elseif (in_array("{NUMERIC}",$tab24)) {
+							if ($typenumero==1) {
+								//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+								$sql="SELECT pro_num_incremental FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
+								$result23=$dbh->query($sql);
+								$o=0;
+								while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+									$tab23[$o]=$row23[0];
+									$o++;
+								}
+								$numoincremental="";
+							}
+							elseif ($typenumero==2) {
+								//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+								$sql="SELECT pro_num_sansmasse FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental,pro_num_sansmasse";
+								$result23=$dbh->query($sql);
+								$o=0;
+								while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+									$tab23[$o]=$row23[0];
+									$o++;
+								}
+								$numoincremental="";
+							}
+						}
+						if(!isset($tab23)) $tab23[]="";
+						$nbtab23=count($tab23);
+						$o=0;
+						$numeroassemble=numero($typenumero);
 
-					//vidange de la table temporaire
-					$sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
-					$deletenum=$dbh->exec($sql);
+						//vidange de la table temporaire
+						$sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
+						$deletenum=$dbh->exec($sql);
 
-					//insertion du numéro dans la table temporaire
-					while ($o<1) {
-						if ($nbtab23==0) {
-							$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','".$rowselect[31]."','".date("Y-m-d")."')";
-							$insertnum=$dbh->exec($sql);
-							if (!empty($insertnum))  $o=1;
+						//insertion du numéro dans la table temporaire
+						while ($o<1) {
+							if ($nbtab23==0) {
+								$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','".$rowselect[31]."','".date("Y-m-d")."')";
+								$insertnum=$dbh->exec($sql);
+								if (!empty($insertnum))  $o=1;
+								else $numeroassemble=numero($typenumero);
+							}
+							elseif (!in_array($numeroassemble,$tab23)) {
+								$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','".$rowselect[31]."','".date("Y-m-d")."')";
+								$insertnum=$dbh->exec($sql);
+								if (!empty($insertnum))  $o=1;
+								else $numeroassemble=numero($typenumero);
+							}
 							else $numeroassemble=numero($typenumero);
 						}
-						elseif (!in_array($numeroassemble,$tab23)) {
-							$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','".$rowselect[31]."','".date("Y-m-d")."')";
-							$insertnum=$dbh->exec($sql);
-							if (!empty($insertnum))  $o=1;
+						//définition du numéro réservé
+						$numerocomplet="";
+						$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
+						$resultat25=$dbh->query($sql);
+
+						while ($row25=$resultat25->fetch(PDO::FETCH_NUM)) {
+							if ($row25[0]=="{FIXE}") $numerocomplet.=$row25[1];
+							elseif ($row25[0]=="{EQUIPE}") {
+								$sql="SELECT equi_initiale_numero FROM equipe WHERE equi_id_equipe='".$rowselect[31]."'";
+								$result26=$dbh->query($sql);
+								$row26=$result26->fetch(PDO::FETCH_NUM);
+								$numerocomplet.=$row26[0];
+							}
+							elseif ($row25[0]=="{TYPE}") {
+								$sql="SELECT * FROM type";
+								$resultat27=$dbh->query($sql);
+								while($row27=$resultat27->fetch(PDO::FETCH_NUM)) {
+									$tab27[$row27[0]]=$row27[2];
+								}
+								switch ($_POST['type']) {
+									case 1 : $numerocomplet.=$tab27[1];
+									break;
+									case 2 : $numerocomplet.=$tab27[2];
+									break;
+									case 3 : $numerocomplet.=$tab27[3];
+									break;
+								}
+							}
+							elseif ($row25[0]=="{BOITE}") {
+								$tab28=explode("@",$numeroassemble);
+								list($boite,$numpostemp)=$tab28;
+								$numerocomplet.=$boite;
+								$formulaire->ajout_cache ($boite,"boite");
+							}
+							elseif ($row25[0]=="{COORDONEE}") {
+								$tab29=explode("@",$numeroassemble);
+								list($boitetemp,$coordon)=$tab29;
+								$numerocomplet.=$coordon;
+								$formulaire->ajout_cache ($coordon,"coordonnee");
+							}
+							elseif ($row25[0]=="{NUMERIC}") {
+								if (preg_match("/@/",$numeroassemble)){
+									$tab30=explode("@",$numeroassemble);
+									list($boitetemp,$numeric)=$tab30;
+									$numerocomplet.=$numeric;
+									$formulaire->ajout_cache ($numeric,"numerique");
+								}
+								else  {
+									$formulaire->ajout_cache ($numeroassemble,"sansmasse");
+									$numerocomplet.=$numeroassemble;
+								}
+							}
+						}
+						print "<strong>".NBPILLULIER."<font color=\"red\"> ".$numerocomplet."</font></strong><br/><br/>";
+						$formulaire->ajout_cache ($numerocomplet,"numerocomplet");
+					}
+					else print "<strong>".NBPILLULIER."<font color=\"red\"> ".$rowselect[28]."</font></strong><br/><br/>";
+				}// TODO:
+				else {
+					// TODO:
+					if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
+
+						//recherche des parametres du numero definient par l'administrateur
+						$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
+						$resultat24=$dbh->query($sql);
+						while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
+							$tab24[]=$row24[0];
+						}
+
+						if (in_array("{BOITE}",$tab24) and in_array("{COORDONEE}",$tab24)) {
+							//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+							$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
+							$result23=$dbh->query($sql);
+							$o=0;
+							while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+								if ($row23[0]<10) $row23[0]="0".$row23[0];
+								$numoboite=$row23[0];
+								$numoposition=$row23[1];
+							}
+							if (empty($numoboite))
+							$numoboite="";
+							if (empty($numoposition))
+							$numoposition="";
+						}
+						elseif (in_array("{BOITE}",$tab24) and in_array("{NUMERIC}",$tab24)) {
+							//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+							$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
+							$result23=$dbh->query($sql);
+							$o=0;
+							while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+								$numoboite=$row23[0];
+								$numoposition=$row23[1];
+							}
+							if (empty($numoboite))
+							$numoboite="";
+							if (empty($numoposition))
+							$numoposition="";
+						}
+						elseif (in_array("{NUMERIC}",$tab24)) {
+							if ($typenumero==1) {
+								//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+								$sql="SELECT pro_num_incremental FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_incremental <> 0 ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
+								$result23=$dbh->query($sql);
+								$o=0;
+								while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+									$numoincremental=$row23[0];
+								}
+								if (empty($numoincremental))
+								$numoincremental="";
+							}
+							elseif ($typenumero==2) {
+								//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+								$sql="SELECT pro_num_sansmasse FROM produit WHERE pro_id_equipe='".$rowselect[31]."' and pro_id_type='".$_POST['type']."' and pro_num_sansmasse <> 0 ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC, pro_num_sansmasse DESC LIMIT 1;";
+								$result23=$dbh->query($sql);
+								$o=0;
+								while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+									$numoincremental=$row23[0];
+								}
+								if (empty($numoincremental))
+								$numoincremental="";
+							}
+						}
+						if(!isset($tab23)) $tab23[]="";
+						$nbtab23=count($tab23);
+						$o=0;
+						$numeroassemble=numero($typenumero);
+
+						//vidange de la table temporaire
+						$sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
+						$deletenum=$dbh->exec($sql);
+
+						//insertion du numéro dans la table temporaire
+						while ($o<1) {
+							if ($nbtab23==0) {
+								$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','".$rowselect[31]."','".date("Y-m-d")."')";
+								$insertnum=$dbh->exec($sql);
+								if (!empty($insertnum))  $o=1;
+								else $numeroassemble=numero($typenumero);
+							}
+							elseif (!in_array($numeroassemble,$tab23)) {
+								$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','".$rowselect[31]."','".date("Y-m-d")."')";
+								$insertnum=$dbh->exec($sql);
+								if (!empty($insertnum))  $o=1;
+								else $numeroassemble=numero($typenumero);
+							}
 							else $numeroassemble=numero($typenumero);
 						}
-						else $numeroassemble=numero($typenumero);
-					}
-					//définition du numéro réservé
-					$numerocomplet="";
-					$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
-					$resultat25=$dbh->query($sql);
+						//définition du numéro réservé
+						$numerocomplet="";
+						$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
+						$resultat25=$dbh->query($sql);
 
-					while ($row25=$resultat25->fetch(PDO::FETCH_NUM)) {
-						if ($row25[0]=="{FIXE}") $numerocomplet.=$row25[1];
-						elseif ($row25[0]=="{EQUIPE}") {
-							$sql="SELECT equi_initiale_numero FROM equipe WHERE equi_id_equipe='".$rowselect[31]."'";
-							$result26=$dbh->query($sql);
-							$row26=$result26->fetch(PDO::FETCH_NUM);
-							$numerocomplet.=$row26[0];
-						}
-						elseif ($row25[0]=="{TYPE}") {
-							$sql="SELECT * FROM type";
-							$resultat27=$dbh->query($sql);
-							while($row27=$resultat27->fetch(PDO::FETCH_NUM)) {
-								$tab27[$row27[0]]=$row27[2];
+						while ($row25=$resultat25->fetch(PDO::FETCH_NUM)) {
+							if ($row25[0]=="{FIXE}") $numerocomplet.=$row25[1];
+							elseif ($row25[0]=="{EQUIPE}") {
+								$sql="SELECT equi_initiale_numero FROM equipe WHERE equi_id_equipe='".$rowselect[31]."'";
+								$result26=$dbh->query($sql);
+								$row26=$result26->fetch(PDO::FETCH_NUM);
+								$numerocomplet.=$row26[0];
 							}
-							switch ($_POST['type']) {
-								case 1 : $numerocomplet.=$tab27[1];
-								break;
-								case 2 : $numerocomplet.=$tab27[2];
-								break;
-								case 3 : $numerocomplet.=$tab27[3];
-								break;
+							elseif ($row25[0]=="{TYPE}") {
+								$sql="SELECT * FROM type";
+								$resultat27=$dbh->query($sql);
+								while($row27=$resultat27->fetch(PDO::FETCH_NUM)) {
+									$tab27[$row27[0]]=$row27[2];
+								}
+								switch ($_POST['type']) {
+									case 1 : $numerocomplet.=$tab27[1];
+									break;
+									case 2 : $numerocomplet.=$tab27[2];
+									break;
+									case 3 : $numerocomplet.=$tab27[3];
+									break;
+								}
+							}
+							elseif ($row25[0]=="{BOITE}") {
+								$tab28=explode("@",$numeroassemble);
+								list($boite,$numpostemp)=$tab28;
+								$numerocomplet.=$boite;
+								$formulaire->ajout_cache ($boite,"boite");
+							}
+							elseif ($row25[0]=="{COORDONEE}") {
+								$tab29=explode("@",$numeroassemble);
+								list($boitetemp,$coordon)=$tab29;
+								$numerocomplet.=$coordon;
+								$formulaire->ajout_cache ($coordon,"coordonnee");
+							}
+							elseif ($row25[0]=="{NUMERIC}") {
+								if (preg_match("/@/",$numeroassemble)){
+									$tab30=explode("@",$numeroassemble);
+									list($boitetemp,$numeric)=$tab30;
+									$numerocomplet.=$numeric;
+									$formulaire->ajout_cache ($numeric,"numerique");
+								}
+								else  {
+									$formulaire->ajout_cache ($numeroassemble,"sansmasse");
+									$numerocomplet.=$numeroassemble;
+								}
 							}
 						}
-						elseif ($row25[0]=="{BOITE}") {
-							$tab28=explode("@",$numeroassemble);
-							list($boite,$numpostemp)=$tab28;
-							$numerocomplet.=$boite;
-							$formulaire->ajout_cache ($boite,"boite");
-						}
-						elseif ($row25[0]=="{COORDONEE}") {
-							$tab29=explode("@",$numeroassemble);
-							list($boitetemp,$coordon)=$tab29;
-							$numerocomplet.=$coordon;
-							$formulaire->ajout_cache ($coordon,"coordonnee");
-						}
-						elseif ($row25[0]=="{NUMERIC}") {
-							if (preg_match("/@/",$numeroassemble)){
-								$tab30=explode("@",$numeroassemble);
-								list($boitetemp,$numeric)=$tab30;
-								$numerocomplet.=$numeric;
-								$formulaire->ajout_cache ($numeric,"numerique");
-							}
-							else  {
-								$formulaire->ajout_cache ($numeroassemble,"sansmasse");
-								$numerocomplet.=$numeroassemble;
-							}
-						}
+						print "<strong>".NBPILLULIER."<font color=\"red\"> ".$numerocomplet."</font></strong><br/><br/>";
+						$formulaire->ajout_cache ($numerocomplet,"numerocomplet");
 					}
-					print "<strong>".NBPILLULIER."<font color=\"red\"> ".$numerocomplet."</font></strong><br/><br/>";
-					$formulaire->ajout_cache ($numerocomplet,"numerocomplet");
+					else print "<strong>".NBPILLULIER."<font color=\"red\"> ".$rowselect[28]."</font></strong><br/><br/>";
 				}
-				else print "<strong>".NBPILLULIER."<font color=\"red\"> ".$rowselect[28]."</font></strong><br/><br/>";
 			}
 			elseif ($row21[1]=="{MANU}") {
 				//recherche des informations sur le champ pro_numero
@@ -624,7 +773,7 @@ if (!empty($_POST['id'])) {
 			  <tr>
 				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
 			if($rowselect[34]==0) $rowselect[34]="";
-			$formulaire->ajout_text (3, $rowselect[34], 2, "purete", PURETE,"","");
+			$formulaire->ajout_text (4, $rowselect[34], 15, "purete", PURETE,"","");
 			echo POURCENT;
 			print"<br/>\n<br/>\n";
 			$formulaire->ajout_text (21, $rowselect[35], 20, "methopurete", METHOPURETE,"","");
@@ -903,63 +1052,87 @@ if (!empty($_POST['id'])) {
 			<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
 			<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div>";
 
-			$sql_para1="SELECT pro_champsAnnexe FROM produit WHERE pro_id_produit='".$_POST['id']."'";
-			$result_para1 = $dbh->query($sql_para1);
-			$rowPara1=$result_para1->fetch(PDO::FETCH_NUM);
+			$sql_annexe="SELECT * FROM \"champsAnnexe\"";
+			//les résultats sont retournées dans la variable $result
+			$result_annexe = $dbh->query($sql_annexe);
+			if ($result_annexe){
+				foreach ($result_annexe as $key => $value) {
+					echo $value[1];
+					//echo substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'));
+					//echo "<script>document.getElementsByName('".substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'))."')[0].value = '$value[0]' </script>";
+				}
+			}
 
-			$sql_para2="SELECT para_champs FROM parametres WHERE para_id_parametre = 1";
-		  $result_para2 = $dbh->query($sql_para2);
-		  $rowPara2=$result_para2->fetch(PDO::FETCH_NUM);
+			$sql_data_annexe = 'Select "pro_id_produit", "cha_ID", "data", "HTML" FROM "champsProduit"
+													Inner join "champsAnnexe" on "champsProduit"."cha_ID"="champsAnnexe"."ID"
+													WHERE "pro_id_produit" = '. $_POST['id'];
+
+			$result_data_annexe = $dbh->query($sql_data_annexe);
+			if ($result_annexe){
+				foreach ($result_data_annexe as $key => $value) {
+					//echo substr($value[1], intval(strpos($value[1], 'champsAnnexe_')),intval(strpos($value[1], '">')) - strpos($value[1], 'champsAnnexe_'));
+					if (!strpos($value[3], 'checkbox'))
+						echo "<script>document.getElementsByName('".substr($value[3], intval(strpos($value[3], 'champsAnnexe_')),intval(strpos($value[3], '">')) - strpos($value[3], 'champsAnnexe_'))."')[0].value = '".str_replace("\r\n", "\\n", addslashes($value[2]))."' ;</script>";
+					else
+						if ($value[2] == 'true')
+							echo "<script>document.getElementsByName('".substr($value[3], intval(strpos($value[3], 'champsAnnexe_')),intval(strpos($value[3], '">')) - strpos($value[3], 'champsAnnexe_'))."')[1].checked = '".str_replace("\r\n", "\\n", addslashes($value[2]))."' ;</script>";
+				}
+			}
+
 			?>
+			<script>
+				var filehrms = document.getElementById('filehrms');
+				var filesm = document.getElementById('filesm');
+				var fileir = document.getElementById('fileir');
+				var fileuv = document.getElementById('fileuv');
+				var filermnh = document.getElementById('filermnh');
+				var filermnc = document.getElementById('filermnc');
 
-		  <script src="js/jquery.min.js"></script>
-		  <script src="js/jquery-ui.min.js"></script>
-		  <script src="js/form-builder.min.js"></script>
+				filehrms.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier HRMS est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
 
-		  <script>
-		    jQuery(function($) {
-		      var options = {
-		          i18n: {
-		            locale: 'fr-FR'
-		          },
-		          disableFields: [
-		            'file',
-		            'hidden',
-		            'button'
-		          ],
-		          disabledAttrs: [
-		            'className',
-		            'access',
-		            'name'
-		          ],
-							disabledActionButtons: [
-								'data',
-								'save',
-								'clear'
-						]
-		        },
-		        $fbTemplate = $(document.getElementById('fb-editor'));
-		        formBuilder = $fbTemplate.formBuilder(options);
+				filesm.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier SM est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
 
-		        var formData =
-						<?php
-							if(isset($_POST["champsAnnexe"]))
-								echo $_POST["champsAnnexe"];
-							else
-								if ($rowPara1[0] != '[]') {
-									echo $rowPara1[0];
-								}
-								else {
-									echo $rowPara2[0];
-								}
+				fileir.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier IR est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
 
-						?>;
-		        setTimeout(function(){ formBuilder.actions.setData(formData); }, 1000);
-		    });
-		  </script>
+				fileuv.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier UV est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+
+				filermnh.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier RMNH est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+
+				filermnc.onchange = function() {
+					if(this.files[0].size > 1048576){
+						 alert("le fichier RMNC est trop grand (max 1Mo) !");
+						 this.value = "";
+					};
+				};
+			</script>
+
 
 			<?php
-
 			print"
 			</tr></table></table>\n<p align=\"right\">";
 			unset($dbh);

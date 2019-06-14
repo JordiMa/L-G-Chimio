@@ -32,9 +32,6 @@ termes.
 include_once 'autoload.php';
 include_once 'protection.php';
 include_once 'langues/fr/presentation.php';
-include("simple-php-captcha\simple-php-captcha.php");
-
-$_SESSION['captcha'] = simple_php_captcha();
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
@@ -48,11 +45,11 @@ $sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLU
 $result1=$dbh->query($sql);
 //Les résultats son mis sous forme de tableau
 $rop=$result1->fetch(PDO::FETCH_NUM);
+echo "<label>".NAMEPASS."</label>";
+echo "<br/>";
+echo "<input type='text' name='nom'/>";
+echo "<br/><br/>";
 $formulaire->ajout_text ($rop[0]+1,'',$rop[0],"email",EMAIL."<br/>","","");
-echo "<br><br>";
-echo '<img src="'.$_SESSION['captcha']['image_src'].'">';
-$formulaire->ajout_text ("",'',"","captcha","<br/> saisissez les caractères que vous voyez dans l'image<br/>","","");
-$formulaire->ajout_cache($_SESSION['captcha']['code'], "captcha_code");
 echo "<br><br>";
 $formulaire->ajout_button (SUBMIT,"","submit","");
 //fin du formulaire

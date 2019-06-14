@@ -1,7 +1,7 @@
 ====== Systèmes requis ======
 Le logiciel fonctionne avec un environnement LAPP (Linux, Apache, PostgreSQL, PHP). 
 
-Il sous Windows mais cet environnement n'est pas recommandé pour l'utilisation en production et en toute sécurité d'Apache, PHP et de PostgresSQL. 
+Fonctionne également sous Windows, mais cet environnement n'est pas recommandé pour l'utilisation en production et en toute sécurité d'Apache, PHP et de PostgresSQL. 
 
 **Il est vivement recommandé d’utiliser cet environnement avec le cryptage SSL (https) et de mettre en place un firewall afin de filtrer les entrées sur votre serveur.**
 

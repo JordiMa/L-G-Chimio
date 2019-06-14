@@ -50,7 +50,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	print"<div id=\"dhtmltooltip\"></div>
 		<script language=\"javascript\" src=\"ttip.js\"></script>";
 	echo "<br/><h3 align=\"center\">".TITREEVO."</h3>";
-	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".constant($erreur)."</p>";
+	if (!empty($erreur)) echo "<p align=\"center\" class=\"erreur\">".$erreur."</p>";
 	//formulaire d'importatio du fichier
 	$formulaire=new formulaire ("evo","evoimport.php","POST",true);
 	$formulaire->affiche_formulaire();

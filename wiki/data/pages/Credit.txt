@@ -15,9 +15,11 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 
 ====== Outils utilisés ======
 
-  * Dessin de structures : **JSME Molecular Editor** de Novartis
-  * Recherche par structure, sous structure et similarité : **Bingo** de epam
-  * Editeur de text : **CKEditor** de CKSource
+  * Dessin de structures : **JSME Molecular Editor** de [[https://www.peter-ertl.com/jsme/|Novartis]]
+  * Recherche par structure, sous structure et similarité : **Bingo** de [[https://lifescience.opensource.epam.com/index.html|epam]]
+  * Editeur de text : **CKEditor** de [[https://ckeditor.com/|CKSource]]
+  * Captcha : **simple php captcha** de [[https://www.abeautifulsite.net/a-simple-php-captcha-script|Cory LaViska]]
+  * Wiki : [[https://www.dokuwiki.org/dokuwiki|DokuWiki]]
 
 ----
 

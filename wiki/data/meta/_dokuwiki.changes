@@ -1,42 +1,21 @@
-1544085097	::1	C	start		Présentation		728
-1544086456	::1	C	sidebar	jordi	créée		95
-1544085246	127.0.0.1	E	installation		modification externe		8258
-1544088931	::1	e	installation	jordi			-97
-1544086436	127.0.0.1	E	credit		modification externe		2295
-1544089733	::1	e	credit	jordi			14
-1544092151	::1	E	installation	jordi			3468
-1544092214	::1	E	installation	jordi	[Téléchargez de L-g-Chimio] 		-13
-1544092245	::1	E	installation	jordi	[Première étape] 		-13
-1544092270	::1	E	installation	jordi	[Quatrième étape] 		-13
-1544092865	::1	C	configuration	jordi	créée		587
-1544095282	::1	E	configuration	jordi			6370
-1544096094	::1	E	configuration	jordi			1557
-1544092883	127.0.0.1	E	sidebar		modification externe		36
-1544101199	::1	E	sidebar	jordi			48
-1544101599	::1	E	sidebar	jordi			380
-1544101614	::1	E	sidebar	jordi			0
-1544101678	::1	E	sidebar	jordi			-380
-1544101713	::1	C	manuel_utilisation	jordi	créée		34
-1544101958	::1	E	configuration	jordi			53
-1544102039	::1	E	installation	jordi			49
-1544102070	::1	E	credit	jordi			12
-1544107279	::1	E	manuel_utilisation	jordi			16449
-1544108186	::1	E	manuel_utilisation	jordi			3015
-1544108845	::1	C	manuel_administration	jordi	créée		3191
-1544111775	::1	E	manuel_administration	jordi			6627
-1544111838	::1	E	sidebar	jordi			54
-1544112280	::1	E	manuel_administration	jordi			1479
-1544174507	::1	E	manuel_administration	jordi			7484
-1544175531	::1	E	manuel_administration	jordi			4114
-1544178110	::1	E	manuel_administration	jordi			2371
-1544178229	::1	E	manuel_administration	jordi			-6
-1544178383	::1	E	manuel_administration	jordi			-2
-1544178592	::1	E	manuel_utilisation	jordi	[Consulter une fiche] 		-13
-1544178626	::1	E	manuel_utilisation	jordi	[Paramètres de son compte] 		-11
-1544178724	::1	E	configuration	jordi			-12
-1544178757	::1	E	installation	jordi	[Téléchargez de L-g-Chimio] 		-4
-1544178785	::1	e	installation	jordi			-4
-1544178809	::1	e	installation	jordi			-4
-1544178833	::1	E	installation	jordi	[Quatrième étape] 		-4
-1544178849	::1	E	installation	jordi	[Cinquième étape] 		-2
-1544178918	::1	E	manuel_utilisation	jordi			-10
+1554887711	::1	E	manuel_administration	jordi			245
+1554889651	::1	E	manuel_administration	jordi	[Importation de fichier SDF et RDF] 		762
+1554891322	::1	E	manuel_administration	jordi	1.5		-1845
+1554891567	::1	E	manuel_administration	jordi			45
+1554891583	::1	E	manuel_administration	jordi	[(ré)Attribution des molécules] 		6
+1554898882	::1	E	manuel_administration	jordi	[(ré)Attribution des molécules] 		609
+1555054796	::1	e	manuel_administration	jordi	[(ré)Attribution des molécules] 		-2
+1555055636	::1	E	manuel_administration	jordi	[réattribution des molécules] 		288
+1555055686	::1	e	manuel_administration	jordi	[Exportation au format CSV pour la pesée Evotec] 		7
+1555055811	::1	E	configuration	jordi	[Utilisateur] 		8
+1555060490	::1	E	manuel_administration	jordi	[Contrôle de la pureté et de la structure] 		-2
+1555060796	192.168.70.53	E	start	kiet			3
+1555060888	::1	C	upgrade	jordi	créée		21
+1555060954	192.168.70.53	E	manuel_administration	kiet			4
+1555060960	::1	E	sidebar	jordi	upgrade		24
+1555060969	::1	E	sidebar	jordi			0
+1555061125	192.168.70.53	E	manuel_administration	kiet			7
+1555061246	192.168.70.53	E	manuel_administration	kiet			2
+1556016167	::1	E	upgrade	jordi			1131
+1556023164	::1	E	upgrade	jordi	[Base de données] 		489
+1556098610	::1	E	installation	jordi			20

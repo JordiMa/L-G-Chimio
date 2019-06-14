@@ -43,6 +43,7 @@ if(!isset($_POST['chimiste'])) $_POST['chimiste']="";
 if(!isset($_POST['mol'])) $_POST['mol']="";
 if(!isset($_POST['recherche'])) $_POST['recherche']="";
 if(!isset($_POST['valtanimoto'])) $_POST['valtanimoto']="";
+if(!isset($_POST['refcahier'])) $_POST['refcahier']="";
 
 
 //définition des paramètres de la page $limitepage définit le nombre de résultats par page et $page définit la page à afficher
@@ -74,7 +75,7 @@ else {
 
 	require 'script/connectionb.php';
 	$tab="";
-	if (!empty($_POST['mol']) or !empty ($_POST['formbrute']) or ($_POST['massemol'])!="" or !empty($_POST['numero']) or !empty($_POST['logp'])) {
+	if (!empty($_POST['mol']) or !empty ($_POST['formbrute']) or ($_POST['massemol'])!="" or !empty($_POST['numero']) or !empty($_POST['logp']) or !empty($_POST['refcahier'])) {
 
 
 		$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
@@ -218,6 +219,84 @@ else {
 				$tab[$row4[0]]=$row4[1];
 			}
 		}
+
+		//recherche par référence de cahier de laboratoire
+			if ($_POST['refcahier']!="") {
+				if ($row[0]=="{ADMINISTRATEUR}") {
+					$sql="SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+					$result2 = $dbh->query($sql);
+					$nbrs=$result2->rowCount();
+					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
+					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
+					$result3 = $dbh->query($sql);
+					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$result4 = $dbh->query($sql);
+						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
+							$tab[$row4[0]]=$row4[1];
+						}
+					}
+				}
+				 elseif ($row[0]=="{CHEF}") {
+					$sql="SELECT equi_id_equipe FROM equipe WHERE equi_id_equipe in(SELECT chi_id_equipe FROM chimiste WHERE chi_id_responsable='".$row[1]."') order by equi_nom_equipe";
+					//les résultats sont retournées dans la variable $result5
+					$result5 =$dbh->query($sql);
+					$nbrow5=$result5->rowCount();
+					$requete="";
+					$i=1;
+					if (!empty($nbrow5)) {
+					  while($row5 =$result5->fetch(PDO::FETCH_NUM)) {
+							$requete.="pro_id_equipe='".$row5[0]."'";
+							if ($i<$nbrow5) $requete.=" or ";
+							$i++;
+						}
+					}
+					$sql="(SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE ($requete) and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) UNION (SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE pro_id_chimiste='".$row[1]."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) order by pro_id_structure";
+					$result2 = $dbh->query($sql);
+					$nbrs=$result2->rowCount();
+					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
+					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
+					$result3 = $dbh->query($sql);
+					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE ($requete) and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$result4 = $dbh->query($sql);
+						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
+							$tab[$row4[0]]=$row4[1];
+						}
+					}
+				}
+				elseif($row[0]=="{RESPONSABLE}") {
+					$sql="(SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE pro_id_equipe='".$row[2]."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) UNION (SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) order by pro_id_structure";
+					$result2 = $dbh->query($sql);
+					$nbrs=$result2->rowCount();
+					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
+					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
+					$result3 = $dbh->query($sql);
+					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$result4 = $dbh->query($sql);
+						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
+							$tab[$row4[0]]=$row4[1];
+						}
+					}
+				}
+				else {
+					$sql="SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+					$result2 = $dbh->query($sql);
+					$nbrs=$result2->rowCount();
+					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
+					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
+					$result3 = $dbh->query($sql);
+					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$result4 = $dbh->query($sql);
+						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
+							$tab[$row4[0]]=$row4[1];
+						}
+					}
+				}
+			}
+
 		// if ($_POST['logp']!="") {
 			// if ($_POST['logpexact']=='exact') {
 				// $sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_logp='".$_POST['logp']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
@@ -272,8 +351,8 @@ else {
 
 
 
-	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
-	$recherche= new affiche_recherche ($tab,$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
+	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
+	$recherche= new affiche_recherche ($tab,$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
 
 	$sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
 	//les résultats sont retournées dans la variable $result
@@ -284,12 +363,12 @@ else {
 	}
 
 	$recherche->imprime();
-	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['recherche'],$_POST['valtanimoto']);
+	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
 }
 
 unset($dbh);
 
-function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$recherche,$valtanimoto) {
+function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,$nbrs,$nbpage,$typechimiste,$chimiste,$numero,$refcah,$recherche,$valtanimoto) {
 
 		if ($nbrs>0) print"<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">
 						  <tr valign=\"middle\">
@@ -305,6 +384,7 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 			$formulaire->ajout_cache ($massexact,"massexact");
 			$formulaire->ajout_cache ($forbrutexact,"forbrutexact");
 			$formulaire->ajout_cache ($numero,"numero");
+			$formulaire->ajout_cache ($refcah,"refcahier");
 			$formulaire->ajout_cache (($page-1),"page");
 			$formulaire->ajout_cache ($nbpage,"nbpage");
 			$formulaire->ajout_cache ($recherche,"recherche");
@@ -327,6 +407,7 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 			$formulaire->ajout_cache ($massexact,"massexact");
 			$formulaire->ajout_cache ($forbrutexact,"forbrutexact");
 			$formulaire->ajout_cache ($numero,"numero");
+			$formulaire->ajout_cache ($refcah,"refcahier");
 			$formulaire->ajout_cache (($page+1),"page");
 			$formulaire->ajout_cache ($nbpage,"nbpage");
 			$formulaire->ajout_cache ($recherche,"recherche");
@@ -347,6 +428,7 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 			$formulaire->ajout_cache ($massexact,"massexact");
 			$formulaire->ajout_cache ($forbrutexact,"forbrutexact");
 			$formulaire->ajout_cache ($numero,"numero");
+			$formulaire->ajout_cache ($refcah,"refcahier");
 			$formulaire->ajout_cache ($nbpage,"nbpage");
 			$formulaire->ajout_cache ($recherche,"recherche");
 			$formulaire->ajout_cache ($valtanimoto,"valtanimoto");

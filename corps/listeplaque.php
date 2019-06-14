@@ -44,7 +44,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 	if (isset($_GET["idsup"]) and $_GET["idsup"]>0) {
 		$sqlsup1="DELETE FROM position WHERE pos_id_plaque='".$_GET["idsup"]."';";
-		$sqlsup2="DELETE FROM lotplaque WHERE lopla_id_lot='".$_GET["idsup"]."';";
+		$sqlsup2="DELETE FROM lotplaque WHERE lopla_id_plaque='".$_GET["idsup"]."';";
 		$sqlsup3="DELETE FROM plaquecible WHERE plac_id='".$_GET["idsup"]."';";
 		$sqlsup4="DELETE FROM plaque WHERE pla_id_plaque='".$_GET["idsup"]."';";
 		for ($i=1;$i<=4;$i++) {

@@ -33,7 +33,7 @@ include_once 'script/secure.php';
 include_once 'autoload.php';
 include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
 include_once 'presentation/entete.php';
-$menu=11;
+$menu=12;
 include_once 'presentation/gauche.php';
 require 'script/connectionb.php';
 $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";

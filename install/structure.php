@@ -80,7 +80,7 @@ CREATE TABLE hrms (
   hrms_id_hrms integer NOT NULL,
   hrms_type character varying(7)[],
   hrms_text text,
-  hrms_fichier bytea,
+  hrms_fichier text,
   hrms_nom_fichier character varying(6),
   hrms_date date DEFAULT now(),
   CONSTRAINT contrainte_hrmstype CHECK ((hrms_type <@ ARRAY['ACPI'::character varying, 'APPI'::character varying, 'CI'::character varying, 'DCI'::character varying, 'EI'::character varying, 'ESI'::character varying, 'MAL'::character varying, 'INCONNU'::character varying]))
@@ -99,7 +99,7 @@ DROP TABLE IF EXISTS ir CASCADE;
 CREATE TABLE ir (
   ir_id_ir integer NOT NULL,
   ir_text text,
-  ir_fichier bytea,
+  ir_fichier text,
   ir_nom_fichier character varying(6),
   ir_date date DEFAULT now()
 );
@@ -286,10 +286,10 @@ CREATE TABLE produit (
   pro_id_chimiste smallint,
   pro_id_couleur smallint,
   pro_id_structure integer NOT NULL,
-  pro_purete integer,
+  pro_purete character varying,
   pro_purification character varying(17)[],
   pro_pourcentage_actif character varying(5),
-  pro_sel character varying(5),
+  pro_sel character varying(15),
   pro_masse double precision,
   pro_unite_masse character varying(4)[],
   pro_aspect character varying(7)[],
@@ -310,9 +310,9 @@ CREATE TABLE produit (
   pro_num_sansmasse smallint,
   pro_num_constant integer,
   pro_analyse_elem_trouve character varying(200),
-  pro_point_fusion character varying(7),
-  pro_point_ebullition character varying(7),
-  pro_pression_pb character varying(10),
+  pro_point_fusion character varying,
+  pro_point_ebullition character varying,
+  pro_pression_pb character varying,
   pro_alpha numeric(4,1),
   pro_alpha_temperature numeric(3,1),
   pro_alpha_concentration numeric(5,1),
@@ -334,9 +334,9 @@ CREATE TABLE produit (
   pro_id_uv integer,
   pro_id_sm integer,
   pro_id_hrms integer,
-  pro_controle_purete boolean,
+  pro_controle_purete integer,
   pro_date_controle_purete date,
-  pro_controle_structure boolean,
+  pro_controle_structure integer,
   pro_champsAnnexe character varying DEFAULT '[]',
   CONSTRAINT contrainte_aspect CHECK ((pro_aspect <@ ARRAY['GOMME'::character varying, 'HUILE'::character varying, 'LIQUIDE'::character varying, 'MOUSSE'::character varying, 'SOLIDE'::character varying, 'INCONNU'::character varying])),
   CONSTRAINT contrainte_originesubstance CHECK ((pro_origine_substance <@ ARRAY['SYNTHESE'::character varying, 'HEMISYNTHESE'::character varying, 'NATURELLE'::character varying, 'INCONNU'::character varying])),
@@ -400,7 +400,7 @@ DROP TABLE IF EXISTS rmnc CASCADE;
 CREATE TABLE rmnc (
   rmnc_id_rmnc integer NOT NULL,
   rmnc_text text,
-  rmnc_fichier bytea,
+  rmnc_fichier text,
   rmnc_nom_fichier character varying(6),
   rmnc_date date DEFAULT now()
 );
@@ -418,7 +418,7 @@ DROP TABLE IF EXISTS rmnh CASCADE;
 CREATE TABLE rmnh (
   rmnh_id_rmnh integer NOT NULL,
   rmnh_text text,
-  rmnh_fichier bytea,
+  rmnh_fichier text,
   rmnh_nom_fichier character varying(6),
   rmnh_date date DEFAULT now()
 );
@@ -437,7 +437,7 @@ CREATE TABLE sm (
   sm_id_sm integer NOT NULL,
   sm_type character varying(7)[],
   sm_text text,
-  sm_fichier bytea,
+  sm_fichier text,
   sm_nom_fichier character varying(6),
   sm_date date DEFAULT now(),
   CONSTRAINT contrainte_typesm CHECK ((sm_type <@ ARRAY['ACPI'::character varying, 'APPI'::character varying, 'CI'::character varying, 'DCI'::character varying, 'EI'::character varying, 'ESI'::character varying, 'MAL'::character varying, 'INCONNU'::character varying]))
@@ -496,7 +496,8 @@ CREATE TABLE evotec (
   evo_id_evotec smallint NOT NULL,
   evo_numero_permanent integer,
   evo_masse double precision,
-  evo_date_envoie date
+  evo_date_envoie date DEFAULT now(),
+  evo_insoluble boolean DEFAULT FALSE
 );
 
 CREATE SEQUENCE evotec_evo_id_evotec_seq
@@ -684,7 +685,7 @@ DROP TABLE IF EXISTS uv CASCADE;
 CREATE TABLE uv (
   uv_id_uv integer NOT NULL,
   uv_text text,
-  uv_fichier bytea,
+  uv_fichier text,
   uv_nom_fichier character varying(6),
   uv_date date DEFAULT now()
 );

@@ -29,6 +29,17 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 termes.
 */
 
+$time = $_SERVER['REQUEST_TIME'];
+$timeout_duration = 1800;
+if (isset($_SESSION['LAST_ACTIVITY']) &&
+   ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+    session_unset();
+    session_destroy();
+    session_start();
+    header('Location: index.php');
+}
+$_SESSION['LAST_ACTIVITY'] = $time;
+
 if (file_exists('script/config.json')){
   $json_source = file_get_contents('script/config.json');
   $config_data = json_decode($json_source, true);
