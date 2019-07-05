@@ -78,7 +78,7 @@ a:visited {
 	TEXT-DECORATION: none
 	}
 a:hover {
-	font-family:arial, sans-serif;
+	/*font-family:arial, sans-serif;*/
 	font-size:100%;
 	background-color:transparent;
 	TEXT-DECORATION: underline

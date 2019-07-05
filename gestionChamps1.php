@@ -100,6 +100,7 @@ if (!isset($_GET['nb'])){
           <option value="multi-text" ';if(isset($_GET['M:type_champsAnnexe_'.$i]) && $_GET['M:type_champsAnnexe_'.$i] == "multi-text") echo "selected";echo'>text multiligne</option>
           <option value="nombre" ';if(isset($_GET['M:type_champsAnnexe_'.$i]) && $_GET['M:type_champsAnnexe_'.$i] == "nombre") echo "selected";echo'>nombre</option>
           <option value="checkbox" ';if(isset($_GET['M:type_champsAnnexe_'.$i]) && $_GET['M:type_champsAnnexe_'.$i] == "checkbox") echo "selected";echo'>case à cocher</option>
+          <option value="listeDeroulante" ';if(isset($_GET['M:type_champsAnnexe_'.$i]) && $_GET['M:type_champsAnnexe_'.$i] == "listeDeroulante") echo "selected";echo'>liste déroulante</option>
         </select>';
         echo '<input type="hidden" name="M:type_champsAnnexe_'.$i.'"value="'.$_GET['M:type_champsAnnexe_'.$i].'"/>';
       }
@@ -112,18 +113,27 @@ if (!isset($_GET['nb'])){
         <option value="multi-text" ';if(isset($_GET['type_champsAnnexe_'.$i]) && $_GET['type_champsAnnexe_'.$i] == "multi-text") echo "selected";echo'>text multiligne</option>
         <option value="nombre" ';if(isset($_GET['type_champsAnnexe_'.$i]) && $_GET['type_champsAnnexe_'.$i] == "nombre") echo "selected";echo'>nombre</option>
         <option value="checkbox" ';if(isset($_GET['type_champsAnnexe_'.$i]) && $_GET['type_champsAnnexe_'.$i] == "checkbox") echo "selected";echo'>case à cocher</option>
+        <option value="listeDeroulante" ';if(isset($_GET['type_champsAnnexe_'.$i]) && $_GET['type_champsAnnexe_'.$i] == "listeDeroulante") echo "selected";echo'>liste déroulante</option>
       </select>';
       }
-      echo'<br/><br/>';
+      echo '<br/><br/>';
       // [JM - 17/05/2019] libellé des champs
       if(isset($_GET['type_champsAnnexe_'.$i]) && $_GET['type_champsAnnexe_'.$i] != ""){
-        echo'libellé :<br>';
-        echo'<input type="text" name="lib_champsAnnexe_'.$i.'" value="';if(isset($_GET['lib_champsAnnexe_'.$i])) echo $_GET['lib_champsAnnexe_'.$i];echo'">';
+        echo 'libellé :<br>';
+        echo '<input type="text" name="lib_champsAnnexe_'.$i.'" value="';if(isset($_GET['lib_champsAnnexe_'.$i])) echo $_GET['lib_champsAnnexe_'.$i];echo'">';
           // [JM - 17/05/2019] nombre de ligne pour type multiligne
           if($_GET['type_champsAnnexe_'.$i] == "multi-text"){
-            echo'<br/><br/>';
+            echo '<br/><br/>';
             echo "Nombre de ligne afficher :<br>";
-            echo'<input type="number" name="nbLigne_champsAnnexe_'.$i.'" min="2" max="15" value="';if(isset($_GET['nbLigne_champsAnnexe_'.$i])) echo $_GET['nbLigne_champsAnnexe_'.$i]; else echo "8"; ;echo'">';
+            echo '<input type="number" name="nbLigne_champsAnnexe_'.$i.'" min="2" max="15" value="';if(isset($_GET['nbLigne_champsAnnexe_'.$i])) echo $_GET['nbLigne_champsAnnexe_'.$i]; else echo "8"; ;echo'">';
+          }
+          elseif ($_GET['type_champsAnnexe_'.$i] == "listeDeroulante") {
+            echo '<br/><br/>';
+            echo "Option : (séparer par des point virgule)<br>";
+            echo '<input type="text" size="70" name="option_listeDeroulante_'.$i.'" value="';
+            if(isset($_GET['option_listeDeroulante_'.$i]))
+              echo $_GET['option_listeDeroulante_'.$i];
+            echo '">';
           }
           echo'<br/><br/>';
       }
@@ -133,11 +143,19 @@ if (!isset($_GET['nb'])){
         echo'<input type="text" name="M:lib_champsAnnexe_'.$i.'" value="';if(isset($_GET['M:lib_champsAnnexe_'.$i])) echo $_GET['M:lib_champsAnnexe_'.$i];echo'">';
           // [JM - 17/05/2019] nombre de ligne pour type multiligne existant (mode modification)
           if($_GET['M:type_champsAnnexe_'.$i] == "multi-text"){
-            echo'<br/><br/>';
+            echo '<br/><br/>';
             echo "Nombre de ligne afficher :<br>";
-            echo'<input type="number" name="M:nbLigne_champsAnnexe_'.$i.'" min="2" max="15" value="';if(isset($_GET['M:nbLigne_champsAnnexe_'.$i])) echo $_GET['M:nbLigne_champsAnnexe_'.$i]; else echo "8"; ;echo'">';
+            echo '<input type="number" name="M:nbLigne_champsAnnexe_'.$i.'" min="2" max="15" value="';if(isset($_GET['M:nbLigne_champsAnnexe_'.$i])) echo $_GET['M:nbLigne_champsAnnexe_'.$i]; else echo "8"; ;echo'">';
           }
-          echo'<br/><br/>';
+          elseif ($_GET['M:type_champsAnnexe_'.$i] == "listeDeroulante") {
+            echo '<br/><br/>';
+            echo "Option : (séparer par des point virgule)<br>";
+            echo '<input type="text" size="70" name="M:option_listeDeroulante_'.$i.'" value="';
+            if(isset($_GET['M:option_listeDeroulante_'.$i]))
+              echo $_GET['M:option_listeDeroulante_'.$i];
+            echo '">';
+          }
+          echo '<br/><br/>';
           echo '<input type="checkbox" name="supprimer'.$i.'"';if(isset($_GET['supprimer'.$i])) echo 'checked';echo'/>supprimer';
           echo '<input type="hidden" name="M:ID_champsAnnexe_'.$i.'" value= "'.$_GET['M:ID_champsAnnexe_'.$i].'" />';
       }
@@ -175,6 +193,12 @@ if(isset($_GET['submit2'])){
         $valueReq .= '<input type="hidden" value="false" name="champsAnnexe_'.$id_chx.'">';
         $valueReq .= '<input type="checkbox" value="true" name="champsAnnexe_'.$id_chx.'">';
       }
+      if($_GET['type_champsAnnexe_'.$i] == "listeDeroulante"){
+        $option_liste = explode(';', $_GET['option_listeDeroulante_'.$i]);
+        print_r($option_liste);
+        //$valueReq .= '<br/><input type="text" name="champsAnnexe_'.uniqid().'">';
+      }
+
       $valueReq = addslashes($valueReq);
       $valueReq .= "<br/><br/>";
       $req .= $valueReq . "');";

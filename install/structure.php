@@ -337,7 +337,6 @@ CREATE TABLE produit (
   pro_controle_purete integer,
   pro_date_controle_purete date,
   pro_controle_structure integer,
-  pro_champsAnnexe character varying DEFAULT '[]',
   CONSTRAINT contrainte_aspect CHECK ((pro_aspect <@ ARRAY['GOMME'::character varying, 'HUILE'::character varying, 'LIQUIDE'::character varying, 'MOUSSE'::character varying, 'SOLIDE'::character varying, 'INCONNU'::character varying])),
   CONSTRAINT contrainte_originesubstance CHECK ((pro_origine_substance <@ ARRAY['SYNTHESE'::character varying, 'HEMISYNTHESE'::character varying, 'NATURELLE'::character varying, 'INCONNU'::character varying])),
   CONSTRAINT contrainte_purification CHECK ((pro_purification <@ ARRAY['AUCUNE'::character varying, 'COLONNE'::character varying, 'DISTILLATION'::character varying, 'EXTRACTION'::character varying, 'FILTRATION'::character varying, 'FILTRATIONCEL'::character varying, 'HPLC'::character varying, 'PRECIPITATION'::character varying, 'RECRISTALLISATION'::character varying, 'RESINE'::character varying, 'INCONNUE'::character varying])),
@@ -878,5 +877,179 @@ CREATE TRIGGER ajoute_pro_date_ctrl_purete
 AFTER UPDATE OF pro_controle_purete ON produit
 FOR EACH ROW
 EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();
+
+CREATE Table IF NOT EXISTS champsAnnexe {
+  ID SERIAL PRIMARY KEY,
+  HTML CHARACTER VARYING(500) NOT NULL
+};
+
+CREATE Table IF NOT EXISTS champsProduit {
+  pro_id_produit INTEGER NOT NULL references Produit(pro_id_produit),
+  cha_ID INTEGER NOT NULL references champsAnnexe(ID),
+  data CHARACTER VARYING(500),
+  PRIMARY KEY (pro_id_produit, cha_ID)
+};
+
+CREATE TABLE IF NOT EXISTS Pays (
+  pay_code_pays CHARACTER VARYING(3) PRIMARY KEY,
+  pay_pays CHARACTER VARYING(55) NOT NULL,
+  pay_APA BOOLEAN DEFAULT FALSE,
+  pay_numero_permis CHARACTER VARYING(255),
+  pay_collaboration BOOLEAN DEFAULT FALSE,
+  UNIQUE (pay_pays)
+);
+
+CREATE TABLE IF NOT EXISTS Expedition (
+  exp_ID SERIAL PRIMARY KEY,
+  exp_nom CHARACTER VARYING(255),
+  exp_contact CHARACTER VARYING(255),
+  pay_code_pays CHARACTER VARYING(3) NOT NULL references Pays(pay_code_pays),
+  UNIQUE (exp_nom, pay_code_pays)
+);
+
+CREATE TABLE IF NOT EXISTS Type_taxonomie (
+  typ_tax_ID SERIAL PRIMARY KEY,
+  typ_tax_type CHARACTER VARYING(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Taxonomie (
+  tax_ID SERIAL PRIMARY KEY,
+  tax_phylum CHARACTER VARYING(255),
+  tax_classe CHARACTER VARYING(255),
+  tax_ordre CHARACTER VARYING(255),
+  tax_famille CHARACTER VARYING(255),
+  tax_genre CHARACTER VARYING(255) NOT NULL,
+  tax_espece CHARACTER VARYING(255) NOT NULL,
+  tax_sous_espece CHARACTER VARYING(255),
+  tax_variete CHARACTER VARYING(255),
+  tax_protocole CHARACTER VARYING(255),
+  tax_sequencage CHARACTER VARYING(255),
+  tax_seq_ref_book CHARACTER VARYING(255),
+  typ_tax_ID INTEGER NOT NULL references Type_taxonomie(typ_tax_ID),
+  UNIQUE (tax_phylum, tax_classe, tax_ordre, tax_famille, tax_genre, tax_espece)
+);
+
+CREATE TABLE IF NOT EXISTS Specimen (
+  spe_code_specimen CHARACTER VARYING(255) PRIMARY KEY,
+  spe_date_recolte DATE NOT NULL,
+  spe_lieu_recolte CHARACTER VARYING(255) NOT NULL,
+  spe_GPS_recolte CHARACTER VARYING(255),
+  spe_observation CHARACTER VARYING(255),
+  spe_collection CHARACTER VARYING(255),
+  spe_contact CHARACTER VARYING(255),
+  spe_collecteur CHARACTER VARYING(255),
+  tax_ID INTEGER NOT NULL references Taxonomie(tax_ID),
+  exp_ID INTEGER NOT NULL references Expedition(exp_ID)
+);
+
+CREATE TABLE IF NOT EXISTS Fichier_taxonomie (
+  fic_ID SERIAL PRIMARY KEY,
+  fic_fichier TEXT NOT NULL,
+  fic_type CHARACTER VARYING(255) NOT NULL,
+  tax_ID INTEGER NOT NULL references Taxonomie(tax_ID),
+  UNIQUE (fic_fichier, tax_ID)
+);
+
+CREATE TABLE IF NOT EXISTS Fichier_specimen (
+  fic_ID SERIAL PRIMARY KEY,
+  fic_fichier TEXT NOT NULL,
+  fic_type CHARACTER VARYING(255) NOT NULL,
+  spe_code_specimen CHARACTER VARYING(255) NOT NULL references Specimen(spe_code_specimen),
+  UNIQUE (fic_fichier, spe_code_specimen)
+);
+
+CREATE TABLE IF NOT EXISTS Partie_organisme (
+  par_ID SERIAL PRIMARY KEY,
+  par_origine CHARACTER VARYING(255),
+  par_fr CHARACTER VARYING(255) NOT NULL,
+  par_en CHARACTER VARYING(255),
+  par_observation CHARACTER VARYING(255),
+  UNIQUE (par_origine, par_fr, par_en)
+);
+
+CREATE TABLE IF NOT EXISTS Condition (
+  con_ID SERIAL PRIMARY KEY,
+  con_milieu CHARACTER VARYING(255),
+  con_temperature DOUBLE PRECISION,
+  con_type_culture CHARACTER VARYING(255),
+  con_mode_operatoir CHARACTER VARYING(255),
+  con_observation CHARACTER VARYING(255)
+);
+
+CREATE TABLE IF NOT EXISTS Fichier_conditions (
+  fic_ID SERIAL PRIMARY KEY,
+  fic_fichier TEXT NOT NULL,
+  fic_type CHARACTER VARYING(255) NOT NULL,
+  con_ID INTEGER NOT NULL references Condition(con_ID)
+  UNIQUE (fic_fichier, con_ID)
+);
+
+CREATE TABLE IF NOT EXISTS Echantillon (
+  ech_code_Echantillon CHARACTER VARYING(255) PRIMARY KEY,
+  ech_contact CHARACTER VARYING(255),
+  ech_publication_DOI CHARACTER VARYING(255),
+  ech_stock_disponibilite BOOLEAN DEFAULT FALSE,
+  ech_stock_quantite CHARACTER VARYING(255) NOT NULL,
+  ech_lieu_stockage CHARACTER VARYING(255) NOT NULL,
+  par_ID INTEGER NOT NULL references Partie_organisme(par_ID),
+  spe_code_specimen CHARACTER VARYING(255) NOT NULL references Specimen(spe_code_specimen),
+  con_ID INTEGER NOT NULL references Condition(con_ID)
+);
+
+CREATE TABLE IF NOT EXISTS Institut (
+  ins_code_institut CHARACTER VARYING(255) PRIMARY KEY,
+  ins_nom CHARACTER VARYING(255) NOT NULL,
+  ins_contact CHARACTER VARYING(255) NOT NULL,
+  ins_tel CHARACTER VARYING(255),
+  ins_mail CHARACTER VARYING(255)
+);
+
+ALTER TABLE Equipe ADD COLUMN ins_code_institut CHARACTER VARYING(255) references Institut(ins_code_institut);
+
+CREATE TABLE IF NOT EXISTS Extraits (
+  ext_ID SERIAL PRIMARY KEY,
+  ext_solvant CHARACTER VARYING(255) NOT NULL,
+  ext_type_extraction CHARACTER VARYING(255),
+  ext_etat CHARACTER VARYING(255),
+  ext_disponibilite BOOLEAN DEFAULT FALSE,
+  ext_protocole CHARACTER VARYING(255),
+  ext_stockage CHARACTER VARYING(255),
+  ext_observations CHARACTER VARYING(255),
+  chi_id_chimiste INTEGER NOT NULL references Chimiste(chi_id_chimiste),
+  ech_code_Echantillon CHARACTER VARYING(255) NOT NULL references Echantillon(ech_code_Echantillon),
+  UNIQUE (ext_solvant, ext_type_extraction, ext_etat, chi_id_chimiste, ech_code_echantillon)
+);
+
+CREATE TABLE IF NOT EXISTS Purification(
+  pur_ID SERIAL PRIMARY KEY,
+  pur_purification CHARACTER VARYING(255) NOT NULL,
+  pur_ref_book CHARACTER VARYING(255),
+  ext_ID INTEGER NOT NULL references Extraits(ext_ID),
+  UNIQUE (pur_purification, ext_id)
+);
+
+CREATE TABLE IF NOT EXISTS Fichier_purification (
+  fic_ID SERIAL PRIMARY KEY,
+  fic_fichier TEXT NOT NULL,
+  fic_type CHARACTER VARYING(255) NOT NULL,
+  pur_ID INTEGER NOT NULL references Purification(pur_ID),
+  UNIQUE (fic_fichier, pur_ID)
+);
+
+CREATE TABLE IF NOT EXISTS Produit_Extraits (
+  pro_id_produit INTEGER NOT NULL references Produit(pro_id_produit),
+  ext_ID INTEGER NOT NULL references Extraits(ext_ID),
+  PRIMARY KEY (pro_id_produit, ext_ID)
+);
+
+CREATE TABLE IF NOT EXISTS Plaque_Extraits (
+  pla_id_plaque INTEGER NOT NULL references Plaque(pla_id_plaque),
+  ext_ID INTEGER NOT NULL references Extraits(ext_ID),
+  pos_coordonnees CHARACTER VARYING(255) NOT NULL,
+  PRIMARY KEY (pla_id_plaque, ext_ID)
+);
+
+ALTER TABLE Resultat ADD COLUMN ext_ID INTEGER references Extraits(ext_ID);
+
 ";
 ?>

@@ -40,7 +40,7 @@ $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
 	if(!isset($_POST['responsable'])) $_POST['responsable']="";
-	print"<table width=\"492\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+	print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 		  <tr>
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurs.php\">".VISU."</a></td>
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"utilisateurajout.php\">".AJOU."</a></td>
@@ -48,6 +48,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
+			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"institutgestion.php\">Institut</a></td>
 			</tr>
 			</table><br/>";
 	if (!empty($_POST['nom']) and !empty($_POST['prenom']) and !empty($_POST['email']) and !empty($_POST['statut']) and !empty($_POST["langue"])) {

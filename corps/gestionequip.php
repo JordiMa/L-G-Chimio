@@ -1,6 +1,35 @@
+<style>
+.table-equipe {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.td-equipe, .th-equipe {
+	border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.tr-equipe:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.tr-equipe:hover {
+	background-color: #ddd;
+}
+
+.th-equipe {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +38,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +50,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -47,7 +76,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		return(confirma);
 		}
 	</script>";
-	print"<table width=\"492\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+	print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 	  <tr>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurs.php\">".VISU."</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurajout.php\">".AJOU."</a></td>
@@ -55,112 +84,110 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
+		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"institutgestion.php\">Institut</a></td>
 		</tr>
 		</table><br/>";
-	$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='equi_nom_equipe'";
-    //les résultats sont retournées dans la variable $result2
-    $result2=$dbh->query($sql);
-    //Les résultats son mis sous forme de tableau
-    $row2=$result2->fetch(PDO::FETCH_NUM);
 
-	$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='equi_initiale_numero'";
-    //les résultats sont retournées dans la variable $result3
-    $result3=$dbh->query($sql);
-    //Les résultats son mis sous forme de tableau
-    $row3=$result3->fetch(PDO::FETCH_NUM);
 
-	if (!empty($_POST['nomeq']) and !empty($_POST['inieq']) and !empty($_POST['idequip'])){
-		$sql="SELECT * FROM equipe WHERE (equi_nom_equipe='".$_POST['nomeq']."' or equi_initiale_numero='".$_POST['inieq']."') and equi_id_equipe!='".$_POST['idequip']."'";
-		$selectequipe=$dbh->query($sql);
-		$nbequipe=$selectequipe->rowCount();
-		if ($nbequipe>0) print"<br/><br/><br/><p align=\"center\" class=\"messagederreur\">".ERREUREQUIPE."</p>";
-		else {
-			$sql="UPDATE equipe SET equi_nom_equipe='".$_POST['nomeq']."' ,equi_initiale_numero='".$_POST['inieq']."' WHERE equi_id_equipe='".$_POST['idequip']."';";
-			$update=$dbh->exec($sql);
-		}
-	}
-	elseif(isset($_POST['nomeq']) and isset($_POST['inieq']) and isset($_POST['idequip'])) {
-		$erreur=EQUIERREUR;
-		$_GET['idequip']=$_POST['idequip'];
-	}
-	if (!empty($_POST['nomequi']) and !empty($_POST['iniequi'])) {
-		$sql="SELECT * FROM equipe WHERE equi_nom_equipe='".$_POST['nomequi']."' or equi_initiale_numero='".$_POST['iniequi']."'";
-		$selectequipe=$dbh->query($sql);
-		$nbequipe=$selectequipe->rowCount();
-		if ($nbequipe>0) print"<br/><br/><br/><p align=\"center\" class=\"messagederreur\">".ERREUREQUIPE."</p>";
-		else {
-			$sql="INSERT INTO equipe (equi_nom_equipe,equi_initiale_numero) VALUES ('".$_POST['nomequi']."','".$_POST['iniequi']."');";
-			$insertion=$dbh->exec($sql);
-			unset ($_POST['nomequi'],$_POST['iniequi']);
-		}	
-	}
-	elseif(isset($_POST['nomequi']) and isset($_POST['iniequi'])) $erreur1=EQUIERREUR;
-	if (!empty($_GET['idequipp']) and $_GET['idequipp']>0 and $_GET['ok']==1) {
-		$sql="DELETE FROM equipe where equi_id_equipe='".$_GET['idequipp']."'";
-		$dele=$dbh->exec($sql);
-	}
-	echo "<H3>".MODEQUIP."</H3>";
-	if (isset($erreur)) echo "<p class=\"messagederreur\">".$erreur."</p>";	
-	print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-    <tr>
-    <td class=\"entete\">".EQUIPE."</td><td class=\"entete\">".INIEQUIPE."</td><td class=\"entete\">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    </tr>";
-	
-    $sql="SELECT * FROM equipe ORDER BY equi_nom_equipe";
-    $resultat=$dbh->query($sql);
-	$col=1;
-    while ($row=$resultat->fetch(PDO::FETCH_NUM)) {
-		if (!empty($_GET['idequip']) and $_GET['idequip']==$row[0]) {
-			$formulaire1=new formulaire ("equipe","equipegestion.php","POST",true);
-			$formulaire1->affiche_formulaire();
-			print"<tr><td>";
-			$formulaire1->ajout_text ($row2[0]+1,$row[1],$row2[0],"nomeq","","","");
-			print"</td><td>";
-			$sql="SELECT * FROM produit WHERE pro_id_equipe='".$_GET['idequip']."'";
-			$selectequipe=$dbh->query($sql);
-			$nbequipe=$selectequipe->rowCount();
-			if ($nbequipe==0) $formulaire1->ajout_text ($row3[0]+1,$row[2],$row3[0],"inieq","","","");
-			else {
-				echo $row[2];
-				$formulaire1->ajout_cache ($row[2],"inieq");
+			echo "<h3 align=\"center\">Gestion des equipes</h3>";
+		?>
+
+			<table class="table-equipe">
+			<tr class="tr-equipe">
+				<th class="th-equipe" width="10%">Initiate</th>
+				<th class="th-equipe" width="70%">Nom de l'equipe</th>
+				<th class="th-equipe" width="10%">Institut</th>
+				<th class="th-equipe" width="10%"></th>
+			</tr>
+		<?php
+			foreach ($dbh->query("SELECT * FROM equipe ORDER BY equi_initiale_numero") as $row) {
+				if(isset($_GET['modif']) && $_GET['modif'] == "equipe" && $_GET['ID'] == $row[0]){
+					echo '<form action="" method="GET">';
+					echo '
+					<tr class="tr-equipe">
+						<td class="td-equipe"><input type="text" name="Initiate" maxlength="6" value="'.urldecode($row[2]).'" required></td>
+						<td class="td-equipe"><input type="text" name="equipe" value="'.urldecode($row[1]).'" required></td>
+						<td class="td-equipe">
+							<select id="institut" name="institut">>
+							<option value="NULL">Pas d\'institut</option>';
+							foreach ($dbh->query("SELECT ins_code_institut FROM institut ORDER BY ins_code_institut") as $row1) {
+									echo '<option value="'.urldecode($row1[0]).'"';if ($row[3] == $row1[0]) echo "selected"; echo ' >'.urldecode($row1[0]).'</option>';
+							}
+							echo '
+							</select>
+						</td>
+						<input type="hidden" name="IDequipe" value="'.urldecode($row[0]).'">
+						<td class="td-equipe"><button type="submit" name="envoi_modif" value="equipe" title="Envoyer" style="border: 0px;padding: 0px;background: transparent;"><img border="0" src="images/ok.gif" width="20" height="20" alt="valider"></button> <a onclick="history.back()"><img border="0" src="images/pasok.gif" width="20" height="20" alt="annuler"></a></td>
+					</tr>
+					';
+					echo '</form>';
+				}
+				else{
+					echo '
+						<tr class="tr-equipe">
+							<td class="td-equipe">'.urldecode($row[2]).'</td>
+							<td class="td-equipe">'.urldecode($row[1]).'</td>
+							<td class="td-equipe">'.urldecode($row[3]).'</td>
+							<td class="td-equipe"><a href="?modif=equipe&ID='.urldecode($row[0]).'"><img border="0" src="images/modifier.gif" width="20" height="20" alt="modifier"></a></td>
+						</tr>
+					';
+				}
 			}
-			print"</td><td>";
-			$formulaire1->ajout_cache ($_GET['idequip'],"idequip");
-			$formulaire1->ajout_button (SUBMIT,"","submit","");
-			print"</td></tr>";
-			$formulaire1->fin();
+		?>
+
+			<form id="myForm" action="" method="GET">
+			<?php if (isset($_GET['Ajouter'])): ?>
+				<tr class="tr-equipe">
+					<td class="td-equipe"><input type="text" name="Initiate" maxlength="6" required></td>
+					<td class="td-equipe"><input type="text" name="equipe" required></td>
+					<td class="td-equipe">
+						<select id="institut" name="institut">
+						<option value="NULL">Pas d'institut</option>';
+						<?php
+						foreach ($dbh->query("SELECT ins_code_institut FROM institut ORDER BY ins_code_institut") as $row1) {
+								echo '<option value="'.urldecode($row1[0]).'">'.urldecode($row1[0]).'</option>';
+						}
+						?>
+						</select>
+					</td>
+					<td class="td-equipe"><button type="submit" name="save" value="equipe" title="Envoyer" style="border: 0px;padding: 0px;background: transparent;"><img border="0" src="images/ok.gif" width="20" height="20" alt="valider"></button> <a onclick="history.back()"><img border="0" src="images/pasok.gif" width="20" height="20" alt="annuler"></a></td>
+				</tr>
+			<?php endif; ?>
+
+		</table>
+
+		<?php if (!isset($_GET['Ajouter']) && !isset($_GET['modif'])): ?>
+			<input type="submit" name="Ajouter" value="Ajouter">
+		<?php endif; ?>
+
+		</form>
+
+		<?php
+
+		if(isset($_GET['save'])){
+				$stmt = $dbh->prepare("INSERT INTO equipe (equi_nom_equipe, equi_initiale_numero, ins_code_institut) VALUES (:equi_nom_equipe, :equi_initiale_numero, :ins_code_institut)");
+				$stmt->bindParam(':equi_initiale_numero', $_GET['Initiate']);
+				$stmt->bindParam(':equi_nom_equipe', $_GET['equipe']);
+				$stmt->bindParam(':ins_code_institut', $_GET['institut']);
+
+				$stmt->execute();
+
+			 	echo "<script type=\"text/javascript\">location.href = 'equipegestion.php';</script>";
 		}
-		else {
-			$sql="SELECT count(*) FROM chimiste WHERE chi_id_equipe='$row[0]'";
-			$resultat1=$dbh->query($sql);
-			$row1=$resultat1->fetch(PDO::FETCH_NUM);
-			$sql="SELECT count(*) FROM produit WHERE pro_id_equipe='$row[0]'";
-			$nbresultat2=$dbh->query($sql);
-			$nbrow2=$nbresultat2->fetch(PDO::FETCH_NUM);
-			print"<tr";
-			if (!is_integer($col/2)) print" class=\"ligneutil\"";
-			else print" class=\"ligneutil1\"";
-			print"><td>$row[1]</td><td>$row[2]</td><td><a href=\"equipegestion.php?idequip=$row[0]\">".MODIFIER."</a>";
-			if ($row1[0]==0 and $nbrow2[0]==0) print" ; <a href=\"equipegestion.php?idequipp=$row[0]\" onClick=\"suppression(this,'$row[1]')\">".SUPPRIMER."</a>";
-			print"</td></tr>\n";	
+		elseif (isset($_GET['envoi_modif'])) {
+				$stmt = $dbh->prepare("UPDATE equipe SET equi_nom_equipe = :equi_nom_equipe, equi_initiale_numero = :equi_initiale_numero, ins_code_institut = :ins_code_institut WHERE equi_id_equipe = :IDequipe");
+				$stmt->bindParam(':equi_initiale_numero', $_GET['Initiate']);
+				$stmt->bindParam(':equi_nom_equipe', $_GET['equipe']);
+				if ($_GET['institut'] == "NULL") $_GET['institut'] = NULL;
+				$stmt->bindParam(':ins_code_institut', $_GET['institut']);
+				$stmt->bindParam(':IDequipe', $_GET['IDequipe']);
+
+				$stmt->execute();
+
+				echo "<script type=\"text/javascript\">location.href = 'equipegestion.php';</script>";
 		}
-		$col++;
-	}
-    print"</table>";
-	print"<hr>";
-	echo "<H3>".AJEQUIPE."</H3>";
-	if (isset($erreur1)) echo "<p class=\"messagederreur\">".$erreur1."</p>";
-	if(!isset($_POST['nomequi'])) $_POST['nomequi']="";
-	if(!isset($_POST['iniequi'])) $_POST['iniequi']="";	
-	$formulaire=new formulaire ("ajequipe","equipegestion.php","POST",true);
-    $formulaire->affiche_formulaire();
-    $formulaire->ajout_text ($row2[0]+1,$_POST['nomequi'],$row2[0],"nomequi",NEWEQUIPE.DEUX."<br/>","","");
-    print"<br/>";
-    $formulaire->ajout_text ($row3[0]+1,$_POST['iniequi'],$row3[0],"iniequi",INIEQUIPE.DEUX."<br/>","","");
-	print"<br/><br/>";
-	$formulaire->ajout_button (SUBMIT,"","submit","");
-	//fin du formulaire
-    $formulaire->fin();
+
+
 }
 else require 'deconnexion.php';
 unset($dbh);

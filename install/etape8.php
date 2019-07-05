@@ -45,7 +45,7 @@ if (!empty($_FILES['logo']['tmp_name']) and !$_FILES['logo']['error']) {
     elseif ($_FILES['logo']['size']>10000000) $erreur="Le fichier est trop volumineux le maximun autorisé est 10Mo<br/>";
 }
 if (empty($erreur)) {
-    $sql="INSERT INTO parametres (para_nom_labo,para_acronyme,para_email_envoie,para_numerotation,para_num_exportation,para_email_national,para_version) VALUES (E'".addslashes($_POST['nom'])."', '".$_POST['acronyme']."', '".$_POST['email']."', 'MANU','1','dba@chimiotheque-nationale.enscm.fr','nightly_1.5')";
+    $sql="INSERT INTO parametres (para_nom_labo,para_acronyme,para_email_envoie,para_numerotation,para_num_exportation,para_email_national,para_version) VALUES (E'".addslashes($_POST['nom'])."', '".$_POST['acronyme']."', '".$_POST['email']."', 'MANU','1','dba@chimiotheque-nationale.enscm.fr','Alpha_1.6')";
 	$insert=$dbh->exec($sql);
 
    if (!empty($_FILES['logo']['tmp_name']) and !$_FILES['logo']['error']) {

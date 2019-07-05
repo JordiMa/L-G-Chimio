@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright Laurent ROBIN CNRS - Université d'Orléans 2011 
+Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
 
 Laurent.robin@univ-orleans.fr
@@ -9,7 +9,7 @@ Université d’Orléans
 Rue de Chartre – BP6759
 45067 Orléans Cedex 2
 
-Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses. 
+Ce logiciel est un programme informatique servant à la gestion d'une chimiothèque de produits de synthèses.
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
@@ -21,9 +21,9 @@ En contrepartie de l'accessibilité au code source et des droits de copie, de mo
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
  et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
-réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc 
+réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. 
+ leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -52,14 +52,15 @@ $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
   print"<div id=\"dhtmltooltip\"></div>
     <script language=\"javascript\" src=\"ttip.js\"></script>";
-  print"<table width=\"492\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+  print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <tr>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurs.php\">".VISU."</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"utilisateurajout.php\">".AJOU."</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurdesa.php\">".DESA."</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
-	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
+  	<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"institutgestion.php\">Institut</a></td>
     </tr>
     </table><br/>";
    print"<script language=\"JavaScript\">
@@ -73,7 +74,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
             }
       }
   }
-  
+
   function Verif1(theForm) {
     if (document.utilisateur1.equipe.value==\"\" && document.utilisateur1.nomequi.value==\"\") {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");}
     else {
@@ -94,7 +95,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
          theForm.submit();
   }
   function Verif4(theForm) {
-        if (document.utilisateur1.nomequi.value==\"\" || document.utilisateur1.iniequi.value==\"\") {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");} 
+        if (document.utilisateur1.nomequi.value==\"\" || document.utilisateur1.iniequi.value==\"\") {alert(\"".CHAMP." \'".EQUIPE."\' ".RENSEIGNE."\");}
 		else {
 			theForm.action=\"incritutil.php\";
 			theForm.submit();
@@ -206,7 +207,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			//fin du formulaire1
 			$formulaire1->fin();
 
-		  
+
 			if (!empty($_POST["equipe"]) or (!empty($_POST['nomequi']) and !empty($_POST['iniequi']))) {
 				$formulaire2=new formulaire ("utilisateur2","utilisateurajout.php","POST",true);
 				$formulaire2->affiche_formulaire();
