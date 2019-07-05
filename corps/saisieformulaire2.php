@@ -87,7 +87,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$equipe=$tabequipe[0];
 	}
 	elseif ($row22[0]=="{ADMINISTRATEUR}") {
-		$sql_chi="SELECT chi_id_equipe FROM chimiste WHERE chi_statut = '{CHIMISTE}' AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
+		$sql_chi="SELECT chi_id_equipe FROM chimiste WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
 		$result_chi=$dbh->query($sql_chi);
 		$row_chi = $result_chi->fetch(PDO::FETCH_NUM);
 		$equipe = $row_chi[0];
@@ -895,7 +895,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$formulaire->ajout_cache ($tabequipe[1],"responsable");
 		}
 		elseif ($row22[0]=="{ADMINISTRATEUR}") {
-			$sql_chi="SELECT chi_id_chimiste, chi_id_responsable, chi_id_equipe FROM chimiste WHERE chi_statut = '{CHIMISTE}' AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
+			$sql_chi="SELECT chi_id_chimiste, chi_id_responsable, chi_id_equipe FROM chimiste WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
 			$result_chi=$dbh->query($sql_chi);
 			$row_chi = $result_chi->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_cache ($row_chi[2],"equipe");

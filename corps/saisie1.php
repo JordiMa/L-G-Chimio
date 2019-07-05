@@ -145,7 +145,7 @@ if ($row[0]=="{CHEF}") {
 }
 
 if ($row[0]=="{ADMINISTRATEUR}") {
-  $sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste Inner Join equipe on chimiste.chi_id_equipe = equipe.equi_id_equipe WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = FALSE order by chi_nom, chi_prenom";
+  $sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste Inner Join equipe on chimiste.chi_id_equipe = equipe.equi_id_equipe WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = FALSE AND chi_id_responsable IS NOT NULL order by chi_nom, chi_prenom";
   $result_autocomplete = $dbh->query($sql_autocomplete);
 
   $var_id_produit = "[";

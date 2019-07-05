@@ -363,56 +363,64 @@ catch(PDOException $e) {
     echo "Error: " . $e->getMessage();
   }
 
-$lastIdinsertion = $dbh->lastInsertId('produit_pro_id_produit_seq');
-//insertion des solvants de solubilisation du prosuit
-
-
-//recherche de solvants sur la table solvant
-$sql="SELECT count(sol_id_solvant) FROM solvant";
-//les résultats sont retournées dans la variable $result3
-$result3=$dbh->query($sql);
-while($countsol=$result3->fetch(PDO::FETCH_NUM)) {
-  for ($i=0; $i<$countsol[0]; $i++) {
-    if (!empty ($_POST["solvant$i"])) {
-  		$sol="solvant".$i;
-  		//insertion des solvants de solubilisation du produit
-  		$sql="INSERT INTO solubilite (sol_id_solvant,sol_id_produit) VALUES ('".$_POST[$sol]."','$lastIdinsertion')";
-			${"insert$i"}=$dbh->exec($sql);
-			if(${"insert$i"}==false)  {
-				$erreur=1;
-				echo "<p align=\"center\" class=\"erreur\">";
-				print_r ($dbh->errorInfo());
-				echo "</p>";
-	    }
-    }
-  }
+if($stmt->errorInfo()[0] == "23505"){
+  $erreur .= "\nL'identifient ".$_POST['numerocomplet']." existe déjà dans la base de données";
 }
 
- //'".AddSlashes($_POST['donneesrmnh'])."','".AddSlashes($_POST['donneesrmnc'])."','".AddSlashes($_POST['donneesir'])."','".AddSlashes($_POST['sm'])."','".AddSlashes($_POST['smtype'])."','".AddSlashes($_POST['hsm'])."','".AddSlashes($_POST['hsmtype'])."','".AddSlashes($_POST['donneesuv'])."'
+if($stmt->errorInfo()[0] == "22P02"){
+  $erreur .= "\nUne erreur est survenue lors de l'insertion";
+}
 
- $sql_annexe="SELECT * FROM \"champsAnnexe\"";
- //les résultats sont retournées dans la variable $result
- $result_annexe = $dbh->query($sql_annexe);
- $result_annexe->execute();
- $r_annexe = $result_annexe->fetchAll();
+if ($erreur == ''){
+  $lastIdinsertion = $dbh->lastInsertId('produit_pro_id_produit_seq');
+  //insertion des solvants de solubilisation du prosuit
 
- function customSearch($keyword, $arrayToSearch){
-   foreach($arrayToSearch as $key => $arrayItem){
-     if(stristr( $arrayItem, $keyword)){
-       return $key;
+
+  //recherche de solvants sur la table solvant
+  $sql="SELECT count(sol_id_solvant) FROM solvant";
+  //les résultats sont retournées dans la variable $result3
+  $result3=$dbh->query($sql);
+  while($countsol=$result3->fetch(PDO::FETCH_NUM)) {
+    for ($i=0; $i<$countsol[0]; $i++) {
+      if (!empty ($_POST["solvant$i"])) {
+    		$sol="solvant".$i;
+    		//insertion des solvants de solubilisation du produit
+    		$sql="INSERT INTO solubilite (sol_id_solvant,sol_id_produit) VALUES ('".$_POST[$sol]."','$lastIdinsertion')";
+  			${"insert$i"}=$dbh->exec($sql);
+  			if(${"insert$i"}==false)  {
+  				$erreur='une erreur est survenue lors de l\'insertion';
+  				echo "<p align=\"center\" class=\"erreur\">";
+  				print_r ($dbh->errorInfo());
+  				echo "</p>";
+  	    }
+      }
+    }
+  }
+
+   //'".AddSlashes($_POST['donneesrmnh'])."','".AddSlashes($_POST['donneesrmnc'])."','".AddSlashes($_POST['donneesir'])."','".AddSlashes($_POST['sm'])."','".AddSlashes($_POST['smtype'])."','".AddSlashes($_POST['hsm'])."','".AddSlashes($_POST['hsmtype'])."','".AddSlashes($_POST['donneesuv'])."'
+
+   $sql_annexe="SELECT * FROM \"champsAnnexe\"";
+   //les résultats sont retournées dans la variable $result
+   $result_annexe = $dbh->query($sql_annexe);
+   $result_annexe->execute();
+   $r_annexe = $result_annexe->fetchAll();
+
+   function customSearch($keyword, $arrayToSearch){
+     foreach($arrayToSearch as $key => $arrayItem){
+       if(stristr( $arrayItem, $keyword)){
+         return $key;
+       }
      }
    }
- }
 
- foreach ($_POST as $key => $value) {
-   if (strstr($key, "champsAnnexe_")){
-     $keyid = customSearch($key, array_column($r_annexe, 'HTML'));
-     $insert_annexe = "INSERT INTO \"champsProduit\" VALUES (".$lastIdinsertion.",".$r_annexe[$keyid][0].",'".addslashes($value)."');";
-     $dbh->exec($insert_annexe);
+   foreach ($_POST as $key => $value) {
+     if (strstr($key, "champsAnnexe_")){
+       $keyid = customSearch($key, array_column($r_annexe, 'HTML'));
+       $insert_annexe = "INSERT INTO \"champsProduit\" VALUES (".$lastIdinsertion.",".$r_annexe[$keyid][0].",'".addslashes($value)."');";
+       $dbh->exec($insert_annexe);
+     }
    }
- }
-
-
+}
 
 if ($erreur=='') {
     //envoie d'un email au responsable
@@ -446,6 +454,9 @@ if ($erreur=='') {
 		}
 	}
     print "<br/><br/><br/><br/><br/><br/><br/><br/><p align=\"center\" class=\"sauvegarde\">".SAUVDONNE."</p>";
+}
+else {
+  print "<br/><br/><br/><br/><br/><br/><br/><br/><p align=\"center\" class=\"sauvegarde\">".$erreur."</p>";
 }
 //fermeture de la connexion à la base de données
 unset($dbh);

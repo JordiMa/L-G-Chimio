@@ -878,17 +878,17 @@ AFTER UPDATE OF pro_controle_purete ON produit
 FOR EACH ROW
 EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();
 
-CREATE Table IF NOT EXISTS champsAnnexe {
+CREATE Table IF NOT EXISTS champsAnnexe (
   ID SERIAL PRIMARY KEY,
   HTML CHARACTER VARYING(500) NOT NULL
-};
+);
 
-CREATE Table IF NOT EXISTS champsProduit {
+CREATE Table IF NOT EXISTS champsProduit (
   pro_id_produit INTEGER NOT NULL references Produit(pro_id_produit),
   cha_ID INTEGER NOT NULL references champsAnnexe(ID),
   data CHARACTER VARYING(500),
   PRIMARY KEY (pro_id_produit, cha_ID)
-};
+);
 
 CREATE TABLE IF NOT EXISTS Pays (
   pay_code_pays CHARACTER VARYING(3) PRIMARY KEY,
@@ -980,7 +980,7 @@ CREATE TABLE IF NOT EXISTS Fichier_conditions (
   fic_ID SERIAL PRIMARY KEY,
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
-  con_ID INTEGER NOT NULL references Condition(con_ID)
+  con_ID INTEGER NOT NULL references Condition(con_ID),
   UNIQUE (fic_fichier, con_ID)
 );
 

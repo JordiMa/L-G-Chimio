@@ -56,7 +56,7 @@ else {
 	if ($_POST['page']==1)$nbrequete=0;
 	else {
 		if($_POST['page']>$_POST['nbpage']) $_POST['page']=$_POST['nbpage'];
-		$nbrequete=(($_POST['page']-1)*$limitepage)+1;
+		$nbrequete=(($_POST['page']-1)*$limitepage);
 	}
 }
 if ($_POST['masseexact']=='exacte' and $_POST['supinf']!="%3D")  {
