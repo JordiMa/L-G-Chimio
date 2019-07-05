@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.enscm.fr
@@ -28,23 +28,52 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
-include_once '../script/administrateur.php';
-include_once '../autoload.php';
-include_once '../langues/fr/presentation.php';
+include_once '../script/secure.php';
+include_once '../protection.php';
+include_once '../langues/'.$_SESSION['langue'].'/presentation.php';
+echo "<tr>
+    <td bgcolor=\"#FFFFFF\" align=\"center\" valign=\"middle\" width=\"100%\" colspan=\"2\">";
 
-if(file_exists(REPEPRINCIPAL."/script/connectionb.php")){
-	$fichier=file_get_contents(REPEPRINCIPAL."/script/connectionb.php");
-		include_once 'entete.php';
-		require '../script/connectionb.php';
-		$sql="SELECT para_version FROM parametres";
-		$result = $dbh->query($sql);
-		$row = $result->fetch(PDO::FETCH_NUM);
-		unset($dbh);
+require '../script/connectionb.php';
 
-		if($row[0] == "1.4")
-			include_once 'connexion.php';
-		else
-			include_once 'connexion1.php';
+$sql="SELECT chi_statut FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
+//les résultats sont retournés dans la variable $result
+$resulta = $dbh->query($sql);
+$row = $resulta->fetch(PDO::FETCH_NUM);
+$i=0;
+if ($row[0]=='{ADMINISTRATEUR}') {
+
+  $update ="
+  BEGIN;
+  UPDATE parametres set para_version = '1.5.1';
+  COMMIT;
+  ";
+
+  $err = 0;
+
+  $dbh->beginTransaction();
+  $upd=$dbh->exec($update);
+
+  if ($dbh->errorInfo()[0] != 00000){
+	$dbh->rollBack();
+    echo "Une erreur est survenue !<br/>";
+    print_r($dbh->errorInfo());
+    $err = 1;
+  }
+
+  if($err == 0){
+    $upd=$dbh->exec($update);
+  	$dbh->commit();
+    echo "<h2>Mises à jour effectué avec succès !</h2>";
+  	echo "<h3>Vous pouvez maintenant supprimer le dossier 'upgrade'</h3>";
+  	echo "<br/>";
+  }
 }
-include_once 'pied.htm';
+else
+{
+	session_destroy();
+	unset($_SESSION);
+	include_once 'index.php';
+}
+unset($dbh);
 ?>

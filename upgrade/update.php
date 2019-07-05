@@ -53,7 +53,18 @@ echo "<tr>
 			$formulaire->fin();
 			echo "</div>";
 		}
-		elseif ($row[0]=='1.5') {
+    elseif ($row[0]=='1.5') {
+      echo "<br/><h2 align=\"center\">Mettre à jour votre version de la base de données du logiciel de L-g-<i>Chimio</i> v1.5 vers la version 1.5.1</h2><br/><div align=\"center\">";
+      $formulaire=new formulaire ("Mjour","mjour.php","POST",true);
+      $formulaire->affiche_formulaire();
+      $formulaire->ajout_cache ("1.5","ver");
+      $formulaire->ajout_cache ("0","etape");
+      $formulaire->ajout_cache ("0","j");
+      $formulaire->ajout_button ("Mettre à jour","","submit","");
+      $formulaire->fin();
+      echo "</div>";
+    }
+		elseif ($row[0]=='1.5.1') {
       echo "<br><h2 align=\"center\">La base de données du logiciel L-g-<i>Chimio</i> est à jour.</h2><h2 align=\"center\">Vous pouvez supprimer sur le serveur web, le répertoire ".REPEPRINCIPAL."upgrade et son contenu.</h2>";
 		}
 		else echo "<br/><h2 align=\"center\">Votre version (".$row[0].") n'est pas compatible avec cette mise à jour</h2><br/>";

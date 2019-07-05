@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.enscm.fr
@@ -28,23 +28,33 @@ invités à charger et tester l'adéquation du logiciel à leurs besoins dans de
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
-include_once '../script/administrateur.php';
-include_once '../autoload.php';
-include_once '../langues/fr/presentation.php';
-
-if(file_exists(REPEPRINCIPAL."/script/connectionb.php")){
-	$fichier=file_get_contents(REPEPRINCIPAL."/script/connectionb.php");
-		include_once 'entete.php';
-		require '../script/connectionb.php';
-		$sql="SELECT para_version FROM parametres";
-		$result = $dbh->query($sql);
-		$row = $result->fetch(PDO::FETCH_NUM);
-		unset($dbh);
-
-		if($row[0] == "1.4")
-			include_once 'connexion.php';
-		else
-			include_once 'connexion1.php';
-}
-include_once 'pied.htm';
 ?>
+<tr>
+    <td bgcolor="#FFFFFF" align="center" valign="middle" width="100%" colspan="2">
+<h3>Mise à jour de L-g-<I>Chimio</I> de la version 1.5 vers la version 1.5.1</h3>
+<p>( Réservé à l'administrateur )</p>
+<br><br><br><br>
+<table width="150" border="0" cellspacing="0" cellpadding="0" >
+  <tr align="center">
+    <td class=cellulebleu>
+<?php
+echo LOGIN;
+?>
+    </td>
+  </tr>
+  <tr>
+    <td class=celluleblanche>
+<?php
+if (isset ($message)) print"<p align=\"center\" class=messagederreur>".constant($message)."</p>";
+$formulaire=new formulaire ("conec","session1.php","POST",true);
+$formulaire->affiche_formulaire();
+$formulaire->ajout_text (20, "", 20,"name_chimiste",NAMEPASS,"","");
+$formulaire->ajout_password (20, "", 30,"password_chimiste",PASSWORD,"");
+print"<p align=\"center\">";
+$formulaire->ajout_button (LOGIN,"","submit","");
+print"</p>";
+$formulaire->fin();
+?>
+    </td>
+  </tr>
+</table>

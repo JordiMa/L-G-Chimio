@@ -141,18 +141,18 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   $dbh->beginTransaction();
   $upd=$dbh->exec($update);
-  
+
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE produit ADD pro_controle_purete integer;","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
   }
-  
+
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE produit ADD pro_date_controle_purete date;","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -160,7 +160,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE produit ADD pro_controle_structure integer;","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -168,7 +168,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE evotec ADD evo_date_envoie date DEFAULT now();","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -176,7 +176,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE evotec ADD evo_insoluble boolean DEFAULT FALSE;","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -184,7 +184,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE chimiste ADD chi_date_expiration date DEFAULT (now() + '1 year'::interval);","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -192,7 +192,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 23505){
     $update = str_replace("INSERT INTO couleur (cou_id_couleur, cou_couleur) VALUES (218, 'INCON');","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -200,7 +200,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE hrms ADD hrms_date date DEFAULT now();","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -208,7 +208,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE ir ADD ir_date date DEFAULT now();","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -216,7 +216,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE rmnc ADD rmnc_date date DEFAULT now();","",$update);
-    
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -224,7 +224,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE rmnh ADD rmnh_date date DEFAULT now();","",$update);
-        
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -232,7 +232,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE sm ADD sm_date date DEFAULT now();","",$update);
-        
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -240,7 +240,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if ($dbh->errorInfo()[0] == 42701){
     $update = str_replace("ALTER TABLE uv ADD uv_date date DEFAULT now();","",$update);
-        
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -251,7 +251,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
   AFTER UPDATE OF pro_controle_purete ON produit
   FOR EACH ROW
   EXECUTE PROCEDURE ajoute_pro_date_ctrl_purete();","",$update);
-        
+
 	$dbh->rollBack();
 	$dbh->beginTransaction();
 	$upd=$dbh->exec($update);
@@ -266,11 +266,16 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
   if($err == 0){
     $upd=$dbh->exec($update);
-	$dbh->commit();
-    echo "<h2>Mises à jour effectué avec succès !</h2>";
-  	echo "<h3>Vous pouvez maintenant supprimer le dossier 'upgrade'</h3>";
-  	echo "<br/>";
-  	echo "<h3><a href='../oublie.php'>Veuillez demander un nouveau mot de passe en cliquant ici</a></h3>";
+  	$dbh->commit();
+    echo "<br/><h2 align=\"center\">Mettre à jour votre version de la base de données du logiciel de L-g-<i>Chimio</i> v1.5 vers la version 1.5.1</h2><br/><div align=\"center\">";
+    $formulaire=new formulaire ("Mjour","mjour.php","POST",true);
+    $formulaire->affiche_formulaire();
+    $formulaire->ajout_cache ("1.5","ver");
+    $formulaire->ajout_cache ("0","etape");
+    $formulaire->ajout_cache ("0","j");
+    $formulaire->ajout_button ("Mettre à jour","","submit","");
+    $formulaire->fin();
+    echo "</div>";
   }
 }
 else
