@@ -996,16 +996,6 @@ CREATE TABLE IF NOT EXISTS Echantillon (
   con_ID INTEGER NOT NULL references Condition(con_ID)
 );
 
-CREATE TABLE IF NOT EXISTS Institut (
-  ins_code_institut CHARACTER VARYING(255) PRIMARY KEY,
-  ins_nom CHARACTER VARYING(255) NOT NULL,
-  ins_contact CHARACTER VARYING(255) NOT NULL,
-  ins_tel CHARACTER VARYING(255),
-  ins_mail CHARACTER VARYING(255)
-);
-
-ALTER TABLE Equipe ADD COLUMN ins_code_institut CHARACTER VARYING(255) references Institut(ins_code_institut);
-
 CREATE TABLE IF NOT EXISTS Extraits (
   ext_ID SERIAL PRIMARY KEY,
   ext_solvant CHARACTER VARYING(255) NOT NULL,

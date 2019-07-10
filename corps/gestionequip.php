@@ -84,7 +84,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
-		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"institutgestion.php\">Institut</a></td>
 		</tr>
 		</table><br/>";
 
@@ -96,7 +95,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			<tr class="tr-equipe">
 				<th class="th-equipe" width="10%">Initiate</th>
 				<th class="th-equipe" width="70%">Nom de l'equipe</th>
-				<th class="th-equipe" width="10%">Institut</th>
 				<th class="th-equipe" width="10%"></th>
 			</tr>
 		<?php
@@ -107,15 +105,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					<tr class="tr-equipe">
 						<td class="td-equipe"><input type="text" name="Initiate" maxlength="6" value="'.urldecode($row[2]).'" required></td>
 						<td class="td-equipe"><input type="text" name="equipe" value="'.urldecode($row[1]).'" required></td>
-						<td class="td-equipe">
-							<select id="institut" name="institut">>
-							<option value="NULL">Pas d\'institut</option>';
-							foreach ($dbh->query("SELECT ins_code_institut FROM institut ORDER BY ins_code_institut") as $row1) {
-									echo '<option value="'.urldecode($row1[0]).'"';if ($row[3] == $row1[0]) echo "selected"; echo ' >'.urldecode($row1[0]).'</option>';
-							}
-							echo '
-							</select>
-						</td>
 						<input type="hidden" name="IDequipe" value="'.urldecode($row[0]).'">
 						<td class="td-equipe"><button type="submit" name="envoi_modif" value="equipe" title="Envoyer" style="border: 0px;padding: 0px;background: transparent;"><img border="0" src="images/ok.gif" width="20" height="20" alt="valider"></button> <a onclick="history.back()"><img border="0" src="images/pasok.gif" width="20" height="20" alt="annuler"></a></td>
 					</tr>
@@ -127,7 +116,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 						<tr class="tr-equipe">
 							<td class="td-equipe">'.urldecode($row[2]).'</td>
 							<td class="td-equipe">'.urldecode($row[1]).'</td>
-							<td class="td-equipe">'.urldecode($row[3]).'</td>
 							<td class="td-equipe"><a href="?modif=equipe&ID='.urldecode($row[0]).'"><img border="0" src="images/modifier.gif" width="20" height="20" alt="modifier"></a></td>
 						</tr>
 					';
@@ -140,16 +128,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 				<tr class="tr-equipe">
 					<td class="td-equipe"><input type="text" name="Initiate" maxlength="6" required></td>
 					<td class="td-equipe"><input type="text" name="equipe" required></td>
-					<td class="td-equipe">
-						<select id="institut" name="institut">
-						<option value="NULL">Pas d'institut</option>';
-						<?php
-						foreach ($dbh->query("SELECT ins_code_institut FROM institut ORDER BY ins_code_institut") as $row1) {
-								echo '<option value="'.urldecode($row1[0]).'">'.urldecode($row1[0]).'</option>';
-						}
-						?>
-						</select>
-					</td>
 					<td class="td-equipe"><button type="submit" name="save" value="equipe" title="Envoyer" style="border: 0px;padding: 0px;background: transparent;"><img border="0" src="images/ok.gif" width="20" height="20" alt="valider"></button> <a onclick="history.back()"><img border="0" src="images/pasok.gif" width="20" height="20" alt="annuler"></a></td>
 				</tr>
 			<?php endif; ?>
@@ -165,21 +143,18 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		<?php
 
 		if(isset($_GET['save'])){
-				$stmt = $dbh->prepare("INSERT INTO equipe (equi_nom_equipe, equi_initiale_numero, ins_code_institut) VALUES (:equi_nom_equipe, :equi_initiale_numero, :ins_code_institut)");
+				$stmt = $dbh->prepare("INSERT INTO equipe (equi_nom_equipe, equi_initiale_numero) VALUES (:equi_nom_equipe, :equi_initiale_numero)");
 				$stmt->bindParam(':equi_initiale_numero', $_GET['Initiate']);
 				$stmt->bindParam(':equi_nom_equipe', $_GET['equipe']);
-				$stmt->bindParam(':ins_code_institut', $_GET['institut']);
 
 				$stmt->execute();
 
 			 	echo "<script type=\"text/javascript\">location.href = 'equipegestion.php';</script>";
 		}
 		elseif (isset($_GET['envoi_modif'])) {
-				$stmt = $dbh->prepare("UPDATE equipe SET equi_nom_equipe = :equi_nom_equipe, equi_initiale_numero = :equi_initiale_numero, ins_code_institut = :ins_code_institut WHERE equi_id_equipe = :IDequipe");
+				$stmt = $dbh->prepare("UPDATE equipe SET equi_nom_equipe = :equi_nom_equipe, equi_initiale_numero = :equi_initiale_numero WHERE equi_id_equipe = :IDequipe");
 				$stmt->bindParam(':equi_initiale_numero', $_GET['Initiate']);
 				$stmt->bindParam(':equi_nom_equipe', $_GET['equipe']);
-				if ($_GET['institut'] == "NULL") $_GET['institut'] = NULL;
-				$stmt->bindParam(':ins_code_institut', $_GET['institut']);
 				$stmt->bindParam(':IDequipe', $_GET['IDequipe']);
 
 				$stmt->execute();
