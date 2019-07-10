@@ -29,6 +29,8 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 termes.
 */
 
+// TODO timeout
+/*
 $time = $_SERVER['REQUEST_TIME'];
 $timeout_duration = 1800;
 if (isset($_SESSION['LAST_ACTIVITY']) &&
@@ -39,7 +41,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) &&
     header('Location: index.php');
 }
 $_SESSION['LAST_ACTIVITY'] = $time;
-
+*/
 if (file_exists('script/config.json')){
   $json_source = file_get_contents('script/config.json');
   $config_data = json_decode($json_source, true);
@@ -54,6 +56,7 @@ if (file_exists('script/config.json')){
   $config_data['refCahier'];
   $config_data['nomenclature'];
   $config_data['solvantsDeSolubilisation'];
+  $config_data['param_numerotation'];
   */
 }
 else {
@@ -64,6 +67,7 @@ else {
   $config_data['refCahier'] = 0;
   $config_data['nomenclature'] = 0;
   $config_data['solvantsDeSolubilisation'] = 0;
+  $config_data['param_numerotation'] = 0;
 }
 
 
@@ -154,7 +158,7 @@ if (isset($transfert)) {
 
 </head>
 <body>
-<table id="table_principal" width="98%" height="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+<table id="table_principal" width="98%" height="94%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td height="10%" colspan="2">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">

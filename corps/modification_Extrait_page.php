@@ -1,72 +1,11 @@
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
+<script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
+<link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
+<script type="text/javascript" src="./presentation/DataTables/RowReorder-1.2.4/js/dataTables.rowReorder.js"></script>
+<link rel="stylesheet" type="text/css" href="./presentation/DataTables/Select-1.3.0/css/select.dataTables.css"/>
+<script type="text/javascript" src="./presentation/DataTables/Select-1.3.0/js/dataTables.select.js"></script>
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font: 16px Arial;
-}
-
-/*the container must be positioned relative:*/
-.autocomplete {
-  position: relative;
-  display: inline-block;
-}
-
-div.autocomplete input, input.autocomplete  {
-  border: 1px solid transparent;
-  background-color: #f1f1f1;
-  padding: 10px;
-  font-size: 16px;
-}
-
-div.autocomplete input[type=image] {
-  padding: 0;
-}
-
-div.autocomplete input[type=text] {
-  background-color: #f1f1f1;
-  width: 100%;
-}
-
-input[type=submit].autocomplete  {
-  background-color: DodgerBlue;
-  color: #fff;
-  cursor: pointer;
-}
-
-.autocomplete-items {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
-}
-
-.autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
-}
-
-/*when hovering an item:*/
-.autocomplete-items div:hover {
-  background-color: #e9e9e9;
-}
-
-/*when navigating through the items using the arrow keys:*/
-.autocomplete-active {
-  background-color: DodgerBlue !important;
-  color: #ffffff;
-}
-
 table.table-tableau {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -359,18 +298,6 @@ if (isset($_GET['echantillon'])) {
     }
 
   }
-
-  // [JM - 05/07/2019] liste des code echantillon
-  $sql_autocomplete = "SELECT ech_code_echantillon FROM echantillon order by ech_code_echantillon";
-  $result_autocomplete = $dbh->query($sql_autocomplete);
-
-  $var_id_echantillon = "[";
-
-  foreach ($result_autocomplete as $key => $value) {
-    $var_id_echantillon .=  '"'.$value[0].'",';
-  }
-  $var_id_echantillon .= '""]';
-
   ?>
 
   <h3 align="center">Modification d'échantillon</h3>
@@ -378,13 +305,41 @@ if (isset($_GET['echantillon'])) {
 
   <form id="myForm" action="" method="POST" style=" text-align: center;">
     <!-- [JM - 01/02/2019] Recherche du produit -->
-    <div class="autocomplete" style="width:325px;">
-      <input id="myInput" placeholder="code échantillon" type="text" name="echantillon" <?php if (isset($_POST['echantillon'])) echo "value='".$_POST['echantillon']."'"; ?> onfocus="this.select()" autofocus>
-    </div>
-    <input type="submit" class="autocomplete" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
+    <table id="tab_echantillon" class="display">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Code</th>
+        <th>Contact</th>
+        <th>DOI</th>
+        <th>Disponibilité</th>
+        <th>Quantité</th>
+        <th>Lieu de stockage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+      foreach ($dbh->query("SELECT * FROM echantillon ORDER BY ech_code_echantillon") as $row) {
+        echo '
+        <tr>
+        <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="echantillon" value="'.urldecode($row[0]).'"';if (isset($_POST['echantillon']) && $row[0] == $_POST['echantillon']) echo "checked"; ;echo '></td>
+        <td>'.urldecode($row[0]).'</td>
+        <td>'.urldecode($row[1]).'</td>
+        <td>'.urldecode($row[2]).'</td>
+        <td>';if ($row[3]) {echo "Oui";} else {echo "Non";} echo '</td>
+        <td>'.urldecode($row[4]).'</td>
+        <td>'.urldecode($row[5]).'</td>
+        </tr>
+        ';
+      }
+      ?>
+    </tbody>
+    </table>
+    <br/>
+    <input type="submit" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
     <br><br>
   </form>
-
+  <hr>
   <?php
 
   if(isset($_POST['echantillon'])){
@@ -673,7 +628,7 @@ if (isset($_GET['echantillon'])) {
       echo "<br/>";
       echo "</div>";
       echo "</div>";
-      
+
       // [JM - 05/07/2019] Creation de popup pour afficher la liste des fichiers
 
       //Purification
@@ -805,115 +760,11 @@ unset($dbh);
 ?>
 
 <script>
-function autocomplete(inp, arr) {
-  /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
-  var currentFocus;
-  /*execute a function when someone writes in the text field:*/
-  inp.addEventListener("input", function(e) {
-    var a, b, i, val = this.value;
-    /*close any already open lists of autocompleted values*/
-    closeAllLists();
-    if (!val) { return false;}
-    currentFocus = -1;
-    /*create a DIV element that will contain the items (values):*/
-    a = document.createElement("DIV");
-    a.setAttribute("id", this.id + "autocomplete-list");
-    a.setAttribute("class", "autocomplete-items");
-    /*append the DIV element as a child of the autocomplete container:*/
-    this.parentNode.appendChild(a);
-    /*for each item in the array...*/
-    var nb = 0;
-    for (i = 0; i < arr.length; i++) {
-      /*check if the item starts with the same letters as the text field value:*/
-      if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-        nb++;
-        if (nb <= 15){
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
-          b.addEventListener("click", function(e) {
-            /*insert the value for the autocomplete text field:*/
-            inp.value = this.getElementsByTagName("input")[0].value;
-            /*close the list of autocompleted values,
-            (or any other open lists of autocompleted values:*/
-            closeAllLists();
-          });
-          a.appendChild(b);
-        }
-      }
-    }
-  });
-  /*execute a function presses a key on the keyboard:*/
-  inp.addEventListener("keydown", function(e) {
-    var x = document.getElementById(this.id + "autocomplete-list");
-    if (x) x = x.getElementsByTagName("div");
-    if (e.keyCode == 40) {
-      /*If the arrow DOWN key is pressed,
-      increase the currentFocus variable:*/
-      currentFocus++;
-      /*and and make the current item more visible:*/
-      addActive(x);
-    } else if (e.keyCode == 38) { //up
-      /*If the arrow UP key is pressed,
-      decrease the currentFocus variable:*/
-      currentFocus--;
-      /*and and make the current item more visible:*/
-      addActive(x);
-    } else if (e.keyCode == 13) {
-      /*If the ENTER key is pressed, prevent the form from being submitted,*/
-      //e.preventDefault();
-      if (currentFocus > -1) {
-        /*and simulate a click on the "active" item:*/
-        if (x) x[currentFocus].click();
-      }
-    }
-  });
-  function addActive(x) {
-    /*a function to classify an item as "active":*/
-    if (!x) return false;
-    /*start by removing the "active" class on all items:*/
-    removeActive(x);
-    if (currentFocus >= x.length) currentFocus = 0;
-    if (currentFocus < 0) currentFocus = (x.length - 1);
-    /*add class "autocomplete-active":*/
-    x[currentFocus].classList.add("autocomplete-active");
-  }
-  function removeActive(x) {
-    /*a function to remove the "active" class from all autocomplete items:*/
-    for (var i = 0; i < x.length; i++) {
-      x[i].classList.remove("autocomplete-active");
-    }
-  }
-  function closeAllLists(elmnt) {
-    /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
-    var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
-      if (elmnt != x[i] && elmnt != inp) {
-        x[i].parentNode.removeChild(x[i]);
-      }
-    }
-  }
-  /*execute a function when someone clicks in the document:*/
-  document.addEventListener("click", function (e) {
-    closeAllLists(e.target);
-  });
-}
-
-/*An array containing all the country names in the world:*/
-var id_echantillon = <?php echo $var_id_echantillon;?>;
-
-
-/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-autocomplete(document.getElementById("myInput"), id_echantillon);
-
 $(document).ready(function() {
-  $('table.display').DataTable();
-} );
+    $('#tab_echantillon').DataTable({select: {style: 'single'}});
+
+    $('#tab_echantillon tr').click(function() {
+      $(this).find('td input:radio').prop('checked', true);
+    });
+});
 </script>

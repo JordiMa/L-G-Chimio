@@ -37,6 +37,6 @@ include_once 'presentation/entete.php';
 $menu=14;
 include_once 'presentation/gauche.php';
 $transfert=false;
-include_once 'corps/saisie1_Extrait.php';
+include_once 'corps/saisie1_Condition.php';
 include_once 'presentation/pied.php';
 ?>
