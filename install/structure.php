@@ -947,7 +947,6 @@ CREATE TABLE IF NOT EXISTS Fichier_taxonomie (
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
   tax_ID INTEGER NOT NULL references Taxonomie(tax_ID),
-  UNIQUE (fic_fichier, tax_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Fichier_specimen (
@@ -955,7 +954,6 @@ CREATE TABLE IF NOT EXISTS Fichier_specimen (
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
   spe_code_specimen CHARACTER VARYING(255) NOT NULL references Specimen(spe_code_specimen),
-  UNIQUE (fic_fichier, spe_code_specimen)
 );
 
 CREATE TABLE IF NOT EXISTS Partie_organisme (
@@ -981,7 +979,6 @@ CREATE TABLE IF NOT EXISTS Fichier_conditions (
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
   con_ID INTEGER NOT NULL references Condition(con_ID),
-  UNIQUE (fic_fichier, con_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Echantillon (
@@ -1023,7 +1020,6 @@ CREATE TABLE IF NOT EXISTS Fichier_purification (
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
   pur_ID INTEGER NOT NULL references Purification(pur_ID),
-  UNIQUE (fic_fichier, pur_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Produit_Extraits (

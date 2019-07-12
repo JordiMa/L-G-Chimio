@@ -259,10 +259,9 @@ if ($row[0]=='{ADMINISTRATEUR}') {
       echo "<div class='container'>";
       // [JM - 05/07/2019] cree une liste des extrait et de leur purification
       $req_extrait = "
-      SELECT ext_ID, ext_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, ins_nom FROM extraits
+      SELECT ext_ID, ext_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe FROM extraits
       INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
       LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
-      LEFT OUTER JOIN institut ON institut.ins_code_institut = equipe.ins_code_institut
       WHERE ech_code_echantillon = '".$_GET['echantillon']."'";
       $query_extrait = $dbh->query($req_extrait);
       $resultat_extrait = $query_extrait->fetchALL(PDO::FETCH_NUM);
@@ -283,7 +282,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
         echo "<br/><strong>observations : </strong>" .$value[7];
         echo "<br/><strong>Nom du chimiste : </strong>" .$value[8]. " " .$value[9] ;
         echo "<br/><strong>Equipe : </strong>" .$value[10];
-        echo "<br/><strong>Institut : </strong>" .$value[11];
         echo "<div class='hr'>Purifications</div>";
         echo "
         <div style='max-height: 250px;overflow: auto; width: 100%;'>
