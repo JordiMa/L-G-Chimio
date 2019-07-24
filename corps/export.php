@@ -284,7 +284,7 @@ for ($i=0; $i < $countACB; $i++) {
 
 
 	if (isset($_POST['download_x']) || isset($_POST['liste_x'])){
-		$sql_sdf = "SELECT pro_id_produit, pro_num_constant, str_mol, pro_masse, pro_purete, pro_methode_purete, pro_origine_substance, pro_numero, str_inchi, typ_type, equi_nom_equipe, chim.chi_nom AS chim_nom, chim.chi_prenom AS chim_prenom, resp.chi_nom AS resp_nom, resp.chi_prenom AS resp_prenom, cou_couleur, pro_purification, pro_aspect, pro_date_entree, pro_ref_cahier_labo, pro_observation, pro_point_fusion, pro_point_ebullition, pro_num_cn, pro_qrcode, pro_controle_purete, pro_date_controle_purete, pro_controle_structure, pro_champsannexe
+		$sql_sdf = "SELECT pro_id_produit, pro_num_constant, str_mol, pro_masse, pro_purete, pro_methode_purete, pro_origine_substance, pro_numero, str_inchi, typ_type, equi_nom_equipe, chim.chi_nom AS chim_nom, chim.chi_prenom AS chim_prenom, resp.chi_nom AS resp_nom, resp.chi_prenom AS resp_prenom, cou_couleur, pro_purification, pro_aspect, pro_date_entree, pro_ref_cahier_labo, pro_observation, pro_point_fusion, pro_point_ebullition, pro_num_cn, pro_qrcode, pro_controle_purete, pro_date_controle_purete, pro_controle_structure
 								FROM produit
 								LEFT JOIN structure ON produit.pro_id_structure = structure.str_id_structure
 								LEFT JOIN equipe ON produit.pro_id_equipe = equipe.equi_id_equipe
@@ -388,7 +388,7 @@ for ($i=0; $i < $countACB; $i++) {
 			$result_sdf = $dbh->query($sql_sdf);
 
 			// [JM - 24/01/2019] Récupération de la liste des produits en plaque
-			$sql_plaque="SELECT pos_id_plaque, pos_id_produit FROM position;";
+			$sql_plaque="SELECT pos_id_plaque, pos_id_produit, pla_identifiant_local FROM position Inner Join plaque on position.pos_id_plaque = plaque.pla_id_plaque;";
 			$result_plaque =$dbh->query($sql_plaque);
 			$row_plaque=$result_plaque->fetchAll(PDO::FETCH_NUM);
 
@@ -470,9 +470,9 @@ for ($i=0; $i < $countACB; $i++) {
 								$contenuFichier_sdf .= "\n>  <plaque> (".($key + 1) .")";
 								// [JM - 24/01/2019] Boucle sur la liste des produits en plaque
 
-								$key_arr = array_search($value[0], array_column($row_plaque, 0));
+								$key_arr = array_search($value[0], array_column($row_plaque, 1));
 								if ($key_arr){
-									$contenuFichier_sdf .= "\n". $row_plaque[$key_arr][0];
+									$contenuFichier_sdf .= "\n". $row_plaque[$key_arr][2];
 								}
 								unset($key_arr);
 							}
@@ -760,9 +760,9 @@ for ($i=0; $i < $countACB; $i++) {
 								unset($value['pro_masse']);
 
 								if(in_array(SELECT_NUMPLAQUE, $arrayChampsExport)){
-									$key_arr = array_search($value[0], array_column($row_plaque, 0));
+									$key_arr = array_search($value[0], array_column($row_plaque, 1));
 									if ($key_arr){
-										$contenuFichier_csv[$key+1][array_search("Numéro de plaque", $contenuFichier_csv[0])] = $row_plaque[$key_arr][0];
+										$contenuFichier_csv[$key+1][array_search("Numéro de plaque", $contenuFichier_csv[0])] = $row_plaque[$key_arr][2];
 									}
 									unset($key_arr);
 								}
