@@ -115,7 +115,7 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 
-
+/*
 print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <tr>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Extrait.php\">Extrait</a></td>
@@ -126,7 +126,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Expedition.php\">Expedition</a></td>
   </tr>
   </table><br/>";
-
+*/
 ?>
 
 <form name="myform" class="" action="" method="post" enctype="multipart/form-data">
@@ -152,7 +152,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
       Sous-espece<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Sous-espece" value=""><br/><br/>
       <br/>
       Variete<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Variete" value=""><br/><br/>
-      Protocole<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Protocole" value=""><br/><br/>
+      Protocole<br/><textarea rows="5" cols="50" class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" name="Taxonomie_Protocole"></textarea><br/><br/>
       Sequencage<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Sequencage" value=""><br/><br/>
       Ref book<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_RefBook" value=""><br/><br/>
       Fichier<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Taxonomie_Fichier[]" value="" multiple><br/><br/>
@@ -219,6 +219,7 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
   else {
     echo "<center><h3>Données enregistrées</h3></center>";
     $dbh->commit();
+    echo "<script>window.close();</script>";
   }
 }
 ?>

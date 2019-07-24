@@ -205,16 +205,14 @@ include_once 'langues/'.$_SESSION['langue'].'/lang_export.php';
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
 
-if ($row[0]=='{ADMINISTRATEUR}') {
-
   print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Extrait.php\">Extraits</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Echantillon.php\">Échantillon</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Extrait.php\">Extrait</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Echantillon.php\">Échantillon</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Condition.php\">Condition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"recherche_Specimen.php\">Specimen</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Taxonomie.php\">Taxonomie</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Expedition</a></td>
     </tr>
     </table><br/>";
 
@@ -222,71 +220,9 @@ if (isset($_GET['specimen'])) {
   $_POST['specimen'] = $_GET['specimen'];
 }
 // [JM - 05/07/2019] gestion des modification
-  if(isset($_POST["type"])){
-    switch ($_POST["type"]) {
-      case 'fic_spe_suppr':
-        $stmt = $dbh->prepare("DELETE FROM fichier_specimen WHERE fic_id = :fic_id");
-        $stmt->bindParam(':fic_id', $_POST['id']);
-        $stmt->execute();
-        break;
-
-      case 'specimen':
-        $stmt = $dbh->prepare("UPDATE specimen SET spe_date_recolte = :spe_date_recolte, spe_lieu_recolte = :spe_lieu_recolte, spe_gps_recolte = :spe_gps_recolte, spe_observation = :spe_observation, spe_collection = :spe_collection, spe_contact = :spe_contact, spe_collecteur = :spe_collecteur WHERE spe_code_specimen = :spe_code_specimen");
-        $stmt->bindParam(':spe_date_recolte', $_POST['Specimen_Date']);
-        $stmt->bindParam(':spe_lieu_recolte', $_POST['Specimen_Lieu']);
-        $stmt->bindParam(':spe_gps_recolte', $_POST['Specimen_GPS']);
-        $stmt->bindParam(':spe_observation', $_POST['Specimen_Observation']);
-        $stmt->bindParam(':spe_collection', $_POST['Specimen_Collection']);
-        $stmt->bindParam(':spe_contact', $_POST['Specimen_Contact']);
-        $stmt->bindParam(':spe_collecteur', $_POST['Specimen_Collecteur']);
-        $stmt->bindParam(':spe_code_specimen', $_POST['id']);
-        $stmt->execute();
-
-        if(isset($_FILES['fichier'])){
-          foreach ($_FILES['fichier']['name'] as $key => $value) {
-            if ($_FILES['fichier']['size'][$key] != 0) {
-              $extension_fichier=strtolower(pathinfo($_FILES['fichier']['name'][$key], PATHINFO_EXTENSION));
-              $fichier=file_get_contents($_FILES['fichier']['tmp_name'][$key]);
-              $fichier=Base64_encode($fichier);
-
-              $stmt = $dbh->prepare("INSERT INTO fichier_specimen (fic_fichier, fic_type, spe_code_specimen) VALUES (:fic_fichier, :fic_type, :spe_code_specimen)");
-              $stmt->bindParam(':fic_fichier', $fichier);
-              $stmt->bindParam(':fic_type', $extension_fichier);
-              $stmt->bindParam(':spe_code_specimen', $_POST['id']);
-              $stmt->execute();
-
-              print_r($stmt->errorInfo());
-            }
-          }
-        }
-
-        break;
-
-      case 'taxonomie':
-        $stmt = $dbh->prepare("UPDATE specimen SET tax_id = :tax_id WHERE spe_code_specimen = :spe_code_specimen");
-        $stmt->bindParam(':tax_id', $_POST['id']);
-        $stmt->bindParam(':spe_code_specimen', $_POST['specimen']);
-
-        $stmt->execute();
-        break;
-
-      case 'expedition':
-        $stmt = $dbh->prepare("UPDATE specimen SET exp_id = :exp_id WHERE spe_code_specimen = :spe_code_specimen");
-        $stmt->bindParam(':exp_id', $_POST['id']);
-        $stmt->bindParam(':spe_code_specimen', $_POST['specimen']);
-
-        $stmt->execute();
-        break;
-
-      default:
-        // code...
-        break;
-    }
-    echo '<script>window.location.replace("modification_Specimen.php?specimen='.$_POST['specimen'].'");</script>';
-  }
   ?>
 
-  <h3 align="center">Modification de specimen</h3>
+  <h3 align="center">Recherche de specimen</h3>
   <hr>
 
   <form id="myForm" action="" method="POST" style=" text-align: center;">
@@ -341,7 +277,6 @@ if (isset($_GET['specimen'])) {
     // [JM - 05/07/2019] affichage des information liée au specimen
     if (!empty($row_specimen[0])) {
       echo "<div style=\"margin-left: 10px;\">";
-      echo "<a class='btnFic' href=\"#modif_spe\" style=\"float: right;\">Modifier</a>";
       echo "<br/><strong>Code specimen : </strong>" .$row_specimen[0];
       echo "<br/>";
       echo "<br/><strong>Date de recolte : </strong>" .$row_specimen[1];
@@ -356,31 +291,7 @@ if (isset($_GET['specimen'])) {
       echo "<br/><br/><a class='btnFic' href=\"#fic_spe\">Voir les fichier</a>";
       echo "<br/>";
       echo "<br/>";
-      echo '
-      <div id="modif_spe" class="overlay">
-        <div id="popup_modif" class="popup">
-          <h2>specimen '.$row_specimen[0].'</h2>
-          <a class="close" href="#return">&times;</a>
-          <div class="content">
-            <form id="myForm" action="" method="POST" enctype="multipart/form-data">
-              <input type="hidden" name="specimen" value="'.$row_specimen[0].'">
-              <input type="hidden" name="type" value="specimen">
-              <input type="hidden" name="id" value="'.$row_specimen[0].'">
-              Date *<br/><input class="echantillon_nouveau specimen_nouveau" type="date" name="Specimen_Date" value="'.$row_specimen[1].'" required><br/><br/>
-              Lieu de recolte *<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Lieu" value="'.$row_specimen[2].'" required><br/><br/>
-              <br/>
-              GPS<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_GPS" value="'.$row_specimen[3].'"><br/><br/>
-              Observation<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Observation" value="'.$row_specimen[4].'"><br/><br/>
-              Collection<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Collection" value="'.$row_specimen[5].'"><br/><br/>
-              Contact<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Contact" value="'.$row_specimen[6].'"><br/><br/>
-              Collecteur<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Collecteur" value="'.$row_specimen[7].'"><br/><br/>
-                      Fichier<br/><input class="echantillon_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="fichier[]" multiple><br/><br/>
-              <br/><br/><input type="submit" style="float: right;">
-            </form>
-          </div>
-        </div>
-      </div>
-      ';
+
       echo "</div>";
 
       echo "<hr>";
@@ -389,7 +300,6 @@ if (isset($_GET['specimen'])) {
 
       echo "<div class='infos'>";
       echo "<div class='hr click_expedition'>Expedition</div>";
-      echo "<a class='btnFic' href=\"#modif_expedition\" style=\"float: right;\">Modifier</a>";
       echo "<br/>";
       echo "<br/>";
       echo "<br/><strong>ID expedition : </strong>" .$row_specimen[10];
@@ -405,7 +315,6 @@ if (isset($_GET['specimen'])) {
 
       echo "<div class='infos'>";
       echo "<div class='hr click_taxonomie'>Taxonomie</div>";
-      echo "<a class='btnFic' href=\"#modif_taxonomie\" style=\"float: right;\">Modifier</a>";
       echo "<br/>";
       echo "<br/>";
       echo "<br/><strong>ID taxonomie : </strong>" .$row_specimen[19];
@@ -457,53 +366,6 @@ if (isset($_GET['specimen'])) {
       </div>
       ';
 
-      echo '
-      <div id="modif_taxonomie" class="overlay">
-      <div id="popup_select" class="popup">
-      <h2>Conditions</h2>
-      <a class="close" href="#return">&times;</a>
-      <form id="myForm" action="" method="POST">
-        <input type="hidden" name="specimen" value="'.$row_specimen[0].'">
-        <input type="hidden" name="type" value="taxonomie">
-      ';
-      ?>
-      <table id="tab_taxonomie" class="display">
-        <thead>
-        <tr>
-          <th></th>
-          <th>ID</th>
-          <th>Type</th>
-          <th>Genre</th>
-          <th>Espece</th>
-          <th>Sous-espece</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        foreach ($dbh->query("SELECT tax_id, typ_tax_type, tax_genre, tax_espece, tax_sous_espece FROM taxonomie INNER JOIN type_taxonomie ON taxonomie.typ_tax_id = type_taxonomie.typ_tax_id ORDER BY typ_tax_type, tax_genre, tax_espece, tax_sous_espece") as $row) {
-          echo '
-          <tr>
-          <td><input type="radio" name="id" value="'.urldecode($row[0]).'"></td>
-          <td>'.urldecode($row[0]).'</td>
-          <td>'.urldecode($row[1]).'</td>
-          <td>'.urldecode($row[2]).'</td>
-          <td>'.urldecode($row[3]).'</td>
-          <td>'.urldecode($row[4]).'</td>
-          </tr>
-          ';
-        }
-        ?>
-      </tbody>
-      </table>
-      <br/>
-      <center><input type="submit"></center>
-      <?php
-      echo '
-      </form>
-      </div>
-      </div>
-      ';
-
       //Taxonomie
       echo '
       <div id="fic_tax" class="overlay">
@@ -538,14 +400,7 @@ if (isset($_GET['specimen'])) {
       ';
       $liste_tax = "";
       foreach ($dbh->query("SELECT * FROM fichier_specimen WHERE spe_code_specimen = '".$row_specimen[0]."'") as $key => $value1) {
-        echo '
-        <form id="btnSupprForm'.$value1[0].'" method="POST" >
-          <input type="hidden" name="specimen" value="'.$row_specimen[0].'"/>
-          <input type="hidden" name="type" value="fic_spe_suppr" />
-          <input type="hidden" name="id" value="'.$value1[0].'"/>
-        </form>
-        ';
-        $liste_tax .='<li><a href="telecharge.php?id='.$value1[0].'&rankExtra=specimen" target="_blank"> Fichier '.$value1[0].' : '.$value1[2].'</a> | <a href="#" onclick="if (confirm(\'Etes-vous sûr ?\')){document.getElementById(\'btnSupprForm'.$value1[0].'\').submit();}">Supprimer</a></li>';
+        $liste_tax .='<li><a href="telecharge.php?id='.$value1[0].'&rankExtra=specimen" target="_blank"> Fichier '.$value1[0].' : '.$value1[2].'</a></a></li>';
 
       }
       if ($liste_tax != "") {
@@ -560,59 +415,12 @@ if (isset($_GET['specimen'])) {
       </div>
       ';
 
-
-      echo '
-      <div id="modif_expedition" class="overlay">
-      <div id="popup_select" class="popup">
-      <h2>Conditions</h2>
-      <a class="close" href="#return">&times;</a>
-      <form id="myForm" action="" method="POST">
-        <input type="hidden" name="specimen" value="'.$row_specimen[0].'">
-        <input type="hidden" name="type" value="expedition">
-      ';
-      ?>
-      <table id="tab_expedition" class="display">
-        <thead>
-        <tr>
-          <th></th>
-          <th>ID</th>
-          <th>Nom</th>
-          <th>Contact</th>
-          <th>Code pays</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        foreach ($dbh->query("SELECT * FROM expedition ORDER BY exp_id") as $row) {
-          echo '
-          <tr>
-          <td><input type="radio" name="id" value="'.urldecode($row[0]).'"></td>
-          <td>'.urldecode($row[0]).'</td>
-          <td>'.urldecode($row[1]).'</td>
-          <td>'.urldecode($row[2]).'</td>
-          <td>'.urldecode($row[3]).'</td>
-          </tr>
-          ';
-        }
-        ?>
-      </tbody>
-      </table>
-      <br/>
-      <center><input type="submit"></center>
-      <?php
-      echo '
-      </form>
-      </div>
-      </div>
-      ';
-
     }
     else {
       echo "<center><h2>Aucun résultat trouvé</h2></center>";
     }
   }
-}
-else require 'deconnexion.php';
+
 unset($dbh);
 ?>
 
@@ -621,18 +429,6 @@ $(document).ready(function() {
     $('#tab_specimen').DataTable({select: {style: 'single'}});
 
     $('#tab_specimen tr').click(function() {
-      $(this).find('td input:radio').prop('checked', true);
-    });
-
-    $('#tab_taxonomie').DataTable({select: {style: 'single'}});
-
-    $('#tab_taxonomie tr').click(function() {
-      $(this).find('td input:radio').prop('checked', true);
-    });
-
-    $('#tab_expedition').DataTable({select: {style: 'single'}});
-
-    $('#tab_expedition tr').click(function() {
       $(this).find('td input:radio').prop('checked', true);
     });
 });

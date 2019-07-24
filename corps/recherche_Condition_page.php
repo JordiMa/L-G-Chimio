@@ -205,152 +205,63 @@ include_once 'langues/'.$_SESSION['langue'].'/lang_export.php';
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
 
-if ($row[0]=='{ADMINISTRATEUR}') {
-
   print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Extrait.php\">Extraits</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Echantillon.php\">Échantillon</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Extrait.php\">Extrait</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Echantillon.php\">Échantillon</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"recherche_Condition.php\">Condition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Specimen.php\">Specimen</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Taxonomie.php\">Taxonomie</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Expedition</a></td>
     </tr>
     </table><br/>";
-
-if (isset($_GET['expedition'])) {
-  $_POST['expedition'] = $_GET['expedition'];
-}
-// [JM - 05/07/2019] gestion des modification
-  if(isset($_POST["type"])){
-    switch ($_POST["type"]) {
-      case 'expedition':
-        $stmt = $dbh->prepare("UPDATE expedition SET exp_nom = :exp_nom, exp_contact = :exp_contact, pay_code_pays = :pay_code_pays WHERE exp_id = :exp_id");
-        $stmt->bindParam(':exp_nom', $_POST['Nom']);
-        $stmt->bindParam(':exp_contact', $_POST['Contact']);
-        $stmt->bindParam(':pay_code_pays', $_POST['Pays']);
-        $stmt->bindParam(':exp_id', $_POST['id']);
-        $stmt->execute();
-        break;
-
-      default:
-        // code...
-        break;
-    }
-    echo '<script>window.location.replace("modification_Expedition.php?expedition='.$_POST['expedition'].'");</script>';
-  }
   ?>
 
-  <h3 align="center">Modification d'expedition</h3>
+  <h3 align="center">Recherche de condition</h3>
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
     <!-- [JM - 01/02/2019] Recherche du produit -->
-    <table id="tab_expedition" class="display">
+    <table id="tab_Condition" class="display">
       <thead>
       <tr>
-        <th></th>
         <th>ID</th>
-        <th>Nom</th>
-        <th>Contact</th>
-        <th>Code pays</th>
+        <th>Milieu</th>
+        <th>Temperature</th>
+        <th>Type de culture</th>
+        <th>Mode operatoir</th>
+        <th>Observation</th>
       </tr>
     </thead>
     <tbody>
       <?php
-      foreach ($dbh->query("SELECT * FROM expedition ORDER BY exp_id") as $row) {
+      foreach ($dbh->query("SELECT * FROM condition ORDER BY con_id") as $row) {
         echo '
         <tr>
-        <td><input type="radio" name="expedition" value="'.urldecode($row[0]).'"';if (isset($_POST['expedition']) && $row[0] == $_POST['expedition']) echo "checked"; ;echo '></td>
         <td>'.urldecode($row[0]).'</td>
         <td>'.urldecode($row[1]).'</td>
         <td>'.urldecode($row[2]).'</td>
         <td>'.urldecode($row[3]).'</td>
+        <td>'.urldecode($row[4]).'</td>
+        <td>'.urldecode($row[5]).'</td>
         </tr>
         ';
       }
       ?>
     </tbody>
     </table>
-    <br/>
-    <input type="submit" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
     <br><br>
   </form>
-  <hr>
   <?php
 
-  if(isset($_POST['expedition'])){
-    $sql_expedition =
-    "SELECT * FROM expedition WHERE exp_id = '".$_POST['expedition']."';";
-
-    $result_expedition = $dbh->query($sql_expedition);
-    $row_expedition = $result_expedition->fetch(PDO::FETCH_NUM);
-    // [JM - 05/07/2019] affichage des information liée à l'echantillon
-    if (!empty($row_expedition[0])) {
-
-      echo "<div style='text-align: center;'>";
-      echo "<div class='hr click_expedition'>Expedition</div>";
-      echo "<a class='btnFic' style=\"float: right;\" href=\"#modif_expedition\">Modifier</a>";
-      echo "<br/>";
-      echo "<br/>";
-      echo "<br/><strong>ID expedition : </strong>" .$row_expedition[0];
-      echo "<br/>";
-      echo "<br/><strong>Nom : </strong>" .$row_expedition[1];
-      echo "<br/><strong>Contact : </strong>" .$row_expedition[2];
-      echo "<br/><strong>Code pays : </strong>" .$row_expedition[3];
-      echo "<br/>";
-      echo "<br/>";
-      echo "</div>";
-      echo "</div>";
-
-      // [JM - 05/07/2019] Creation de popup pour afficher la liste des fichiers
-
-      //expedition
-      echo '
-      <div id="modif_expedition" class="overlay">
-      <div id="popup_modif" class="popup">
-      <h2>Expedition</h2>
-      <a class="close" href="#return">&times;</a>
-      <form id="myForm" action="" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="expedition" value="'.$row_expedition[0].'">
-        <input type="hidden" name="type" value="expedition">
-        <input type="hidden" name="id" value="'.$row_expedition[0].'">
-        <br/><strong>ID expedition : </strong>'.$row_expedition[0].'
-        <br/><br/>
-        Nom<br/><input type="text" name="Nom" value="'.$row_expedition[1].'"><br/><br/>
-        Contact<br/><input type="text" name="Contact" value="'.$row_expedition[2].'">°C<br/><br/>
-        pays<br/>
-        <select name="Pays" required>
-          <option value=""></option>';
-
-          foreach ($dbh->query("SELECT * FROM Pays ORDER BY pay_code_pays") as $row) {
-            echo '<option value="'.urldecode($row[0]).'"'; if ($row_expedition[3] == $row[0]) {echo "selected";} echo '>'.urldecode($row[1]).'</option>';
-          }
-        echo '
-        </select>
-        <br/><br/>
-      <br/>
-      <center><input type="submit"></center>
-      </form>
-      </div>
-      </div>
-      ';
-
-    }
-    else {
-      echo "<center><h2>Aucun résultat trouvé</h2></center>";
-    }
-  }
-}
-else require 'deconnexion.php';
 unset($dbh);
 ?>
 
 <script>
 $(document).ready(function() {
-    $('#tab_expedition').DataTable({select: {style: 'single'}});
+    $('#tab_Condition').DataTable({select: {style: 'single'}});
 
-    $('#tab_expedition tr').click(function() {
+    $('#tab_Condition tr').click(function() {
       $(this).find('td input:radio').prop('checked', true);
     });
 });

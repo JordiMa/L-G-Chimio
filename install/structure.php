@@ -890,6 +890,7 @@ CREATE Table IF NOT EXISTS champsProduit (
   PRIMARY KEY (pro_id_produit, cha_ID)
 );
 
+
 CREATE TABLE IF NOT EXISTS Pays (
   pay_code_pays CHARACTER VARYING(3) PRIMARY KEY,
   pay_pays CHARACTER VARYING(55) NOT NULL,
@@ -946,14 +947,14 @@ CREATE TABLE IF NOT EXISTS Fichier_taxonomie (
   fic_ID SERIAL PRIMARY KEY,
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
-  tax_ID INTEGER NOT NULL references Taxonomie(tax_ID),
+  tax_ID INTEGER NOT NULL references Taxonomie(tax_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Fichier_specimen (
   fic_ID SERIAL PRIMARY KEY,
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
-  spe_code_specimen CHARACTER VARYING(255) NOT NULL references Specimen(spe_code_specimen),
+  spe_code_specimen CHARACTER VARYING(255) NOT NULL references Specimen(spe_code_specimen)
 );
 
 CREATE TABLE IF NOT EXISTS Partie_organisme (
@@ -978,7 +979,7 @@ CREATE TABLE IF NOT EXISTS Fichier_conditions (
   fic_ID SERIAL PRIMARY KEY,
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
-  con_ID INTEGER NOT NULL references Condition(con_ID),
+  con_ID INTEGER NOT NULL references Condition(con_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Echantillon (
@@ -994,8 +995,8 @@ CREATE TABLE IF NOT EXISTS Echantillon (
 );
 
 CREATE TABLE IF NOT EXISTS Extraits (
-  ext_ID SERIAL PRIMARY KEY,
-  ext_solvant CHARACTER VARYING(255) NOT NULL,
+  ext_Code_Extraits CHARACTER VARYING(255) PRIMARY KEY,
+  ext_solvant smallint NOT NULL references solvant(sol_id_solvant),
   ext_type_extraction CHARACTER VARYING(255),
   ext_etat CHARACTER VARYING(255),
   ext_disponibilite BOOLEAN DEFAULT FALSE,
@@ -1011,31 +1012,31 @@ CREATE TABLE IF NOT EXISTS Purification(
   pur_ID SERIAL PRIMARY KEY,
   pur_purification CHARACTER VARYING(255) NOT NULL,
   pur_ref_book CHARACTER VARYING(255),
-  ext_ID INTEGER NOT NULL references Extraits(ext_ID),
-  UNIQUE (pur_purification, ext_id)
+  ext_Code_Extraits CHARACTER VARYING(255) NOT NULL references Extraits(ext_Code_Extraits),
+  UNIQUE (pur_purification, ext_Code_Extraits)
 );
 
 CREATE TABLE IF NOT EXISTS Fichier_purification (
   fic_ID SERIAL PRIMARY KEY,
   fic_fichier TEXT NOT NULL,
   fic_type CHARACTER VARYING(255) NOT NULL,
-  pur_ID INTEGER NOT NULL references Purification(pur_ID),
+  pur_ID INTEGER NOT NULL references Purification(pur_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Produit_Extraits (
   pro_id_produit INTEGER NOT NULL references Produit(pro_id_produit),
-  ext_ID INTEGER NOT NULL references Extraits(ext_ID),
-  PRIMARY KEY (pro_id_produit, ext_ID)
+  ext_Code_Extraits CHARACTER VARYING(255) NOT NULL references Extraits(ext_Code_Extraits),
+  PRIMARY KEY (pro_id_produit, ext_Code_Extraits)
 );
 
 CREATE TABLE IF NOT EXISTS Plaque_Extraits (
   pla_id_plaque INTEGER NOT NULL references Plaque(pla_id_plaque),
-  ext_ID INTEGER NOT NULL references Extraits(ext_ID),
+  ext_Code_Extraits CHARACTER VARYING(255) NOT NULL references Extraits(ext_Code_Extraits),
   pos_coordonnees CHARACTER VARYING(255) NOT NULL,
-  PRIMARY KEY (pla_id_plaque, ext_ID)
+  PRIMARY KEY (pla_id_plaque, ext_Code_Extraits)
 );
 
-ALTER TABLE Resultat ADD COLUMN ext_ID INTEGER references Extraits(ext_ID);
+ALTER TABLE Resultat ADD COLUMN ext_Code_Extraits CHARACTER VARYING(255) references Extraits(ext_Code_Extraits);
 
 ";
 ?>

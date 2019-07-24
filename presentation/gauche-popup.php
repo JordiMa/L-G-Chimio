@@ -1,7 +1,7 @@
 <?php
 /*
 Copyright Laurent ROBIN CNRS - Universit� d'Orl�ans 2011
-Distributeur : UGCN - http://chimiotheque-nationale.org
+Distributeur : UGCN - http://chimiotheque-nationale.enscm.fr
 
 Laurent.robin@univ-orleans.fr
 Institut de Chimie Organique et Analytique
@@ -28,15 +28,7 @@ invit�s � charger et tester l'ad�quation du logiciel � leurs besoins dan
 Le fait que vous puissiez acc�der � cet en-t�te signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accept� les
 termes.
 */
-include_once 'script/administrateur.php';
-include_once 'script/secure.php';
-include_once 'autoload.php';
-include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
-include_once 'langues/'.$_SESSION['langue'].'/lang_formulaire.php';
-include_once 'presentation/entete.php';
-$menu=18;
-include_once 'presentation/gauche-popup.php';
-$transfert=false;
-include_once 'corps/saisie1_Expedition.php';
-include_once 'presentation/pied.php';
+
 ?>
+<tr>
+  <td bgcolor="#FFFFFF" valign="top" width="87%" >

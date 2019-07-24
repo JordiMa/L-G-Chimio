@@ -35,8 +35,8 @@ include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
 include_once 'langues/'.$_SESSION['langue'].'/lang_formulaire.php';
 include_once 'presentation/entete.php';
 $menu=18;
-include_once 'presentation/gauche-popup.php';
+include_once 'presentation/gauche.php';
 $transfert=false;
-include_once 'corps/saisie1_Expedition.php';
+include_once 'corps/saisie1_Extrait2.php';
 include_once 'presentation/pied.php';
 ?>

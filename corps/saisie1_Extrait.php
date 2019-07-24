@@ -120,7 +120,7 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 //les résultats sont retournées dans la variable $result
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
-
+/*
 print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <tr>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"saisie_Extrait.php\">Extrait</a></td>
@@ -131,7 +131,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Expedition.php\">Expedition</a></td>
   </tr>
   </table><br/>";
-
+*/
 ?>
 
 <form name="myform" class="" action="" method="post" enctype="multipart/form-data">
@@ -147,7 +147,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <h1>Extrait</h1>
     <?php
 
-    if ($row[0]=="{ADMINISTRATEUR}") {
+    if ($row[0]=="{ADMINISTRATEUR}" or $row[0]=="{CHEF}") {
       $sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste Inner Join equipe on chimiste.chi_id_equipe = equipe.equi_id_equipe WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = FALSE AND chi_id_responsable IS NOT NULL order by chi_nom, chi_prenom";
       $result_autocomplete = $dbh->query($sql_autocomplete);
 
@@ -166,14 +166,25 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 
     <?php } ?>
     <br/><br/>
-    Solvants *<br/><input type="text" name="Extrait_Solvants" value="" required><br/><br/>
+    Code extrait *<br/><input type="text" name="Code_Extraits" value="" required><br/><br/>
+
+    Solvants *<br/>
+    <select name="Extrait_Solvants" required>
+      <option value=""></option>
+      <?php
+        foreach ($dbh->query("select * from solvant") as $key => $value) {
+          echo'<option value="'.$value[0].'">'.$value[1].'</option>';
+        }
+      ?>
+    </select><br/><br/>
+
     Disponibilité<br/><input type="checkbox" name="Extrait_Disponibilité" value=""><br/><br/>
     <br/>
     Type extraction<br/><input type="text" name="Extrait_Type_extraction" value=""><a href="#" onmouseover="ddrivetip('<p align=\'center\'>Exemple : macération / liquide-liquide</p>')" onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a><br/><br/>
     Etat<br/><input type="text" name="Extrait_Etat" value=""><a href="#" onmouseover="ddrivetip('<p align=\'center\'>Exemple : conservé sec / en solution dans méthanol</p>')" onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a><br/><br/>
-    Protocole<br/><input type="text" name="Extrait_Protocole" value=""><br/><br/>
+    Protocole<br/><textarea name="Extrait_Protocole" rows="5" cols="50"></textarea><br/><br/>
     Lieu de stockage<br/><input type="text" name="Extrait_Stockage" value=""><br/><br/>
-    Observation<br/><input type="text" name="Extrait_Observation" value=""><br/><br/>
+    Observation<br/><textarea name="Extrait_Observation" rows="5" cols="50"></textarea><br/><br/>
 
     <button type="button" name="button" onclick="hideDiv();showDiv('Purification');">Suivant</button>
   </div>
@@ -233,8 +244,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 
 // [JM - 05/07/2019] Insertion dans la base de données
 if(isset($_POST['send']) && $_POST['send'] == 'send'){
-
-  if ($row[0]=="{ADMINISTRATEUR}") {
+  if ($row[0]=="{ADMINISTRATEUR}" or $row[0]=="{CHEF}") {
     $sql_chi="SELECT chi_id_chimiste FROM chimiste WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['chimiste']."'";
     $result_chi=$dbh->query($sql_chi);
     $row_chi = $result_chi->fetch(PDO::FETCH_NUM);
@@ -247,7 +257,8 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
   $dbh->beginTransaction();
   $erreur = "";
 
-  $stmt = $dbh->prepare("INSERT INTO extraits (ext_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_id_chimiste, ech_code_echantillon) VALUES (:ext_solvant, :ext_type_extraction, :ext_etat, :ext_disponibilite, :ext_protocole, :ext_stockage, :ext_observations, :chi_id_chimiste, :ech_code_echantillon)");
+  $stmt = $dbh->prepare("INSERT INTO extraits (ext_Code_Extraits, ext_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_id_chimiste, ech_code_echantillon) VALUES (:ext_Code_Extraits, :ext_solvant, :ext_type_extraction, :ext_etat, :ext_disponibilite, :ext_protocole, :ext_stockage, :ext_observations, :chi_id_chimiste, :ech_code_echantillon)");
+  $stmt->bindParam(':ext_Code_Extraits', $_POST['Code_Extraits']);
   $stmt->bindParam(':ext_solvant', $_POST['Extrait_Solvants']);
   $stmt->bindParam(':ext_type_extraction', $_POST['Extrait_Type_extraction']);
   $stmt->bindParam(':ext_etat', $_POST['Extrait_Etat']);
@@ -260,17 +271,16 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
   $stmt->bindParam(':chi_id_chimiste', $idchim);//TODO chi_id_chimiste
   $stmt->bindParam(':ech_code_echantillon', $_POST['echantillon_Code']);
   $stmt->execute();
-  $ext_id = $dbh->lastInsertId();
   if ($stmt->errorInfo()[0] != 00000) {
     $erreur .= "<br/>Erreur lors de l'insertion de l'extrait";
     print_r($stmt->errorInfo());
   }
 
   for ($i=0; $i < $_POST['nbPurification']; $i++) {
-    $stmt = $dbh->prepare("INSERT INTO purification (pur_purification, pur_ref_book, ext_id) VALUES (:pur_purification, :pur_ref_book, :ext_id)");
+    $stmt = $dbh->prepare("INSERT INTO purification (pur_purification, pur_ref_book, ext_Code_Extraits) VALUES (:pur_purification, :pur_ref_book, :ext_Code_Extraits)");
     $stmt->bindParam(':pur_purification', $_POST['Purification_Purification'.($i+1)]);
     $stmt->bindParam(':pur_ref_book', $_POST['Purification_RefBook'.($i+1)]);
-    $stmt->bindParam(':ext_id', $ext_id);
+    $stmt->bindParam(':ext_Code_Extraits', $_POST['Code_Extraits']);
     $stmt->execute();
     $pur_id = $dbh->lastInsertId();
     if ($stmt->errorInfo()[0] != 00000) {
@@ -305,6 +315,7 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
   else {
     echo "<center><h3>Données enregistrées</h3></center>";
     $dbh->commit();
+    echo "<script>window.close();</script>";
   }
 }
 ?>

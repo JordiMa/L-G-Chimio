@@ -207,15 +207,16 @@ require 'script/connectionb.php';
 
 if ($row[0]=='{ADMINISTRATEUR}') {
 
-  print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-    <tr>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Extrait.php\">Échantillon</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
-    </tr>
-    </table><br/>";
+    print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+      <tr>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Extrait.php\">Extraits</a></td>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Echantillon.php\">Échantillon</a></td>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+      </tr>
+      </table><br/>";
 
 if (isset($_GET['condition'])) {
   $_POST['condition'] = $_GET['condition'];
@@ -262,7 +263,7 @@ if (isset($_GET['condition'])) {
         // code...
         break;
     }
-
+    echo '<script>window.location.replace("modification_Condition.php?condition='.$_POST['condition'].'");</script>';
   }
   ?>
 

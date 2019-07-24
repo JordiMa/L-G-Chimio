@@ -122,7 +122,7 @@ $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_no
 //les résultats sont retournées dans la variable $result
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
-
+/*
 print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <tr>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Extrait.php\">Extrait</a></td>
@@ -133,7 +133,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Expedition.php\">Expedition</a></td>
   </tr>
   </table><br/>";
-
+*/
 ?>
 
 <form name="myform" class="" action="" method="post" enctype="multipart/form-data">
@@ -152,7 +152,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
       Lieu de recolte *<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Lieu" value="" required><br/><br/>
       <br/>
       GPS<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_GPS" value=""><br/><br/>
-      Observation<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Observation" value=""><br/><br/>
+      Observation<br/><textarea rows="5" cols="50" class="echantillon_nouveau specimen_nouveau" name="Specimen_Observation"></textarea><br/><br/>
       Collection<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Collection" value=""><br/><br/>
       Contact<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Contact" value=""><br/><br/>
       Collecteur<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Collecteur" value=""><br/><br/>
@@ -289,6 +289,7 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
   else {
     echo "<center><h3>Données enregistrées</h3></center>";
     $dbh->commit();
+    echo "<script>window.close();</script>";
   }
 }
 ?>

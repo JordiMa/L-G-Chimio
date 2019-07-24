@@ -29,7 +29,7 @@ Le fait que vous puissiez acc�der � cet en-t�te signifie que vous avez pri
 termes.
 */
 echo "<tr>
-    <td width=\"13%\" valign=\"top\"><br/>";
+    <td width=\"13%\" valign=\"top\">";
 
 if(!isset($_SESSION['nom'])) include_once 'connexion.php';
 else include_once 'menu.php';

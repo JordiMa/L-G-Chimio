@@ -164,7 +164,7 @@ if (isset($transfert)) {
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="132"><a href="http://chimiotheque-nationale.org" target="_blank">
-    <img src="images/logo_chimiotheque.png" width="132" alt="Chimioth&egrave;que nationale" border="0" /></a></td>
+    <img src="images/logo_chimiotheque.png" width="132" alt="Chimioth&egrave;que nationale" border="0" style="margin-bottom: 5px;"/></a></td>
           <td align="center" valign="top" class=bandeau>
 <?php
 echo CHIMIOTHEQUE."<br/><br/>";
