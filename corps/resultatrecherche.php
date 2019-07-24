@@ -1,3 +1,83 @@
+<script src="./js/clipboard.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 250ms;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+  z-index: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+  top: 20%;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: darkblue;
+}
+.popup .content {
+  max-height: 30%;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 700px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+}
+
+.btn{
+	font-size: small;
+  background-color: silver;
+  color: black;
+  border: 2px solid green;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+}
+.btn:hover {
+	background-color: green;
+	color: white;
+	cursor: pointer;
+}
+
+</style>
 <?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
@@ -103,7 +183,7 @@ else {
 		if (!empty($_POST['mol'])) {
 			switch ($_POST['recherche']) {
 				case 0: {
-					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_mol @ ('".$_POST['mol']."', '')::bingo.exact and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE str_mol @ ('".$_POST['mol']."', '')::bingo.exact and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure";
 					$result2 = $dbh->query($sql);
 					$nbrs=$result2->rowCount();
 					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
@@ -111,7 +191,7 @@ else {
 				}
 				break;
 				case 1: {
-					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_mol @ ('".$_POST['mol']."', '')::bingo.sub and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE str_mol @ ('".$_POST['mol']."', '')::bingo.sub and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure";
 					$result2 = $dbh->query($sql);
 					$nbrs=$result2->rowCount();
 					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
@@ -119,7 +199,7 @@ else {
 				}
 				break;
 				case 2: {
-					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_mol @ ('".$_POST['valtanimoto']."','1','".$_POST['mol']."', 'Tanimoto')::bingo.sim and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE str_mol @ ('".$_POST['valtanimoto']."','1','".$_POST['mol']."', 'Tanimoto')::bingo.sim and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure";
 					$result2 = $dbh->query($sql);
 					$nbrs=$result2->rowCount();
 					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
@@ -135,14 +215,14 @@ else {
 
 		if (!empty ($_POST['formbrute'])) {
 			if ($_POST['forbrutexact']=='exact') {
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_formule_brute='".$_POST['formbrute']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_formule_brute='".$_POST['formbrute']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 				$result2 = $dbh->query($sql);
 				$nbrs=$result2->rowCount();
 				$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_formule_brute='".$_POST['formbrute']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_formule_brute='".$_POST['formbrute']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
 				$result3 =$dbh->query($sql);
 				while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_formule_brute='".$_POST['formbrute']."' and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE str_formule_brute='".$_POST['formbrute']."' and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 					$result4 = $dbh->query($sql);
 					while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 						$tab[$row4[0]]=$row4[1];
@@ -150,11 +230,11 @@ else {
 				}
 			}
 			else {
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_formule_brute like '%".$_POST['formbrute']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_formule_brute like '%".$_POST['formbrute']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 				$result2 = $dbh->query($sql);
 				$nbrs=$result2->rowCount();
 				$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_formule_brute like '%".$_POST['formbrute']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_formule_brute like '%".$_POST['formbrute']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
 				$result3 = $dbh->query($sql);
 				while($row3=$result3->fetch(PDO::FETCH_NUM)) {
 					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_formule_brute like '%".$_POST['formbrute']."%' and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
@@ -167,14 +247,14 @@ else {
 		}
 		if ($_POST['massemol']!="") {
 			if (isset ($_POST['massexact']) and $_POST['massexact']=='exacte') {
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_masse_molaire='".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire='".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 				$result2 = $dbh->query($sql);
 				$nbrs=$result2->rowCount();
 				$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_masse_molaire='".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire='".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
 				$result3 = $dbh->query($sql);
 				while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_masse_molaire='".$_POST['massemol']."' and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire='".$_POST['massemol']."' and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 					$result4 = $dbh->query($sql);
 					while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 						$tab[$row4[0]]=$row4[1];
@@ -182,14 +262,14 @@ else {
 				}
 			}
 			elseif ($_POST['supinf']!=rawurlencode("=")) {
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_masse_molaire".rawurldecode($_POST['supinf'])."'".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire".rawurldecode($_POST['supinf'])."'".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 				$result2 = $dbh->query($sql);
 				$nbrs=$result2->rowCount();
 				$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_masse_molaire".rawurldecode($_POST['supinf'])."'".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire".rawurldecode($_POST['supinf'])."'".$_POST['massemol']."' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
 				$result3 = $dbh->query($sql);
 				while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_masse_molaire".rawurldecode($_POST['supinf'])."'".$_POST['massemol']."' and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire".rawurldecode($_POST['supinf'])."'".$_POST['massemol']."' and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 					$result4 = $dbh->query($sql);
 					while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 						$tab[$row4[0]]=$row4[1];
@@ -197,14 +277,14 @@ else {
 				}
 			}
 			elseif ($_POST['supinf']==rawurlencode("=")) {
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_masse_molaire like'".$_POST['massemol']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire like'".$_POST['massemol']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 				$result2 = $dbh->query($sql);
 				$nbrs=$result2->rowCount();
 				$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
-				$sql="SELECT DISTINCT pro_id_structure FROM produit,structure WHERE str_masse_molaire like'".$_POST['massemol']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
+				$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire like'".$_POST['massemol']."%' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure LIMIT $limitepage OFFSET $nbrequete";
 				$result3 = $dbh->query($sql);
 				while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE str_masse_molaire like'".$_POST['massemol']."%'  and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE str_masse_molaire like'".$_POST['massemol']."%'  and pro_id_structure='$row3[0]' and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 					$result4 = $dbh->query($sql);
 					while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 						$tab[$row4[0]]=$row4[1];
@@ -213,24 +293,25 @@ else {
 			}
 		}
 		if (!empty($_POST['numero'])) {
-			$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,structure WHERE (pro_numero like '%".$_POST['numero']."%' or pro_num_constant='".intval($_POST['numero'])."' or pro_num_cn='".$_POST['numero']."' or pro_qrcode like '%".$_POST['numero']."%') and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
+			$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,structure WHERE (pro_numero like '%".$_POST['numero']."%' or pro_num_constant='".intval($_POST['numero'])."' or pro_num_cn='".$_POST['numero']."' or pro_qrcode like '%".$_POST['numero']."%') and (pro_id_type<>2 or ($requetepartielle)) and structure.str_id_structure=produit.pro_id_structure order by pro_id_structure";
 			$result4 = $dbh->query($sql);
+			$sql_liste = $sql;
 			while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 				$tab[$row4[0]]=$row4[1];
 			}
 		}
-
 		//recherche par référence de cahier de laboratoire
 			if ($_POST['refcahier']!="") {
 				if ($row[0]=="{ADMINISTRATEUR}") {
-					$sql="SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
 					$result2 = $dbh->query($sql);
 					$nbrs=$result2->rowCount();
 					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
 					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
 					$result3 = $dbh->query($sql);
+
 					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
 						$result4 = $dbh->query($sql);
 						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 							$tab[$row4[0]]=$row4[1];
@@ -251,14 +332,14 @@ else {
 							$i++;
 						}
 					}
-					$sql="(SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE ($requete) and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) UNION (SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE pro_id_chimiste='".$row[1]."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) order by pro_id_structure";
+					$sql="(SELECT DISTINCT pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE ($requete) and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) UNION (SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE pro_id_chimiste='".$row[1]."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) order by pro_id_structure";
 					$result2 = $dbh->query($sql);
 					$nbrs=$result2->rowCount();
 					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
 					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
 					$result3 = $dbh->query($sql);
 					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE ($requete) and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE ($requete) and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
 						$result4 = $dbh->query($sql);
 						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 							$tab[$row4[0]]=$row4[1];
@@ -266,14 +347,14 @@ else {
 					}
 				}
 				elseif($row[0]=="{RESPONSABLE}") {
-					$sql="(SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE pro_id_equipe='".$row[2]."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) UNION (SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) order by pro_id_structure";
+					$sql="(SELECT DISTINCT pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE pro_id_equipe='".$row[2]."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) UNION (SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste) order by pro_id_structure";
 					$result2 = $dbh->query($sql);
 					$nbrs=$result2->rowCount();
 					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
 					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
 					$result3 = $dbh->query($sql);
 					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
 						$result4 = $dbh->query($sql);
 						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 							$tab[$row4[0]]=$row4[1];
@@ -281,14 +362,14 @@ else {
 					}
 				}
 				else {
-					$sql="SELECT DISTINCT pro_id_structure FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+					$sql="SELECT DISTINCT pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
 					$result2 = $dbh->query($sql);
 					$nbrs=$result2->rowCount();
 					$nbpage=ceil($nbrs/$limitepage); // retourne le nombre de pages pris par la requête
 					$sql=$sql." LIMIT $limitepage OFFSET $nbrequete";
 					$result3 = $dbh->query($sql);
 					while($row3=$result3->fetch(PDO::FETCH_NUM)) {
-						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
+						$sql="SELECT DISTINCT pro_id_produit,pro_id_structure, pro_numero FROM produit,chimiste,structure WHERE chi_nom='".$_SESSION['nom']."' and pro_ref_cahier_labo like '%".$_POST['refcahier']."%' and pro_id_structure='$row3[0]' and structure.str_id_structure=produit.pro_id_structure and chimiste.chi_id_chimiste=produit.pro_id_chimiste order by pro_id_structure";
 						$result4 = $dbh->query($sql);
 						while ($row4=$result4->fetch(PDO::FETCH_NUM)) {
 							$tab[$row4[0]]=$row4[1];
@@ -296,6 +377,16 @@ else {
 					}
 				}
 			}
+
+			$listeID = "";
+			if (isset($sql_liste)){
+				$result2 = $dbh->query($sql_liste);
+			}
+			$row_liste = $result2->fetchALL(PDO::FETCH_ASSOC);
+			foreach ($row_liste as $key => $value) {
+				$listeID .= $value["pro_numero"] . ";";
+			}
+			$listeID = substr($listeID,0,-1);
 
 		// if ($_POST['logp']!="") {
 			// if ($_POST['logpexact']=='exact') {
@@ -350,7 +441,6 @@ else {
 	if (!isset($nbpage)) $nbpage=0;
 
 
-
 	page ($_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
 	$recherche= new affiche_recherche ($tab,$_POST['mol'],$_POST['formbrute'],$_POST['massemol'],$_POST['supinf'],$_POST['masseexact'],$_POST['forbrutexact'],$_POST['page'],$nbrs,$nbpage,$row[0],$_POST['chimiste'],$_POST['numero'],$_POST['refcahier'],$_POST['recherche'],$_POST['valtanimoto']);
 
@@ -359,7 +449,24 @@ else {
 	$result =$dbh->query($sql);
 	$row =$result->fetch(PDO::FETCH_NUM);
 	if ($row[0]=='{ADMINISTRATEUR}') {
-		echo '<a class="btnlink" target="_blank" href="exportation.php?chx_liste=1&listeID_separateur=%3B&listeID='.$recherche->getListeID().'">Exporter la page</a>';
+
+		echo'
+		<div id="IDListe" class="overlay">
+			<div class="popup">
+			<h2>Exportation</h2>
+			<a class="close" href="#return">&times;</a>
+				<div class="content">
+					<button style="width: 100%;" class="btn" data-clipboard-text="'.$listeID.'">Tout copier dans le presse papier</button>
+					<br/><br/>
+					<center>Ou</center>
+					<br/>
+					<a style="width: 100%;" class="btnlink" target="_blank" href="exportation.php?chx_liste=1&listeID_separateur=%3B&listeID='.$recherche->getListeID().'">Exporter la page</a>
+				</div>
+				<br/>
+			</div>
+		</div>';
+
+		echo '<a class="btnlink" href="#IDListe">Exporter</a>';
 	}
 
 	$recherche->imprime();
@@ -442,3 +549,15 @@ function page ($mol,$formbrute,$massemol,$supinf,$massexact,$forbrutexact,$page,
 						</table>";
 }
 ?>
+<script>
+	var clipboard = new ClipboardJS('.btn');
+
+	clipboard.on('success', function(e) {
+    alert('la liste a été copier !');
+	});
+
+	clipboard.on('error', function(e) {
+	    console.error('Action:', e.action);
+	    console.error('Trigger:', e.trigger);
+	});
+</script>
