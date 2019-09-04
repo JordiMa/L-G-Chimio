@@ -277,7 +277,7 @@ if (isset($_GET['taxonomie'])) {
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche du produit -->
+    <!-- [JM - 07/2019] Recherche de la taxonomie -->
     <table id="tab_taxonomie" class="display">
       <thead>
       <tr>

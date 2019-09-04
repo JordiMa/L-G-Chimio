@@ -222,7 +222,7 @@ require 'script/connectionb.php';
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche du produit -->
+    <!-- [JM - 07/2019] Recherche et affichage des conditions -->
     <table id="tab_Condition" class="display">
       <thead>
       <tr>

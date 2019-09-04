@@ -226,7 +226,7 @@ if (isset($_GET['expedition'])) {
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche du produit -->
+    <!-- [JM - 07/2019] Recherche et affichage des expeditions -->
     <table id="tab_expedition" class="display">
       <thead>
       <tr>

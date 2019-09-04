@@ -226,7 +226,7 @@ if (isset($_GET['taxonomie'])) {
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche du produit -->
+    <!-- [JM - 01/02/2019] Recherche de la taxonomie -->
     <table id="tab_taxonomie" class="display">
       <thead>
       <tr>
@@ -268,9 +268,9 @@ if (isset($_GET['taxonomie'])) {
 
     $result_taxonomie = $dbh->query($sql_taxonomie);
     $row_taxonomie = $result_taxonomie->fetch(PDO::FETCH_NUM);
-    // [JM - 05/07/2019] affichage des information liée à l'echantillon
+    // [JM - 05/07/2019] affichage des information liée à la taxonomie
     if (!empty($row_taxonomie[0])) {
-      // TODO:
+      
       echo "<div style='text-align: center;'>";
       echo "<div class='hr click_taxonomie'>Taxonomie</div>";
       echo "<br/>";

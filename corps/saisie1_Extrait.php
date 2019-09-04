@@ -244,7 +244,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
           foreach ($dbh->query("SELECT * FROM echantillon ORDER BY ech_code_echantillon") as $row1) {
             echo '
             <tr>
-            <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="echantillon_Code" value="'.urldecode($row1[0]).'"></td>
+            <td><input type="radio" name="echantillon_Code" value="'.urldecode($row1[0]).'"></td>
             <td>'.urldecode($row1[0]).'</td>
             <td>'.urldecode($row1[1]).'</td>
             <td>'.urldecode($row1[2]).'</td>

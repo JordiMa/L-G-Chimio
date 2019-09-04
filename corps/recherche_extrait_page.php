@@ -193,7 +193,7 @@ require 'script/connectionb.php';
   <hr>
 
   <form id="myForm" action="" method="get" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche de l'echantillon -->
+    <!-- [JM - 07/2019] Recherche des extraits -->
     <table id="tab_echantillon" class="display">
       <thead>
       <tr>

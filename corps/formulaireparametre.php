@@ -32,10 +32,10 @@ include_once 'script/secure.php';
 include_once 'protection.php';
 include_once 'langues/'.$_SESSION['langue'].'/lang_parametre.php';
 
-//appel le fichier de connexion à la base de données
+// [JM] appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
 $sql="SELECT chi_statut,chi_id_chimiste,chi_id_equipe FROM chimiste WHERE chi_nom='".$_SESSION['nom']."'";
-//les résultats sont retournées dans la variable $result
+// [JM] les résultats sont retournées dans la variable $result
 $result =$dbh->query($sql);
 $row =$result->fetch(PDO::FETCH_NUM);
 if ($row[0]=='{ADMINISTRATEUR}') {
@@ -52,7 +52,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	$sql='SELECT * FROM parametres';
 	$result1=$dbh->query($sql);
 	$row1 =$result1->fetch(PDO::FETCH_NUM);
-	//initialisation du formulaire
+	//[JM] initialisation du formulaire
 	print"<br/>";
 	$formulaire=new formulaire ("parametrage","changeparametre.php","POST",true);
 	$formulaire->affiche_formulaire();
@@ -123,7 +123,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 	<?php
 
-	// initialisation de la variable $configJSON pour chaque champ
+	// [JM] initialisation de la variable $configJSON pour chaque champ
 	// valeur = 0 car par défaut les champs sont facultatifs
 	$configJSON = array();
 	$configJSON["etapeSynthese"] = 0;
@@ -151,15 +151,15 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	if (isset($_GET['solvantsDeSolubilisation']))
 		$configJSON["solvantsDeSolubilisation"] = 1;
 
-		// valid = bouton du formulaire
+		// [JM] valid = bouton du formulaire
 	if (isset($_GET['valid'])){
 
-		// on encode la variable $configJSON au format JSON,
+		//[JM] on encode la variable $configJSON au format JSON,
 		// puis on écrit dans le fichier config.json
 		$myJSON = json_encode($configJSON);
 		file_put_contents('script/config.json', $myJSON);
 
-		// on recharge la page des configurations
+		//[JM] on recharge la page des configurations
 	 	echo " <script> location.replace('parametres.php'); </script>";
 	}
 ?>

@@ -911,7 +911,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
 		<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div>";
 
-		$sql_annexe="SELECT * FROM \"champsAnnexe\"";
+		$sql_annexe="SELECT * FROM champsAnnexe";
 		//les résultats sont retournées dans la variable $result
 		$result_annexe = $dbh->query($sql_annexe);
 		if ($result_annexe){

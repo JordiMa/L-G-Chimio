@@ -53,6 +53,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 $id_chim_session = $row[1];
 
+
 set_time_limit(0);
 ?>
 	<br/>
@@ -71,15 +72,15 @@ set_time_limit(0);
 	if (isset($_FILES['CSVfile'])){
 		$fileHandle = fopen($_FILES['CSVfile']['tmp_name'], 'r') or die ("Impossible d'ouvrir le fichier");
 
-		//$ligne = fgetcsv($fileHandle, 0, ';');
 		$ligneTab = fgetcsv($fileHandle, 0, ';');
 
-		//$ligneTab = explode(";", $ligne[0]);
 		$ligneTab = array_map('strtolower', $ligneTab);
 		$ligneTab = array_map('addslashes', $ligneTab);
 
+		// [JM 08/2019] verifie si la case A1 est egale à 'importation'
 		if ($ligneTab[0] == "importation") {
-			//Recherche des position dans le CSV
+			// [JM 08/2019] Recherche des position dans le CSV
+			// cf. template (images/importation_Extrait.xlsx)
 			$key_ext_code = array_search('ext_code', $ligneTab);
 			$key_ext_solvant = array_search('ext_solvant', $ligneTab);
 			$key_ext_dispo = array_search('ext_dispo', $ligneTab);
@@ -129,41 +130,25 @@ set_time_limit(0);
 			$keys_aut_numero = array_keys($ligneTab,'aut_numero');
 			$keys_aut_type = array_keys($ligneTab,'aut_type');
 
-			/*
-			$key_ext_code
-			$key_ext_solvant
-			$key_ext_dispo
-			$key_ech_code
-			$key_ech_dispo
-			$key_ech_qte
-			$key_ech_stockage
-			$key_ech_partieorga
-			$key_spe_code
-			$key_spe_daterec
-			$key_spe_lieurec
-			$key_tax_type
-			$key_tax_genre
-			$key_tax_espece
-			$key_exp_pays
-			$key_chi_nom
-			*/
-
 			$i = 1;
 			$erreur = "";
+
 			if(!$ligneTab[$key_chi_nom]){
 				$erreur .= "<br/>la colonne Chi_nom doit être présente.";
 			}
 
+			// [JM 08/2019] lit le fichier ligne par ligne
 			while (($ligneTab = fgetcsv($fileHandle, 0, ';')) !== FALSE) {
 				$i++;
 
-				//$ligneTab = explode(";", $ligne[0]);
+				// [JM 08/2019] prepare la ligne du fichier
 				$ligneTab = array_map('utf8_encode', $ligneTab);
 				$ligneTab = array_map('trim', $ligneTab);
 				$ligneTab = array_map('addslashes', $ligneTab);
 
 				$ligneTab[0] = FALSE;
 
+				// [JM 08/2019] Vérification des champs obligatoire
 				if(!$ligneTab[$key_exp_pays]){
 					$erreur .= "<br/>Erreur à la ligne $i : Exp_pays ne doit pas être vide.";
 				}
@@ -216,9 +201,12 @@ set_time_limit(0);
 					$erreur .= "<br/>Erreur à la ligne $i : Ext_dispo ne doit pas être vide.";
 				}
 				if ($erreur != "") {
-					break;
+					break;// [JM 08/2019] annule la boucle si il y a une erreur
 				}
 
+				// [JM 08/2019] Recherche/Insertion étape par étapes
+				// si un résultat de la recherche est trouvé, on garde l'id
+				// sinon, on insère la partie dans la BDD
 				//--Chimiste
 				if(!$ligneTab[$key_chi_nom]){
 					$id_chim = $id_chim_session;
@@ -229,7 +217,6 @@ set_time_limit(0);
 					OR chi_prenom || ' ' || chi_nom iLIKE E'".$ligneTab[$key_chi_nom]."'
 					OR chi_nom iLIKE E'".$ligneTab[$key_chi_nom]."'";
 
-					//echo "<br>$sql<br>";
 					$result = $dbh->query($sql);
 					$row = $result->fetch(PDO::FETCH_NUM);
 
@@ -264,7 +251,6 @@ set_time_limit(0);
 				AND exp_contact iLIKE E'".$ligneTab[$key_exp_contact]."'
 				AND pay_code_pays iLIKE E'".$ligneTab[$key_exp_pays]."'";
 
-				//echo "<br>$sql<br>";
 				$result = $dbh->query($sql);
 				$row = $result->fetch(PDO::FETCH_NUM);
 
@@ -464,11 +450,8 @@ set_time_limit(0);
 					AND con_mode_operatoir iLIKE E'".$ligneTab[$key_con_modeop]."'
 					AND con_observation iLIKE E'".$ligneTab[$key_con_observation]."'";
 
-					//echo "<br>$sql<br>";
 					$result = $dbh->query($sql);
 					$row = $result->fetch(PDO::FETCH_NUM);
-
-
 
 					if($row){
 						$id_con = $row[0];
@@ -496,7 +479,6 @@ set_time_limit(0);
 				$sql="select par_id FROM partie_organisme
 				WHERE par_fr iLIKE E'".$ligneTab[$key_ech_partieorga]."'";
 
-				//echo "<br>$sql<br>";
 				$result = $dbh->query($sql);
 				$row = $result->fetch(PDO::FETCH_NUM);
 
@@ -628,6 +610,7 @@ set_time_limit(0);
 
 		  }//Fin_while
 
+			// [JM 08/2019] Affichage du résultat de l'importation
 			echo "<center><h3>Importation terminée</h3></center><br/>";
 			echo "<center><h3 style='color: limegreen;'>Nombre de ligne parcourues : ".($i-1)."</h3></center>";
 
@@ -645,16 +628,3 @@ else require 'deconnexion.php';
 unset($dbh);
 set_time_limit(120);
 ?>
-<!-- Auto click sur la balise <a class='download-file'> ci dessus -->
-<script type="text/javascript">
-	$('.download-file').get(0).click();
-</script>
-
-<script>
-	function download(text, name, type) {
-	  var a = document.getElementById("a");
-	  var file = new Blob([text], {type: type});
-	  a.href = URL.createObjectURL(file);
-	  a.download = name;
-	}
-</script>

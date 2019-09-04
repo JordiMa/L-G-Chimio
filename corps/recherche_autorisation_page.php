@@ -226,7 +226,7 @@ if (isset($_GET['autorisation'])) {
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche du produit -->
+    <!-- [JM - 07/2019] Recherche et affichage des autorisations -->
     <table id="tab_autorisation" class="display">
       <thead>
       <tr>

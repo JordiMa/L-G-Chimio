@@ -70,6 +70,10 @@ if (!isset($_GET['nb'])){
       if(strpos($value[1], 'type="checkbox"')){
         $url_result .= "&M:type_champsAnnexe_".($key+1)."=checkbox&M:lib_champsAnnexe_".($key+1)."=$lib";
       }
+      if(strpos($value[1], '<select')){
+        $url_result .= "&M:type_champsAnnexe_".($key+1)."=listeDeroulante&M:lib_champsAnnexe_".($key+1)."=$lib";
+        $url_result .= "&M:option_listeDeroulante_".($key+1)."=ATTENTION ! VOUS DEVEZ REMETTRE LES OPTIONS.";
+      }
       $url_result .="&M:ID_champsAnnexe_".($key+1)."=".$value[0];
     }
     echo"<script>window.location.replace('$url_result');</script>";
@@ -195,11 +199,15 @@ if(isset($_GET['submit2'])){
       }
       if($_GET['type_champsAnnexe_'.$i] == "listeDeroulante"){
         $option_liste = explode(';', $_GET['option_listeDeroulante_'.$i]);
-        print_r($option_liste);
-        //$valueReq .= '<br/><input type="text" name="champsAnnexe_'.uniqid().'">';
+        $valueReq .= '<br/><select name="champsAnnexe_'.uniqid().'">';
+        $valueReq .= '<option></option>';
+        foreach ($option_liste as $key => $value) {
+          $valueReq .= '<option value="'.$value.'">'.$value.'</option>';
+        }
+        $valueReq .= '</select>';
       }
 
-      $valueReq = addslashes($valueReq);
+      //$valueReq = addslashes($valueReq);
       $valueReq .= "<br/><br/>";
       $req .= $valueReq . "');";
     }
@@ -224,6 +232,15 @@ if(isset($_GET['submit2'])){
           $valueReq .= '<input type="hidden" value="false" name="champsAnnexe_'.$id_chx.'">';
           $valueReq .= '<input type="checkbox" value="true" name="champsAnnexe_'.$id_chx.'">';
         }
+        if($_GET['M:type_champsAnnexe_'.$i] == "listeDeroulante"){
+          $option_liste = explode(';', $_GET['M:option_listeDeroulante_'.$i]);
+          $valueReq .= '<br/><select name="champsAnnexe_'.uniqid().'">';
+          $valueReq .= '<option></option>';
+          foreach ($option_liste as $key => $value) {
+            $valueReq .= '<option value="'.$value.'">'.$value.'</option>';
+          }
+          $valueReq .= '</select>';
+        }
 
         $valueReq .= "<br/><br/>";
         $req .= $valueReq . "' WHERE id = ". $_GET['M:ID_champsAnnexe_'.$i]. ";";
@@ -245,6 +262,7 @@ if(isset($_GET['submit2'])){
 <center><h2>Aperçu</h2></center>
 
 <?php
+// [JM 2019] creation de l'aperçu
 if(isset($_GET['submit2'])){
   for ($i=1; $i < $_GET['nb']+1; $i++) {
     if(isset($_GET['type_champsAnnexe_'.$i]) && $_GET['type_champsAnnexe_'.$i] != ""){
@@ -266,6 +284,17 @@ if(isset($_GET['submit2'])){
       if($_GET['type_champsAnnexe_'.$i] == "checkbox"){
         echo '<input type="checkbox" name="champsAnnexe_'.$i.'">';
       }
+
+      if($_GET['type_champsAnnexe_'.$i] == "listeDeroulante"){
+        $option_liste = explode(';', $_GET['option_listeDeroulante_'.$i]);
+        echo '<br/><Select name="champsAnnexe_'.$i.'">';
+        echo '<option></option>';
+        foreach ($option_liste as $key => $value) {
+          echo '<option value="'.$value.'">'.$value.'</option>';
+        }
+        echo '</select>';
+      }
+
     }
 
     if(isset($_GET['M:type_champsAnnexe_'.$i]) && $_GET['M:type_champsAnnexe_'.$i] != ""){
@@ -287,6 +316,16 @@ if(isset($_GET['submit2'])){
 
         if($_GET['M:type_champsAnnexe_'.$i] == "checkbox"){
           echo '<input type="checkbox" name="champsAnnexe_'.$i.'">';
+        }
+
+        if($_GET['M:type_champsAnnexe_'.$i] == "listeDeroulante"){
+          $option_liste = explode(';', $_GET['M:option_listeDeroulante_'.$i]);
+          echo '<br/><Select name="champsAnnexe_'.$i.'">';
+          echo '<option></option>';
+          foreach ($option_liste as $key => $value) {
+            echo '<option value="'.$value.'">'.$value.'</option>';
+          }
+          echo '</select>';
         }
       }
   }

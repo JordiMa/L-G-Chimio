@@ -483,6 +483,7 @@ Je veux saisir un(e) :
 
 <?php
 if (isset($_GET['btn_submit'])){
+  // [JM - 08/2019] genere la liste des etapes dans l'odre nécessaire
   $array = array();
   switch ($_GET['choix']){
   	case 'Extrait':
@@ -572,6 +573,7 @@ if (isset($_GET['btn_submit'])){
 <center><img src=".\images\extra2.png" alt="" width="80%"></center>
 <br/><br/><br/>
 
+<!-- [JM - 08/2019] Affiche les etapes!-->
 <script>
 document.getElementById(0).disabled = false;
   function saisie(nom, num, max) {

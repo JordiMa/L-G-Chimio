@@ -134,12 +134,12 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <!-- [JM - 05/07/2019] condition -->
   <div name="divHide" id="Condition" style="text-align: center;">
     <h1>Condition</h1>
-    Milieu<br/><input class="echantillon_nouveau" type="text" name="Condition_Milieu" value=""><br/><br/>
-    Temperature *<br/><input class="echantillon_nouveau" type="number" step="any" name="Condition_Temperature" value="" required>°C<br/><br/>
-    Type de culture<br/><input class="echantillon_nouveau" type="text" name="Condition_Type" value=""><br/><br/>
-    Mode opératoire<br/><input class="echantillon_nouveau" type="text" name="Condition_ModeOp" value=""><br/><br/>
-    Observation<br/><input class="echantillon_nouveau" type="text" name="Condition_Observation" value=""><br/><br/>
-    Fichier<br/><input class="echantillon_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Condition_Fichier[]" multiple><br/><br/>
+    Milieu<br/><input type="text" name="Condition_Milieu" value=""><br/><br/>
+    Temperature *<br/><input type="number" step="any" name="Condition_Temperature" value="" required>°C<br/><br/>
+    Type de culture<br/><input type="text" name="Condition_Type" value=""><br/><br/>
+    Mode opératoire<br/><input  type="text" name="Condition_ModeOp" value=""><br/><br/>
+    Observation<br/><input  type="text" name="Condition_Observation" value=""><br/><br/>
+    Fichier<br/><input type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Condition_Fichier[]" multiple><br/><br/>
 
     <input type="hidden" name="send" value="send">
     <input type="submit">

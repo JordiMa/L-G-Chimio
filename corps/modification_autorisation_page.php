@@ -246,7 +246,7 @@ if (isset($_GET['autorisation'])) {
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche du produit -->
+    <!-- [JM - 01/02/2019] Recherche de l'autorisation -->
     <table id="tab_autorisation" class="display">
       <thead>
       <tr>
@@ -282,7 +282,7 @@ if (isset($_GET['autorisation'])) {
 
     $result_autorisation = $dbh->query($sql_autorisation);
     $row_autorisation = $result_autorisation->fetch(PDO::FETCH_NUM);
-    // [JM - 05/07/2019] affichage des information liée à l'echantillon
+    // [JM - 05/07/2019] affichage des information liée à l'autorisation
     if (!empty($row_autorisation[0])) {
 
       echo "<div style='text-align: center;'>";
@@ -297,8 +297,7 @@ if (isset($_GET['autorisation'])) {
       echo "</div>";
       echo "</div>";
 
-      // [JM - 05/07/2019] Creation de popup pour afficher la liste des fichiers
-
+      // [JM 08/2019] popup de modification
       //autorisation
       echo '
       <div id="modif_autorisation" class="overlay">

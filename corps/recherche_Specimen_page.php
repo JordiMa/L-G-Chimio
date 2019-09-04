@@ -227,7 +227,7 @@ if (isset($_GET['specimen'])) {
   <hr>
 
   <form id="myForm" action="" method="POST" style=" text-align: center;">
-    <!-- [JM - 01/02/2019] Recherche du produit -->
+    <!-- [JM - 01/02/2019] Recherche des specimen -->
     <table id="tab_specimen" class="display">
       <thead>
       <tr>

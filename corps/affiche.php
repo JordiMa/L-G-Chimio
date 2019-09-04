@@ -399,7 +399,7 @@ if (!empty($id_sql)) {
 				<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
 				<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div><div id=\"fb-rendered-form\"><form action=\"#\"></form></div>";
 
-				$sql_annexe="SELECT * FROM \"champsAnnexe\"";
+				$sql_annexe="SELECT * FROM champsAnnexe";
 				//les résultats sont retournées dans la variable $result
 				$result_annexe = $dbh->query($sql_annexe);
 				if ($result_annexe){
@@ -414,9 +414,9 @@ if (!empty($id_sql)) {
 					}
 				}
 
-				$sql_data_annexe = 'Select "pro_id_produit", "cha_ID", "data", "HTML" FROM "champsProduit"
-														Inner join "champsAnnexe" on "champsProduit"."cha_ID"="champsAnnexe"."ID"
-														WHERE "pro_id_produit" = '. $id_sql;
+				$sql_data_annexe = 'Select pro_id_produit, cha_ID, data, HTML FROM champsProduit
+														Inner join champsAnnexe on champsProduit.cha_ID=champsAnnexe.ID
+														WHERE pro_id_produit = '. $id_sql;
 
 				$result_data_annexe = $dbh->query($sql_data_annexe);
 				if ($result_annexe){
@@ -433,9 +433,9 @@ if (!empty($id_sql)) {
 				print"
 				</tr></table></table>";
 
+				// [JM - 22/01/2019] script pour les volet deroulant (ANALYSE, bibliographie, ANNEXE)
 				echo "
 				<script>
-
 					$('.hr_analyses').slideToggle(0);
 					$('.hr_bibliographie').slideToggle(0);
 					$('.hr_annexe').slideToggle(0);

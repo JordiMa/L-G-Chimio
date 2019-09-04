@@ -366,6 +366,7 @@ if (isset($_GET['echantillon'])) {
     <tbody>
       <?php
 
+      // [JM 07/2019] selection selon le type de compte
       if ($row[0]=='{CHIMISTE}') {
         $sql_recherche = "
         SELECT * FROM echantillon
@@ -403,6 +404,7 @@ if (isset($_GET['echantillon'])) {
         ";
       }
 
+      // [JM 07/2019] affichage du tableau
       foreach ($dbh->query($sql_recherche) as $row_r) {
         echo '
         <tr>
@@ -426,6 +428,7 @@ if (isset($_GET['echantillon'])) {
   <hr>
   <?php
 
+  // [JM 07/2019] Sélection des détaille de l'échantillon
   if(isset($_POST['echantillon'])){
     $sql_echantillon =
     "SELECT * FROM Echantillon
@@ -652,7 +655,7 @@ if (isset($_GET['echantillon'])) {
           }
         }
         ?>
-
+        <!-- [JM 07/2019] Formulaire de modif !-->
         <form id="myForm2" action="" method="POST" enctype="multipart/form-data">
         <?php if (isset($_POST['Ajouter2'.$value[0]])): ?>
           <tr>

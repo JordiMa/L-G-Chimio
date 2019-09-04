@@ -326,6 +326,8 @@ require 'script/connectionb.php';
     </thead>
     <tbody>
       <?php
+
+      // [JM 07/2019] selection selon type de compte
       if ($row[0]=='{CHIMISTE}') {
         $req_recherche = "
         SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits

@@ -134,10 +134,10 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <!-- [JM - 05/07/2019] Expedition-->
   <div name="divHide" id="Expedition" style="text-align: center;">
       <h1>Mission de récolte</h1>
-      Nom<br/><input class="echantillon_nouveau specimen_nouveau expedition_nouveau" type="text" name="Expedition_Nom" value=""><br/><br/>
-      Contact<br/><input class="echantillon_nouveau specimen_nouveau expedition_nouveau" type="text" name="Expedition_Contact" value=""><br/><br/>
+      Nom<br/><input type="text" name="Expedition_Nom" value=""><br/><br/>
+      Contact<br/><input type="text" name="Expedition_Contact" value=""><br/><br/>
       Pays * (<a href="Extra_listePays.php" target="_blank">Voir les détails des pays</a>)<br/>
-      <select class="echantillon_nouveau specimen_nouveau expedition_nouveau" name="Expedition_Pays" required>
+      <select name="Expedition_Pays" required>
         <option value=""></option>
         <?php
         foreach ($dbh->query("SELECT * FROM Pays ORDER BY pay_code_pays") as $row) {

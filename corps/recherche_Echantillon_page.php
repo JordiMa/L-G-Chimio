@@ -208,48 +208,12 @@ require 'script/connectionb.php';
     </thead>
     <tbody>
       <?php
-      /*
-      if ($row[0]=='{CHIMISTE}') {
-        $sql_recherche = "
-        SELECT * FROM echantillon
-        INNER JOIN extraits on extraits.ech_code_echantillon = echantillon.ech_code_echantillon
-        WHERE extraits.chi_id_chimiste = ".$row[1]."
-        ORDER BY echantillon.ech_code_echantillon
-        ";
-      }
-      elseif ($row[0]=='{RESPONSABLE}') {
-        $sql_recherche = "
-        SELECT echantillon.ech_code_echantillon, ech_contact, ech_publication_doi, ech_stock_disponibilite, ech_stock_quantite, ech_lieu_stockage, par_id, spe_code_specimen, con_id
-        FROM echantillon
-        INNER JOIN extraits on extraits.ech_code_echantillon = echantillon.ech_code_echantillon
-        INNER JOIN chimiste on extraits.chi_id_chimiste = chimiste.chi_id_chimiste
-        WHERE (chi_id_responsable = ".$row[1]."  or chimiste.chi_id_chimiste = ".$row[1].")
-        GROUP BY echantillon.ech_code_echantillon
-        ORDER BY echantillon.ech_code_echantillon;
-        ";
-      }
-      elseif ($row[0]=='{CHEF}') {
-        $sql_recherche = "
-        SELECT echantillon.ech_code_echantillon, ech_contact, ech_publication_doi, ech_stock_disponibilite, ech_stock_quantite, ech_lieu_stockage, par_id, spe_code_specimen, con_id FROM echantillon
-        INNER JOIN extraits on extraits.ech_code_echantillon = echantillon.ech_code_echantillon
-        INNER JOIN chimiste as chim ON chim.chi_id_chimiste = extraits.chi_id_chimiste
-        INNER JOIN chimiste as res ON res.chi_id_chimiste = chim.chi_id_responsable
-        WHERE res.chi_id_responsable = ".$row[1]."
-        GROUP BY echantillon.ech_code_echantillon
-        ORDER BY echantillon.ech_code_echantillon;
-        ";
-      }
-      elseif ($row[0]=='{ADMINISTRATEUR}') {
-        $sql_recherche = "
-        SELECT * FROM echantillon
-        ORDER BY echantillon.ech_code_echantillon
-        ";
-      }*/
+
       $sql_recherche = "
       SELECT * FROM echantillon
       ORDER BY echantillon.ech_code_echantillon
       ";
-
+      // [JM 07/2019] affichage des resultat
       foreach ($dbh->query($sql_recherche) as $row_r) {
         echo '
         <tr>
@@ -309,18 +273,8 @@ require 'script/connectionb.php';
       echo "<div class='hr click_extraits'>Extraits</div>";
 
       echo "<div class='container'>";
-      // [JM - 05/07/2019] cree une liste des extrait et de leur purification
-      /*$req_extrait = "
-      SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id) FROM extraits
-      INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
-      INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
-      LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
-      LEFT JOIN purification on extraits.ext_Code_Extraits = purification.ext_Code_Extraits
-      WHERE ech_code_echantillon = '".$_GET['echantillon']."'
-      GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe;";
-      */
+
       if ($row[0]=='{CHIMISTE}') {
-        //AND extraits.chi_id_chimiste = ".$row[1]."
         $req_extrait = "
         SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
@@ -333,7 +287,6 @@ require 'script/connectionb.php';
         GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, typ_type;";
       }
       elseif ($row[0]=='{RESPONSABLE}') {
-        //AND (chimiste.chi_id_responsable = ".$row[1]." or chimiste.chi_id_chimiste = ".$row[1].")
         $req_extrait = "
         SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
@@ -346,7 +299,6 @@ require 'script/connectionb.php';
         GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, typ_type ;";
       }
       elseif ($row[0]=='{CHEF}') {
-        //AND res.chi_id_responsable = ".$row[1]."
         $req_extrait = "
         SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chimiste.chi_nom, chimiste.chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste

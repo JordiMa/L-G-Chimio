@@ -135,7 +135,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <div name="divHide" id="Taxonomie" style="text-align: center;">
       <h1>Taxonomie</h1>
       Type *<br/>
-      <select class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" name="Taxonomie_Type" required>
+      <select name="Taxonomie_Type" required>
         <option value=""></option>
         <?php
         foreach ($dbh->query("SELECT * FROM type_taxonomie ORDER BY typ_tax_type") as $row) {
@@ -143,19 +143,19 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
         }
         ?>
       </select><br/><br/>
-      Phylum<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Phylum" value=""><br/><br/>
-      classe<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_classe" value=""><br/><br/>
-      Ordre<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Ordre" value=""><br/><br/>
-      Famille<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Famille" value=""><br/><br/>
-      Genre *<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Genre" value="" required><br/><br/>
-      Espece *<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Espece" value="" required><br/><br/>
-      Sous-espece<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Sous-espece" value=""><br/><br/>
+      Phylum<br/><input type="text" name="Taxonomie_Phylum" value=""><br/><br/>
+      classe<br/><input type="text" name="Taxonomie_classe" value=""><br/><br/>
+      Ordre<br/><input type="text" name="Taxonomie_Ordre" value=""><br/><br/>
+      Famille<br/><input type="text" name="Taxonomie_Famille" value=""><br/><br/>
+      Genre *<br/><input type="text" name="Taxonomie_Genre" value="" required><br/><br/>
+      Espece *<br/><input type="text" name="Taxonomie_Espece" value="" required><br/><br/>
+      Sous-espece<br/><input type="text" name="Taxonomie_Sous-espece" value=""><br/><br/>
       <br/>
-      Variete<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Variete" value=""><br/><br/>
-      Sequencage<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Sequencage" value=""><br/><br/>
-      Protocole<br/><textarea rows="5" cols="50" class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" name="Taxonomie_Protocole"></textarea><br/><br/>
-      Ref book<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_RefBook" value=""><br/><br/>
-      Fichier<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Taxonomie_Fichier[]" value="" multiple><br/><br/>
+      Variete<br/><input type="text" name="Taxonomie_Variete" value=""><br/><br/>
+      Sequencage<br/><input type="text" name="Taxonomie_Sequencage" value=""><br/><br/>
+      Protocole<br/><textarea rows="5" cols="50" name="Taxonomie_Protocole"></textarea><br/><br/>
+      Ref book<br/><input type="text" name="Taxonomie_RefBook" value=""><br/><br/>
+      Fichier<br/><input type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Taxonomie_Fichier[]" value="" multiple><br/><br/>
 
       <input type="hidden" name="send" value="send">
       <input type="submit">

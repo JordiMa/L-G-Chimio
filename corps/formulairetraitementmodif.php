@@ -580,7 +580,7 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	//**********************************
 
 
-	$sql_annexe="SELECT * FROM \"champsAnnexe\"";
+	$sql_annexe="SELECT * FROM champsAnnexe";
 	//les résultats sont retournées dans la variable $result
 	$result_annexe = $dbh->query($sql_annexe);
 	$result_annexe->execute();
@@ -596,10 +596,10 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 
 	foreach ($_POST as $key => $value) {
 		if (strstr($key, "champsAnnexe_")){
-			$keyid = customSearch($key, array_column($r_annexe, 'HTML'));
-			$insert_annexe = "INSERT INTO \"champsProduit\" VALUES (".$_POST['id'].",".$r_annexe[$keyid][0].",E'".addslashes($value)."');";
+			$keyid = customSearch($key, array_column($r_annexe, 'html'));
+			$insert_annexe = "INSERT INTO champsProduit VALUES (".$_POST['id'].",".$r_annexe[$keyid][0].",E'".addslashes($value)."');";
 			$dbh->exec($insert_annexe);
-			$insert_annexe = "UPDATE \"champsProduit\" SET \"data\" = E'".addslashes($value)."' WHERE \"cha_ID\" = ".$r_annexe[$keyid][0]." and  \"pro_id_produit\" = ".$_POST['id'].";";
+			$insert_annexe = "UPDATE champsProduit SET data = E'".addslashes($value)."' WHERE cha_ID = ".$r_annexe[$keyid][0]." and  pro_id_produit = ".$_POST['id'].";";
 			$dbh->exec($insert_annexe);
 		}
 	}

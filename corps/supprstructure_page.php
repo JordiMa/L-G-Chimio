@@ -149,11 +149,11 @@ if (isset($_POST['produit'])){
   		}';
   		echo '</script>';
 
-      // TODO: script de suppression
+      // [JM 2019] script de suppression
 
       $sql_plaque = "DELETE FROM position WHERE pos_id_produit = ".$row1[0];
       $sql_resultat = "DELETE FROM resultat WHERE res_id_produit = ".$row1[0];
-      $sql_champsProduit = "DELETE FROM \"champsProduit\" WHERE pro_id_produit = ".$row1[0];
+      $sql_champsProduit = "DELETE FROM champsProduit WHERE pro_id_produit = ".$row1[0];
       $sql_produit = "DELETE FROM produit WHERE pro_id_produit = ".$row1[0];
 
       $res0 = $dbh->exec($sql_plaque);
@@ -225,6 +225,7 @@ if (isset($_POST['produit'])){
       <button name="suppr" value="suppr">Supprimer</button>
 <?php
     }
+    // [JM 2019] resultat de la suppression
     elseif ($res0 || $res1 || $res3 && isset($_POST['suppr'])) {
       if($res0)
         echo "<h2>Produit supprimé de la plaque</h2>";

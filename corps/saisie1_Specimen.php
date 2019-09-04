@@ -148,16 +148,16 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <!-- [JM - 05/07/2019] Specimen -->
   <div name="divHide" id="Specimen" style="text-align: center;">
       <h1>Specimen</h1>
-      Code *<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Code" value="" required><br/><br/>
-      Date *<br/><input class="echantillon_nouveau specimen_nouveau" type="date" name="Specimen_Date" value="" required><br/><br/>
-      Lieu de recolte *<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Lieu" value="" required><br/><br/>
+      Code *<br/><input type="text" name="Specimen_Code" value="" required><br/><br/>
+      Date *<br/><input type="date" name="Specimen_Date" value="" required><br/><br/>
+      Lieu de recolte *<br/><input type="text" name="Specimen_Lieu" value="" required><br/><br/>
       <br/>
-      GPS<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_GPS" value=""><br/><br/>
-      Observation<br/><textarea rows="5" cols="50" class="echantillon_nouveau specimen_nouveau" name="Specimen_Observation"></textarea><br/><br/>
-      Collection<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Collection" value=""><br/><br/>
-      Contact<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Contact" value=""><br/><br/>
-      Collecteur<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Collecteur" value=""><br/><br/>
-      Fichier<br/><input class="echantillon_nouveau specimen_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Specimen_Fichier[]" value="" multiple><br/><br/>
+      GPS<br/><input type="text" name="Specimen_GPS" value=""><br/><br/>
+      Observation<br/><textarea rows="5" cols="50" name="Specimen_Observation"></textarea><br/><br/>
+      Collection<br/><input type="text" name="Specimen_Collection" value=""><br/><br/>
+      Contact<br/><input type="text" name="Specimen_Contact" value=""><br/><br/>
+      Collecteur<br/><input type="text" name="Specimen_Collecteur" value=""><br/><br/>
+      Fichier<br/><input type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Specimen_Fichier[]" value="" multiple><br/><br/>
 
       <button type="button" name="button" onclick="hideDiv();showDiv('Autorisation');">Suivant</button>
 

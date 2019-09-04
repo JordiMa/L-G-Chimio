@@ -146,13 +146,13 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <!-- [JM - 05/07/2019] Echantillon -->
   <div name="divHide" id="echantillon" style="text-align: center;">
       <h1>échantillon</h1>
-      Code *<br/><input class="echantillon_nouveau" type="text" name="echantillon_Code" value="" required><br/><br/>
+      Code *<br/><input type="text" name="echantillon_Code" value="" required><br/><br/>
       Disponible :<br/><input type="radio" name="echantillon_Disponibilité" value="TRUE" checked>Oui<br/>
       <input type="radio" name="echantillon_Disponibilité" value="FALSE">Non<br/><br/>
-      Quantité *<br/><input class="echantillon_nouveau" type="number" min="0" step="any" name="echantillon_Quantité" value="" required> g<br/><br/>
+      Quantité *<br/><input type="number" min="0" step="any" name="echantillon_Quantité" value="" required> g<br/><br/>
       Lieu de stockage *<br/><textarea name="echantillon_Lieu" rows="5" cols="50" required></textarea><br/><br/>
       Partie d'organisme *<br/>
-      <select name="echantillon_Partie" class="echantillon_nouveau" required>
+      <select name="echantillon_Partie" required>
         <option value=""></option>
         <?php
         foreach ($dbh->query("SELECT * FROM partie_organisme ORDER BY par_fr") as $row) {
@@ -161,8 +161,8 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
         ?>
       </select><br/><br/>
       <br/>
-      Contact<br/><input class="echantillon_nouveau" type="text" name="echantillon_Contact" value=""><br/><br/>
-      DOI<br/><input class="echantillon_nouveau" type="text" name="echantillon_DOI" value=""><br/><br/>
+      Contact<br/><input type="text" name="echantillon_Contact" value=""><br/><br/>
+      DOI<br/><input type="text" name="echantillon_DOI" value=""><br/><br/>
 
       <button type="button" name="button" onclick="hideDiv();showDiv('Condition');">Suivant</button>
     </div>
@@ -192,7 +192,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
           foreach ($dbh->query("SELECT * FROM condition ORDER BY con_id") as $row) {
             echo '
             <tr>
-            <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="condition_choix" value="'.urldecode($row[0]).'"></td>
+            <td><input type="radio" name="condition_choix" value="'.urldecode($row[0]).'"></td>
             <td>'.urldecode($row[0]).'</td>
             <td>'.urldecode($row[1]).'</td>
             <td>'.urldecode($row[2]).'</td>
@@ -231,7 +231,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
         foreach ($dbh->query("SELECT * FROM specimen ORDER BY spe_code_specimen") as $row) {
           echo '
           <tr>
-          <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="Specimen_Code" value="'.urldecode($row[0]).'"></td>
+          <td><input type="radio" name="Specimen_Code" value="'.urldecode($row[0]).'"></td>
           <td>'.urldecode($row[0]).'</td>
           <td>'.urldecode($row[1]).'</td>
           <td>'.urldecode($row[2]).'</td>

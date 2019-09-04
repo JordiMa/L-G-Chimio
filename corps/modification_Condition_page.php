@@ -371,6 +371,7 @@ if (isset($_GET['condition'])) {
       </div>
       ';
 
+      // [JM 07/2019] popup de modification
       echo '
       <div id="modif_condition" class="overlay">
       <div id="popup_modif" class="popup">
