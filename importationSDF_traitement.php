@@ -515,12 +515,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		</optgroup>
 		<option value="pro_observation">OBSERVATION</option>
 
-		<optgroup label="Champ annexe :">
-			<option value="pro_champsannexe|Text">Text</option>
-			<option value="pro_champsannexe|Nombre">Nombre</option>
-			<option value="pro_champsannexe|Date">Date</option>
-		</optgroup>
-
 		<option value="plusieurs")">PLUSIEURS</option>
 
 		</select>

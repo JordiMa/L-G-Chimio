@@ -83,7 +83,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
 			<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
-			
+
 			</tr>
 			</table><br/>";
     print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
@@ -163,7 +163,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		else print" class=\"ligneutil1\"";
 		$search= array('{','}');
 		$row[5]=str_replace($search,'',$row[5]);
-		print"><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td><td>$row[3]</td><td>$row[4]</td><td>".constant($row[5])."</td><td>$row[6]</td><td>$row2[0]</td><td>$row[8]</td></tr>";
+		if($row[5]) $row[5] = constant($row[5]);
+		print"><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td><td>$row[3]</td><td>$row[4]</td><td>".$row[5]."</td><td>$row[6]</td><td>$row2[0]</td><td>$row[8]</td></tr>";
 		$col++;
 	}
     print"</table>";

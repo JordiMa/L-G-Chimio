@@ -45,7 +45,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 
 // [JM - 17/05/2019] si pas de nb champs sélectionner, on recherche les champs present dans la BDD
 if (!isset($_GET['nb'])){
-  $sql="SELECT * FROM \"champsAnnexe\"";
+  $sql="SELECT * FROM champsAnnexe";
   //les résultats sont retournées dans la variable $result
   $result =$dbh->query($sql);
   $nbRow = 0;
@@ -174,7 +174,7 @@ if(isset($_GET['submit2'])){
   for ($i=1; $i < $_GET['nb']+1; $i++) {
     $valueReq = "";
     if(isset($_GET['type_champsAnnexe_'.$i]) && $_GET['type_champsAnnexe_'.$i] != ""){
-      $req .= "\n\n/*$i*/\nINSERT INTO \"champsAnnexe\" (\"HTML\") values (E'";
+      $req .= "\n\n/*$i*/\nINSERT INTO champsannexe (html) values (E'";
 
       if(isset($_GET['lib_champsAnnexe_'.$i])){
         $valueReq .= $_GET['lib_champsAnnexe_'.$i] . " :";
@@ -205,7 +205,7 @@ if(isset($_GET['submit2'])){
     }
     if(isset($_GET['M:type_champsAnnexe_'.$i]) && $_GET['M:type_champsAnnexe_'.$i] != ""){
       if (!isset($_GET['supprimer'.$i])){
-        $req .= "\n\n/*$i*/\nUPDATE \"champsAnnexe\" values set \"HTML\" = E'";
+        $req .= "\n\n/*$i*/\nUPDATE champsannexe values set html = E'";
 
         if(isset($_GET['M:lib_champsAnnexe_'.$i])){
           $valueReq .= $_GET['M:lib_champsAnnexe_'.$i] . " :";
@@ -226,11 +226,11 @@ if(isset($_GET['submit2'])){
         }
 
         $valueReq .= "<br/><br/>";
-        $req .= $valueReq . "' WHERE \"ID\" = ". $_GET['M:ID_champsAnnexe_'.$i]. ";";
+        $req .= $valueReq . "' WHERE id = ". $_GET['M:ID_champsAnnexe_'.$i]. ";";
       }
       else {
-        $req .= "\n\n/*$i*/\nDELETE FROM \"champsProduit\" WHERE \"cha_ID\" = ". $_GET['M:ID_champsAnnexe_'.$i]. ";";
-        $req .= "\nDELETE FROM \"champsAnnexe\" WHERE \"ID\" = ". $_GET['M:ID_champsAnnexe_'.$i]. ";";
+        $req .= "\n\n/*$i*/\nDELETE FROM champsProduit WHERE cha_ID = ". $_GET['M:ID_champsAnnexe_'.$i]. ";";
+        $req .= "\nDELETE FROM champsannexe WHERE ID = ". $_GET['M:ID_champsAnnexe_'.$i]. ";";
       }
 
     }

@@ -265,8 +265,6 @@ if (isset($_POST['purete']) && $_POST['purete'] != ''){
 	if(isset($_POST['chx_structure']))
 		$sql.=", pro_controle_structure = ".$_POST['chx_structure'];
 
-	$sql.=", pro_champsAnnexe = '".$_POST["champsAnnexe"]."'";
-
 	$sql.=" where pro_id_produit='".$_POST['id']."'";
 
 	$insert=$dbh->exec($sql);

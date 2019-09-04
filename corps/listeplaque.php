@@ -81,6 +81,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		if (!isset($_GET["m"])) $_GET["m"]="";
 		if (!isset($_GET["k"])) $_GET["k"]="";
 		if (!isset($j)) $j="";
+		if (!isset($i)) $i="";
 		print"&nbsp;&nbsp;<a href=\"visuplt.php?pltmere=$row[0]&id=".$_GET["id"]."&id1=".$_GET["id1"]."&id2=".$_GET["id2"]."&i=$i&j=$j&k=".$_GET["k"]."&m=".$_GET["m"]."\"><img src=\"images/lire.gif\" width=\"15\" border=\"0\" alt=\"".VISU."\" title=\"".VISU."\"/></a><a href=\"gestionplaque.php?idmodif=".$row[0]."\"><img src=\"images/modifier.gif\" width=\"15\" border=\"0\" alt=\"".MOD."\" title=\"".MOD."\"/></a>";
 		if ($nbresultat1>0 and $row[0]==$_GET["id"]) print"&nbsp;&rarr;";
 

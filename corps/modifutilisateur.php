@@ -58,7 +58,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"utilisateurreac.php\">".REAC."</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"utilisateurmodif.php\">".MODIF."</a></td>
 		<td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"equipegestion.php\">".GESTEQUIP."</a></td>
-		
+
 		</tr>
 		</table><br/>";
 	print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
@@ -104,7 +104,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		else print" class=\"ligneutil1\"";
 		$search= array('{','}');
 		$row[5]=str_replace($search,'',$row[5]);
-		print"><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td><td>$row[3]</td><td>$row[4]</td><td>".constant($row[5])."</td><td>";
+		if($row[5]) $row[5] = constant($row[5]);
+		print"><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td><td>$row[3]</td><td>$row[4]</td><td>".$row[5]."</td><td>";
 		if ($row[6]=="*") print"<a href=\"#\" onmouseover=\"ddrivetip('<p align=\'center\'>".AddSlashes(MANQURESPO)."</p>')\" onmouseout=\"hideddrivetip()\"><img border=\"0\" src=\"images/att.gif\" /></a>";
 		else echo $row[6];
 		print"</td><td>$row2[0]</td><td>";
