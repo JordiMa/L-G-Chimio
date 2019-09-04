@@ -890,12 +890,9 @@ CREATE Table IF NOT EXISTS champsProduit (
   PRIMARY KEY (pro_id_produit, cha_ID)
 );
 
-
 CREATE TABLE IF NOT EXISTS Pays (
   pay_code_pays CHARACTER VARYING(3) PRIMARY KEY,
   pay_pays CHARACTER VARYING(55) NOT NULL,
-  pay_APA BOOLEAN DEFAULT FALSE,
-  pay_numero_permis CHARACTER VARYING(255),
   pay_collaboration BOOLEAN DEFAULT FALSE,
   UNIQUE (pay_pays)
 );
@@ -941,6 +938,17 @@ CREATE TABLE IF NOT EXISTS Specimen (
   spe_collecteur CHARACTER VARYING(255),
   tax_ID INTEGER NOT NULL references Taxonomie(tax_ID),
   exp_ID INTEGER NOT NULL references Expedition(exp_ID)
+);
+
+CREATE TABLE IF NOT EXISTS Autorisation (
+  aut_numero_autorisation CHARACTER VARYING(255) PRIMARY KEY,
+  aut_type CHARACTER VARYING(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Autorisation_Specimen (
+  aut_numero_autorisation CHARACTER VARYING(255) references Autorisation(aut_numero_autorisation) ON UPDATE CASCADE,
+  spe_code_specimen CHARACTER VARYING(255) references Specimen(spe_code_specimen),
+  PRIMARY KEY (aut_numero_autorisation, spe_code_specimen)
 );
 
 CREATE TABLE IF NOT EXISTS Fichier_taxonomie (
@@ -991,7 +999,7 @@ CREATE TABLE IF NOT EXISTS Echantillon (
   ech_lieu_stockage CHARACTER VARYING(255) NOT NULL,
   par_ID INTEGER NOT NULL references Partie_organisme(par_ID),
   spe_code_specimen CHARACTER VARYING(255) NOT NULL references Specimen(spe_code_specimen),
-  con_ID INTEGER NOT NULL references Condition(con_ID)
+  con_ID INTEGER references Condition(con_ID)
 );
 
 CREATE TABLE IF NOT EXISTS Extraits (
@@ -1005,15 +1013,14 @@ CREATE TABLE IF NOT EXISTS Extraits (
   ext_observations CHARACTER VARYING(255),
   chi_id_chimiste INTEGER NOT NULL references Chimiste(chi_id_chimiste),
   ech_code_Echantillon CHARACTER VARYING(255) NOT NULL references Echantillon(ech_code_Echantillon),
-  UNIQUE (ext_solvant, ext_type_extraction, ext_etat, chi_id_chimiste, ech_code_echantillon)
+  typ_id_type smallint DEFAULT 1 references type(typ_id_type)
 );
 
 CREATE TABLE IF NOT EXISTS Purification(
   pur_ID SERIAL PRIMARY KEY,
   pur_purification CHARACTER VARYING(255) NOT NULL,
   pur_ref_book CHARACTER VARYING(255),
-  ext_Code_Extraits CHARACTER VARYING(255) NOT NULL references Extraits(ext_Code_Extraits),
-  UNIQUE (pur_purification, ext_Code_Extraits)
+  ext_Code_Extraits CHARACTER VARYING(255) NOT NULL references Extraits(ext_Code_Extraits)
 );
 
 CREATE TABLE IF NOT EXISTS Fichier_purification (
