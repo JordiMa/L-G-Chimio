@@ -1,6 +1,23 @@
 # Changelog [L-g Chimio]
 Tous les changements notables apportés à ce projet seront documentés dans ce fichier.
 
+## v1.6 - 2019-09-03
+
+### Ajouts :
+
+- Gestion d'extractothèque
+  - Insertion
+  - Recherche
+  - Modification
+  - Importation
+  - Exportation
+- Ajout de champs dynamique
+
+### Modifications :
+
+- Correction de bugs divers
+
+
 ## v1.5.1 - 2019-06-11
 
 ### Ajouts :
