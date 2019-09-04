@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <style>
 * {
   box-sizing: border-box;
@@ -152,8 +152,8 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
       Sous-espece<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Sous-espece" value=""><br/><br/>
       <br/>
       Variete<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Variete" value=""><br/><br/>
-      Protocole<br/><textarea rows="5" cols="50" class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" name="Taxonomie_Protocole"></textarea><br/><br/>
       Sequencage<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_Sequencage" value=""><br/><br/>
+      Protocole<br/><textarea rows="5" cols="50" class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" name="Taxonomie_Protocole"></textarea><br/><br/>
       Ref book<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="text" name="Taxonomie_RefBook" value=""><br/><br/>
       Fichier<br/><input class="echantillon_nouveau specimen_nouveau taxonomie_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Taxonomie_Fichier[]" value="" multiple><br/><br/>
 

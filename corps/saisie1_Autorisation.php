@@ -120,10 +120,10 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <tr>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Extrait.php\">Extrait</a></td>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Echantillon.php\">Échantillon</a></td>
-  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"saisie_Condition.php\">Condition</a></td>
+  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Condition.php\">Condition</a></td>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Specimen.php\">Specimen</a></td>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Taxonomie.php\">Taxonomie</a></td>
-  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"saisie_Expedition.php\">Expedition</a></td>
+  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"saisie_Expedition.php\">Expedition</a></td>
   </tr>
   </table><br/>";
 */
@@ -131,18 +131,14 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 
 <form name="myform" class="" action="" method="post" enctype="multipart/form-data">
 
-  <!-- [JM - 05/07/2019] condition -->
-  <div name="divHide" id="Condition" style="text-align: center;">
-    <h1>Condition</h1>
-    Milieu<br/><input class="echantillon_nouveau" type="text" name="Condition_Milieu" value=""><br/><br/>
-    Temperature *<br/><input class="echantillon_nouveau" type="number" step="any" name="Condition_Temperature" value="" required>°C<br/><br/>
-    Type de culture<br/><input class="echantillon_nouveau" type="text" name="Condition_Type" value=""><br/><br/>
-    Mode opératoire<br/><input class="echantillon_nouveau" type="text" name="Condition_ModeOp" value=""><br/><br/>
-    Observation<br/><input class="echantillon_nouveau" type="text" name="Condition_Observation" value=""><br/><br/>
-    Fichier<br/><input class="echantillon_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Condition_Fichier[]" multiple><br/><br/>
-
-    <input type="hidden" name="send" value="send">
-    <input type="submit">
+  <!-- [JM - 05/07/2019] Autorisation-->
+  <div name="divHide" id="Autorisation" style="text-align: center;">
+      <h1>Autorisation</h1>
+      Numéro d'autorisation<br/><input type="text" name="aut_numero" value=""><br/><br/>
+      Type d'autorisation<br/><input type="text" name="aut_type" value=""><br/><br/>
+      <br/><br/>
+      <input type="hidden" name="send" value="send">
+      <input type="submit">
   </div>
 
 </form>
@@ -153,40 +149,17 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 if(isset($_POST['send']) && $_POST['send'] == 'send'){
   $dbh->beginTransaction();
   $erreur = "";
-
-    $stmt = $dbh->prepare("INSERT INTO condition (con_milieu, con_temperature, con_type_culture, con_mode_operatoir, con_observation) VALUES (:con_milieu, :con_temperature, :con_type_culture, :con_mode_operatoir, :con_observation)");
-    $stmt->bindParam(':con_milieu', $_POST['Condition_Milieu']);
-    if($_POST['Condition_Temperature'] == "")
-      $_POST['Condition_Temperature'] = -999999;
-    $stmt->bindParam(':con_temperature', $_POST['Condition_Temperature']);
-    $stmt->bindParam(':con_type_culture', $_POST['Condition_Type']);
-    $stmt->bindParam(':con_mode_operatoir', $_POST['Condition_ModeOp']);
-    $stmt->bindParam(':con_observation', $_POST['Condition_Observation']);
-    $stmt->execute();
-    $con_id = $dbh->lastInsertId();
-    if ($stmt->errorInfo()[0] != 00000) {
-      $erreur .= "<br/>Erreur lors de l'insertion de la condition";
-    }
-
-    if(isset($_FILES['Condition_Fichier'])){
-      foreach ($_FILES['Condition_Fichier']['name'] as $key => $value) {
-        if ($_FILES['Condition_Fichier']['size'][$key] != 0) {
-          $extension_fichier=strtolower(pathinfo($_FILES['Condition_Fichier']['name'][$key], PATHINFO_EXTENSION));
-          $fichier=file_get_contents($_FILES['Condition_Fichier']['tmp_name'][$key]);
-          $fichier=Base64_encode($fichier);
-
-          $stmt = $dbh->prepare("INSERT INTO fichier_conditions (fic_fichier, fic_type, con_id) VALUES (:fic_fichier, :fic_type, :con_id)");
-          $stmt->bindParam(':fic_fichier', $fichier);
-          $stmt->bindParam(':fic_type', $extension_fichier);
-          $stmt->bindParam(':con_id', $con_id);
-          $stmt->execute();
-          if ($stmt->errorInfo()[0] != 00000) {
-            $erreur .= "<br/>Erreur lors de l'insertion des fichiers de la condition";
+        $stmt = $dbh->prepare("INSERT INTO autorisation (aut_numero_autorisation, aut_type) VALUES (:aut_numero_autorisation, :aut_type)");
+        $stmt->bindParam(':aut_numero_autorisation', $_POST['aut_numero']);
+        $stmt->bindParam(':aut_type', $_POST['aut_type']);
+        $stmt->execute();
+        $exp_id = $dbh->lastInsertId();
+        if ($stmt->errorInfo()[0] != 00000) {
+          $erreur .= "<br/>Erreur lors de l'insertion de l'autorisation";
+          if ($stmt->errorInfo()[0] == 23505) {
+            $erreur .= ", car cette autorisation existe déjà.";
           }
         }
-      }
-    }
-
 
   // [JM - 05/07/2019] si il y a des erreur, on les affiche et annule l'insertion
   if ($erreur != "") {
@@ -219,11 +192,11 @@ function showDiv(id){
   $("a[name='"+id+"']").css('text-decoration', 'underline');
 };
 
+
 /* [JM - 05/07/2019] initialise par défaut sur la partie Extrait*/
-hideDiv();showDiv("Condition");
+hideDiv();showDiv("Autorisation");
 
 </script>
-
 
 <?php if (isset($_POST['send'])): ?>
   <script type="text/javascript">

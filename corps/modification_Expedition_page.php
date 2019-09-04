@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -214,7 +214,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Mission de récolte</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_autorisation.php\">Autorisation</a></td>
     </tr>
     </table><br/>";
 
@@ -241,7 +242,7 @@ if (isset($_GET['expedition'])) {
   }
   ?>
 
-  <h3 align="center">Modification d'expedition</h3>
+  <h3 align="center">Modification de la mission de récolte</h3>
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
@@ -289,11 +290,11 @@ if (isset($_GET['expedition'])) {
     if (!empty($row_expedition[0])) {
 
       echo "<div style='text-align: center;'>";
-      echo "<div class='hr click_expedition'>Expedition</div>";
+      echo "<div class='hr click_expedition'>Mission de récolte</div>";
       echo "<a class='btnFic' style=\"float: right;\" href=\"#modif_expedition\">Modifier</a>";
       echo "<br/>";
       echo "<br/>";
-      echo "<br/><strong>ID expedition : </strong>" .$row_expedition[0];
+      echo "<br/><strong>ID Mission de récolte : </strong>" .$row_expedition[0];
       echo "<br/>";
       echo "<br/><strong>Nom : </strong>" .$row_expedition[1];
       echo "<br/><strong>Contact : </strong>" .$row_expedition[2];
@@ -309,16 +310,16 @@ if (isset($_GET['expedition'])) {
       echo '
       <div id="modif_expedition" class="overlay">
       <div id="popup_modif" class="popup">
-      <h2>Expedition</h2>
+      <h2>Mission de récolte</h2>
       <a class="close" href="#return">&times;</a>
       <form id="myForm" action="" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="expedition" value="'.$row_expedition[0].'">
         <input type="hidden" name="type" value="expedition">
         <input type="hidden" name="id" value="'.$row_expedition[0].'">
-        <br/><strong>ID expedition : </strong>'.$row_expedition[0].'
+        <br/><strong>ID Mission de récolte : </strong>'.$row_expedition[0].'
         <br/><br/>
         Nom<br/><input type="text" name="Nom" value="'.$row_expedition[1].'"><br/><br/>
-        Contact<br/><input type="text" name="Contact" value="'.$row_expedition[2].'">°C<br/><br/>
+        Contact<br/><input type="text" name="Contact" value="'.$row_expedition[2].'"><br/><br/>
         pays<br/>
         <select name="Pays" required>
           <option value=""></option>';

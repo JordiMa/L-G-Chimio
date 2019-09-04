@@ -32,11 +32,9 @@ include_once 'script/administrateur.php';
 include_once 'script/secure.php';
 include_once 'autoload.php';
 include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
-include_once 'langues/'.$_SESSION['langue'].'/lang_formulaire.php';
 include_once 'presentation/entete.php';
-$menu=15;
+$menu=17;
 include_once 'presentation/gauche.php';
-$transfert=false;
-include_once 'corps/modification_Extrait_page.php';
+include_once 'corps/import_Extrait.php';
 include_once 'presentation/pied.php';
 ?>

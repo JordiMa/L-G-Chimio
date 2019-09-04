@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -148,7 +148,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <?php
 
     if ($row[0]=="{ADMINISTRATEUR}" or $row[0]=="{CHEF}") {
-      $sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste Inner Join equipe on chimiste.chi_id_equipe = equipe.equi_id_equipe WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = FALSE AND chi_id_responsable IS NOT NULL order by chi_nom, chi_prenom";
+      $sql_autocomplete = "SELECT chi_nom, chi_prenom FROM chimiste Inner Join equipe on chimiste.chi_id_equipe = equipe.equi_id_equipe WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = FALSE order by chi_nom, chi_prenom";
       $result_autocomplete = $dbh->query($sql_autocomplete);
 
       $var_id_produit = "[";
@@ -173,29 +173,53 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
       <option value=""></option>
       <?php
         foreach ($dbh->query("select * from solvant") as $key => $value) {
-          echo'<option value="'.$value[0].'">'.$value[1].'</option>';
+          echo'<option value="'.$value[0].'">'.constant($value[1]).'</option>';
         }
       ?>
     </select><br/><br/>
 
-    Disponibilité<br/><input type="checkbox" name="Extrait_Disponibilité" value=""><br/><br/>
+    Disponible :<br/><input type="radio" name="Extrait_Disponibilité" value="TRUE" checked>Oui<br/>
+    <input type="radio" name="Extrait_Disponibilité" value="FALSE">Non<br/><br/>
     <br/>
     Type extraction<br/><input type="text" name="Extrait_Type_extraction" value=""><a href="#" onmouseover="ddrivetip('<p align=\'center\'>Exemple : macération / liquide-liquide</p>')" onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a><br/><br/>
     Etat<br/><input type="text" name="Extrait_Etat" value=""><a href="#" onmouseover="ddrivetip('<p align=\'center\'>Exemple : conservé sec / en solution dans méthanol</p>')" onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a><br/><br/>
     Protocole<br/><textarea name="Extrait_Protocole" rows="5" cols="50"></textarea><br/><br/>
-    Lieu de stockage<br/><input type="text" name="Extrait_Stockage" value=""><br/><br/>
+    Lieu de stockage<br/><textarea name="Extrait_Stockage" rows="5" cols="50"></textarea><br/><br/>
     Observation<br/><textarea name="Extrait_Observation" rows="5" cols="50"></textarea><br/><br/>
+
+    licence<br/>
+    <select name="Extrait_typ_id_type">
+      <?php
+        foreach ($dbh->query("select * from type") as $key => $value) {
+          echo'<option value="'.$value[0].'">'.constant($value[1]).'</option>';
+        }
+      ?>
+    </select><br/><br/>
 
     <button type="button" name="button" onclick="hideDiv();showDiv('Purification');">Suivant</button>
   </div>
 
   <!-- [JM - 05/07/2019] Purification -->
   <div name="divHide" id="Purification" style="text-align: center;">
-    <h1>Purification <a href="#" onmouseover="ddrivetip('<p align=\'center\'>Exemple : oui / non ou HPLC / silice / phase inverse</p>')" onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a></h1>
-    Ajouter <input type="number" id="nbPurification" name="nbPurification" value=0 min=0 max=5 onchange="addFields();"> purification(s)<br/><br/>
+    <h1>Purification</h1>
+    <div style="text-align: left; width: fit-content; display: inline-block;">
+      <input type="radio" name="chx_purif[]" value="Aucune">Aucune<br/>
+      <input type="checkbox" name="chx_purif[]" value="HPLC phase inverse">HPLC phase inverse<br/>
+      <input type="checkbox" name="chx_purif[]" value="HPLC phase normale">HPLC phase normale<br/>
+      <input type="checkbox" name="chx_purif[]" value="Flash chromatographie sur phase inverse">Flash chromatographie sur phase inverse<br/>
+      <input type="checkbox" name="chx_purif[]" value="Flash chromatographie sur phase normale">Flash chromatographie sur phase normale<br/>
+      <input type="checkbox" name="chx_purif[]" value="Chromatographie d’exclusion">Chromatographie d’exclusion<br/>
+      <input type="checkbox" name="chx_purif[]" value="Chromatographie échangeuse d’ion">Chromatographie échangeuse d’ion<br/>
+      <input type="checkbox" name="chx_purif[]" value="Extraction d’alcaloides">Extraction d’alcaloides<br/>
+      <input type="checkbox" name="chx_purif[]" value="Extraction lipides">Extraction lipides<br/>
+      <input type="checkbox" name="chx_purif[]" value="autres">autres<br/>
+      <br/>
+    </div>
+    <br/>
+
 
     <div id="container"></div>
-
+    <button type="button" name="button" onclick="hideDiv();showDiv('Extrait');">Précédent</button>
     <button type="button" name="button" onclick="hideDiv();showDiv('echantillon');">Suivant</button>
   </div>
 
@@ -227,14 +251,15 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
             <td>';if ($row1[3]) {echo "Oui";} else {echo "Non";} echo '</td>
             <td>'.urldecode($row1[4]).'</td>
             <td>'.urldecode($row1[5]).'</td>
-            <td><a href="recherche_extrait.php?echantillon='.urldecode($row1[0]).'" target="_blank">Voir les détails</a></td>
+            <td><a href="recherche_Echantillon.php?echantillon='.urldecode($row1[0]).'" target="_blank">Voir les détails</a></td>
             </tr>
             ';
           }
           ?>
         </tbody>
         </table>
-        <br/>
+        <button type="button" name="button" onclick="hideDiv();showDiv('Purification');">Précédent</button>
+        <br/><br/>
         <input type="hidden" name="send" value="send">
         <input type="submit">
   </div>
@@ -257,12 +282,11 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
   $dbh->beginTransaction();
   $erreur = "";
 
-  $stmt = $dbh->prepare("INSERT INTO extraits (ext_Code_Extraits, ext_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_id_chimiste, ech_code_echantillon) VALUES (:ext_Code_Extraits, :ext_solvant, :ext_type_extraction, :ext_etat, :ext_disponibilite, :ext_protocole, :ext_stockage, :ext_observations, :chi_id_chimiste, :ech_code_echantillon)");
+  $stmt = $dbh->prepare("INSERT INTO extraits (ext_Code_Extraits, ext_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_id_chimiste, ech_code_echantillon, typ_id_type) VALUES (:ext_Code_Extraits, :ext_solvant, :ext_type_extraction, :ext_etat, :ext_disponibilite, :ext_protocole, :ext_stockage, :ext_observations, :chi_id_chimiste, :ech_code_echantillon, :typ_id_type)");
   $stmt->bindParam(':ext_Code_Extraits', $_POST['Code_Extraits']);
   $stmt->bindParam(':ext_solvant', $_POST['Extrait_Solvants']);
   $stmt->bindParam(':ext_type_extraction', $_POST['Extrait_Type_extraction']);
   $stmt->bindParam(':ext_etat', $_POST['Extrait_Etat']);
-  if (isset($_POST['Extrait_Disponibilité'])) $_POST['Extrait_Disponibilité'] = "TRUE"; else $_POST['Extrait_Disponibilité'] = "FALSE";
   $stmt->bindParam(':ext_disponibilite', $_POST['Extrait_Disponibilité']);
   $stmt->bindParam(':ext_protocole', $_POST['Extrait_Protocole']);
   $stmt->bindParam(':ext_stockage', $_POST['Extrait_Stockage']);
@@ -270,28 +294,34 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
 
   $stmt->bindParam(':chi_id_chimiste', $idchim);//TODO chi_id_chimiste
   $stmt->bindParam(':ech_code_echantillon', $_POST['echantillon_Code']);
+  $stmt->bindParam(':typ_id_type', $_POST['Extrait_typ_id_type']);
+
   $stmt->execute();
   if ($stmt->errorInfo()[0] != 00000) {
     $erreur .= "<br/>Erreur lors de l'insertion de l'extrait";
     print_r($stmt->errorInfo());
   }
 
-  for ($i=0; $i < $_POST['nbPurification']; $i++) {
-    $stmt = $dbh->prepare("INSERT INTO purification (pur_purification, pur_ref_book, ext_Code_Extraits) VALUES (:pur_purification, :pur_ref_book, :ext_Code_Extraits)");
-    $stmt->bindParam(':pur_purification', $_POST['Purification_Purification'.($i+1)]);
-    $stmt->bindParam(':pur_ref_book', $_POST['Purification_RefBook'.($i+1)]);
-    $stmt->bindParam(':ext_Code_Extraits', $_POST['Code_Extraits']);
-    $stmt->execute();
-    $pur_id = $dbh->lastInsertId();
-    if ($stmt->errorInfo()[0] != 00000) {
-      $erreur .= "<br/>Erreur lors de l'insertion de la purification ".$i;
+  if(isset($_POST['chx_purif'])){
+    foreach($_POST['chx_purif'] as $value){
+      //$stmt = $dbh->prepare("INSERT INTO purification (pur_purification, pur_ref_book, ext_Code_Extraits) VALUES (:pur_purification, :pur_ref_book, :ext_Code_Extraits)");
+      $stmt = $dbh->prepare("INSERT INTO purification (pur_purification, ext_Code_Extraits) VALUES (:pur_purification, :ext_Code_Extraits)");
+      $stmt->bindParam(':pur_purification', $value);
+      //$stmt->bindParam(':pur_ref_book', $_POST['Purification_RefBook'.($i+1)]);
+      $stmt->bindParam(':ext_Code_Extraits', $_POST['Code_Extraits']);
+      $stmt->execute();
+      $pur_id = $dbh->lastInsertId();
+      if ($stmt->errorInfo()[0] != 00000) {
+        $erreur .= "<br/>Erreur lors de l'insertion de la purification ";
+      }
     }
+  }
 
-    if(isset($_FILES['Purification_Fichier'.($i+1)])){
-      foreach ($_FILES['Purification_Fichier'.($i+1)]['name'] as $key => $value) {
-        if ($_FILES['Purification_Fichier'.($i+1)]['size'][$key] != 0) {
-          $extension_fichier=strtolower(pathinfo($_FILES['Purification_Fichier'.($i+1)]['name'][$key], PATHINFO_EXTENSION));
-          $fichier=file_get_contents($_FILES['Purification_Fichier'.($i+1)]['tmp_name'][$key]);
+    if(isset($_FILES['Purification_Fichier'])){
+      foreach ($_FILES['Purification_Fichier']['name'] as $key => $value) {
+        if ($_FILES['Purification_Fichier']['size'][$key] != 0) {
+          $extension_fichier=strtolower(pathinfo($_FILES['Purification_Fichier']['name'][$key], PATHINFO_EXTENSION));
+          $fichier=file_get_contents($_FILES['Purification_Fichier']['tmp_name'][$key]);
           $fichier=Base64_encode($fichier);
 
           $stmt = $dbh->prepare("INSERT INTO fichier_purification (fic_fichier, fic_type, pur_id) VALUES (:fic_fichier, :fic_type, :pur_id)");
@@ -305,7 +335,8 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
         }
       }
     }
-  }
+
+
   // [JM - 05/07/2019] si il y a des erreur, on les affiche et annule l'insertion
   if ($erreur != "") {
     echo "<center><h3>".$erreur."</h3></center>";
@@ -335,48 +366,6 @@ function ShowAllDiv(){
 function showDiv(id){
   $("Div#"+id).css('display', '');
   $("a[name='"+id+"']").css('text-decoration', 'underline');
-};
-
-/* [JM - 05/07/2019] Ajoute des champs correspondant au nombre de purification choisie */
-function addFields(){
-  var number = document.getElementById("nbPurification").value;
-  var container = document.getElementById("container");
-  while (container.hasChildNodes()) {
-    container.removeChild(container.lastChild);
-  }
-  for (i=0;i<number;i++){
-    container.appendChild(document.createTextNode("Purification " + (i+1) + " *"));
-    container.appendChild(document.createElement("br"));
-    var input = document.createElement("input");
-    input.name = "Purification_Purification" + (i+1);
-    input.type = "text";
-    input.setAttribute("required","required");
-    container.appendChild(input);
-    container.appendChild(document.createElement("br"));
-    container.appendChild(document.createElement("br"));
-
-    container.appendChild(document.createTextNode("Ref book " + (i+1)));
-    container.appendChild(document.createElement("br"));
-    var input = document.createElement("input");
-    input.name = "Purification_RefBook" + (i+1);
-    input.type = "text";
-    container.appendChild(input);
-    container.appendChild(document.createElement("br"));
-    container.appendChild(document.createElement("br"));
-
-    container.appendChild(document.createTextNode("Fichier " + (i+1)));
-    container.appendChild(document.createElement("br"));
-    var input = document.createElement("input");
-    input.name = "Purification_Fichier" + (i+1) + "[]";
-    input.type = "file";
-    input.setAttribute("multiple","multiple");
-    input.setAttribute("accept","image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt");
-    container.appendChild(input);
-    container.appendChild(document.createElement("br"));
-    container.appendChild(document.createElement("br"));
-
-    container.appendChild(document.createElement("hr"));
-  }
 };
 
 /* [JM - 05/07/2019] initialise par défaut sur la partie Extrait*/

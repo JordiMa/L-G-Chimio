@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -200,7 +200,6 @@ termes.
 */
 include_once 'script/secure.php';
 //include_once 'protection.php';
-include_once 'langues/'.$_SESSION['langue'].'/lang_export.php';
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
@@ -215,7 +214,8 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
   <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Mission de récolte</a></td>
+  <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_autorisation.php\">Autorisation</a></td>
   ";
   }
   print"
@@ -229,7 +229,7 @@ if (isset($_GET['echantillon'])) {
   if(isset($_POST["type"])){
     switch ($_POST["type"]) {
       case 'Extraits':
-        $stmt = $dbh->prepare("UPDATE extraits SET ext_solvant = :ext_solvant, ext_type_extraction = :ext_type_extraction, ext_etat = :ext_etat, ext_disponibilite = :ext_disponibilite, ext_protocole = :ext_protocole, ext_stockage = :ext_stockage, ext_observations = :ext_observations WHERE ext_Code_Extraits = :ext_Code_Extraits");
+        $stmt = $dbh->prepare("UPDATE extraits SET ext_solvant = :ext_solvant, ext_type_extraction = :ext_type_extraction, ext_etat = :ext_etat, ext_disponibilite = :ext_disponibilite, ext_protocole = :ext_protocole, ext_stockage = :ext_stockage, ext_observations = :ext_observations, typ_id_type = :typ_id_type WHERE ext_Code_Extraits = :ext_Code_Extraits");
         $stmt->bindParam(':ext_solvant', $_POST['Solvant']);
         $stmt->bindParam(':ext_type_extraction', $_POST['TypeExtra']);
         $stmt->bindParam(':ext_etat', $_POST['Etat']);
@@ -240,6 +240,7 @@ if (isset($_GET['echantillon'])) {
         $stmt->bindParam(':ext_protocole', $_POST['Protocole']);
         $stmt->bindParam(':ext_stockage', $_POST['Lieu']);
         $stmt->bindParam(':ext_observations', $_POST['Observations']);
+        $stmt->bindParam(':typ_id_type', $_POST['Extrait_typ_id_type']);
 
         $stmt->bindParam(':ext_Code_Extraits', $_POST['id']);
 
@@ -321,6 +322,8 @@ if (isset($_GET['echantillon'])) {
 
       case 'condition':
         $stmt = $dbh->prepare("UPDATE echantillon SET con_id = :con_id WHERE ech_code_echantillon = :ech_code_echantillon");
+        if ($_POST['id'] == "NULL")
+          $_POST['id'] = NULL;
         $stmt->bindParam(':con_id', $_POST['id']);
         $stmt->bindParam(':ech_code_echantillon', $_POST['echantillon']);
 
@@ -408,7 +411,7 @@ if (isset($_GET['echantillon'])) {
         <td>'.urldecode($row_r[1]).'</td>
         <td>'.urldecode($row_r[2]).'</td>
         <td>';if ($row_r[3]) {echo "Oui";} else {echo "Non";} echo '</td>
-        <td>'.urldecode($row_r[4]).'</td>
+        <td>'.urldecode($row_r[4]).' g</td>
         <td>'.urldecode($row_r[5]).'</td>
         </tr>
         ';
@@ -417,7 +420,7 @@ if (isset($_GET['echantillon'])) {
     </tbody>
     </table>
     <br/>
-    <input type="submit" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
+    <input type="submit" name="Rechercher" id="Rechercher" value="Rechercher">
     <br><br>
   </form>
   <hr>
@@ -432,7 +435,7 @@ if (isset($_GET['echantillon'])) {
     INNER JOIN taxonomie on taxonomie.tax_ID = specimen.tax_ID
     INNER JOIN type_taxonomie on type_taxonomie.typ_tax_id = taxonomie.typ_tax_id
     INNER JOIN partie_organisme on partie_organisme.par_id = echantillon.par_id
-    INNER JOIN condition on condition.con_id = echantillon.con_id
+    LEFT OUTER JOIN condition on condition.con_id = echantillon.con_id
     WHERE Echantillon.ech_code_echantillon = '".$_POST['echantillon']."';
     ";
 
@@ -448,7 +451,7 @@ if (isset($_GET['echantillon'])) {
       echo "<br/><strong>DOI : </strong>" .$row_echantillon[2];
       echo "<br/>";
       echo "<br/><strong>Stock : </strong>"; if ($row_echantillon[3] == 1) echo "Oui"; else echo "Non";
-      echo "<br/><strong>Quantité : </strong>" .$row_echantillon[4];
+      echo "<br/><strong>Quantité : </strong>" .$row_echantillon[4] . ' g';
       echo "<br/><strong>Lieu de stockage : </strong>" .$row_echantillon[5];
       echo "<br/>";
       echo "<br/>";
@@ -471,8 +474,8 @@ if (isset($_GET['echantillon'])) {
                 <br/><strong>Contact : </strong><br/><input name="contact" type="text" value="'.$row_echantillon[1].'">
                 <br/><br/><strong>DOI : </strong><br/><input name="DOI" type="text" value="'.$row_echantillon[2].'">
                 <br/><br/><strong>Stock : </strong><br/><input name="stock" type="checkbox" '; if ($row_echantillon[3] == 1) echo "checked"; echo '>
-                <br/><br/><strong>Quantité : </strong><br/><input name="quantite" type="text" value="'.$row_echantillon[4].'">
-                <br/><br/><strong>Lieu de stockage : </strong><br/><input name="lieu" type="text" value="'.$row_echantillon[5].'">
+                <br/><br/><strong>Quantité : </strong><br/><input name="quantite" type="number" min="0" step="any" value="'.$row_echantillon[4].'"> g
+                <br/><br/><strong>Lieu de stockage : </strong><br/><textarea name="lieu" rows="5" cols="50">'.$row_echantillon[5].'</textarea>
                 <br/><br/><input type="submit" style="float: right;">
               </form>
             </div>
@@ -521,9 +524,10 @@ if (isset($_GET['echantillon'])) {
       }
       elseif ($row[0]=='{ADMINISTRATEUR}') {
         $req_extrait = "
-        SELECT ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe FROM extraits
+        SELECT ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
+        INNER JOIN type on extraits.typ_id_type = type.typ_id_type
         LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
         WHERE ech_code_echantillon = '".$_POST['echantillon']."'
         ORDER BY ext_Code_Extraits";
@@ -541,7 +545,7 @@ if (isset($_GET['echantillon'])) {
         echo "<a class='btnFic' style=\"float: right;\" href=\"#modif_ext_".$value[0]."\">Modifier</a>";
         echo "<strong>ID extrait : </strong>" .$value[0];
         echo "<br/>";
-        echo "<br/><strong>Solvant : </strong>" .$value[1];
+        echo "<br/><strong>Solvant : </strong>" .constant($value[1]);
         echo "<br/><strong>Type d'extraction : </strong>" .$value[2];
         echo "<br/><strong>Etat : </strong>" .$value[3];
         echo "<br/>";
@@ -550,6 +554,7 @@ if (isset($_GET['echantillon'])) {
         echo "<br/><strong>Lieu de stockage : </strong>" .$value[6];
         echo "<br/>";
         echo "<br/><strong>Observations : </strong>" .$value[7];
+        echo "<br/><br/><strong>Licence : </strong>" .constant($value[11]);
         echo "<br/>";
         echo "<br/><strong>Nom du chimiste : </strong>" .$value[8]. " " .$value[9] ;
         echo "<br/><strong>Equipe : </strong>" .$value[10];
@@ -568,16 +573,26 @@ if (isset($_GET['echantillon'])) {
                 <select name="Solvant" required>
                   <option value=""></option>';
                     foreach ($dbh->query("select * from solvant") as $key1 => $value1) {
-                      echo'<option value="'.$value1[0].'"'; if($value[1] == $value1[1]) echo "selected"; echo '>'.$value1[1].'</option>';
+                      echo'<option value="'.$value1[0].'"'; if($value[1] == $value1[1]) echo "selected"; echo '>'.constant($value1[1]).'</option>';
                     }
                 echo '
                 </select>
                 <br/><br/><strong>Type d\'extraction : </strong><br/><input name="TypeExtra" type="text" value="'.$value[2].'">
                 <br/><br/><strong>Etat : </strong><br/><input name="Etat" type="text" value="'.$value[3].'">
                 <br/><br/><strong>Disponibilité : </strong><br/><input name="Disponibilite" type="checkbox" '; if ($value[4] == 1) echo "checked"; echo '>
-                <br/><br/><strong>Protocole : </strong><br/><input name="Protocole" type="text" value="'.$value[5].'">
-                <br/><br/><strong>Lieu de stockage : </strong><br/><input name="Lieu" type="text" value="'.$value[6].'">
-                <br/><br/><strong>Observations : </strong><br/><input name="Observations" type="text" value="'.$value[7].'">
+                <br/><br/><strong>Protocole : </strong><br/><textarea name="Protocole" rows="5" cols="50">'.$value[5].'</textarea>
+                <br/><br/><strong>Lieu de stockage : </strong><br/><textarea name="Lieu" rows="5" cols="50">'.$value[6].'</textarea>
+                <br/><br/><strong>Observations : </strong><br/><textarea name="Observations" rows="5" cols="50">'.$value[7].'</textarea>';
+                echo '
+                <br/><br/><strong>licence</strong><br/>
+                <select name="Extrait_typ_id_type">';
+                    foreach ($dbh->query("select * from type") as $key => $value1) {
+                      echo'<option value="'.$value1[0].'"'; if($value1[1] == $value[11]) echo "selected" ;echo '>'.constant($value1[1]).'</option>';
+                    }
+                  echo '
+                </select><br/><br/>
+                ';
+                echo '
                 <br/><br/><strong>Nom du chimiste : </strong>' .$value[8].' ' .$value[9].'
                 <br/><br/><strong>Equipe : </strong>' .$value[10].'
                 <br/><br/><input type="submit" style="float: right;">
@@ -691,56 +706,54 @@ if (isset($_GET['echantillon'])) {
       echo "<br/><strong>Collection : </strong>" .$row_echantillon[14];
       echo "<br/><strong>Contact : </strong>" .$row_echantillon[15];
       echo "<br/><strong>Collecteur : </strong>" .$row_echantillon[16];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_spe_".$row_echantillon[9]."\">Voir les fichier</a>";
+      echo "<br/><br/><a class='btnFic' href=\"#fic_spe_".$row_echantillon[9]."\">Voir les fichiers</a>";
       echo "<br/>";
       echo "</div>";
 
       echo "<div class='infos'>";
-      echo "<div class='hr click_expedition'>Expedition</div>";
+      echo "<div class='hr click_expedition'>Mission de récolte</div>";
       echo "<br/>";
       echo "<br/>";
-      echo "<br/><strong>ID expedition : </strong>" .$row_echantillon[19];
+      echo "<br/><strong>ID Mission de récolte : </strong>" .$row_echantillon[19];
       echo "<br/>";
       echo "<br/><strong>Nom : </strong>" .$row_echantillon[20];
       echo "<br/><strong>Contact : </strong>" .$row_echantillon[21];
       echo "<br/>";
       echo "<br/><strong>Pays : </strong>" .$row_echantillon[24];
-      echo "<br/><strong>APA : </strong>";if ($row_echantillon[25] == 1) echo "Oui"; else echo "Non";
-      echo "<br/><strong>Numero de permis : </strong>" .$row_echantillon[26];
-      echo "<br/><strong>Collaboration : </strong>";if ($row_echantillon[27] == 1) echo "Oui"; else echo "Non";
+      echo "<br/><strong>Collaboration : </strong>";if ($row_echantillon[25] == 1) echo "Oui"; else echo "Non";
       echo "</div>";
 
       echo "<div class='infos'>";
       echo "<div class='hr click_taxonomie'>Taxonomie</div>";
-      echo "<br/><strong>ID taxonomie : </strong>" .$row_echantillon[28];
+      echo "<br/><strong>ID taxonomie : </strong>" .$row_echantillon[26];
       echo "<br/>";
-      echo "<br/><strong>Phylum : </strong>" .$row_echantillon[29];
-      echo "<br/><strong>Classe : </strong>" .$row_echantillon[30];
-      echo "<br/><strong>Ordre : </strong>" .$row_echantillon[31];
-      echo "<br/><strong>Famille : </strong>" .$row_echantillon[32];
-      echo "<br/><strong>Genre : </strong>" .$row_echantillon[33];
-      echo "<br/><strong>Espece : </strong>" .$row_echantillon[34];
-      echo "<br/><strong>Sous-espece : </strong>" .$row_echantillon[35];
-      echo "<br/><strong>Varieté : </strong>" .$row_echantillon[36];
+      echo "<br/><strong>Phylum : </strong>" .$row_echantillon[27];
+      echo "<br/><strong>Classe : </strong>" .$row_echantillon[28];
+      echo "<br/><strong>Ordre : </strong>" .$row_echantillon[29];
+      echo "<br/><strong>Famille : </strong>" .$row_echantillon[30];
+      echo "<br/><strong>Genre : </strong>" .$row_echantillon[31];
+      echo "<br/><strong>Espece : </strong>" .$row_echantillon[32];
+      echo "<br/><strong>Sous-espece : </strong>" .$row_echantillon[33];
+      echo "<br/><strong>Varieté : </strong>" .$row_echantillon[34];
       echo "<br/>";
-      echo "<br/><strong>Protocole : </strong>" .$row_echantillon[37];
-      echo "<br/><strong>Sequence : </strong>" .$row_echantillon[38];
-      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_echantillon[39];
+      echo "<br/><strong>Protocole : </strong>" .$row_echantillon[35];
+      echo "<br/><strong>Sequence : </strong>" .$row_echantillon[36];
+      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_echantillon[37];
       echo "<br/>";
-      echo "<br/><strong>Type : </strong>" .$row_echantillon[42];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_tax_".$row_echantillon[28]."\">Voir les fichier</a>";
+      echo "<br/><strong>Type : </strong>" .$row_echantillon[40];
+      echo "<br/><br/><a class='btnFic' href=\"#fic_tax_".$row_echantillon[26]."\">Voir les fichiers</a>";
       echo "<br/>";
       echo "</div>";
 
       echo "<div class='infos'>";
       echo "<div class='hr click_partie_organisme'>Partie organisme</div>";
 
-      echo "<br/><strong>ID partie organisme : </strong>" .$row_echantillon[43];
+      echo "<br/><strong>ID partie organisme : </strong>" .$row_echantillon[41];
       echo "<br/>";
-      echo "<br/><strong>Origine : </strong>" .$row_echantillon[44];
-      echo "<br/><strong>Partie : </strong>" .$row_echantillon[45]; //$row_echantillon[45] => FR; $row_echantillon[46] => EN
+      echo "<br/><strong>Origine : </strong>" .$row_echantillon[42];
+      echo "<br/><strong>Partie : </strong>" .$row_echantillon[43]; //$row_echantillon[43] => FR; $row_echantillon[44] => EN
       echo "<br/>";
-      echo "<br/><strong>Observations : </strong>" .$row_echantillon[47];
+      echo "<br/><strong>Observations : </strong>" .$row_echantillon[45];
       echo "</div>";
 
       echo "<div class='infos'>";
@@ -748,18 +761,20 @@ if (isset($_GET['echantillon'])) {
       if ($row[0]=='{ADMINISTRATEUR}') {
         echo "<a class='btnFic' style=\"float: right;\" href=\"#modif_condition\">Modifier</a>";
       }
-      echo "<br/>";
-      echo "<br/>";
-      echo "<br/><strong>ID condition : </strong>" .$row_echantillon[48];
-      echo "<br/>";
-      echo "<br/><strong>Milieu : </strong>" .$row_echantillon[49];
-      echo "<br/><strong>Temperature : </strong>" .$row_echantillon[50];
-      echo "<br/><strong>Type de culture : </strong>" .$row_echantillon[51];
-      echo "<br/><strong>Mode operatoir : </strong>" .$row_echantillon[52];
-      echo "<br/>";
-      echo "<br/><strong>Observations : </strong>" .$row_echantillon[53];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_con_".$row_echantillon[48]."\">Voir les fichier</a>";
-      echo "<br/>";
+      if($row_echantillon[46]){
+        echo "<br/>";
+        echo "<br/>";
+        echo "<br/><strong>ID condition : </strong>" .$row_echantillon[46];
+        echo "<br/>";
+        echo "<br/><strong>Milieu : </strong>" .$row_echantillon[47];
+        echo "<br/><strong>Temperature : </strong>" .$row_echantillon[48].'°C';
+        echo "<br/><strong>Type de culture : </strong>" .$row_echantillon[49];
+        echo "<br/><strong>Mode operatoir : </strong>" .$row_echantillon[50];
+        echo "<br/>";
+        echo "<br/><strong>Observations : </strong>" .$row_echantillon[51];
+        echo "<br/><br/><a class='btnFic' href=\"#fic_con_".$row_echantillon[46]."\">Voir les fichiers</a>";
+        echo "<br/>";
+      }
       echo "</div>";
       echo "</div>";
 
@@ -853,15 +868,15 @@ if (isset($_GET['echantillon'])) {
         </thead>
         <tbody>
           <?php
-          foreach ($dbh->query("SELECT * FROM specimen ORDER BY spe_code_specimen") as $row) {
+          foreach ($dbh->query("SELECT * FROM specimen ORDER BY spe_code_specimen") as $row_spe) {
             echo '
             <tr>
-            <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="id" value="'.urldecode($row[0]).'"></td>
-            <td>'.urldecode($row[0]).'</td>
-            <td>'.urldecode($row[1]).'</td>
-            <td>'.urldecode($row[2]).'</td>
-            <td>'.urldecode($row[3]).'</td>
-            <td style="width: 35%;">'.urldecode($row[4]).'</td>
+            <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="id" value="'.urldecode($row_spe[0]).'"></td>
+            <td>'.urldecode($row_spe[0]).'</td>
+            <td>'.urldecode($row_spe[1]).'</td>
+            <td>'.urldecode($row_spe[2]).'</td>
+            <td>'.urldecode($row_spe[3]).'</td>
+            <td style="width: 35%;">'.urldecode($row_spe[4]).'</td>
             </tr>
             ';
           }
@@ -879,14 +894,14 @@ if (isset($_GET['echantillon'])) {
       }
       //Taxonomie
       echo '
-      <div id="fic_tax_'.$row_echantillon[28].'" class="overlay">
+      <div id="fic_tax_'.$row_echantillon[26].'" class="overlay">
       <div class="popup">
-      <h2>Fichiers taxonomie '.$row_echantillon[28].'</h2>
+      <h2>Fichiers taxonomie '.$row_echantillon[26].'</h2>
       <a class="close" href="#return">&times;</a>
       <div class="content">
       ';
       $liste_tax = "";
-      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_echantillon[28]."'") as $key => $value1) {
+      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_echantillon[26]."'") as $key => $value1) {
           $liste_tax .='<li><a href="telecharge.php?id='.$value1[0].'&rankExtra=taxonomie" target="_blank"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
       }
       if ($liste_tax != "") {
@@ -903,28 +918,30 @@ if (isset($_GET['echantillon'])) {
 
       //condition
       if ($row[0]=='{ADMINISTRATEUR}') {
-        echo '
-        <div id="fic_con_'.$row_echantillon[48].'" class="overlay">
-        <div class="popup">
-        <h2>Fichiers conditions '.$row_echantillon[48].'</h2>
-        <a class="close" href="#return">&times;</a>
-        <div class="content">
-        ';
-        $liste_con = "";
-        foreach ($dbh->query("SELECT * FROM fichier_conditions WHERE con_id = '".$row_echantillon[48]."'") as $key => $value1) {
-            $liste_con .='<li><a href="telecharge.php?id='.$value1[0].'&rankExtra=conditions" target="_blank"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
-        }
-        if ($liste_con != "") {
-          echo $liste_con;
-        }
-        else {
-          echo "Aucun fichier";
-        }
+        if($row_echantillon[48]){
+          echo '
+          <div id="fic_con_'.$row_echantillon[48].'" class="overlay">
+          <div class="popup">
+          <h2>Fichiers conditions '.$row_echantillon[48].'</h2>
+          <a class="close" href="#return">&times;</a>
+          <div class="content">
+          ';
+          $liste_con = "";
+          foreach ($dbh->query("SELECT * FROM fichier_conditions WHERE con_id = '".$row_echantillon[48]."'") as $key => $value1) {
+              $liste_con .='<li><a href="telecharge.php?id='.$value1[0].'&rankExtra=conditions" target="_blank"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
+          }
+          if ($liste_con != "") {
+            echo $liste_con;
+          }
+          else {
+            echo "Aucun fichier";
+          }
 
-        echo '</div>
-        </div>
-        </div>
-        ';
+          echo '</div>
+          </div>
+          </div>
+          ';
+        }
 
         echo '
         <div id="modif_condition" class="overlay">
@@ -936,6 +953,12 @@ if (isset($_GET['echantillon'])) {
           <input type="hidden" name="type" value="condition">
         ';
         ?>
+        <center>
+        <input type="radio" name="id" value="NULL"> Aucune condition
+        <br/><br/>
+        OU
+        <br/><br/>
+      </center>
         <table id="tab_Condition" class="display">
           <thead>
           <tr>
@@ -956,7 +979,7 @@ if (isset($_GET['echantillon'])) {
             <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="id" value="'.urldecode($row[0]).'"></td>
             <td>'.urldecode($row[0]).'</td>
             <td>'.urldecode($row[1]).'</td>
-            <td>'.urldecode($row[2]).'</td>
+            <td>'.urldecode($row[2]).'°C</td>
             <td>'.urldecode($row[3]).'</td>
             <td>'.urldecode($row[4]).'</td>
             <td>'.urldecode($row[5]).'</td>

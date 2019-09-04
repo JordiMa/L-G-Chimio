@@ -74,8 +74,8 @@ $row =$result->fetch(PDO::FETCH_NUM);
 				<a class="mnu" href="saisie_Extrait2.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img_18','','images/pucerouge.gif',1)"><img name="img_18" border="0" src="images/pucebleu.gif" width="9" height="9"> <?php echo SAISIE; ?></a><br/><br/>
 				<a class="mnu" href="modification_Extrait.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img_15','','images/pucerouge.gif',1)"><img name="img_15" border="0" src="images/pucebleu.gif" width="9" height="9"> <?php echo MODIF; ?></a><br/><br/>
 				<a class="mnu" href="recherche_Extrait.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img_16','','images/pucerouge.gif',1)"><img name="img_16" border="0" src="images/pucebleu.gif" width="9" height="9"> <?php echo RECHERCHE; ?></a><br/><br/>
-				<a style="text-decoration: line-through; filter: grayscale(1);" class="mnu" href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img_17','','images/pucerouge.gif',1)"><img name="img_17" border="0" src="images/pucebleu.gif" width="9" height="9"> <?php echo IMPORTATION; ?></a><br/><br/>
-				<a class="mnu" href="export_Extrait.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img_19','','images/pucerouge.gif',1)"><img name="img_19" border="0" src="images/pucebleu.gif" width="9" height="9"> <?php echo EXPORTATION; ?></a><br/><br/>
+				<a class="mnu" href="importation_Extrait.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img_17','','images/pucerouge.gif',1)"><img name="img_17" border="0" src="images/pucebleu.gif" width="9" height="9"> <?php echo IMPORTATION; ?></a><br/><br/>
+				<a class="mnu" href="exportation_Extrait.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('img_19','','images/pucerouge.gif',1)"><img name="img_19" border="0" src="images/pucebleu.gif" width="9" height="9"> <?php echo EXPORTATION; ?></a><br/><br/>
 			</td>
 		</tr>
 	</table>

@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -140,8 +140,9 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <!-- [JM - 05/07/2019] Menu de navigation -->
   <h2 style="text-align: center;">
     <a id="noTextDecoration" name="Specimen" onclick="hideDiv();showDiv('Specimen');">Etape 1</a> -
-    <a id="noTextDecoration" name="Taxonomie" onclick="hideDiv();showDiv('Taxonomie');">Etape 2</a> -
-    <a id="noTextDecoration" name="Expedition" onclick="hideDiv();showDiv('Expedition');">Etape 3</a>
+    <a id="noTextDecoration" name="Autorisation" onclick="hideDiv();showDiv('Autorisation');">Etape 2</a> -
+    <a id="noTextDecoration" name="Taxonomie" onclick="hideDiv();showDiv('Taxonomie');">Etape 3</a> -
+    <a id="noTextDecoration" name="Expedition" onclick="hideDiv();showDiv('Expedition');">Etape 4</a>
   </h2>
 
   <!-- [JM - 05/07/2019] Specimen -->
@@ -158,7 +159,40 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
       Collecteur<br/><input class="echantillon_nouveau specimen_nouveau" type="text" name="Specimen_Collecteur" value=""><br/><br/>
       Fichier<br/><input class="echantillon_nouveau specimen_nouveau" type="file" accept="image/*, .pdf, .xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel, .txt" name="Specimen_Fichier[]" value="" multiple><br/><br/>
 
-      <button type="button" name="button" onclick="hideDiv();showDiv('Taxonomie');">Suivant</button>
+      <button type="button" name="button" onclick="hideDiv();showDiv('Autorisation');">Suivant</button>
+
+  </div>
+
+  <!-- [JM - 05/07/2019] Autorisation -->
+  <div name="divHide" id="Autorisation" style="text-align: center;">
+      <h1>Autorisation</h1>
+      Ne rien cocher si autorisation non nécessaire !
+      <br/><br/>
+        <table id="tab_Autorisation" class="display">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Numéro d'autorisation</th>
+              <th>Type d'autorisation</th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php
+          foreach ($dbh->query("SELECT * FROM Autorisation") as $row) {
+            echo '
+            <tr>
+            <td><input type="checkbox" name="Autorisation_choix[]" value="'.urldecode($row[0]).'"></td>
+            <td>'.urldecode($row[0]).'</td>
+            <td>'.urldecode($row[1]).'</td>
+            </tr>
+            ';
+          }
+          ?>
+          </tbody>
+        </table>
+        <br/>
+        <button type="button" name="button" onclick="hideDiv();showDiv('Specimen');">Précédent</button>
+        <button type="button" name="button" onclick="hideDiv();showDiv('Taxonomie');">Suivant</button>
 
   </div>
 
@@ -174,6 +208,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
               <th>Genre</th>
               <th>Espece</th>
               <th>Sous-espece</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -187,6 +222,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
             <td>'.urldecode($row[2]).'</td>
             <td>'.urldecode($row[3]).'</td>
             <td>'.urldecode($row[4]).'</td>
+            <td><a href="recherche_Taxonomie.php?taxonomie='.urldecode($row[0]).'" target="_blank">Voir les détails</a></td>
             </tr>
             ';
           }
@@ -194,13 +230,14 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
           </tbody>
         </table>
         <br/>
+        <button type="button" name="button" onclick="hideDiv();showDiv('Autorisation');">Précédent</button>
         <button type="button" name="button" onclick="hideDiv();showDiv('Expedition');">Suivant</button>
 
   </div>
 
   <!-- [JM - 05/07/2019] Expedition-->
   <div name="divHide" id="Expedition" style="text-align: center;">
-      <h1>Expédition</h1>
+      <h1>Mission de récolte</h1>
         <table id="tab_Expedition" class="display">
           <thead>
           <tr>
@@ -227,12 +264,11 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
           ?>
         </tbody>
         </table>
-        <br/>
+        <button type="button" name="button" onclick="hideDiv();showDiv('Taxonomie');">Précédent</button>
+        <br/><br/>
       <input type="hidden" name="send" value="send">
       <input type="submit">
   </div>
-
-
 </form>
 
 <?php
@@ -258,6 +294,16 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
         $erreur .= "<br/>Erreur lors de l'insertion du specimen";
         if ($stmt->errorInfo()[0] == 23505) {
           $erreur .= ", car le code specimen ".$_POST['Specimen_Code']." existe déjà.";
+        }
+      }
+
+      foreach ($_POST['Autorisation_choix'] as $key => $value) {
+        $stmt = $dbh->prepare("INSERT INTO autorisation_specimen (aut_numero_autorisation, spe_code_specimen) VALUES (:aut_numero_autorisation, :spe_code_specimen)");
+        $stmt->bindParam(':aut_numero_autorisation', $value);
+        $stmt->bindParam(':spe_code_specimen', $_POST['Specimen_Code']);
+        $stmt->execute();
+        if ($stmt->errorInfo()[0] != 00000) {
+          $erreur .= "<br/>Erreur lors de l'insertion de l'autorisation";
         }
       }
 
@@ -315,6 +361,7 @@ function showDiv(id){
 hideDiv();showDiv("Specimen");
 
 $(document).ready(function() {
+    $('#tab_Autorisation').DataTable({select: {style: 'api'}});
     $('#tab_Taxonomie').DataTable({select: {style: 'single'}});
     $('#tab_Expedition').DataTable({select: {style: 'single'}});
 

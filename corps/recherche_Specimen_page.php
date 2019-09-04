@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -212,7 +212,8 @@ require 'script/connectionb.php';
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Condition.php\">Condition</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"recherche_Specimen.php\">Specimen</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Mission de récolte</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_autorisation.php\">Autorisation</a></td>
     </tr>
     </table><br/>";
 
@@ -288,52 +289,76 @@ if (isset($_GET['specimen'])) {
       echo "<br/><strong>Collection : </strong>" .$row_specimen[5];
       echo "<br/><strong>Contact : </strong>" .$row_specimen[6];
       echo "<br/><strong>Collecteur : </strong>" .$row_specimen[7];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_spe\">Voir les fichier</a>";
+      echo "<br/><br/><a class='btnFic' href=\"#fic_spe\">Voir les fichiers</a>";
       echo "<br/>";
       echo "<br/>";
 
       echo "</div>";
 
       echo "<hr>";
-      echo "<br/>";
-      echo "<div class='container'>";
 
+      $req_aut = "SELECT * FROM autorisation_specimen Inner JOIN autorisation ON autorisation_specimen.aut_numero_autorisation = autorisation.aut_numero_autorisation WHERE spe_code_specimen = '".$_POST['specimen']."'";
+      $query_aut = $dbh->query($req_aut);
+      $resultat_aut = $query_aut->fetchALL(PDO::FETCH_NUM);
+      if($resultat_aut){
+        echo "<div class='hr'>Autorisation</div>";
+        echo "<div style='max-height: 250px;overflow: auto; width: 100%;'>
+        <table class=\"table-tableau\">
+        <tr>
+        <th>Numéro d'autorisation</th>
+        <th>Type d'autorisation</th>
+        </tr>
+        ";
+        foreach ($resultat_aut as $key1 => $value1) {
+            echo "
+            <tr>
+            <td>".$value1[0]."</td>
+            <td>".$value1[3]."</td>
+            </tr>
+            ";
+        }
+        echo "</table>";
+        echo "</div>";
+        echo "<div class='container'>";
+        echo "</div>";
+        echo "<br/>";
+      }
+
+      echo "<div class='container'>";
       echo "<div class='infos'>";
-      echo "<div class='hr click_expedition'>Expedition</div>";
+      echo "<div class='hr click_expedition'>Mission de récolte</div>";
       echo "<br/>";
       echo "<br/>";
-      echo "<br/><strong>ID expedition : </strong>" .$row_specimen[10];
+      echo "<br/><strong>ID Mission de récolte : </strong>" .$row_specimen[10];
       echo "<br/>";
       echo "<br/><strong>Nom : </strong>" .$row_specimen[11];
       echo "<br/><strong>Contact : </strong>" .$row_specimen[12];
       echo "<br/>";
       echo "<br/><strong>Pays : </strong>" .$row_specimen[15];
-      echo "<br/><strong>APA : </strong>";if ($row_specimen[16] == 1) echo "Oui"; else echo "Non";
-      echo "<br/><strong>Numero de permis : </strong>" .$row_specimen[17];
-      echo "<br/><strong>Collaboration : </strong>";if ($row_specimen[18] == 1) echo "Oui"; else echo "Non";
+      echo "<br/><strong>Collaboration : </strong>";if ($row_specimen[16] == 1) echo "Oui"; else echo "Non";
       echo "</div>";
 
       echo "<div class='infos'>";
       echo "<div class='hr click_taxonomie'>Taxonomie</div>";
       echo "<br/>";
       echo "<br/>";
-      echo "<br/><strong>ID taxonomie : </strong>" .$row_specimen[19];
+      echo "<br/><strong>ID taxonomie : </strong>" .$row_specimen[17];
       echo "<br/>";
-      echo "<br/><strong>Phylum : </strong>" .$row_specimen[20];
-      echo "<br/><strong>Classe : </strong>" .$row_specimen[21];
-      echo "<br/><strong>Ordre : </strong>" .$row_specimen[22];
-      echo "<br/><strong>Famille : </strong>" .$row_specimen[23];
-      echo "<br/><strong>Genre : </strong>" .$row_specimen[24];
-      echo "<br/><strong>Espece : </strong>" .$row_specimen[25];
-      echo "<br/><strong>Sous-espece : </strong>" .$row_specimen[26];
-      echo "<br/><strong>Varieté : </strong>" .$row_specimen[27];
+      echo "<br/><strong>Phylum : </strong>" .$row_specimen[18];
+      echo "<br/><strong>Classe : </strong>" .$row_specimen[19];
+      echo "<br/><strong>Ordre : </strong>" .$row_specimen[20];
+      echo "<br/><strong>Famille : </strong>" .$row_specimen[21];
+      echo "<br/><strong>Genre : </strong>" .$row_specimen[22];
+      echo "<br/><strong>Espece : </strong>" .$row_specimen[23];
+      echo "<br/><strong>Sous-espece : </strong>" .$row_specimen[24];
+      echo "<br/><strong>Varieté : </strong>" .$row_specimen[25];
       echo "<br/>";
-      echo "<br/><strong>Protocole : </strong>" .$row_specimen[28];
-      echo "<br/><strong>Sequence : </strong>" .$row_specimen[29];
-      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_specimen[30];
+      echo "<br/><strong>Protocole : </strong>" .$row_specimen[26];
+      echo "<br/><strong>Sequence : </strong>" .$row_specimen[27];
+      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_specimen[28];
       echo "<br/>";
-      echo "<br/><strong>Type : </strong>" .$row_specimen[33];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_tax\">Voir les fichier</a>";
+      echo "<br/><strong>Type : </strong>" .$row_specimen[31];
+      echo "<br/><br/><a class='btnFic' href=\"#fic_tax\">Voir les fichiers</a>";
       echo "<br/>";
       echo "</div>";
 
@@ -370,12 +395,12 @@ if (isset($_GET['specimen'])) {
       echo '
       <div id="fic_tax" class="overlay">
       <div class="popup">
-      <h2>Fichiers taxonomie '.$row_specimen[19].'</h2>
+      <h2>Fichiers taxonomie '.$row_specimen[17].'</h2>
       <a class="close" href="#return">&times;</a>
       <div class="content">
       ';
       $liste_tax = "";
-      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_specimen[19]."'") as $key => $value1) {
+      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_specimen[17]."'") as $key => $value1) {
           $liste_tax .='<li><a href="#"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
       }
       if ($liste_tax != "") {

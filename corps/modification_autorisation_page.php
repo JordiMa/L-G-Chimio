@@ -52,7 +52,7 @@ div.extraits{
 div.container{
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: normal;
   flex-wrap: wrap;
 }
 
@@ -101,7 +101,7 @@ div.container{
   padding: 20px;
   background: #fff;
   border-radius: 5px;
-  width: 35%;
+  width: 95%;
   position: relative;
   transition: all 5s ease-in-out;
   top: 0%;
@@ -126,8 +126,8 @@ div.container{
   color: darkblue;
 }
 .popup .content {
-  width: 50%;
-  display: inline-block;
+  max-height: 30%;
+  overflow: auto;
 }
 
 #popup_modif.popup .content {
@@ -205,50 +205,64 @@ include_once 'langues/'.$_SESSION['langue'].'/lang_export.php';
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
 
+if ($row[0]=='{ADMINISTRATEUR}') {
+
   print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Extrait.php\">Extrait</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Echantillon.php\">Échantillon</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Condition.php\">Condition</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Specimen.php\">Specimen</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"recherche_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Mission de récolte</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_autorisation.php\">Autorisation</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Extrait.php\">Extraits</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Echantillon.php\">Échantillon</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Mission de récolte</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_autorisation.php\">Autorisation</a></td>
     </tr>
     </table><br/>";
 
-if (isset($_GET['taxonomie'])) {
-  $_POST['taxonomie'] = $_GET['taxonomie'];
+if (isset($_GET['autorisation'])) {
+  $_POST['autorisation'] = $_GET['autorisation'];
 }
+// [JM - 05/07/2019] gestion des modification
+  if(isset($_POST["type"])){
+    switch ($_POST["type"]) {
+      case 'autorisation':
+        $stmt = $dbh->prepare("UPDATE autorisation SET aut_numero_autorisation = :aut_numero_autorisation, aut_type = :aut_type WHERE aut_numero_autorisation = :aut_numero_autorisation1");
+        $stmt->bindParam(':aut_numero_autorisation', $_POST['aut_numero']);
+        $stmt->bindParam(':aut_type', $_POST['aut_type']);
+        $stmt->bindParam(':aut_numero_autorisation1', $_POST['id']);
+        $stmt->execute();
+
+        break;
+
+      default:
+        // code...
+        break;
+    }
+    echo '<script>window.location.replace("modification_autorisation.php?autorisation='.$_POST['aut_numero'].'");</script>';
+  }
   ?>
 
-  <h3 align="center">Recherche de taxonomie</h3>
+  <h3 align="center">Modification des autorisations</h3>
   <hr>
 
   <form id="myForm" action="" method="POST" enctype="multipart/form-data" style=" text-align: center;">
     <!-- [JM - 01/02/2019] Recherche du produit -->
-    <table id="tab_taxonomie" class="display">
+    <table id="tab_autorisation" class="display">
       <thead>
       <tr>
         <th></th>
-        <th>ID</th>
-        <th>Type</th>
-        <th>Genre</th>
-        <th>Espece</th>
-        <th>Sous-espece</th>
+        <th>Numéro d'autorisation</th>
+        <th>Type d'autorisation</th>
       </tr>
     </thead>
     <tbody>
       <?php
-      foreach ($dbh->query("SELECT tax_id, typ_tax_type, tax_genre, tax_espece, tax_sous_espece FROM taxonomie INNER JOIN type_taxonomie ON taxonomie.typ_tax_id = type_taxonomie.typ_tax_id ORDER BY typ_tax_type, tax_genre, tax_espece, tax_sous_espece") as $row) {
+      foreach ($dbh->query("SELECT * FROM autorisation ORDER BY aut_numero_autorisation") as $row) {
         echo '
         <tr>
-        <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="taxonomie" value="'.urldecode($row[0]).'"';if (isset($_POST['taxonomie']) && $row[0] == $_POST['taxonomie']) echo "checked"; ;echo '></td>
+        <td><input type="radio" name="autorisation" value="'.urldecode($row[0]).'"';if (isset($_POST['autorisation']) && $row[0] == $_POST['autorisation']) echo "checked"; echo '></td>
         <td>'.urldecode($row[0]).'</td>
         <td>'.urldecode($row[1]).'</td>
-        <td>'.urldecode($row[2]).'</td>
-        <td>'.urldecode($row[3]).'</td>
-        <td>'.urldecode($row[4]).'</td>
         </tr>
         ';
       }
@@ -262,37 +276,22 @@ if (isset($_GET['taxonomie'])) {
   <hr>
   <?php
 
-  if(isset($_POST['taxonomie'])){
-    $sql_taxonomie =
-    "SELECT * FROM taxonomie INNER JOIN type_taxonomie on type_taxonomie.typ_tax_id = taxonomie.typ_tax_id WHERE tax_id = '".$_POST['taxonomie']."';";
+  if(isset($_POST['autorisation'])){
+    $sql_autorisation =
+    "SELECT * FROM autorisation WHERE aut_numero_autorisation = '".$_POST['autorisation']."';";
 
-    $result_taxonomie = $dbh->query($sql_taxonomie);
-    $row_taxonomie = $result_taxonomie->fetch(PDO::FETCH_NUM);
+    $result_autorisation = $dbh->query($sql_autorisation);
+    $row_autorisation = $result_autorisation->fetch(PDO::FETCH_NUM);
     // [JM - 05/07/2019] affichage des information liée à l'echantillon
-    if (!empty($row_taxonomie[0])) {
-      // TODO:
+    if (!empty($row_autorisation[0])) {
+
       echo "<div style='text-align: center;'>";
-      echo "<div class='hr click_taxonomie'>Taxonomie</div>";
+      echo "<div class='hr click_autorisation'>Autorisation</div>";
+      echo "<a class='btnFic' style=\"float: right;\" href=\"#modif_autorisation\">Modifier</a>";
       echo "<br/>";
       echo "<br/>";
-      echo "<br/><strong>ID taxonomie : </strong>" .$row_taxonomie[0];
-      echo "<br/>";
-      echo "<br/><strong>Phylum : </strong>" .$row_taxonomie[1];
-      echo "<br/><strong>Classe : </strong>" .$row_taxonomie[2];
-      echo "<br/><strong>Ordre : </strong>" .$row_taxonomie[3];
-      echo "<br/><strong>Famille : </strong>" .$row_taxonomie[4];
-      echo "<br/><strong>Genre : </strong>" .$row_taxonomie[5];
-      echo "<br/><strong>Espece : </strong>" .$row_taxonomie[6];
-      echo "<br/><strong>Sous-espece : </strong>" .$row_taxonomie[7];
-      echo "<br/><strong>Varieté : </strong>" .$row_taxonomie[8];
-      echo "<br/>";
-      echo "<br/><strong>Protocole : </strong>" .$row_taxonomie[9];
-      echo "<br/><strong>Sequence : </strong>" .$row_taxonomie[10];
-      echo "<br/><strong>Ref cahier de labo : </strong>" .$row_taxonomie[11];
-      echo "<br/>";
-      echo "<br/><strong>Type : </strong>" .$row_taxonomie[14];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_tax\">Voir les fichiers</a>";
-      echo "<br/>";
+      echo "<br/><strong>Numéro d'autorisation : </strong>" .$row_autorisation[0];
+      echo "<br/><strong>Type d'autorisation : </strong>" .$row_autorisation[1];
       echo "<br/>";
       echo "<br/>";
       echo "</div>";
@@ -300,47 +299,43 @@ if (isset($_GET['taxonomie'])) {
 
       // [JM - 05/07/2019] Creation de popup pour afficher la liste des fichiers
 
-      //condition
+      //autorisation
       echo '
-      <div id="fic_tax" class="overlay">
-      <div class="popup">
-      <h2>Fichiers conditions '.$row_taxonomie[0].'</h2>
+      <div id="modif_autorisation" class="overlay">
+      <div id="popup_modif" class="popup">
+      <h2>Autorisations</h2>
       <a class="close" href="#return">&times;</a>
-      <div class="content">
-      ';
-      $liste_con = "";
-      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_taxonomie[0]."'") as $key => $value1) {
-
-        $liste_con .='<li><a href="telecharge.php?id='.$value1[0].'&rankExtra=taxonomie" target="_blank"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
-
-      }
-      if ($liste_con != "") {
-        echo $liste_con;
-      }
-      else {
-        echo "Aucun fichier";
-      }
-
-      echo '</div>
+      <form id="myForm" action="" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="autorisation" value="'.$row_autorisation[0].'">
+        <input type="hidden" name="type" value="autorisation">
+        <input type="hidden" name="id" value="'.$row_autorisation[0].'">
+        <br/><strong>Numéro d\'autorisation actuel : </strong>'.$row_autorisation[0].'
+        <br/><br/>
+        Numéro d\'autorisation<br/><input type="text" name="aut_numero" value="'.$row_autorisation[0].'"><br/><br/>
+        Type d\'autorisation<br/><input type="text" name="aut_type" value="'.$row_autorisation[1].'"><br/><br/>
+        <br/><br/>
+      <br/>
+      <center><input type="submit"></center>
+      </form>
       </div>
       </div>
       ';
-
 
     }
     else {
       echo "<center><h2>Aucun résultat trouvé</h2></center>";
     }
   }
-
+}
+else require 'deconnexion.php';
 unset($dbh);
 ?>
 
 <script>
 $(document).ready(function() {
-    $('#tab_taxonomie').DataTable({select: {style: 'single'}});
+    $('#tab_autorisation').DataTable({select: {style: 'single'}});
 
-    $('#tab_taxonomie tr').click(function() {
+    $('#tab_autorisation tr').click(function() {
       $(this).find('td input:radio').prop('checked', true);
     });
 });

@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -184,10 +184,112 @@ Je veux saisir un(e) :
   <option value="Echantillon" <?php if(isset($_GET['choix']) && $_GET['choix'] == "Echantillon") echo "selected";?> >Echantillon</option>
   <option value="Condition" <?php if(isset($_GET['choix']) && $_GET['choix'] == "Condition") echo "selected";?> >Condition</option>
   <option value="Specimen" <?php if(isset($_GET['choix']) && $_GET['choix'] == "Specimen") echo "selected";?> >Specimen</option>
+  <option value="Autorisation" <?php if(isset($_GET['choix']) && $_GET['choix'] == "Autorisation") echo "selected";?> >Autorisation</option>
   <option value="Taxonomie" <?php if(isset($_GET['choix']) && $_GET['choix'] == "Taxonomie") echo "selected";?> >Taxonomie</option>
-  <option value="Expedition" <?php if(isset($_GET['choix']) && $_GET['choix'] == "Expedition") echo "selected";?> >Expedition</option>
+  <option value="Expedition" <?php if(isset($_GET['choix']) && $_GET['choix'] == "Expedition") echo "selected";?> >Mission de récolte</option>
 </select>
+<?php
+  $aide_Global = "
+  <div style=\'text-align: justify;\'>
+    <p>
+      <B style=\'color: indianred;\'>un spécimen, dont on décrit la taxonomie et la mission de récolte dont il provient, peut donner plusieurs échantillons selon la partie d\'organisme décrite, qui selon les conditions d\'extraction donneront plusieurs extraits.<br/></B>
 
+      <li>Mission de récolte :</li>
+      Représente le pays ainsi que votre contact durant la récolte.
+
+      <br/><br/>
+
+      <li>Taxonomie :</li>
+      Description et identification de l\'organisme vivant.
+
+      <br/><br/>
+
+      <li>Spécimen :</li>
+      Date et lieu de la récolte, observation et identification de l\'organisme récolté.<br/>
+      <B style=\'color: indianred;\'>Attention : La taxonomie et la mission de récolte devront être renseigné avant.</B>
+
+      <br/><br/>
+
+      <li>Condition :</li>
+      Condition de culture de l\'échantillon.
+
+      <br/><br/>
+
+      <li>Échantillon :</li>
+      Description de l\'échantillon, lieu de stockage, quantité disponible.<br/>
+      <B style=\'color: indianred;\'>Attention :le spécimen devra être renseigné avant.</B>
+
+      <br/><br/>
+
+      <li>Extrait :</li>
+      Parti de l\'échantillon. description de l\'extrait, solvant utiliser, type d\'extraction, stockage.<br/>
+      Issue de l\'extraction d\'un echantillon<br/>
+      <B style=\'color: indianred;\'>Attention : L\'échantillon devra être renseigné avant.</B>
+
+    </p>
+  </div>
+  ";
+  $aide_Global = str_replace(array("\r\n","\n"), '', $aide_Global);
+
+  $aide_Echantillon = "
+  <div style=\'text-align: justify;\'>
+    <p>
+      Description de l\'échantillon, lieu de stockage, quantité disponible.<br/>
+      <br/>
+      <B style=\'color: indianred;\'>Attention : La condition et le spécimen devront être renseigné avant.</B>
+    </p>
+  </div>
+  ";
+  $aide_Echantillon = str_replace(array("\r\n","\n"), '', $aide_Echantillon);
+
+  $aide_Condition = "
+  <div style=\'text-align: justify;\'>
+    <p>
+      Condition de culture de l\'échantillon.
+    </p>
+  </div>
+  ";
+  $aide_Condition = str_replace(array("\r\n","\n"), '', $aide_Condition);
+
+  $aide_Specimen = "
+  <div style=\'text-align: justify;\'>
+    <p>
+      Date et lieu de la récolte, observation et identification de l\'organisme récolté.<br/>
+      <br/>
+      <B style=\'color: indianred;\'>Attention : La taxonomie et la mission de récolte devront être renseigné avant.</B>
+    </p>
+  </div>
+  ";
+  $aide_Specimen = str_replace(array("\r\n","\n"), '', $aide_Specimen);
+
+  $aide_autorisation = "
+  <div style=\'text-align: justify;\'>
+    <p>
+      rentrer le n° autorisation et le type (APA, partenariat, ...)
+    </p>
+  </div>
+  ";
+  $aide_autorisation = str_replace(array("\r\n","\n"), '', $aide_autorisation);
+
+  $aide_Taxonomie = "
+  <div style=\'text-align: justify;\'>
+    <p>
+      Description et identification de l\'organisme vivant.
+    </p>
+  </div>
+  ";
+  $aide_Taxonomie = str_replace(array("\r\n","\n"), '', $aide_Taxonomie);
+
+  $aide_Expedition = "
+  <div style=\'text-align: justify;\'>
+    <p>
+      Représente le pays ainsi que votre contact durant la récolte.
+    </p>
+  </div>
+  ";
+  $aide_Expedition = str_replace(array("\r\n","\n"), '', $aide_Expedition);
+?>
+<a href="#" onmouseover="ddrivetip('<?php echo $aide_Global; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 
 <?php if (isset($_GET['choix']) && $_GET['choix'] == "Extrait"): ?>
   <br/><br/>
@@ -197,15 +299,20 @@ Je veux saisir un(e) :
     <option value="Oui" <?php if(isset($_GET['echantillon_existe']) && $_GET['echantillon_existe'] == "Oui") echo "selected";?> >Oui</option>
     <option value="Non" <?php if(isset($_GET['echantillon_existe']) && $_GET['echantillon_existe'] == "Non") echo "selected";?> >Non</option>
   </select>
+  <a href="recherche_Echantillon.php" target="_blank">(Voir les existants)</a>
+  <a href="#" onmouseover="ddrivetip('<?php echo $aide_Echantillon; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+
 
   <?php if (isset($_GET['echantillon_existe']) && $_GET['echantillon_existe'] == "Non"): ?>
     <br/><br/>
-    La condition est-elle existante ?
+    Voulez-vous créer une nouvelle condition ?
     <select name="condition_existe" onchange="submit()" required>
       <option value=""></option>
-      <option value="Oui" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Oui") echo "selected";?> >Oui</option>
-      <option value="Non" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Non") echo "selected";?> >Non</option>
+      <option value="Oui" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Oui") echo "selected";?> >Non</option>
+      <option value="Non" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Non") echo "selected";?> >Oui</option>
     </select>
+    <a href="recherche_Condition.php" target="_blank">(Voir les existants)</a>
+    <a href="#" onmouseover="ddrivetip('<?php echo $aide_Condition; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 
     <br/><br/>
     Le specimen est-il existant ?
@@ -214,8 +321,32 @@ Je veux saisir un(e) :
       <option value="Oui" <?php if(isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Oui") echo "selected";?> >Oui</option>
       <option value="Non" <?php if(isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Non") echo "selected";?> >Non</option>
     </select>
+    <a href="recherche_Specimen.php" target="_blank">(Voir les existants)</a>
+    <a href="#" onmouseover="ddrivetip('<?php echo $aide_Specimen; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+
 
     <?php if (isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Non"): ?>
+      <br/><br/>
+      Une autorisation est-elle nécessaire ?
+      <select name="autorisation_necessaire" onchange="submit()" required>
+        <option value=""></option>
+        <option value="Oui" <?php if(isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Oui") echo "selected";?> >Oui</option>
+        <option value="Non" <?php if(isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Non") echo "selected";?> >Non</option>
+      </select>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_autorisation; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+
+      <?php if (isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Oui"): ?>
+        <br/><br/>
+        L'autorisation est-elle existante ?
+        <select name="autorisation_existe" onchange="submit()" required>
+          <option value=""></option>
+          <option value="Oui" <?php if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Oui") echo "selected";?> >Oui</option>
+          <option value="Non" <?php if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Non") echo "selected";?> >Non</option>
+        </select>
+        <a href="recherche_autorisation.php" target="_blank">(Voir les existants)</a>
+        <a href="#" onmouseover="ddrivetip('<?php echo $aide_autorisation; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+      <?php endif; ?>
+
       <br/><br/>
       La taxonomie est-elle existante ?
       <select name="taxonomie_existe" onchange="submit()" required>
@@ -223,26 +354,32 @@ Je veux saisir un(e) :
         <option value="Oui" <?php if(isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Oui") echo "selected";?> >Oui</option>
         <option value="Non" <?php if(isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Non") echo "selected";?> >Non</option>
       </select>
+      <a href="recherche_Taxonomie.php" target="_blank">(Voir les existants)</a>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_Taxonomie; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 
       <br/><br/>
-      L'expedition est-elle existante ?
+      La mission de récolte est-elle existante ?
       <select name="expedition_existe" onchange="submit()" required>
         <option value=""></option>
         <option value="Oui" <?php if(isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Oui") echo "selected";?> >Oui</option>
         <option value="Non" <?php if(isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Non") echo "selected";?> >Non</option>
       </select>
+      <a href="recherche_Expedition.php" target="_blank">(Voir les existants)</a>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_Expedition; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
     <?php endif; ?>
   <?php endif; ?>
 <?php endif; ?>
 
 <?php if (isset($_GET['choix']) && $_GET['choix'] == "Echantillon"): ?>
     <br/><br/>
-    La condition est-elle existante ?
+    Voulez-vous créer une nouvelle condition ?
     <select name="condition_existe" onchange="submit()" required>
       <option value=""></option>
-      <option value="Oui" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Oui") echo "selected";?> >Oui</option>
-      <option value="Non" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Non") echo "selected";?> >Non</option>
+      <option value="Oui" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Oui") echo "selected";?> >Non</option>
+      <option value="Non" <?php if(isset($_GET['condition_existe']) && $_GET['condition_existe'] == "Non") echo "selected";?> >Oui</option>
     </select>
+    <a href="recherche_Condition.php" target="_blank">(Voir les existants)</a>
+    <a href="#" onmouseover="ddrivetip('<?php echo $aide_Condition; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 
     <br/><br/>
     Le specimen est-il existant ?
@@ -251,8 +388,31 @@ Je veux saisir un(e) :
       <option value="Oui" <?php if(isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Oui") echo "selected";?> >Oui</option>
       <option value="Non" <?php if(isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Non") echo "selected";?> >Non</option>
     </select>
+    <a href="recherche_Specimen.php" target="_blank">(Voir les existants)</a>
+    <a href="#" onmouseover="ddrivetip('<?php echo $aide_Specimen; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 
     <?php if (isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Non"): ?>
+      <br/><br/>
+      Une autorisation est-elle nécessaire ?
+      <select name="autorisation_necessaire" onchange="submit()" required>
+        <option value=""></option>
+        <option value="Oui" <?php if(isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Oui") echo "selected";?> >Oui</option>
+        <option value="Non" <?php if(isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Non") echo "selected";?> >Non</option>
+      </select>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_autorisation; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+
+      <?php if (isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Oui"): ?>
+        <br/><br/>
+        L'autorisation est-elle existante ?
+        <select name="autorisation_existe" onchange="submit()" required>
+          <option value=""></option>
+          <option value="Oui" <?php if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Oui") echo "selected";?> >Oui</option>
+          <option value="Non" <?php if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Non") echo "selected";?> >Non</option>
+        </select>
+        <a href="recherche_autorisation.php" target="_blank">(Voir les existants)</a>
+        <a href="#" onmouseover="ddrivetip('<?php echo $aide_autorisation; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+      <?php endif; ?>
+
       <br/><br/>
       La taxonomie est-elle existante ?
       <select name="taxonomie_existe" onchange="submit()" required>
@@ -260,18 +420,43 @@ Je veux saisir un(e) :
         <option value="Oui" <?php if(isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Oui") echo "selected";?> >Oui</option>
         <option value="Non" <?php if(isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Non") echo "selected";?> >Non</option>
       </select>
+      <a href="recherche_Taxonomie.php" target="_blank">(Voir les existants)</a>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_Taxonomie; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 
       <br/><br/>
-      L'expedition est-elle existante ?
+      La mission de récolte est-elle existante ?
       <select name="expedition_existe" onchange="submit()" required>
         <option value=""></option>
         <option value="Oui" <?php if(isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Oui") echo "selected";?> >Oui</option>
         <option value="Non" <?php if(isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Non") echo "selected";?> >Non</option>
       </select>
+      <a href="recherche_Expedition.php" target="_blank">(Voir les existants)</a>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_Expedition; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
   <?php endif; ?>
 <?php endif; ?>
 
 <?php if (isset($_GET['choix']) && $_GET['choix'] == "Specimen"): ?>
+    <br/><br/>
+    Une autorisation est-elle nécessaire ?
+    <select name="autorisation_necessaire" onchange="submit()" required>
+      <option value=""></option>
+      <option value="Oui" <?php if(isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Oui") echo "selected";?> >Oui</option>
+      <option value="Non" <?php if(isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Non") echo "selected";?> >Non</option>
+    </select>
+    <a href="#" onmouseover="ddrivetip('<?php echo $aide_autorisation; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+
+    <?php if (isset($_GET['autorisation_necessaire']) && $_GET['autorisation_necessaire'] == "Oui"): ?>
+      <br/><br/>
+      L'autorisation est-elle existante ?
+      <select name="autorisation_existe" onchange="submit()" required>
+        <option value=""></option>
+        <option value="Oui" <?php if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Oui") echo "selected";?> >Oui</option>
+        <option value="Non" <?php if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Non") echo "selected";?> >Non</option>
+      </select>
+      <a href="recherche_autorisation.php" target="_blank">(Voir les existants)</a>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_autorisation; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
+    <?php endif; ?>
+
       <br/><br/>
       La taxonomie est-elle existante ?
       <select name="taxonomie_existe" onchange="submit()" required>
@@ -279,14 +464,18 @@ Je veux saisir un(e) :
         <option value="Oui" <?php if(isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Oui") echo "selected";?> >Oui</option>
         <option value="Non" <?php if(isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Non") echo "selected";?> >Non</option>
       </select>
+      <a href="recherche_Taxonomie.php" target="_blank">(Voir les existants)</a>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_Taxonomie; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 
       <br/><br/>
-      L'expedition est-elle existante ?
+      La mission de récolte est-elle existante ?
       <select name="expedition_existe" onchange="submit()" required>
         <option value=""></option>
         <option value="Oui" <?php if(isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Oui") echo "selected";?> >Oui</option>
         <option value="Non" <?php if(isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Non") echo "selected";?> >Non</option>
       </select>
+      <a href="recherche_Expedition.php" target="_blank">(Voir les existants)</a>
+      <a href="#" onmouseover="ddrivetip('<?php echo $aide_Expedition; ?>');"  onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a>
 <?php endif; ?>
 <br/><br/>
 <input type="submit" name="btn_submit">
@@ -305,11 +494,14 @@ if (isset($_GET['btn_submit'])){
   			}
   			if (isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Non"){
   				$array[] = 'Specimen';
+          if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Non"){
+            $array[] = 'Autorisation';
+          }
   				if (isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Non"){
   					$array[] = 'Taxonomie';
   				}
   				if (isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Non"){
-  					$array[] = 'Expedition';
+  					$array[] = 'Mission de récolte';
   				}
   			}
   		}
@@ -322,11 +514,14 @@ if (isset($_GET['btn_submit'])){
   		}
   		if (isset($_GET['specimen_existe']) && $_GET['specimen_existe'] == "Non"){
   			$array[] = 'Specimen';
+        if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Non"){
+          $array[] = 'Autorisation';
+        }
   			if (isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Non"){
   				$array[] = 'Taxonomie';
   			}
   			if (isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Non"){
-  				$array[] = 'Expedition';
+  				$array[] = 'Mission de récolte';
   			}
   		}
   		break;
@@ -337,20 +532,27 @@ if (isset($_GET['btn_submit'])){
 
   	case 'Specimen':
   		$array[] = 'Specimen';
+      if(isset($_GET['autorisation_existe']) && $_GET['autorisation_existe'] == "Non"){
+        $array[] = 'Autorisation';
+      }
   		if (isset($_GET['taxonomie_existe']) && $_GET['taxonomie_existe'] == "Non"){
   			$array[] = 'Taxonomie';
   		}
   		if (isset($_GET['expedition_existe']) && $_GET['expedition_existe'] == "Non"){
-  			$array[] = 'Expedition';
+  			$array[] = 'Mission de récolte';
   		}
   		break;
+
+    case 'Autorisation':
+    	$array[] = 'Autorisation';
+    	break;
 
   	case 'Taxonomie':
   		$array[] = 'Taxonomie';
   		break;
 
   	case 'Expedition':
-  		$array[] = 'Expedition';
+  		$array[] = 'Mission de récolte';
   		break;
   }
 
@@ -364,17 +566,19 @@ if (isset($_GET['btn_submit'])){
   }
 }
 ?>
-<center><h2 id="fini" style="display: none;">La Procedure de saisie est fini</h2></center>
+<center><h2 id="fini" style="display: none;">La procédure de saisie est finie</h2></center>
 
+<br/><br/><br/>
+<center><img src=".\images\extra2.png" alt="" width="80%"></center>
+<br/><br/><br/>
 
 <script>
 document.getElementById(0).disabled = false;
   function saisie(nom, num, max) {
-    /*
-    var x = screen.width/2 - 1500/2;
-    var y = screen.height/2 - 800/2;
-    var myWindow = window.open("http://localhost/LgChimio/saisie_"+nom+".php", "", "width=1500,height=700,top="+y+",left="+x);
-    */
+
+    if (nom == "Mission de récolte") {
+      nom = "Expedition";
+    }
 
     var popup = window.open("saisie_"+nom+".php", "", "fullscreen");
      if (popup.outerWidth < screen.availWidth || popup.outerHeight < screen.availHeight)
@@ -392,6 +596,5 @@ document.getElementById(0).disabled = false;
     else {
       $("#fini").css('display', '');
     }
-
   }
 </script>

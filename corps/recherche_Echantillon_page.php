@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -172,7 +172,6 @@ termes.
 */
 include_once 'script/secure.php';
 //include_once 'protection.php';
-include_once 'langues/'.$_SESSION['langue'].'/lang_export.php';
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
@@ -184,7 +183,8 @@ require 'script/connectionb.php';
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Condition.php\">Condition</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Specimen.php\">Specimen</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Mission de récolte</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_autorisation.php\">Autorisation</a></td>
     </tr>
     </table><br/>";
 
@@ -208,6 +208,7 @@ require 'script/connectionb.php';
     </thead>
     <tbody>
       <?php
+      /*
       if ($row[0]=='{CHIMISTE}') {
         $sql_recherche = "
         SELECT * FROM echantillon
@@ -243,7 +244,11 @@ require 'script/connectionb.php';
         SELECT * FROM echantillon
         ORDER BY echantillon.ech_code_echantillon
         ";
-      }
+      }*/
+      $sql_recherche = "
+      SELECT * FROM echantillon
+      ORDER BY echantillon.ech_code_echantillon
+      ";
 
       foreach ($dbh->query($sql_recherche) as $row_r) {
         echo '
@@ -253,7 +258,7 @@ require 'script/connectionb.php';
         <td>'.urldecode($row_r[1]).'</td>
         <td>'.urldecode($row_r[2]).'</td>
         <td>';if ($row_r[3]) {echo "Oui";} else {echo "Non";} echo '</td>
-        <td>'.urldecode($row_r[4]).'</td>
+        <td>'.urldecode($row_r[4]).' g</td>
         <td>'.urldecode($row_r[5]).'</td>
         </tr>
         ';
@@ -262,7 +267,7 @@ require 'script/connectionb.php';
     </tbody>
     </table>
     <br/>
-    <input type="submit" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
+    <input type="submit" name="Rechercher" id="Rechercher" value="Rechercher">
     <br><br>
   </form>
   <hr>
@@ -277,7 +282,7 @@ require 'script/connectionb.php';
     INNER JOIN taxonomie on taxonomie.tax_ID = specimen.tax_ID
     INNER JOIN type_taxonomie on type_taxonomie.typ_tax_id = taxonomie.typ_tax_id
     INNER JOIN partie_organisme on partie_organisme.par_id = echantillon.par_id
-    INNER JOIN condition on condition.con_id = echantillon.con_id
+    Left outer JOIN condition on condition.con_id = echantillon.con_id
     WHERE Echantillon.ech_code_echantillon = '".$_GET['echantillon']."';
     ";
 
@@ -295,7 +300,7 @@ require 'script/connectionb.php';
       echo "<br/><strong>DOI : </strong>" .$row_echantillon[2];
       echo "<br/>";
       echo "<br/><strong>Stock : </strong>"; if ($row_echantillon[3] == 1) echo "Oui"; else echo "Non";
-      echo "<br/><strong>Quantité : </strong>" .$row_echantillon[4];
+      echo "<br/><strong>Quantité : </strong>" .$row_echantillon[4]. ' g';
       echo "<br/><strong>Lieu de stockage : </strong>" .$row_echantillon[5];
       echo "<br/>";
       echo "<br/>";
@@ -315,48 +320,55 @@ require 'script/connectionb.php';
       GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe;";
       */
       if ($row[0]=='{CHIMISTE}') {
+        //AND extraits.chi_id_chimiste = ".$row[1]."
         $req_extrait = "
-        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id) FROM extraits
+        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
+        INNER JOIN type on extraits.typ_id_type = type.typ_id_type
         LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
         LEFT JOIN purification on extraits.ext_Code_Extraits = purification.ext_Code_Extraits
         WHERE ech_code_echantillon = '".$_GET['echantillon']."'
         AND extraits.chi_id_chimiste = ".$row[1]."
-        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe;";
+        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, typ_type;";
       }
       elseif ($row[0]=='{RESPONSABLE}') {
+        //AND (chimiste.chi_id_responsable = ".$row[1]." or chimiste.chi_id_chimiste = ".$row[1].")
         $req_extrait = "
-        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id) FROM extraits
+        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
+        INNER JOIN type on extraits.typ_id_type = type.typ_id_type
         LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
         LEFT JOIN purification on extraits.ext_Code_Extraits = purification.ext_Code_Extraits
         WHERE ech_code_echantillon = '".$_GET['echantillon']."'
         AND (chimiste.chi_id_responsable = ".$row[1]." or chimiste.chi_id_chimiste = ".$row[1].")
-        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe;";
+        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, typ_type ;";
       }
       elseif ($row[0]=='{CHEF}') {
+        //AND res.chi_id_responsable = ".$row[1]."
         $req_extrait = "
-        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chimiste.chi_nom, chimiste.chi_prenom, equi_nom_equipe, count(pur_id) FROM extraits
+        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chimiste.chi_nom, chimiste.chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
         INNER JOIN chimiste res ON chimiste.chi_id_responsable = res.chi_id_chimiste
+        INNER JOIN type on extraits.typ_id_type = type.typ_id_type
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
         LEFT JOIN purification on extraits.ext_Code_Extraits = purification.ext_Code_Extraits
         WHERE ech_code_echantillon = '".$_GET['echantillon']."'
         AND res.chi_id_responsable = ".$row[1]."
-        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chimiste.chi_nom, chimiste.chi_prenom, equi_nom_equipe;";
+        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chimiste.chi_nom, chimiste.chi_prenom, equi_nom_equipe, typ_type;";
       }
       elseif ($row[0]=='{ADMINISTRATEUR}') {
         $req_extrait = "
-        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id) FROM extraits
+        SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
+        INNER JOIN type on extraits.typ_id_type = type.typ_id_type
         LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
         LEFT JOIN purification on extraits.ext_Code_Extraits = purification.ext_Code_Extraits
         WHERE ech_code_echantillon = '".$_GET['echantillon']."'
-        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe;";
+        GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, typ_type;";
       }
 
 
@@ -370,7 +382,7 @@ require 'script/connectionb.php';
       foreach ($resultat_extrait as $key => $value) {
         echo "<div class='extraits'>";
         echo "<strong>ID extrait : </strong>" .$value[0];
-        echo "<br/><strong>Solvant : </strong>" .$value[1];
+        echo "<br/><strong>Solvant : </strong>" .constant($value[1]);
         echo "<br/><strong>Type d'extraction : </strong>" .$value[2];
         echo "<br/><strong>Etat : </strong>" .$value[3];
         echo "<br/><strong>Disponibilité : </strong>"; if ($value[4] == 1) echo "Oui"; else echo "Non";
@@ -379,6 +391,7 @@ require 'script/connectionb.php';
         echo "<br/><strong>observations : </strong>" .$value[7];
         echo "<br/><strong>Nom du chimiste : </strong>" .$value[8]. " " .$value[9] ;
         echo "<br/><strong>Equipe : </strong>" .$value[10];
+        echo "<br/><br/><strong>Licence : </strong>" .constant($value[12]);
         if ($value[11] != 0) {
           echo "<div class='hr'>Purifications</div>";
           echo "
@@ -412,7 +425,35 @@ require 'script/connectionb.php';
       echo "</div>";
 
       echo "<hr>";
-      echo "<br/>";
+
+      //Autorisation
+      $req_aut = "SELECT * FROM autorisation_specimen Inner JOIN autorisation ON autorisation_specimen.aut_numero_autorisation = autorisation.aut_numero_autorisation WHERE spe_code_specimen = '".$row_echantillon[9]."'";
+      $query_aut = $dbh->query($req_aut);
+      $resultat_aut = $query_aut->fetchALL(PDO::FETCH_NUM);
+      if($resultat_aut){
+        echo "<div class='hr'>Autorisation</div>";
+        echo "<div style='max-height: 250px;overflow: auto; width: 100%;'>
+        <table class=\"table-tableau\">
+        <tr>
+        <th>Numéro d'autorisation</th>
+        <th>Type d'autorisation</th>
+        </tr>
+        ";
+        foreach ($resultat_aut as $key1 => $value1) {
+            echo "
+            <tr>
+            <td>".$value1[0]."</td>
+            <td>".$value1[3]."</td>
+            </tr>
+            ";
+        }
+        echo "</table>";
+        echo "</div>";
+        echo "<div class='container'>";
+        echo "</div>";
+        echo "<br/>";
+      }
+
       echo "<div class='container'>";
       echo "<div class='infos'>";
       echo "<div class='hr click_specimen'>Specimen</div>";
@@ -428,12 +469,12 @@ require 'script/connectionb.php';
       echo "<br/><strong>Collection : </strong>" .$row_echantillon[14];
       echo "<br/><strong>Contact : </strong>" .$row_echantillon[15];
       echo "<br/><strong>Collecteur : </strong>" .$row_echantillon[16];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_spe_".$row_echantillon[9]."\">Voir les fichier</a>";
+      echo "<br/><br/><a class='btnFic' href=\"#fic_spe_".$row_echantillon[9]."\">Voir les fichiers</a>";
       echo "<br/>";
       echo "</div>";
 
       echo "<div class='infos'>";
-      echo "<div class='hr click_expedition'>Expedition</div>";
+      echo "<div class='hr click_expedition'>Mission de récolte</div>";
 
       echo "<br/><strong>ID expedition : </strong>" .$row_echantillon[19];
       echo "<br/>";
@@ -441,61 +482,59 @@ require 'script/connectionb.php';
       echo "<br/><strong>Contact : </strong>" .$row_echantillon[21];
       echo "<br/>";
       echo "<br/><strong>Pays : </strong>" .$row_echantillon[24];
-      echo "<br/><strong>APA : </strong>";if ($row_echantillon[25] == 1) echo "Oui"; else echo "Non";
-      echo "<br/><strong>Numero de permis : </strong>" .$row_echantillon[26];
-      echo "<br/><strong>Collaboration : </strong>";if ($row_echantillon[27] == 1) echo "Oui"; else echo "Non";
+      echo "<br/><strong>Collaboration : </strong>";if ($row_echantillon[25] == 1) echo "Oui"; else echo "Non";
       echo "</div>";
 
       echo "<div class='infos'>";
       echo "<div class='hr click_taxonomie'>Taxonomie</div>";
 
-      echo "<br/><strong>ID taxonomie : </strong>" .$row_echantillon[28];
+      echo "<br/><strong>ID taxonomie : </strong>" .$row_echantillon[26];
       echo "<br/>";
-      echo "<br/><strong>Phylum : </strong>" .$row_echantillon[29];
-      echo "<br/><strong>Classe : </strong>" .$row_echantillon[30];
-      echo "<br/><strong>Ordre : </strong>" .$row_echantillon[31];
-      echo "<br/><strong>Famille : </strong>" .$row_echantillon[32];
-      echo "<br/><strong>Genre : </strong>" .$row_echantillon[33];
-      echo "<br/><strong>Espece : </strong>" .$row_echantillon[34];
-      echo "<br/><strong>Sous-espece : </strong>" .$row_echantillon[35];
-      echo "<br/><strong>Varieté : </strong>" .$row_echantillon[36];
+      echo "<br/><strong>Phylum : </strong>" .$row_echantillon[27];
+      echo "<br/><strong>Classe : </strong>" .$row_echantillon[28];
+      echo "<br/><strong>Ordre : </strong>" .$row_echantillon[29];
+      echo "<br/><strong>Famille : </strong>" .$row_echantillon[30];
+      echo "<br/><strong>Genre : </strong>" .$row_echantillon[31];
+      echo "<br/><strong>Espece : </strong>" .$row_echantillon[32];
+      echo "<br/><strong>Sous-espece : </strong>" .$row_echantillon[33];
+      echo "<br/><strong>Varieté : </strong>" .$row_echantillon[34];
       echo "<br/>";
-      echo "<br/><strong>Protocole : </strong>" .$row_echantillon[37];
-      echo "<br/><strong>Sequence : </strong>" .$row_echantillon[38];
-      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_echantillon[39];
+      echo "<br/><strong>Protocole : </strong>" .$row_echantillon[35];
+      echo "<br/><strong>Sequence : </strong>" .$row_echantillon[36];
+      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_echantillon[37];
       echo "<br/>";
-      echo "<br/><strong>Type : </strong>" .$row_echantillon[42];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_tax_".$row_echantillon[28]."\">Voir les fichier</a>";
+      echo "<br/><strong>Type : </strong>" .$row_echantillon[40];
+      echo "<br/><br/><a class='btnFic' href=\"#fic_tax_".$row_echantillon[26]."\">Voir les fichiers</a>";
       echo "<br/>";
       echo "</div>";
 
       echo "<div class='infos'>";
       echo "<div class='hr click_partie_organisme'>Partie organisme</div>";
 
-      echo "<br/><strong>ID partie organisme : </strong>" .$row_echantillon[43];
+      echo "<br/><strong>ID partie organisme : </strong>" .$row_echantillon[41];
       echo "<br/>";
-      echo "<br/><strong>Origine : </strong>" .$row_echantillon[44];
-      echo "<br/><strong>Partie : </strong>" .$row_echantillon[45]; //$row_echantillon[45] => FR; $row_echantillon[46] => EN
+      echo "<br/><strong>Origine : </strong>" .$row_echantillon[42];
+      echo "<br/><strong>Partie : </strong>" .$row_echantillon[43]; //$row_echantillon[45] => FR; $row_echantillon[46] => EN
       echo "<br/>";
-      echo "<br/><strong>Observation : </strong>" .$row_echantillon[47];
+      echo "<br/><strong>Observation : </strong>" .$row_echantillon[45];
       echo "</div>";
 
-      echo "<div class='infos'>";
-      echo "<div class='hr click_condition'>Condition</div>";
-
-      echo "<br/><strong>ID condition : </strong>" .$row_echantillon[48];
-      echo "<br/>";
-      echo "<br/><strong>Milieu : </strong>" .$row_echantillon[49];
-      echo "<br/><strong>Temperature : </strong>" .$row_echantillon[50];
-      echo "<br/><strong>Type de culture : </strong>" .$row_echantillon[51];
-      echo "<br/><strong>Mode operatoir : </strong>" .$row_echantillon[52];
-      echo "<br/>";
-      echo "<br/><strong>Observation : </strong>" .$row_echantillon[53];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_con_".$row_echantillon[48]."\">Voir les fichier</a>";
-      echo "<br/>";
-      echo "</div>";
-      echo "</div>";
-
+      if ($row_echantillon[46]) {
+        echo "<div class='infos'>";
+        echo "<div class='hr click_condition'>Condition</div>";
+        echo "<br/><strong>ID condition : </strong>" .$row_echantillon[46];
+        echo "<br/>";
+        echo "<br/><strong>Milieu : </strong>" .$row_echantillon[47];
+        echo "<br/><strong>Temperature : </strong>" .$row_echantillon[48].'°C';
+        echo "<br/><strong>Type de culture : </strong>" .$row_echantillon[49];
+        echo "<br/><strong>Mode operatoir : </strong>" .$row_echantillon[50];
+        echo "<br/>";
+        echo "<br/><strong>Observation : </strong>" .$row_echantillon[51];
+        echo "<br/><br/><a class='btnFic' href=\"#fic_con_".$row_echantillon[46]."\">Voir les fichiers</a>";
+        echo "<br/>";
+        echo "</div>";
+        echo "</div>";
+      }
       // [JM - 05/07/2019] Creation de popup pour afficher la liste des fichiers
 
       //Purification
@@ -530,6 +569,7 @@ require 'script/connectionb.php';
         ';
       }
 
+
       //Specemen
       echo '
       <div id="fic_spe_'.$row_echantillon[9].'" class="overlay">
@@ -558,14 +598,14 @@ require 'script/connectionb.php';
 
       //Taxonomie
       echo '
-      <div id="fic_tax_'.$row_echantillon[28].'" class="overlay">
+      <div id="fic_tax_'.$row_echantillon[26].'" class="overlay">
       <div class="popup">
-      <h2>Fichiers taxonomie '.$row_echantillon[28].'</h2>
+      <h2>Fichiers taxonomie '.$row_echantillon[26].'</h2>
       <a class="close" href="#return">&times;</a>
       <div class="content">
       ';
       $liste_tax = "";
-      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_echantillon[28]."'") as $key => $value1) {
+      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_echantillon[26]."'") as $key => $value1) {
         if ($value[0] == $value1[3]) {
           $liste_tax .='<li><a href="#"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
         }
@@ -581,33 +621,34 @@ require 'script/connectionb.php';
       </div>
       </div>
       ';
+      if ($row_echantillon[48]) {
+        //condition
+        echo '
+        <div id="fic_con_'.$row_echantillon[48].'" class="overlay">
+        <div class="popup">
+        <h2>Fichiers conditions '.$row_echantillon[48].'</h2>
+        <a class="close" href="#return">&times;</a>
+        <div class="content">
+        ';
+        $liste_con = "";
 
-      //condition
-      echo '
-      <div id="fic_con_'.$row_echantillon[48].'" class="overlay">
-      <div class="popup">
-      <h2>Fichiers conditions '.$row_echantillon[48].'</h2>
-      <a class="close" href="#return">&times;</a>
-      <div class="content">
-      ';
-      $liste_con = "";
-      foreach ($dbh->query("SELECT * FROM fichier_conditions WHERE con_id = '".$row_echantillon[48]."'") as $key => $value1) {
-        if ($value[0] == $value1[3]) {
-          $liste_con .='<li><a href="#"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
+        foreach ($dbh->query("SELECT * FROM fichier_conditions WHERE con_id = '".$row_echantillon[48]."'") as $key => $value1) {
+          if ($value[0] == $value1[3]) {
+            $liste_con .='<li><a href="#"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
+          }
         }
-      }
-      if ($liste_con != "") {
-        echo $liste_con;
-      }
-      else {
-        echo "Aucun fichier";
-      }
+        if ($liste_con != "") {
+          echo $liste_con;
+        }
+        else {
+          echo "Aucun fichier";
+        }
 
-      echo '</div>
-      </div>
-      </div>
-      ';
-
+        echo '</div>
+        </div>
+        </div>
+        ';
+      }
     }
     else {
       echo "<center><h2>Aucun résultat trouvé</h2></center>";

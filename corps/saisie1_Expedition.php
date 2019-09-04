@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <style>
 * {
   box-sizing: border-box;
@@ -133,10 +133,10 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 
   <!-- [JM - 05/07/2019] Expedition-->
   <div name="divHide" id="Expedition" style="text-align: center;">
-      <h1>Expédition</h1>
+      <h1>Mission de récolte</h1>
       Nom<br/><input class="echantillon_nouveau specimen_nouveau expedition_nouveau" type="text" name="Expedition_Nom" value=""><br/><br/>
       Contact<br/><input class="echantillon_nouveau specimen_nouveau expedition_nouveau" type="text" name="Expedition_Contact" value=""><br/><br/>
-      Pays *<br/>
+      Pays * (<a href="Extra_listePays.php" target="_blank">Voir les détails des pays</a>)<br/>
       <select class="echantillon_nouveau specimen_nouveau expedition_nouveau" name="Expedition_Pays" required>
         <option value=""></option>
         <?php
@@ -144,7 +144,8 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
           echo '<option value="'.urldecode($row[0]).'">'.urldecode($row[1]).'</option>';
         }
         ?>
-      </select><br/><br/>
+      </select>
+      <br/><br/>
       <input type="hidden" name="send" value="send">
       <input type="submit">
   </div>
@@ -166,7 +167,7 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
         if ($stmt->errorInfo()[0] != 00000) {
           $erreur .= "<br/>Erreur lors de l'insertion de l'expedition";
           if ($stmt->errorInfo()[0] == 23505) {
-            $erreur .= ", car cette expedition existe déjà.";
+            $erreur .= ", car cette mission de récolte existe déjà.";
           }
         }
 

@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -199,7 +199,6 @@ termes.
 */
 include_once 'script/secure.php';
 //include_once 'protection.php';
-include_once 'langues/'.$_SESSION['langue'].'/lang_export.php';
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
@@ -215,7 +214,8 @@ require 'script/connectionb.php';
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Mission de récolte</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_autorisation.php\">Autorisation</a></td>
     ";
     }
     print"
@@ -229,7 +229,7 @@ require 'script/connectionb.php';
       if(isset($_POST["type"])){
         switch ($_POST["type"]) {
           case 'Extraits':
-            $stmt = $dbh->prepare("UPDATE extraits SET ext_solvant = :ext_solvant, ext_type_extraction = :ext_type_extraction, ext_etat = :ext_etat, ext_disponibilite = :ext_disponibilite, ext_protocole = :ext_protocole, ext_stockage = :ext_stockage, ext_observations = :ext_observations WHERE ext_Code_Extraits = :ext_Code_Extraits");
+            $stmt = $dbh->prepare("UPDATE extraits SET ext_solvant = :ext_solvant, ext_type_extraction = :ext_type_extraction, ext_etat = :ext_etat, ext_disponibilite = :ext_disponibilite, ext_protocole = :ext_protocole, ext_stockage = :ext_stockage, ext_observations = :ext_observations, typ_id_type = :typ_id_type WHERE ext_Code_Extraits = :ext_Code_Extraits");
             $stmt->bindParam(':ext_solvant', $_POST['Solvant']);
             $stmt->bindParam(':ext_type_extraction', $_POST['TypeExtra']);
             $stmt->bindParam(':ext_etat', $_POST['Etat']);
@@ -240,6 +240,7 @@ require 'script/connectionb.php';
             $stmt->bindParam(':ext_protocole', $_POST['Protocole']);
             $stmt->bindParam(':ext_stockage', $_POST['Lieu']);
             $stmt->bindParam(':ext_observations', $_POST['Observations']);
+            $stmt->bindParam(':typ_id_type', $_POST['Extrait_typ_id_type']);
 
             $stmt->bindParam(':ext_Code_Extraits', $_POST['id']);
 
@@ -327,7 +328,7 @@ require 'script/connectionb.php';
       <?php
       if ($row[0]=='{CHIMISTE}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste on extraits.chi_id_chimiste = chimiste.chi_id_chimiste
         WHERE extraits.chi_id_chimiste = ".$row[1]."
@@ -335,7 +336,7 @@ require 'script/connectionb.php';
       }
       elseif ($row[0]=='{RESPONSABLE}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste on extraits.chi_id_chimiste = chimiste.chi_id_chimiste
         WHERE (chimiste.chi_id_responsable = ".$row[1]." or extraits.chi_id_chimiste = ".$row[1].")
@@ -343,7 +344,7 @@ require 'script/connectionb.php';
       }
       elseif ($row[0]=='{CHEF}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chim.chi_nom, chim.chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chim.chi_nom, chim.chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste chim on extraits.chi_id_chimiste = chim.chi_id_chimiste
         INNER JOIN chimiste resp ON chim.chi_id_responsable = resp.chi_id_chimiste
@@ -353,7 +354,7 @@ require 'script/connectionb.php';
       }
       elseif ($row[0]=='{ADMINISTRATEUR}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste on extraits.chi_id_chimiste = chimiste.chi_id_chimiste
         ";
@@ -364,10 +365,10 @@ require 'script/connectionb.php';
         <tr>
         <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="extrait" value="'.urldecode($row_r[0]).'"';if (isset($_GET['extrait']) && $row_r[0] == $_GET['extrait']) echo "checked"; ;echo '></td>
         <td>'.urldecode($row_r[0]).'</td>
-        <td>'.urldecode($row_r[1]).'</td>
+        <td>'.urldecode(constant($row_r[1])).'</td>
         <td>'.urldecode($row_r[2]).'</td>
         <td>'.urldecode($row_r[3]).'</td>
-        <td>'.urldecode($row_r[4]).'</td>
+        <td>';if ($row_r[4]) {echo "Oui";} else {echo "Non";} echo '</td>
         <td>'.urldecode($row_r[5]).' '.urldecode($row_r[6]).'</td>
         <td>'.urldecode($row_r[7]).'</td>
         </tr>
@@ -377,7 +378,7 @@ require 'script/connectionb.php';
     </tbody>
     </table>
     <br/>
-    <input type="submit" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
+    <input type="submit" name="Rechercher" id="Rechercher" value="Rechercher">
     <br><br>
   </form>
   <hr>
@@ -390,9 +391,10 @@ require 'script/connectionb.php';
       // [JM - 05/07/2019] cree une liste des extrait et de leur purification
 
         $req_extrait = "
-        SELECT ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, ech_code_echantillon FROM extraits
+        SELECT ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, ech_code_echantillon, typ_type FROM extraits
         INNER JOIN chimiste ON chimiste.chi_id_chimiste = extraits.chi_id_chimiste
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
+        INNER JOIN type on extraits.typ_id_type = type.typ_id_type
         LEFT OUTER JOIN equipe ON equipe.equi_id_equipe = chimiste.chi_id_equipe
         WHERE ext_Code_Extraits = '".$_POST['extrait']."'
         ORDER BY ext_Code_Extraits";
@@ -409,7 +411,7 @@ require 'script/connectionb.php';
         echo "<a class='btnFic' style=\"float: right;\" href=\"#modif_ext_".$value[0]."\">Modifier</a>";
         echo "<strong>ID extrait : </strong>" .$value[0];
         echo "<br/>";
-        echo "<br/><strong>Solvant : </strong>" .$value[1];
+        echo "<br/><strong>Solvant : </strong>" .constant($value[1]);
         echo "<br/><strong>Type d'extraction : </strong>" .$value[2];
         echo "<br/><strong>Etat : </strong>" .$value[3];
         echo "<br/>";
@@ -418,6 +420,7 @@ require 'script/connectionb.php';
         echo "<br/><strong>Lieu de stockage : </strong>" .$value[6];
         echo "<br/>";
         echo "<br/><strong>Observations : </strong>" .$value[7];
+        echo "<br/><br/><strong>Licence : </strong>" .constant($value[12]);
         echo "<br/>";
         echo "<br/><strong>Nom du chimiste : </strong>" .$value[8]. " " .$value[9] ;
         echo "<br/><strong>Equipe : </strong>" .$value[10];
@@ -436,16 +439,26 @@ require 'script/connectionb.php';
                 <select name="Solvant" required>
                   <option value=""></option>';
                     foreach ($dbh->query("select * from solvant") as $key1 => $value1) {
-                      echo'<option value="'.$value1[0].'"'; if($value[1] == $value1[1]) echo "selected"; echo '>'.$value1[1].'</option>';
+                      echo'<option value="'.$value1[0].'"'; if($value[1] == $value1[1]) echo "selected"; echo '>'.constant($value1[1]).'</option>';
                     }
                 echo '
                 </select>
                 <br/><br/><strong>Type d\'extraction : </strong><br/><input name="TypeExtra" type="text" value="'.$value[2].'">
                 <br/><br/><strong>Etat : </strong><br/><input name="Etat" type="text" value="'.$value[3].'">
                 <br/><br/><strong>Disponibilité : </strong><br/><input name="Disponibilite" type="checkbox" '; if ($value[4] == 1) echo "checked"; echo '>
-                <br/><br/><strong>Protocole : </strong><br/><input name="Protocole" type="text" value="'.$value[5].'">
-                <br/><br/><strong>Lieu de stockage : </strong><br/><input name="Lieu" type="text" value="'.$value[6].'">
-                <br/><br/><strong>Observations : </strong><br/><input name="Observations" type="text" value="'.$value[7].'">
+                <br/><br/><strong>Protocole : </strong><br/><textarea name="Protocole" rows="5" cols="50">'.$value[5].'</textarea>
+                <br/><br/><strong>Lieu de stockage : </strong><br/><textarea name="Lieu" rows="5" cols="50">'.$value[6].'</textarea>
+                <br/><br/><strong>Observations : </strong><br/><textarea name="Observations" rows="5" cols="50">'.$value[7].'</textarea>';
+                echo '
+                <br/><br/><strong>licence</strong><br/>
+                <select name="Extrait_typ_id_type">';
+                    foreach ($dbh->query("select * from type") as $key => $value1) {
+                      echo'<option value="'.$value1[0].'"'; if($value1[1] == $value[12]) echo "selected" ;echo '>'.constant($value1[1]).'</option>';
+                    }
+                  echo '
+                </select><br/><br/>
+                ';
+                echo '
                 <br/><br/><strong>Nom du chimiste : </strong>' .$value[8].' ' .$value[9].'
                 <br/><br/><strong>Equipe : </strong>' .$value[10].'
                 <br/><br/><input type="submit" style="float: right;">

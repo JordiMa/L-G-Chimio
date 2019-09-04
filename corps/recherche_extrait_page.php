@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -172,7 +172,6 @@ termes.
 */
 include_once 'script/secure.php';
 //include_once 'protection.php';
-include_once 'langues/'.$_SESSION['langue'].'/lang_export.php';
 
 //appel le fichier de connexion à la base de données
 require 'script/connectionb.php';
@@ -184,7 +183,8 @@ require 'script/connectionb.php';
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Condition.php\">Condition</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Specimen.php\">Specimen</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_Expedition.php\">Mission de récolte</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"recherche_autorisation.php\">Autorisation</a></td>
     </tr>
     </table><br/>";
 
@@ -211,7 +211,7 @@ require 'script/connectionb.php';
       <?php
       if ($row[0]=='{CHIMISTE}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste on extraits.chi_id_chimiste = chimiste.chi_id_chimiste
         WHERE extraits.chi_id_chimiste = ".$row[1]."
@@ -219,7 +219,7 @@ require 'script/connectionb.php';
       }
       elseif ($row[0]=='{RESPONSABLE}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste on extraits.chi_id_chimiste = chimiste.chi_id_chimiste
         WHERE (chimiste.chi_id_responsable = ".$row[1]." or extraits.chi_id_chimiste = ".$row[1].")
@@ -227,7 +227,7 @@ require 'script/connectionb.php';
       }
       elseif ($row[0]=='{CHEF}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chim.chi_nom, chim.chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chim.chi_nom, chim.chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste chim on extraits.chi_id_chimiste = chim.chi_id_chimiste
         INNER JOIN chimiste resp ON chim.chi_id_responsable = resp.chi_id_chimiste
@@ -237,7 +237,7 @@ require 'script/connectionb.php';
       }
       elseif ($row[0]=='{ADMINISTRATEUR}') {
         $req_recherche = "
-        SELECT ext_code_extraits, sol_solvant, ext_etat,  ext_type_extraction, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
+        SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
         INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
         INNER JOIN chimiste on extraits.chi_id_chimiste = chimiste.chi_id_chimiste
         ";
@@ -248,10 +248,10 @@ require 'script/connectionb.php';
         <tr>
         <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="chimiste" value="'.urldecode($row[0]).'"';if (isset($_GET['chimiste']) && $row[0] == $_GET['chimiste']) echo "checked"; ;echo '></td>
         <td>'.urldecode($row[0]).'</td>
-        <td>'.urldecode($row[1]).'</td>
+        <td>'.urldecode(constant($row[1])).'</td>
         <td>'.urldecode($row[2]).'</td>
         <td>'.urldecode($row[3]).'</td>
-        <td>'.urldecode($row[4]).'</td>
+        <td>';if ($row[4]) {echo "Oui";} else {echo "Non";} echo '</td>
         <td>'.urldecode($row[5]).' '.urldecode($row[6]).'</td>
         <td>'.urldecode($row[7]).'</td>
         </tr>
@@ -261,7 +261,7 @@ require 'script/connectionb.php';
     </tbody>
     </table>
     <br/>
-    <input type="submit" name="Rechercher" id="Rechercher" value="<?php echo RECHERCHER;?>">
+    <input type="submit" name="Rechercher" id="Rechercher" value="Rechercher">
     <br><br>
   </form>
   <hr>
@@ -273,11 +273,12 @@ require 'script/connectionb.php';
       echo "<div class='container'>";
       // [JM - 05/07/2019] cree une liste des extrait et de leur purification
       $req_extrait = "
-      SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, ech_code_echantillon, count(pur_id) FROM extraits
+      SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, ech_code_echantillon, count(pur_id), typ_type FROM extraits
       INNER JOIN Solvant on extraits.ext_solvant = Solvant.sol_id_solvant
+      INNER JOIN type on extraits.typ_id_type = type.typ_id_type
       LEFT JOIN purification on extraits.ext_Code_Extraits = purification.ext_Code_Extraits
       WHERE extraits.ext_Code_Extraits = '".$_GET['chimiste']."'
-      GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, ech_code_echantillon";
+      GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, ech_code_echantillon, typ_type";
 
       $query_extrait = $dbh->query($req_extrait);
       $resultat_extrait = $query_extrait->fetchALL(PDO::FETCH_NUM);
@@ -289,14 +290,15 @@ require 'script/connectionb.php';
       foreach ($resultat_extrait as $key => $value) {
         echo "<div class='extraits'>";
         echo "<strong>ID extrait : </strong>" .$value[0];
-        echo "<br/><strong>Code Echantillon : </strong>" .$value[8];
-        echo "<br/><strong>Solvant : </strong>" .$value[1];
+        echo "<br/><strong>Code Echantillon : </strong>" .$value[8]. ' - <a href="recherche_Echantillon.php?echantillon='.$value[8].'" style="color: red; font-size: small;">voir l\'échantillon</a>';
+        echo "<br/><strong>Solvant : </strong>" .constant($value[1]);
         echo "<br/><strong>Type d'extraction : </strong>" .$value[2];
         echo "<br/><strong>Etat : </strong>" .$value[3];
         echo "<br/><strong>Disponibilité : </strong>"; if ($value[4] == 1) echo "Oui"; else echo "Non";
         echo "<br/><strong>Protocole : </strong>" .$value[5];
         echo "<br/><strong>Lieu de stockage : </strong>" .$value[6];
         echo "<br/><strong>observations : </strong>" .$value[7];
+        echo "<br/><br/><strong>Licence : </strong>" .constant($value[10]);
         if ($value[9] != 0) {
           echo "<div class='hr'>Purifications</div>";
           echo "

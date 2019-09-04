@@ -195,7 +195,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 	else{
 	if(!isset($tab23)) $tab23=NULL;
 			//recherche des parametres du numero definient par l'administrateur
-			$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
+			$sql="SELECT num_type, num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
 			$resultat24=$dbh->query($sql);
 			while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
 		$tab24[]=$row24[0];

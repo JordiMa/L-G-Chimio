@@ -142,8 +142,6 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	  <tr class="tr-pays">
 	    <th class="th-pays" width="10%">Code</th>
 	    <th class="th-pays" width="35%">Pays</th>
-	    <th class="th-pays" width="10%">APA</th>
-			<th class="th-pays" width="25%">N° de permis</th>
 			<th class="th-pays" width="10%">Collaboration</th>
 			<th class="th-pays" width="10%"></th>
 	  </tr>
@@ -152,14 +150,12 @@ if ($row[0]=='{ADMINISTRATEUR}') {
     foreach ($dbh->query("SELECT * FROM Pays ORDER BY pay_code_pays") as $row) {
 			// [JM - 05/07/2019] Si la ligne est en mode modification, on affiche un formulaire
 			if(isset($_GET['modif']) && $_GET['modif'] == "pays" && $_GET['ID'] == $row[0]){
-				echo '<form action="" method="GET">';
+				echo '<form action="" method="POST">';
 				echo '
 				<tr class="tr-pays">
 					<td class="td-pays"><input type="text" minlength="2" maxlength="3" name="code" value="'.urldecode($row[0]).'" required></td>
 					<td class="td-pays"><input type="text" name="pays" value="'.urldecode($row[1]).'" required></td>
-					<td class="td-pays"><input type="checkbox" name="APA"'; if($row[2]) echo "checked"; ; echo' ></td>
-					<td class="td-pays"><input type="text" name="permis" value="'.urldecode($row[3]).'"></td>
-					<td class="td-pays"><input type="checkbox" name="collaboration"'; if($row[4]) echo "checked"; echo' ></td>
+					<td class="td-pays"><input type="checkbox" name="collaboration"'; if($row[2]) echo "checked"; echo' ></td>
 					<input type="hidden" name="oldIDPays" value="'.urldecode($row[0]).'">
 					<td class="td-pays"><button type="submit" name="envoi_modif" value="pays" title="Envoyer" style="border: 0px;padding: 0px;background: transparent;"><img border="0" src="images/ok.gif" width="20" height="20" alt="valider"></button> <a onclick="history.back()"><img border="0" src="images/pasok.gif" width="20" height="20" alt="annuler"></a></td>
 				</tr>
@@ -171,9 +167,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 					<tr class="tr-pays">
 				    <td class="td-pays">'.urldecode($row[0]).'</td>
 				    <td class="td-pays">'.urldecode($row[1]).'</td>
-				    <td class="td-pays">';if($row[2]) echo "Oui"; else echo "Non";echo'</td>
-						<td class="td-pays">'.urldecode($row[3]).'</td>
-						<td class="td-pays">';if($row[4]) echo "Oui"; else echo "Non";echo'</td>
+						<td class="td-pays">';if($row[2]) echo "Oui"; else echo "Non";echo'</td>
 						<td class="td-pays"><a href="?modif=pays&ID='.urldecode($row[0]).'"><img border="0" src="images/modifier.gif" width="20" height="20" alt="modifier"></a></td>
 				  </tr>
 				';
@@ -181,13 +175,11 @@ if ($row[0]=='{ADMINISTRATEUR}') {
     }
 ?>
 		<!-- [JM - 05/07/2019] formulaire pour ajouter un nouveau pays -->
-		<form id="myForm" action="" method="GET">
-		<?php if (isset($_GET['Ajouter'])): ?>
+		<form id="myForm" action="" method="POST">
+		<?php if (isset($_POST['Ajouter'])): ?>
 			<tr class="tr-pays">
 				<td class="td-pays"><input type="text" minlength="2" maxlength="3" name="code" required></td>
 				<td class="td-pays"><input type="text" name="pays" required></td>
-				<td class="td-pays"><input type="checkbox" name="APA"></td>
-				<td class="td-pays"><input type="text" name="permis"></td>
 				<td class="td-pays"><input type="checkbox" name="collaboration"></td>
 				<td class="td-pays"><button type="submit" name="save" value="pays" title="Envoyer" style="border: 0px;padding: 0px;background: transparent;"><img border="0" src="images/ok.gif" width="20" height="20" alt="valider"></button> <a onclick="history.back()"><img border="0" src="images/pasok.gif" width="20" height="20" alt="annuler"></a></td>
 			</tr>
@@ -197,7 +189,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 </div>
 
 	<!-- [JM - 05/07/2019]  on affiche le bouton 'Ajouter' seulement si le mode Ajout ou modifi ne sont pas acctivé -->
-	<?php if (!isset($_GET['Ajouter']) && !isset($_GET['modif']) || (isset($_GET['modif']) && $_GET['modif'] != "pays")): ?>
+	<?php if (!isset($_POST['Ajouter']) && !isset($_GET['modif']) || (isset($_GET['modif']) && $_GET['modif'] != "pays")): ?>
 		<input type="submit" name="Ajouter" value="Ajouter">
 	<?php endif; ?>
 
@@ -220,7 +212,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 <?php
     foreach ($dbh->query("SELECT * FROM type_taxonomie ORDER BY typ_tax_type") as $row) {
 			if(isset($_GET['modif']) && $_GET['modif'] == "type" && $_GET['ID'] == $row[0]){
-				echo '<form action="" method="GET">';
+				echo '<form action="" method="POST">';
 				echo '
 					<tr class="tr-pays">
 						<td class="td-pays">'.urldecode($row[0]).'</td>
@@ -243,8 +235,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		}
 ?>
 
-<form id="myForm2" action="" method="GET">
-<?php if (isset($_GET['Ajouter2'])): ?>
+<form id="myForm2" action="" method="POST">
+<?php if (isset($_POST['Ajouter2'])): ?>
 	<tr class="tr-pays">
 		<td class="td-pays"></td>
 		<td class="td-pays"><input type="text" name="type" required></td>
@@ -255,7 +247,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 </table>
 </div>
 
-<?php if (!isset($_GET['Ajouter2']) && !isset($_GET['modif']) || (isset($_GET['modif']) && $_GET['modif'] != "type")): ?>
+<?php if (!isset($_POST['Ajouter2']) && !isset($_GET['modif']) || (isset($_GET['modif']) && $_GET['modif'] != "type")): ?>
 	<input type="submit" name="Ajouter2" value="Ajouter">
 <?php endif; ?>
 </form>
@@ -280,7 +272,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 <?php
     foreach ($dbh->query("SELECT * FROM partie_organisme ORDER BY par_fr") as $row) {
 			if(isset($_GET['modif']) && $_GET['modif'] == "PartieOrga" && $_GET['ID'] == $row[0]){
-				echo '<form action="" method="GET">';
+				echo '<form action="" method="POST">';
 				echo '
 					<tr class="tr-pays">
 						<td class="td-pays">'.urldecode($row[0]).'</td>
@@ -309,8 +301,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 		}
 ?>
 
-<form id="myForm2" action="" method="GET">
-<?php if (isset($_GET['Ajouter3'])): ?>
+<form id="myForm2" action="" method="POST">
+<?php if (isset($_POST['Ajouter3'])): ?>
 	<tr class="tr-pays">
 		<td class="td-pays"></td>
 		<td class="td-pays"><input type="text" name="origine"></td>
@@ -324,7 +316,7 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 </table>
 </div>
 
-<?php if (!isset($_GET['Ajouter3']) && !isset($_GET['modif']) || (isset($_GET['modif']) && $_GET['modif'] != "PartieOrga")): ?>
+<?php if (!isset($_POST['Ajouter3']) && !isset($_GET['modif']) || (isset($_GET['modif']) && $_GET['modif'] != "PartieOrga")): ?>
 	<input type="submit" name="Ajouter3" value="Ajouter">
 <?php endif; ?>
 </form>
@@ -333,71 +325,61 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 </div>
 <?php
 
-	if(isset($_GET['save'])){
+	if(isset($_POST['save'])){
 		// [JM - 05/07/2019] insertion dans la base de données
-		if($_GET['save'] == 'pays'){
-			$stmt = $dbh->prepare("INSERT INTO Pays (pay_code_pays, pay_pays, pay_APA, pay_numero_permis, pay_collaboration) VALUES (:pay_code_pays, :pay_pays, :pay_APA, :pay_numero_permis, :pay_collaboration)");
-			$stmt->bindParam(':pay_code_pays', $_GET['code']);
-			$stmt->bindParam(':pay_pays', $_GET['pays']);
+		if($_POST['save'] == 'pays'){
+			$stmt = $dbh->prepare("INSERT INTO Pays (pay_code_pays, pay_pays, pay_collaboration) VALUES (:pay_code_pays, :pay_pays, :pay_collaboration)");
+			$stmt->bindParam(':pay_code_pays', $_POST['code']);
+			$stmt->bindParam(':pay_pays', $_POST['pays']);
 
-			if (isset($_GET['APA'])) $_GET['APA'] = "TRUE"; else $_GET['APA'] = "FALSE";
-			$stmt->bindParam(':pay_APA', $_GET['APA']);
-
-			$stmt->bindParam(':pay_numero_permis', $_GET['permis']);
-
-			if (isset($_GET['collaboration'])) $_GET['collaboration'] = "TRUE"; else $_GET['collaboration'] = "FALSE";
-			$stmt->bindParam(':pay_collaboration', $_GET['collaboration']);
+			if (isset($_POST['collaboration'])) $_POST['collaboration'] = "TRUE"; else $_POST['collaboration'] = "FALSE";
+			$stmt->bindParam(':pay_collaboration', $_POST['collaboration']);
 
 			$stmt->execute();
 
 		}
-		elseif ($_GET['save'] == 'type') {
+		elseif ($_POST['save'] == 'type') {
 			$stmt = $dbh->prepare("INSERT INTO Type_taxonomie (typ_tax_type) VALUES (:typ_tax_type)");
-			$stmt->bindParam(':typ_tax_type', $_GET['type']);
+			$stmt->bindParam(':typ_tax_type', $_POST['type']);
 			$stmt->execute();
 		}
-		elseif ($_GET['save'] == 'PartieOrga') {
+		elseif ($_POST['save'] == 'PartieOrga') {
 			$stmt = $dbh->prepare("INSERT INTO partie_organisme (par_origine, par_fr, par_en, par_observation) VALUES (:par_origine, :par_fr, :par_en, :par_observation)");
-			$stmt->bindParam(':par_origine', $_GET['origine']);
-			$stmt->bindParam(':par_fr', $_GET['partie_fr']);
-			$stmt->bindParam(':par_en', $_GET['partie_en']);
-			$stmt->bindParam(':par_observation', $_GET['observation']);
+			$stmt->bindParam(':par_origine', $_POST['origine']);
+			$stmt->bindParam(':par_fr', $_POST['partie_fr']);
+			$stmt->bindParam(':par_en', $_POST['partie_en']);
+			$stmt->bindParam(':par_observation', $_POST['observation']);
 			$stmt->execute();
 		}
 		echo "<script type=\"text/javascript\">location.href = 'param_extra.php';</script>";
 	}
-	elseif (isset($_GET['envoi_modif'])) {
+	elseif (isset($_POST['envoi_modif'])) {
 		// [JM - 05/07/2019] modification des données
-		if($_GET['envoi_modif'] == 'pays'){
-			$stmt = $dbh->prepare("UPDATE Pays SET pay_code_pays = :pay_code_pays, pay_pays = :pay_pays, pay_APA = :pay_APA, pay_numero_permis = :pay_numero_permis, pay_collaboration = :pay_collaboration WHERE pay_code_pays = :oldIDPays");
-			$stmt->bindParam(':pay_code_pays', $_GET['code']);
-			$stmt->bindParam(':pay_pays', $_GET['pays']);
+		if($_POST['envoi_modif'] == 'pays'){
+			$stmt = $dbh->prepare("UPDATE Pays SET pay_code_pays = :pay_code_pays, pay_pays = :pay_pays, pay_collaboration = :pay_collaboration WHERE pay_code_pays = :oldIDPays");
+			$stmt->bindParam(':pay_code_pays', $_POST['code']);
+			$stmt->bindParam(':pay_pays', $_POST['pays']);
 
-			if (isset($_GET['APA'])) $_GET['APA'] = "TRUE"; else $_GET['APA'] = "FALSE";
-			$stmt->bindParam(':pay_APA', $_GET['APA']);
+			if (isset($_POST['collaboration'])) $_POST['collaboration'] = "TRUE"; else $_POST['collaboration'] = "FALSE";
+			$stmt->bindParam(':pay_collaboration', $_POST['collaboration']);
 
-			$stmt->bindParam(':pay_numero_permis', $_GET['permis']);
-
-			if (isset($_GET['collaboration'])) $_GET['collaboration'] = "TRUE"; else $_GET['collaboration'] = "FALSE";
-			$stmt->bindParam(':pay_collaboration', $_GET['collaboration']);
-
-			$stmt->bindParam(':oldIDPays', $_GET['oldIDPays']);
+			$stmt->bindParam(':oldIDPays', $_POST['oldIDPays']);
 
 			$stmt->execute();
 		}
-		elseif ($_GET['envoi_modif'] == 'type') {
+		elseif ($_POST['envoi_modif'] == 'type') {
 			$stmt = $dbh->prepare("UPDATE Type_taxonomie SET typ_tax_type = :typ_tax_type WHERE typ_tax_id = :oldIDType");
-			$stmt->bindParam(':typ_tax_type', $_GET['type']);
-			$stmt->bindParam(':oldIDType', $_GET['oldIDType']);
+			$stmt->bindParam(':typ_tax_type', $_POST['type']);
+			$stmt->bindParam(':oldIDType', $_POST['oldIDType']);
 			$stmt->execute();
 		}
-		elseif ($_GET['envoi_modif'] == 'PartieOrga') {
+		elseif ($_POST['envoi_modif'] == 'PartieOrga') {
 			$stmt = $dbh->prepare("UPDATE partie_organisme SET par_origine = :par_origine, par_fr = :par_fr, par_en = :par_en, par_observation = :par_observation  WHERE par_id = :oldIDPartieOrga");
-			$stmt->bindParam(':par_origine', $_GET['origine']);
-			$stmt->bindParam(':par_fr', $_GET['partie_fr']);
-			$stmt->bindParam(':par_en', $_GET['partie_en']);
-			$stmt->bindParam(':par_observation', $_GET['observation']);
-			$stmt->bindParam(':oldIDPartieOrga', $_GET['oldIDPartieOrga']);
+			$stmt->bindParam(':par_origine', $_POST['origine']);
+			$stmt->bindParam(':par_fr', $_POST['partie_fr']);
+			$stmt->bindParam(':par_en', $_POST['partie_en']);
+			$stmt->bindParam(':par_observation', $_POST['observation']);
+			$stmt->bindParam(':oldIDPartieOrga', $_POST['oldIDPartieOrga']);
 			$stmt->execute();
 		}
 		echo "<script type=\"text/javascript\">location.href = 'param_extra.php';</script>";

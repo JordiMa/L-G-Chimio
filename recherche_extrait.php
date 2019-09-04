@@ -32,6 +32,7 @@ include_once 'script/administrateur.php';
 include_once 'script/secure.php';
 include_once 'autoload.php';
 include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
+include_once 'langues/'.$_SESSION['langue'].'/lang_formulaire.php';
 include_once 'presentation/entete.php';
 $menu=16;
 include_once 'presentation/gauche.php';

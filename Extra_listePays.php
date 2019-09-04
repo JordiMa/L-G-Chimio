@@ -34,9 +34,9 @@ include_once 'autoload.php';
 include_once 'langues/'.$_SESSION['langue'].'/presentation.php';
 include_once 'langues/'.$_SESSION['langue'].'/lang_formulaire.php';
 include_once 'presentation/entete.php';
-$menu=15;
-include_once 'presentation/gauche.php';
+$menu=18;
+include_once 'presentation/gauche-popup.php';
 $transfert=false;
-include_once 'corps/modification_Extrait_page.php';
+include_once 'corps/Extra_listePays_page.php';
 include_once 'presentation/pied.php';
 ?>

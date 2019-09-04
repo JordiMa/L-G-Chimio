@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -147,9 +147,10 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <div name="divHide" id="echantillon" style="text-align: center;">
       <h1>échantillon</h1>
       Code *<br/><input class="echantillon_nouveau" type="text" name="echantillon_Code" value="" required><br/><br/>
-      Disponibilité<br/><input class="echantillon_nouveau" type="checkbox" name="echantillon_Disponibilité" value=""><br/><br/>
-      Quantité *<br/><input class="echantillon_nouveau" type="text" name="echantillon_Quantité" value="" required><a href="#" onmouseover="ddrivetip('<p align=\'center\'>Exemple : 500g / 3 spécimens</p>')" onmouseout="hideddrivetip()"><img style="position: absolute;" border="0" src="images/aide.gif"></a><br/><br/>
-      Lieu de stockage *<br/><input class="echantillon_nouveau" type="text" name="echantillon_Lieu" value="" required><br/><br/>
+      Disponible :<br/><input type="radio" name="echantillon_Disponibilité" value="TRUE" checked>Oui<br/>
+      <input type="radio" name="echantillon_Disponibilité" value="FALSE">Non<br/><br/>
+      Quantité *<br/><input class="echantillon_nouveau" type="number" min="0" step="any" name="echantillon_Quantité" value="" required> g<br/><br/>
+      Lieu de stockage *<br/><textarea name="echantillon_Lieu" rows="5" cols="50" required></textarea><br/><br/>
       Partie d'organisme *<br/>
       <select name="echantillon_Partie" class="echantillon_nouveau" required>
         <option value=""></option>
@@ -170,6 +171,10 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
   <!-- [JM - 05/07/2019] condition -->
   <div name="divHide" id="Condition" style="text-align: center;">
     <h1>Condition</h1>
+    <input type="radio" name="condition_choix" value="NULL" checked> Aucune condition
+    <br/><br/>
+    OU
+    <br/><br/>
         <table id="tab_Condition" class="display">
           <thead>
           <tr>
@@ -201,6 +206,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
         </tbody>
         </table>
         <br/>
+    <button type="button" name="button" onclick="hideDiv();showDiv('echantillon');">Précédent</button>
     <button type="button" name="button" onclick="hideDiv();showDiv('Specimen');">Suivant</button>
   </div>
 
@@ -217,6 +223,7 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
           <th>Lieu</th>
           <th>GPS</th>
           <th style="width: 35%;">Observation</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -230,14 +237,15 @@ print"<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
           <td>'.urldecode($row[2]).'</td>
           <td>'.urldecode($row[3]).'</td>
           <td style="width: 35%;">'.urldecode($row[4]).'</td>
+          <td><a href="recherche_Specimen.php?specimen='.urldecode($row[0]).'" target="_blank">Voir les détails</a></td>
           </tr>
           ';
         }
         ?>
       </tbody>
       </table>
-
-        <br/>
+        <button type="button" name="button" onclick="hideDiv();showDiv('Condition');">Précédent</button>
+        <br/><br/>
         <input type="hidden" name="send" value="send">
         <input type="submit">
   </div>
@@ -255,13 +263,16 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
     $stmt->bindParam(':ech_code_echantillon', $_POST['echantillon_Code']);
     $stmt->bindParam(':ech_contact', $_POST['echantillon_Contact']);
     $stmt->bindParam(':ech_publication_doi', $_POST['echantillon_DOI']);
-    if (isset($_POST['echantillon_Disponibilité'])) $_POST['echantillon_Disponibilité'] = "TRUE"; else $_POST['echantillon_Disponibilité'] = "FALSE";
     $stmt->bindParam(':ech_stock_disponibilite', $_POST['echantillon_Disponibilité']);
     $stmt->bindParam(':ech_stock_quantite', $_POST['echantillon_Quantité']);
     $stmt->bindParam(':ech_lieu_stockage', $_POST['echantillon_Lieu']);
     $stmt->bindParam(':par_id', $_POST['echantillon_Partie']);
     $stmt->bindParam(':spe_code_specimen', $_POST['Specimen_Code']);
+
+    if ($_POST['condition_choix'] == "NULL")
+      $_POST['condition_choix'] = NULL;
     $stmt->bindParam(':con_id', $_POST['condition_choix']);
+
     $stmt->execute();
 
     if ($stmt->errorInfo()[0] != 00000) {

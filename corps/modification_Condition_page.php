@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -214,7 +214,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
       <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
       <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
       <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Mission de récolte</a></td>
+      <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_autorisation.php\">Autorisation</a></td>
       </tr>
       </table><br/>";
 
@@ -227,8 +228,6 @@ if (isset($_GET['condition'])) {
       case 'condition':
         $stmt = $dbh->prepare("UPDATE condition SET con_milieu = :con_milieu, con_temperature = :con_temperature, con_type_culture = :con_type_culture, con_mode_operatoir = :con_mode_operatoir, con_observation = :con_observation WHERE con_id = :con_id");
         $stmt->bindParam(':con_milieu', $_POST['Condition_Milieu']);
-        if($_POST['Condition_Temperature'] == "")
-          $_POST['Condition_Temperature'] = -999999;
         $stmt->bindParam(':con_temperature', $_POST['Condition_Temperature']);
         $stmt->bindParam(':con_type_culture', $_POST['Condition_Type']);
         $stmt->bindParam(':con_mode_operatoir', $_POST['Condition_ModeOp']);
@@ -292,7 +291,7 @@ if (isset($_GET['condition'])) {
         <td><input class="echantillon_nouveau specimen_nouveau expedition_existant" type="radio" name="condition" value="'.urldecode($row[0]).'"';if (isset($_POST['condition']) && $row[0] == $_POST['condition']) echo "checked"; ;echo '></td>
         <td>'.urldecode($row[0]).'</td>
         <td>'.urldecode($row[1]).'</td>
-        <td>'.urldecode($row[2]).'</td>
+        <td>'.urldecode($row[2]).'°C</td>
         <td>'.urldecode($row[3]).'</td>
         <td>'.urldecode($row[4]).'</td>
         <td>'.urldecode($row[5]).'</td>
@@ -326,12 +325,12 @@ if (isset($_GET['condition'])) {
       echo "<br/><strong>ID condition : </strong>" .$row_condition[0];
       echo "<br/>";
       echo "<br/><strong>Milieu : </strong>" .$row_condition[1];
-      echo "<br/><strong>Temperature : </strong>" .$row_condition[2];
+      echo "<br/><strong>Temperature : </strong>" .$row_condition[2].'°C';
       echo "<br/><strong>Type de culture : </strong>" .$row_condition[3];
       echo "<br/><strong>Mode operatoir : </strong>" .$row_condition[4];
       echo "<br/>";
       echo "<br/><strong>Observations : </strong>" .$row_condition[5];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_con\">Voir les fichier</a>";
+      echo "<br/><br/><a class='btnFic' href=\"#fic_con\">Voir les fichiers</a>";
       echo "<br/>";
       echo "<br/>";
       echo "<br/>";
@@ -384,7 +383,7 @@ if (isset($_GET['condition'])) {
         <br/><strong>ID condition : </strong>'.$row_condition[0].'
         <br/><br/>
         Milieu<br/><input class="echantillon_nouveau" type="text" name="Condition_Milieu" value="'.$row_condition[1].'"><br/><br/>
-        Temperature<br/><input class="echantillon_nouveau" type="number" step="any" name="Condition_Temperature" value="'.$row_condition[2].'">°C<br/><br/>
+        Temperature<br/><input class="echantillon_nouveau" type="number" step="any" name="Condition_Temperature" value="'.$row_condition[2].'" required>°C<br/><br/>
         Type de culture<br/><input class="echantillon_nouveau" type="text" name="Condition_Type" value="'.$row_condition[3].'"><br/><br/>
         Mode opératoire<br/><input class="echantillon_nouveau" type="text" name="Condition_ModeOp" value="'.$row_condition[4].'"><br/><br/>
         Observation<br/><input class="echantillon_nouveau" type="text" name="Condition_Observation" value="'.$row_condition[5].'"><br/><br/>

@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="./presentation/DataTables/datatables.js"></script>
 <link rel="stylesheet" type="text/css" href="./presentation/DataTables/RowReorder-1.2.4/css/rowReorder.dataTables.css"/>
@@ -214,7 +214,8 @@ if ($row[0]=='{ADMINISTRATEUR}') {
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Condition.php\">Condition</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet1.gif\"><a class=\"onglet\" href=\"modification_Specimen.php\">Specimen</a></td>
     <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Taxonomie.php\">Taxonomie</a></td>
-    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Expedition</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_Expedition.php\">Mission de récolte</a></td>
+    <td width=\"82\" height=\"23\" align=\"center\" valign=\"middle\" background=\"images/onglet.gif\"><a class=\"onglet\" href=\"modification_autorisation.php\">Autorisation</a></td>
     </tr>
     </table><br/>";
 
@@ -268,6 +269,18 @@ if (isset($_GET['specimen'])) {
         $stmt->bindParam(':spe_code_specimen', $_POST['specimen']);
 
         $stmt->execute();
+        break;
+
+      case 'autorisation':
+        $stmt = $dbh->prepare("DELETE FROM autorisation_specimen WHERE spe_code_specimen = :spe_code_specimen");
+        $stmt->bindParam(':spe_code_specimen', $_POST['specimen']);
+        $stmt->execute();
+        foreach ($_POST['id'] as $key => $value) {
+          $stmt = $dbh->prepare("INSERT INTO autorisation_specimen (aut_numero_autorisation, spe_code_specimen) VALUES (:aut_numero_autorisation, :spe_code_specimen)");
+          $stmt->bindParam(':aut_numero_autorisation', $value);
+          $stmt->bindParam(':spe_code_specimen', $_POST['specimen']);
+          $stmt->execute();
+        }
         break;
 
       case 'expedition':
@@ -353,7 +366,7 @@ if (isset($_GET['specimen'])) {
       echo "<br/><strong>Collection : </strong>" .$row_specimen[5];
       echo "<br/><strong>Contact : </strong>" .$row_specimen[6];
       echo "<br/><strong>Collecteur : </strong>" .$row_specimen[7];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_spe\">Voir les fichier</a>";
+      echo "<br/><br/><a class='btnFic' href=\"#fic_spe\">Voir les fichiers</a>";
       echo "<br/>";
       echo "<br/>";
       echo '
@@ -384,11 +397,42 @@ if (isset($_GET['specimen'])) {
       echo "</div>";
 
       echo "<hr>";
-      echo "<br/>";
+
+      //Autorisation
+      $req_aut = "SELECT * FROM autorisation_specimen Inner JOIN autorisation ON autorisation_specimen.aut_numero_autorisation = autorisation.aut_numero_autorisation WHERE spe_code_specimen = '".$_POST['specimen']."'";
+      $query_aut = $dbh->query($req_aut);
+      $resultat_aut = $query_aut->fetchALL(PDO::FETCH_NUM);
+      
+        echo "<div class='hr'>Autorisation</div>";
+        echo "<a class='btnFic' href=\"#modif_autorisation\" style=\"float: right;\">Modifier</a>";
+        echo "<div style='max-height: 250px;overflow: auto; width: 100%;'>
+        <table class=\"table-tableau\">
+        <tr>
+        <th>Numéro d'autorisation</th>
+        <th>Type d'autorisation</th>
+        </tr>
+        ";
+        $array_aut = array();
+        foreach ($resultat_aut as $key1 => $value1) {
+            echo "
+            <tr>
+            <td>".$value1[0]."</td>
+            <td>".$value1[3]."</td>
+            </tr>
+            ";
+            $array_aut[] = $value1[0];
+        }
+        echo "</table>";
+        echo "</div>";
+        echo "<div class='container'>";
+        echo "</div>";
+        echo "<br/>";
+
+
       echo "<div class='container'>";
 
       echo "<div class='infos'>";
-      echo "<div class='hr click_expedition'>Expedition</div>";
+      echo "<div class='hr click_expedition'>Mission de recolte</div>";
       echo "<a class='btnFic' href=\"#modif_expedition\" style=\"float: right;\">Modifier</a>";
       echo "<br/>";
       echo "<br/>";
@@ -398,9 +442,7 @@ if (isset($_GET['specimen'])) {
       echo "<br/><strong>Contact : </strong>" .$row_specimen[12];
       echo "<br/>";
       echo "<br/><strong>Pays : </strong>" .$row_specimen[15];
-      echo "<br/><strong>APA : </strong>";if ($row_specimen[16] == 1) echo "Oui"; else echo "Non";
-      echo "<br/><strong>Numero de permis : </strong>" .$row_specimen[17];
-      echo "<br/><strong>Collaboration : </strong>";if ($row_specimen[18] == 1) echo "Oui"; else echo "Non";
+      echo "<br/><strong>Collaboration : </strong>";if ($row_specimen[16] == 1) echo "Oui"; else echo "Non";
       echo "</div>";
 
       echo "<div class='infos'>";
@@ -408,23 +450,23 @@ if (isset($_GET['specimen'])) {
       echo "<a class='btnFic' href=\"#modif_taxonomie\" style=\"float: right;\">Modifier</a>";
       echo "<br/>";
       echo "<br/>";
-      echo "<br/><strong>ID taxonomie : </strong>" .$row_specimen[19];
+      echo "<br/><strong>ID taxonomie : </strong>" .$row_specimen[17];
       echo "<br/>";
-      echo "<br/><strong>Phylum : </strong>" .$row_specimen[20];
-      echo "<br/><strong>Classe : </strong>" .$row_specimen[21];
-      echo "<br/><strong>Ordre : </strong>" .$row_specimen[22];
-      echo "<br/><strong>Famille : </strong>" .$row_specimen[23];
-      echo "<br/><strong>Genre : </strong>" .$row_specimen[24];
-      echo "<br/><strong>Espece : </strong>" .$row_specimen[25];
-      echo "<br/><strong>Sous-espece : </strong>" .$row_specimen[26];
-      echo "<br/><strong>Varieté : </strong>" .$row_specimen[27];
+      echo "<br/><strong>Phylum : </strong>" .$row_specimen[18];
+      echo "<br/><strong>Classe : </strong>" .$row_specimen[19];
+      echo "<br/><strong>Ordre : </strong>" .$row_specimen[20];
+      echo "<br/><strong>Famille : </strong>" .$row_specimen[21];
+      echo "<br/><strong>Genre : </strong>" .$row_specimen[22];
+      echo "<br/><strong>Espece : </strong>" .$row_specimen[23];
+      echo "<br/><strong>Sous-espece : </strong>" .$row_specimen[24];
+      echo "<br/><strong>Varieté : </strong>" .$row_specimen[25];
       echo "<br/>";
-      echo "<br/><strong>Protocole : </strong>" .$row_specimen[28];
-      echo "<br/><strong>Sequence : </strong>" .$row_specimen[29];
-      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_specimen[30];
+      echo "<br/><strong>Protocole : </strong>" .$row_specimen[26];
+      echo "<br/><strong>Sequence : </strong>" .$row_specimen[27];
+      echo "<br/><strong>Sequence ref cahier de labo : </strong>" .$row_specimen[28];
       echo "<br/>";
-      echo "<br/><strong>Type : </strong>" .$row_specimen[33];
-      echo "<br/><br/><a class='btnFic' href=\"#fic_tax\">Voir les fichier</a>";
+      echo "<br/><strong>Type : </strong>" .$row_specimen[31];
+      echo "<br/><br/><a class='btnFic' href=\"#fic_tax\">Voir les fichiers</a>";
       echo "<br/>";
       echo "</div>";
 
@@ -460,7 +502,7 @@ if (isset($_GET['specimen'])) {
       echo '
       <div id="modif_taxonomie" class="overlay">
       <div id="popup_select" class="popup">
-      <h2>Conditions</h2>
+      <h2>Taxonomie</h2>
       <a class="close" href="#return">&times;</a>
       <form id="myForm" action="" method="POST">
         <input type="hidden" name="specimen" value="'.$row_specimen[0].'">
@@ -504,16 +546,57 @@ if (isset($_GET['specimen'])) {
       </div>
       ';
 
+      echo '
+      <div id="modif_autorisation" class="overlay">
+      <div id="popup_select" class="popup">
+      <h2>Autorisation</h2>
+      <a class="close" href="#return">&times;</a>
+      <form id="myForm" action="" method="POST">
+        <input type="hidden" name="specimen" value="'.$row_specimen[0].'">
+        <input type="hidden" name="type" value="autorisation">
+      ';
+      ?>
+      <table id="tab_autorisation" class="display">
+        <thead>
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        foreach ($dbh->query("SELECT * FROM autorisation") as $row) {
+          echo '
+          <tr>
+          <td><input type="checkbox" name="id[]" value="'.urldecode($row[0]).'"'; if(in_array(urldecode($row[0]), $array_aut)) echo "checked"; echo '></td>
+          <td>'.urldecode($row[0]).'</td>
+          <td>'.urldecode($row[1]).'</td>
+          </tr>
+          ';
+        }
+        ?>
+      </tbody>
+      </table>
+      <br/>
+      <center><input type="submit"></center>
+      <?php
+      echo '
+      </form>
+      </div>
+      </div>
+      ';
+
       //Taxonomie
       echo '
       <div id="fic_tax" class="overlay">
       <div class="popup">
-      <h2>Fichiers taxonomie '.$row_specimen[19].'</h2>
+      <h2>Fichiers taxonomie '.$row_specimen[17].'</h2>
       <a class="close" href="#return">&times;</a>
       <div class="content">
       ';
       $liste_tax = "";
-      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_specimen[19]."'") as $key => $value1) {
+      foreach ($dbh->query("SELECT * FROM fichier_taxonomie WHERE tax_id = '".$row_specimen[17]."'") as $key => $value1) {
           $liste_tax .='<li><a href="#"> Fichier '.$value1[0].' : '.$value1[2].'</a></li>';
       }
       if ($liste_tax != "") {
@@ -623,6 +706,8 @@ $(document).ready(function() {
     $('#tab_specimen tr').click(function() {
       $(this).find('td input:radio').prop('checked', true);
     });
+
+    $('#tab_autorisation').DataTable({select: {style: 'api'}});
 
     $('#tab_taxonomie').DataTable({select: {style: 'single'}});
 
