@@ -258,10 +258,8 @@ if (!empty($_POST['id'])) {
 			if ($rowselect[33]>0) $typenumero1=2;
 			else  $typenumero1=1;
 
-			$var_option_numerotation = 0;// TODO:
-
 			if ($row21[1]=="AUTO") {
-				if ($var_option_numerotation){
+				if ($config_data['param_numerotation']){
 					if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
 
 						//recherche des parametres du numero definient par l'administrateur
@@ -402,9 +400,8 @@ if (!empty($_POST['id'])) {
 						$formulaire->ajout_cache ($numerocomplet,"numerocomplet");
 					}
 					else print "<strong>".NBPILLULIER."<font color=\"red\"> ".$rowselect[28]."</font></strong><br/><br/>";
-				}// TODO:
+				}
 				else {
-					// TODO:
 					if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
 
 						//recherche des parametres du numero definient par l'administrateur

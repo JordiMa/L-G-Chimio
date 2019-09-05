@@ -101,11 +101,9 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 	if ($_POST['masse']>=$row21[0]) $typenumero=1;
 	else  $typenumero=2;
 
-	// TODO:
-	$var_option_numerotation = 0;
 
 		if ($row21[1]=="AUTO") {
-			if ($var_option_numerotation){
+			if ($config_data['param_numerotation']){
 		if(!isset($tab23)) $tab23=NULL;
 				//recherche des parametres du numero definient par l'administrateur
 				$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
