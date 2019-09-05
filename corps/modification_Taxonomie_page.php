@@ -321,7 +321,6 @@ if (isset($_GET['taxonomie'])) {
     $row_taxonomie = $result_taxonomie->fetch(PDO::FETCH_NUM);
     // [JM - 05/07/2019] affichage des information liée à l'echantillon
     if (!empty($row_taxonomie[0])) {
-      // TODO:
       echo "<div style='text-align: center;'>";
       echo "<div class='hr click_taxonomie'>Taxonomie</div>";
       echo "<a class='btnFic' style=\"float: right;\" href=\"#modif_taxonomie\">Modifier</a>";

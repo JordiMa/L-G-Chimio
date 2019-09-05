@@ -31,7 +31,7 @@ termes.
 ?>
 <tr>
     <td bgcolor="#FFFFFF" align="center" valign="middle" width="100%" colspan="2">
-<h3>Mise à jour de L-g-<I>Chimio</I> de la version 1.5 vers la version 1.5.1</h3>
+<h3>Mise à jour de L-g-<I>Chimio</I> de la version 1.5.1 vers la version 1.6</h3>
 <p>( Réservé à l'administrateur )</p>
 <br><br><br><br>
 <table width="150" border="0" cellspacing="0" cellpadding="0" >

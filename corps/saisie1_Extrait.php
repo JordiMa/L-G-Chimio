@@ -292,7 +292,7 @@ if(isset($_POST['send']) && $_POST['send'] == 'send'){
   $stmt->bindParam(':ext_stockage', $_POST['Extrait_Stockage']);
   $stmt->bindParam(':ext_observations', $_POST['Extrait_Observation']);
 
-  $stmt->bindParam(':chi_id_chimiste', $idchim);//TODO chi_id_chimiste
+  $stmt->bindParam(':chi_id_chimiste', $idchim);
   $stmt->bindParam(':ech_code_echantillon', $_POST['echantillon_Code']);
   $stmt->bindParam(':typ_id_type', $_POST['Extrait_typ_id_type']);
 

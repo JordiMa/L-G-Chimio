@@ -261,7 +261,6 @@ if(isset($_POST['chx_typeContrat'])){
 
 if (isset($_POST["pass"]) && password_verify($_POST["pass"],$row[3])){
 
-// TODO
 $countACB = count($arrayChampsBDD);
 for ($i=0; $i < $countACB; $i++) {
 	if(isset($_POST['chx_ChampsBDD_'.$i])){

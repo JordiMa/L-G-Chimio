@@ -297,6 +297,37 @@ if (isset($_GET['specimen'])) {
 
       echo "<hr>";
 
+      echo "<div class='hr'>Echantillon</div>";
+
+      echo "<div class='container'>";
+
+      $req_echantillion = "
+      SELECT * FROM Echantillon WHERE spe_code_specimen = '".$_POST['specimen']."';";
+
+      $query_echantillion = $dbh->query($req_echantillion);
+      $resultat_echantillion = $query_echantillion->fetchALL(PDO::FETCH_NUM);
+
+      // [JM - 05/07/2019] affichage des resultat
+      foreach ($resultat_echantillion as $key => $value) {
+        echo "<div class='extraits'>";
+        echo "<strong>Code echantillon : </strong><a href='recherche_Echantillon.php?echantillon=".$value[0]."' Target='_blank'>" .$value[0]."</a>";
+        echo "<br/>";
+        echo "<br/><strong>Contact : </strong>" .$value[1];
+        echo "<br/>";
+        echo "<br/><strong>DOI : </strong>" .$value[2];
+        echo "<br/>";
+        echo "<br/><strong>Stock : </strong>"; if ($value[3] == 1) echo "Oui"; else echo "Non";
+        echo "<br/><strong>Quantité : </strong>" .$value[4]. ' g';
+        echo "<br/><strong>Lieu de stockage : </strong>" .$value[5];
+        echo "<br/>";
+        echo "<br/>";
+        echo "</div>";
+      }
+      echo "</div>";
+      echo "</div>";
+
+      echo "<hr>";
+
       $req_aut = "SELECT * FROM autorisation_specimen Inner JOIN autorisation ON autorisation_specimen.aut_numero_autorisation = autorisation.aut_numero_autorisation WHERE spe_code_specimen = '".$_POST['specimen']."'";
       $query_aut = $dbh->query($req_aut);
       $resultat_aut = $query_aut->fetchALL(PDO::FETCH_NUM);

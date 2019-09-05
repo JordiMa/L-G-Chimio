@@ -209,6 +209,7 @@ require 'script/connectionb.php';
     </thead>
     <tbody>
       <?php
+      // [JM - 05/07/2019] selectionne les extraits selon le type de compte
       if ($row[0]=='{CHIMISTE}') {
         $req_recherche = "
         SELECT ext_code_extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, chi_nom, chi_prenom, ech_code_echantillon FROM extraits
@@ -283,6 +284,7 @@ require 'script/connectionb.php';
       $query_extrait = $dbh->query($req_extrait);
       $resultat_extrait = $query_extrait->fetchALL(PDO::FETCH_NUM);
 
+      // [JM - 05/07/2019] selectionne les purifications
       $req_purif = "SELECT purification.pur_id, pur_purification, pur_ref_book, count(fic_id), ext_Code_Extraits FROM purification LEFT OUTER JOIN fichier_purification ON fichier_purification.pur_id = purification.pur_id GROUP BY purification.pur_id";
       $query_purif = $dbh->query($req_purif);
       $resultat_purif = $query_purif->fetchALL(PDO::FETCH_NUM);
@@ -299,6 +301,8 @@ require 'script/connectionb.php';
         echo "<br/><strong>Lieu de stockage : </strong>" .$value[6];
         echo "<br/><strong>observations : </strong>" .$value[7];
         echo "<br/><br/><strong>Licence : </strong>" .constant($value[10]);
+        
+        // [JM - 05/07/2019] si des purifications existe
         if ($value[9] != 0) {
           echo "<div class='hr'>Purifications</div>";
           echo "
@@ -311,7 +315,7 @@ require 'script/connectionb.php';
           <th>Fichiers</th>
           </tr>
           ";
-
+          // [JM - 05/07/2019] affiche les purifications
           foreach ($resultat_purif as $key1 => $value1) {
             if($value1[4] == $value[0]){
               echo "

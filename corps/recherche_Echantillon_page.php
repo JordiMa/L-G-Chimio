@@ -238,6 +238,7 @@ require 'script/connectionb.php';
   <?php
 
   if(isset($_GET['echantillon'])){
+    // [JM - 05/07/2019] sélectionne l'échantillon recherché
     $sql_echantillon =
     "SELECT * FROM Echantillon
     INNER JOIN specimen on specimen.spe_code_specimen = echantillon.spe_code_specimen
@@ -252,7 +253,6 @@ require 'script/connectionb.php';
 
     $result_echantillon = $dbh->query($sql_echantillon);
     $row_echantillon = $result_echantillon->fetch(PDO::FETCH_NUM);
-    //print_r($row_echantillon);
 
     // [JM - 05/07/2019] affiche toutes les données liée à l'echantillon
     if (!empty($row_echantillon[0])) {
@@ -274,6 +274,8 @@ require 'script/connectionb.php';
 
       echo "<div class='container'>";
 
+      // [JM - 05/07/2019] selectionne les extraits et leurs informations
+      // selon type de compte (voit seulement leurs extraits)
       if ($row[0]=='{CHIMISTE}') {
         $req_extrait = "
         SELECT extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, count(pur_id), typ_type FROM extraits
@@ -323,13 +325,14 @@ require 'script/connectionb.php';
         GROUP BY extraits.ext_Code_Extraits, sol_solvant, ext_type_extraction, ext_etat, ext_disponibilite, ext_protocole, ext_stockage, ext_observations, chi_nom, chi_prenom, equi_nom_equipe, typ_type;";
       }
 
-
       $query_extrait = $dbh->query($req_extrait);
       $resultat_extrait = $query_extrait->fetchALL(PDO::FETCH_NUM);
 
+      // [JM - 05/07/2019] selectionne les purification
       $req_purif = "SELECT purification.pur_id, pur_purification, pur_ref_book, count(fic_id), ext_Code_Extraits FROM purification LEFT OUTER JOIN fichier_purification ON fichier_purification.pur_id = purification.pur_id GROUP BY purification.pur_id";
       $query_purif = $dbh->query($req_purif);
       $resultat_purif = $query_purif->fetchALL(PDO::FETCH_NUM);
+
       // [JM - 05/07/2019] affichage des resultat
       foreach ($resultat_extrait as $key => $value) {
         echo "<div class='extraits'>";
@@ -344,6 +347,7 @@ require 'script/connectionb.php';
         echo "<br/><strong>Nom du chimiste : </strong>" .$value[8]. " " .$value[9] ;
         echo "<br/><strong>Equipe : </strong>" .$value[10];
         echo "<br/><br/><strong>Licence : </strong>" .constant($value[12]);
+        // [JM - 05/07/2019] si une purification existe
         if ($value[11] != 0) {
           echo "<div class='hr'>Purifications</div>";
           echo "
@@ -356,7 +360,7 @@ require 'script/connectionb.php';
           <th>Fichiers</th>
           </tr>
           ";
-
+          // [JM - 05/07/2019] affiche la liste des Purifications
           foreach ($resultat_purif as $key1 => $value1) {
             if($value1[4] == $value[0]){
               echo "
@@ -487,6 +491,7 @@ require 'script/connectionb.php';
         echo "</div>";
         echo "</div>";
       }
+      
       // [JM - 05/07/2019] Creation de popup pour afficher la liste des fichiers
 
       //Purification
