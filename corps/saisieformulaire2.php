@@ -1,6 +1,6 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 
-﻿<?php
+<?php
 /*
 Copyright Laurent ROBIN CNRS - Université d'Orléans 2011
 Distributeur : UGCN - http://chimiotheque-nationale.org
@@ -15,17 +15,17 @@ Ce logiciel est un programme informatique servant à la gestion d'une chimiothè
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
- le CNRS et l'INRIA sur le site "http://www.cecill.info".
+le CNRS et l'INRIA sur le site "http://www.cecill.info".
 
 En contrepartie de l'accessibilité au code source et des droits de copie, de modification et de redistribution accordés par cette licence,
- il n'est offert aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l'auteur du
- programme, le titulaire des droits patrimoniaux et les concédants successifs.
+il n'est offert aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l'auteur du
+programme, le titulaire des droits patrimoniaux et les concédants successifs.
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
- et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
+et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
 réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
+leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -87,7 +87,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$equipe=$tabequipe[0];
 	}
 	elseif ($row22[0]=="{ADMINISTRATEUR}") {
-		$sql_chi="SELECT chi_id_equipe FROM chimiste WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
+		$sql_chi="SELECT chi_id_equipe FROM chimiste WHERE chi_statut = '{CHIMISTE}' AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
 		$result_chi=$dbh->query($sql_chi);
 		$row_chi = $result_chi->fetch(PDO::FETCH_NUM);
 		$equipe = $row_chi[0];
@@ -101,173 +101,189 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 	if ($_POST['masse']>=$row21[0]) $typenumero=1;
 	else  $typenumero=2;
 
+	// TODO:
 
-		if ($row21[1]=="AUTO") {
-			if ($config_data['param_numerotation']){
-		if(!isset($tab23)) $tab23=NULL;
-				//recherche des parametres du numero definient par l'administrateur
-				$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
-				$resultat24=$dbh->query($sql);
-				while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
-			$tab24[]=$row24[0];
-				}
-
-				if (in_array("{BOITE}",$tab24) and in_array("{COORDONEE}",$tab24)) {
-			//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-			$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
-			$result23=$dbh->query($sql);
-			$o=0;
-			while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-				if ($row23[0]<10) $row23[0]="0".$row23[0];
-				$tab23[$o]=$row23[0]."@".$row23[1];
-				$o++;
-			}
-			$numoboite="";
-			$numoposition="";
-				}
-
-				elseif (in_array("{BOITE}",$tab24) and in_array("{NUMERIC}",$tab24)) {
-			//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-			$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
-			$result23=$dbh->query($sql);
-			$o=0;
-			while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-				$tab23[$o]=$row23[0]."-".$row23[1];
-				$o++;
-			}
-			$numoboite="";
-			$numoincremental="";
-				}
-
-				elseif (in_array("{NUMERIC}",$tab24)) {
-			if ($typenumero==1) {
-				//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-				$sql="SELECT pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
-				$result23=$dbh->query($sql);
-				$o=0;
-				while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-					$tab23[$o]=$row23[0];
-					$o++;
-				}
-				$numoincremental="";
-			}
-			elseif ($typenumero==2) {
-				//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-				$sql="SELECT pro_num_sansmasse FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental,pro_num_sansmasse";
-				$result23=$dbh->query($sql);
-				$o=0;
-				while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-					$tab23[$o]=$row23[0];
-					$o++;
-				}
-				$numoincremental="";
-			}
-				}
-				$nbtab23=count($tab23);
-				$o=0;
-				$numeroassemble=numero($typenumero);
-
-		//vidange de la table temporaire
-				$sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
-				$deletenum=$dbh->query($sql);
-
-				//insertion du numéro dans la table temporaire
-				while ($o<1) {
-			if ($nbtab23==0) {
-				$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
-				$insertnum=$dbh->query($sql);
-				if (!empty($insertnum))  $o=1;
-				else $numeroassemble=numero($typenumero);
-			}
-			elseif (!in_array($numeroassemble,$tab23)) {
-				$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
-				$insertnum=$dbh->query($sql);
-				if (!empty($insertnum))  $o=1;
-				else $numeroassemble=numero($typenumero);
-			}
-			else $numeroassemble=numero($typenumero);
-		}
-
-
-	}
-	else{
-	if(!isset($tab23)) $tab23=NULL;
+	if ($row21[1]=="AUTO") {
+		// [JM - 07/05/2019] Si la réattribution des anciens numéros est activée
+		if ($config_data['param_numerotation_attrib']){
+			if(!isset($tab23)) $tab23=NULL;
 			//recherche des parametres du numero definient par l'administrateur
-			$sql="SELECT num_type, num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
+			$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
 			$resultat24=$dbh->query($sql);
 			while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
-		$tab24[]=$row24[0];
+				$tab24[]=$row24[0];
 			}
 
 			if (in_array("{BOITE}",$tab24) and in_array("{COORDONEE}",$tab24)) {
-		//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-		$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
-		$result23=$dbh->query($sql);
-		$o=0;
-		while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-			if ($row23[0]<10) $row23[0]="0".$row23[0];
-			$numoboite=$row23[0];
-			$numoposition=$row23[1];
-		}
+				//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+				$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
+				$result23=$dbh->query($sql);
+				$o=0;
+				while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+					if ($row23[0]<10) $row23[0]="0".$row23[0];
+					$tab23[$o]=$row23[0]."@".$row23[1];
+					$o++;
+				}
+				$numoboite="";
+				$numoposition="";
 			}
 
 			elseif (in_array("{BOITE}",$tab24) and in_array("{NUMERIC}",$tab24)) {
-		//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-		$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
-		$result23=$dbh->query($sql);
-		$o=0;
-		while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-			$numoboite=$row23[0];
-			$numoincremental=$row23[1];
-		}
+				//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+				$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
+				$result23=$dbh->query($sql);
+				$o=0;
+				while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+					$tab23[$o]=$row23[0]."-".$row23[1];
+					$o++;
+				}
+				$numoboite="";
+				$numoincremental="";
 			}
+
 			elseif (in_array("{NUMERIC}",$tab24)) {
-		if ($typenumero==1) {
-			//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-			$sql="SELECT pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
-			$result23=$dbh->query($sql);
-			$o=0;
-			while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-				$numoincremental=$row23[0];
-			}
-		}
-		elseif ($typenumero==2) {
-			//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
-			$sql="SELECT pro_num_sansmasse FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC, pro_num_sansmasse DESC LIMIT 1;";
-			$result23=$dbh->query($sql);
-			$o=0;
-			while($row23=$result23->fetch(PDO::FETCH_NUM)) {
-				$numoincremental=$row23[0];
-			}
-		}
+				if ($typenumero==1) {
+					//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+					$sql="SELECT pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental";
+					$result23=$dbh->query($sql);
+					$o=0;
+					while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+						$tab23[$o]=$row23[0];
+						$o++;
+					}
+					$numoincremental="";
+				}
+				elseif ($typenumero==2) {
+					//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+					$sql="SELECT pro_num_sansmasse FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' ORDER BY pro_num_boite,pro_num_position,pro_num_incremental,pro_num_sansmasse";
+					$result23=$dbh->query($sql);
+					$o=0;
+					while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+						$tab23[$o]=$row23[0];
+						$o++;
+					}
+					$numoincremental="";
+				}
 			}
 			$nbtab23=count($tab23);
 			$o=0;
 			$numeroassemble=numero($typenumero);
 
-	//vidange de la table temporaire
+			//vidange de la table temporaire
 			$sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
 			$deletenum=$dbh->query($sql);
 
 			//insertion du numéro dans la table temporaire
 			while ($o<1) {
-		if ($nbtab23==0) {
-			$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
-			$insertnum=$dbh->query($sql);
-			if (!empty($insertnum))  $o=1;
-			else $numeroassemble=numero($typenumero);
+				if ($nbtab23==0) {
+					$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
+					$insertnum=$dbh->query($sql);
+					if (!empty($insertnum))  $o=1;
+					else $numeroassemble=numero($typenumero);
+				}
+				elseif (!in_array($numeroassemble,$tab23)) {
+					$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
+					$insertnum=$dbh->query($sql);
+					if (!empty($insertnum))  $o=1;
+					else $numeroassemble=numero($typenumero);
+				}
+				else $numeroassemble=numero($typenumero);
+			}
+
+
 		}
-		elseif (!in_array($numeroassemble,$tab23)) {
-			$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
-			$insertnum=$dbh->query($sql);
-			if (!empty($insertnum))  $o=1;
-			else $numeroassemble=numero($typenumero);
+		// [JM - 07/05/2019] Si la réattribution est déactivée
+		else{
+			if(!isset($tab23)) $tab23=NULL;
+			//recherche des parametres du numero definient par l'administrateur
+			$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
+			$resultat24=$dbh->query($sql);
+			while ($row24=$resultat24->fetch(PDO::FETCH_NUM)) {
+				$tab24[]=$row24[0];
+			}
+
+			if (in_array("{BOITE}",$tab24) and in_array("{COORDONEE}",$tab24)) {
+				//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+				$sql="SELECT pro_num_boite,pro_num_position FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
+				$result23=$dbh->query($sql);
+				$o=0;
+				while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+					if ($row23[0]<10) $row23[0]="0".$row23[0];
+					$numoboite=$row23[0];
+					$numoposition=$row23[1];
+				}
+				if (empty($numoboite))
+				$numoboite="";
+				if (empty($numoposition))
+				$numoposition="";
+			}
+
+			elseif (in_array("{BOITE}",$tab24) and in_array("{NUMERIC}",$tab24)) {
+				//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+				$sql="SELECT pro_num_boite,pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_boite<>'0' ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
+				$result23=$dbh->query($sql);
+				$o=0;
+				while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+					$numoboite=$row23[0];
+					$numoincremental=$row23[1];
+				}
+				if (empty($numoboite))
+				$numoboite="";
+				if (empty($numoincremental))
+				$numoincremental="";
+			}
+			elseif (in_array("{NUMERIC}",$tab24)) {
+				if ($typenumero==1) {
+					//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+					$sql="SELECT pro_num_incremental FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_incremental <> 0 ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC LIMIT 1;";
+					$result23=$dbh->query($sql);
+					$o=0;
+					while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+						$numoincremental=$row23[0];
+					}
+					if (empty($numoincremental))
+					$numoincremental="";
+				}
+				elseif ($typenumero==2) {
+					//recherche de la liste des numéros pour une équipe et un type (libre, contrat, brevet) donné
+					$sql="SELECT pro_num_sansmasse FROM produit WHERE pro_id_equipe='$equipe' and pro_id_type='".$_POST['type']."' and pro_num_sansmasse <> 0 ORDER BY pro_num_boite DESC, pro_num_position DESC, pro_num_incremental DESC, pro_num_sansmasse DESC LIMIT 1;";
+					$result23=$dbh->query($sql);
+					$o=0;
+					while($row23=$result23->fetch(PDO::FETCH_NUM)) {
+						$numoincremental=$row23[0];
+					}
+					if (empty($numoincremental))
+					$numoincremental="";
+				}
+			}
+			$nbtab23=count($tab23);
+			$o=0;
+			$numeroassemble=numero($typenumero);
+
+			//vidange de la table temporaire
+			$sql="DELETE FROM numerotation_temporaire WHERE nume_date<>'".date("Y-m-d")."'";
+			$deletenum=$dbh->query($sql);
+
+			//insertion du numéro dans la table temporaire
+			while ($o<1) {
+				if ($nbtab23==0) {
+					$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
+					$insertnum=$dbh->query($sql);
+					if (!empty($insertnum))  $o=1;
+					else $numeroassemble=numero($typenumero);
+				}
+				elseif (!in_array($numeroassemble,$tab23)) {
+					$sql="INSERT INTO numerotation_temporaire (nume_tempo,nume_type,nume_equipe,nume_date) VALUES ('$numeroassemble','".$_POST['type']."','$equipe','".date("Y-m-d")."')";
+					$insertnum=$dbh->query($sql);
+					if (!empty($insertnum))  $o=1;
+					else $numeroassemble=numero($typenumero);
+				}
+				else $numeroassemble=numero($typenumero);
+			}
+
 		}
-		else $numeroassemble=numero($typenumero);
-	}
 
 	}
-		}
 
 	$_POST['masse']=trim($_POST['masse']);
 	// $tabinchi=preg_split("[\n]",$_POST["inchi"]);
@@ -277,7 +293,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 	if ($_POST["mol"]!="") {
 		//javascript de vérification des champs obligatoires
 		echo"
-<script language=\"JavaScript\">
+		<script language=\"JavaScript\">
 		function contains(onechar, lstring)
 		{
 			retval = false
@@ -391,21 +407,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 														}
 														else
 														{
-															var verifRequired = true;
-															var all = document.getElementsByClassName(\"fld-required\");
-
-															for (var i=0, max=all.length; i < max; i++) {
-																	if(document.getElementsByClassName(\"fld-required\")[i].checked){
-																		if(document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"form-control\")[0].value == \"\"){
-																			verifRequired = false;
-																			alert('\'' + document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"field-label\")[0].innerHTML + '\' n\'est pas renseigné (Volet déroulant \'ANNEXE\')' );
-																		}
-																	}
-															}
-
-															if(verifRequired){
-																theForm.submit();
-															}
+															theForm.submit();
 														}
 													}
 												}
@@ -425,13 +427,12 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 					if ((document.saisie2.masse.value >= 5 && document.saisie2.massehold.value < 5) || (document.saisie2.masse.value < 5 && document.saisie2.massehold.value >= 5))
 					{
 						document.saisie2.action = \"saisie2.php\";
-
 						theForm.submit();
 					}
 				}
 			}
 		}
-</script>";
+		</script>";
 		//fin du javascript
 
 		//affichage des erreurs du formulaire après traitement par traitement.php
@@ -458,8 +459,8 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$tab[$row[0]]=$row[1];
 		}
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-			  <td>";
+		<tr>
+		<td>";
 		echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";
 		$jme=new visualisationmoleculejme (300,300,$_POST['mol']);
 		$jme->imprime();
@@ -666,8 +667,8 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		//traitement du resultat afin de retourner la taille maximale du champ
 		$formulaire->ajout_text ($rop[0]+1,$_POST['pfusion'],$rop[0],"pfusion",PFUSION."<br/>",DEG,"");
 		print"<br/><br/>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".PEB."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".PEB."</div>\n<br/>";
 		//recherche des informations sur le champ pro_point_ebullition
 		$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_point_ebullition'";
 		//les résultats sont retournées dans la variable $result
@@ -686,29 +687,29 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		//traitement du resultat afin de retourner la taille maximale du champ
 		$formulaire->ajout_text ($rop[0]+1,$_POST['pressionpb'],$rop[0],"pressionpb",PRESSIONPB."<br/>",ATM,"");
 		print"</td>
-			  </tr>
-			</table><br/>";
+		</tr>
+		</table><br/>";
 		print"<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
 		$formulaire->ajout_text (4, $_POST['purete'], 15, "purete", PURETE,"","");
 		echo POURCENT;
 		print"<br/>\n<br/>\n";
 		$formulaire->ajout_text (21, $_POST['methopurete'], 20, "methopurete", METHOPURETE,"","");
 		print"</td>
-			  </tr>
-			</table>";
+		</tr>
+		</table>";
 		print"</td>\n<td colspan=\"2\"><table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".UV."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".UV."</div>\n<br/>";
 		$formulaire->ajout_textarea ("donneesuv",75,$_POST['donneesuv'],15,true,DONNEESUV."<br/>");
 		print"<br/>";
 		$formulaire->ajout_file (30, "fileuv",true,CHARGEUV."<br/>","");
 		print"</table></td>\n";
 
 		print"\n</tr>\n<tr class='hr_analyses' valign=\"top\">\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".SM."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".SM."</div>\n<br/>";
 		$formulaire->ajout_textarea ("donneessm",40,$_POST['donneessm'],3,true,SM1."<br/>");
 		print"<br/>";
 		//recherche des informations sur le champ pro_sm_type
@@ -723,11 +724,11 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		print"<br/>";
 		$formulaire->ajout_file (30, "filesm",true,CHARGESM."<br/>","");
 		print"</td>
-			  </tr>
-			</table>";
+		</tr>
+		</table>";
 		print"\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".HSM."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".HSM."</div>\n<br/>";
 		$formulaire->ajout_textarea ("donneeshrms",40,$_POST['donneeshrms'],3,true,HSM1."<br/>");
 		print"<br/>";
 		//recherche des informations sur le champ pro_sm_type
@@ -742,20 +743,20 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		print"<br/>";
 		$formulaire->ajout_file (30, "filehrms",true,CHARGEHSM."<br/>","");
 		print"</td>
-			  </tr>
-			</table>";
+		</tr>
+		</table>";
 		print"\n</td>\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".IR."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".IR."</div>\n<br/>";
 		$formulaire->ajout_textarea ("donneesir",47,$_POST['donneesir'],14,true,DONNEESIR."<br/>");
 		print"<br/>";
 		$formulaire->ajout_file (30, "fileir",true,CHARGEIR."<br/>","");
 		print"</td>
-			  </tr>
-			  </table>";
+		</tr>
+		</table>";
 		print"\n</td>\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".ALPHAD.ALPHA."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".ALPHAD.ALPHA."</div>\n<br/>";
 		//recherche des informations sur le champ pro_apha
 		$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_apha'";
 		//les résultats sont retournées dans la variable $result
@@ -783,11 +784,11 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$formulaire->ajout_select (1,"alphasolvant",$tab2,false,$_POST['alphasolvant'],ALPHASELECSOLV,ALPHASOLVANT."<br/>",false,"");
 
 		print"</td>
-			  </tr>
-			</table><br/>";
+		</tr>
+		</table><br/>";
 		print"\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			   <tr>
-				 <td class=\"blocformulaire\">\n<div align=\"center\">".CCM."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".CCM."</div>\n<br/>";
 		//recherche des informations sur le champ pro_rf
 		$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_rf'";
 		//les résultats sont retournées dans la variable $result
@@ -798,33 +799,33 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		print"<br/>";
 		$formulaire->ajout_text (27,$_POST['ccmsolvant'],256,"ccmsolvant",CCMSOLVANT."<br/>","","");
 		print"</td>
-				</tr>
-			  </table>";
+		</tr>
+		</table>";
 		print"\n</td>\n</tr>\n<tr class='hr_analyses' valign=\"top\">\n<td colspan=\"3\">\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			   <tr>
-				 <td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN."</div>\n<br/>";
+		<tr>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN."</div>\n<br/>";
 		$formulaire->ajout_textarea ("donneesrmnh",52,$_POST['donneesrmnh'],12,true,DONNERRMN.RMNH.DEUXPOINTS."<br/>");
 		print"<br/>";
 		$formulaire->ajout_file (30, "filermnh",true,CHARGERRMN.RMNH.DEUXPOINTS."<br/>","");
 		print"</td>
-			  <td class=\"tabtransparent\">&nbsp;</td>
-				 <td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN.RMNC."</div>\n<br/>";
+		<td class=\"tabtransparent\">&nbsp;</td>
+		<td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN.RMNC."</div>\n<br/>";
 		$formulaire->ajout_textarea ("donneesrmnc",52,$_POST['donneesrmnc'],12,true,DONNERRMN.RMNC.DEUXPOINTS."<br/>");
 		print"<br/>";
 		$formulaire->ajout_file (30, "filermnc",true,CHARGERRMN.RMNC.DEUXPOINTS."<br/>","");
 		print"</td>
-			  </tr>
-			  </table>";
+		</tr>
+		</table>";
 		//********fin de la section analyse********
 
 		//*********Section Bibliographie du formulaire***********
 		print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><div class='hr click_bibliographie'>".BIBLIO." & ".OBSERVATION."</div><hr id='arrow_bibliographie' class='arrow click_bibliographie'>
-			  <table class='hr_bibliographie' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
-			  <h3>".BIBLIO."</h3><br/></td><td width=\"50%\"><h3>".OBSERVATION."</h3></td></tr>
-			  <tr><td width=\"50%\">
-			  <table width=\"250\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			   <tr >
-				 <td class=\"blocformulaire\">\n<div align=\"center\">".PUB."</div>\n<br/>";
+		<table class='hr_bibliographie' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
+		<h3>".BIBLIO."</h3><br/></td><td width=\"50%\"><h3>".OBSERVATION."</h3></td></tr>
+		<tr><td width=\"50%\">
+		<table width=\"250\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
+		<tr >
+		<td class=\"blocformulaire\">\n<div align=\"center\">".PUB."</div>\n<br/>";
 		//recherche des informations sur le champ pro_doi
 		$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_doi'";
 		//les résultats sont retournées dans la variable $result
@@ -841,8 +842,8 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 		$rop=$result19->fetch(PDO::FETCH_NUM);
 		$formulaire->ajout_text ($rop[0]+1,$_POST['hal'],$rop[0],"hal",HAL."<br/>","","");
 		print"</td>
-				</tr>
-			  </table>\n<br/>";
+		</tr>
+		</table>\n<br/>";
 		//recherche des informations sur le champ pro_cas
 		$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_cas'";
 		//les résultats sont retournées dans la variable $result
@@ -893,7 +894,7 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 			$formulaire->ajout_cache ($tabequipe[1],"responsable");
 		}
 		elseif ($row22[0]=="{ADMINISTRATEUR}") {
-			$sql_chi="SELECT chi_id_chimiste, chi_id_responsable, chi_id_equipe FROM chimiste WHERE (chi_statut = '{CHIMISTE}' or chi_statut = '{RESPONSABLE}') AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
+			$sql_chi="SELECT chi_id_chimiste, chi_id_responsable, chi_id_equipe FROM chimiste WHERE chi_statut = '{CHIMISTE}' AND chi_passif = 'false'	AND chi_nom || ' ' || chi_prenom = '".$_POST['equipe']."'";
 			$result_chi=$dbh->query($sql_chi);
 			$row_chi = $result_chi->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_cache ($row_chi[2],"equipe");
@@ -904,91 +905,142 @@ if (!empty($_POST['mol']) && $_POST['masse']!="") {
 
 		//fermeture de la connexion à la base de données
 
-		print"</td>\n</tr>\n</table>\n
-		<tr>
-		<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
-		<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div>";
+				print"</td>\n</tr>\n</table>\n
+				<tr>
+				<td colspan=\"3\"><div class='hr click_annexe'>ANNEXE</div><hr id='arrow_annexe' class='arrow click_annexe'>
+				<table class='hr_annexe' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\"><div id=\"fb-editor\"></div>";
 
-		$sql_annexe="SELECT * FROM champsAnnexe";
-		//les résultats sont retournées dans la variable $result
-		$result_annexe = $dbh->query($sql_annexe);
-		if ($result_annexe){
-			foreach ($result_annexe as $key => $value) {
-				echo $value[1];
-			}
-		}
+				$sql_annexe="SELECT * FROM champsAnnexe";
+				//les résultats sont retournées dans la variable $result
+				$result_annexe = $dbh->query($sql_annexe);
+				if ($result_annexe){
+					foreach ($result_annexe as $key => $value) {
+						echo $value[1];
+					}
+				}
 
-		print"
-		</tr></table></table>\n<p align=\"right\">";
-		unset($dbh);
+				print"
+				</tr></table></table>\n<p align=\"right\">";
+				unset($dbh);
 
-		echo "<input id=\"champsAnnexe\" name=\"champsAnnexe\" type=\"hidden\" value=\"\">";
+				echo "<input id=\"champsAnnexe\" name=\"champsAnnexe\" type=\"hidden\" value=\"\">";
 
-		$formulaire->ajout_button (SUBMIT,"","button","onClick=\"GetSmiles(form,2)\"");
-		print"</p>";
-		//fin du formulaire
+				$formulaire->ajout_button (SUBMIT,"","button","onClick=\"GetSmiles(form,2)\"");
+				print"</p>";
+				//fin du formulaire
 
-		$formulaire->fin();
-		echo "<script>
-					CKEDITOR.inline( 'modop' );
-					CKEDITOR.inline( 'nomiupac' );
-					CKEDITOR.inline( 'observation' );
-					CKEDITOR.inline( 'donneesrmnc' );
-					CKEDITOR.inline( 'donneesrmnh' );
-					CKEDITOR.inline( 'donneesir' );
-					CKEDITOR.inline( 'donneesuv' );
-					CKEDITOR.inline( 'hsm' );
-					CKEDITOR.inline( 'sm' );
-				</script>\n";
+				$formulaire->fin();
+				echo "<script>
+							CKEDITOR.inline( 'modop' );
+							CKEDITOR.inline( 'nomiupac' );
+							CKEDITOR.inline( 'observation' );
+							CKEDITOR.inline( 'donneesrmnc' );
+							CKEDITOR.inline( 'donneesrmnh' );
+							CKEDITOR.inline( 'donneesir' );
+							CKEDITOR.inline( 'donneesuv' );
+							CKEDITOR.inline( 'hsm' );
+							CKEDITOR.inline( 'sm' );
+						</script>\n";
 
-				echo "
-				<script>
-					$('.hr_analyses').slideToggle();
-					$('.hr_bibliographie').slideToggle();
-					$('.hr_annexe').slideToggle();
+						echo "
+						<script>
+							$('.hr_analyses').slideToggle();
+							$('.hr_bibliographie').slideToggle();
+							$('.hr_annexe').slideToggle();
 
-					$('.click_analyses').click(function(){
-						$('.hr_analyses').slideToggle();
+							$('.click_analyses').click(function(){
+								$('.hr_analyses').slideToggle();
 
-						if (document.getElementById('arrow_analyses').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_analyses').style.borderWidth == ''){
-							document.getElementById('arrow_analyses').style.borderWidth = '0px 20px 20px 20px';
-							document.getElementById('arrow_analyses').style.borderColor = 'transparent transparent #99CC99 transparent';
-						}
-						else
-						if (document.getElementById('arrow_analyses').style.borderWidth == '0px 20px 20px'){
-							document.getElementById('arrow_analyses').style.borderWidth = '20px 20px 0 20px';
-							document.getElementById('arrow_analyses').style.borderColor = '#99CC99 transparent transparent transparent';
-						}
-					});
-					$('.click_bibliographie').click(function(){
-						$('.hr_bibliographie').slideToggle();
+								if (document.getElementById('arrow_analyses').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_analyses').style.borderWidth == ''){
+									document.getElementById('arrow_analyses').style.borderWidth = '0px 20px 20px 20px';
+									document.getElementById('arrow_analyses').style.borderColor = 'transparent transparent #99CC99 transparent';
+								}
+								else
+								if (document.getElementById('arrow_analyses').style.borderWidth == '0px 20px 20px'){
+									document.getElementById('arrow_analyses').style.borderWidth = '20px 20px 0 20px';
+									document.getElementById('arrow_analyses').style.borderColor = '#99CC99 transparent transparent transparent';
+								}
+							});
+							$('.click_bibliographie').click(function(){
+								$('.hr_bibliographie').slideToggle();
 
-						if (document.getElementById('arrow_bibliographie').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_bibliographie').style.borderWidth == ''){
-							document.getElementById('arrow_bibliographie').style.borderWidth = '0px 20px 20px 20px';
-							document.getElementById('arrow_bibliographie').style.borderColor = 'transparent transparent #99CC99 transparent';
-						}
-						else
-						if (document.getElementById('arrow_bibliographie').style.borderWidth == '0px 20px 20px'){
-							document.getElementById('arrow_bibliographie').style.borderWidth = '20px 20px 0 20px';
-							document.getElementById('arrow_bibliographie').style.borderColor = '#99CC99 transparent transparent transparent';
-						}
-					});
-					$('.click_annexe').click(function(){
-						$('.hr_annexe').slideToggle();
+								if (document.getElementById('arrow_bibliographie').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_bibliographie').style.borderWidth == ''){
+									document.getElementById('arrow_bibliographie').style.borderWidth = '0px 20px 20px 20px';
+									document.getElementById('arrow_bibliographie').style.borderColor = 'transparent transparent #99CC99 transparent';
+								}
+								else
+								if (document.getElementById('arrow_bibliographie').style.borderWidth == '0px 20px 20px'){
+									document.getElementById('arrow_bibliographie').style.borderWidth = '20px 20px 0 20px';
+									document.getElementById('arrow_bibliographie').style.borderColor = '#99CC99 transparent transparent transparent';
+								}
+							});
+							$('.click_annexe').click(function(){
+								$('.hr_annexe').slideToggle();
 
-						if (document.getElementById('arrow_annexe').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_annexe').style.borderWidth == ''){
-							document.getElementById('arrow_annexe').style.borderWidth = '0px 20px 20px 20px';
-							document.getElementById('arrow_annexe').style.borderColor = 'transparent transparent #99CC99 transparent';
-						}
-						else
-						if (document.getElementById('arrow_annexe').style.borderWidth == '0px 20px 20px'){
-							document.getElementById('arrow_annexe').style.borderWidth = '20px 20px 0 20px';
-							document.getElementById('arrow_annexe').style.borderColor = '#99CC99 transparent transparent transparent';
-						}
-					});
-				</script>
-				";
+								if (document.getElementById('arrow_annexe').style.borderWidth == '20px 20px 0px' || document.getElementById('arrow_annexe').style.borderWidth == ''){
+									document.getElementById('arrow_annexe').style.borderWidth = '0px 20px 20px 20px';
+									document.getElementById('arrow_annexe').style.borderColor = 'transparent transparent #99CC99 transparent';
+								}
+								else
+								if (document.getElementById('arrow_annexe').style.borderWidth == '0px 20px 20px'){
+									document.getElementById('arrow_annexe').style.borderWidth = '20px 20px 0 20px';
+									document.getElementById('arrow_annexe').style.borderColor = '#99CC99 transparent transparent transparent';
+								}
+							});
+						</script>
+						";
+		?>
+		<script>
+		var filehrms = document.getElementById('filehrms');
+		var filesm = document.getElementById('filesm');
+		var fileir = document.getElementById('fileir');
+		var fileuv = document.getElementById('fileuv');
+		var filermnh = document.getElementById('filermnh');
+		var filermnc = document.getElementById('filermnc');
 
+		filehrms.onchange = function() {
+			if(this.files[0].size > 1048576){
+				alert("le fichier HRMS est trop grand (max 1Mo) !");
+				this.value = "";
+			};
+		};
+
+		filesm.onchange = function() {
+			if(this.files[0].size > 1048576){
+				alert("le fichier SM est trop grand (max 1Mo) !");
+				this.value = "";
+			};
+		};
+
+		fileir.onchange = function() {
+			if(this.files[0].size > 1048576){
+				alert("le fichier IR est trop grand (max 1Mo) !");
+				this.value = "";
+			};
+		};
+
+		fileuv.onchange = function() {
+			if(this.files[0].size > 1048576){
+				alert("le fichier UV est trop grand (max 1Mo) !");
+				this.value = "";
+			};
+		};
+
+		filermnh.onchange = function() {
+			if(this.files[0].size > 1048576){
+				alert("le fichier RMNH est trop grand (max 1Mo) !");
+				this.value = "";
+			};
+		};
+
+		filermnc.onchange = function() {
+			if(this.files[0].size > 1048576){
+				alert("le fichier RMNC est trop grand (max 1Mo) !");
+				this.value = "";
+			};
+		};
+		</script>
+<?php
     }
     else {
 		$erreur=STRUC;

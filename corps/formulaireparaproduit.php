@@ -94,6 +94,80 @@ if ($row[0]=='{ADMINISTRATEUR}') {
 	//fin du formulaire
 	$formulaire1->fin();
 	if ($row2[0]=="AUTO") {
+		echo "<form>";
+
+		if ($config_data['param_numerotation_attrib'] == 1)
+	  	print "<input type='checkbox' name='param_numerotation_attrib' value='1' onchange=\"this.form.submit()\" checked>Réattribuer les anciens numéros<br>";
+		else
+			print "<input type='checkbox' name='param_numerotation_attrib' onchange=\"this.form.submit()\" value='1'>Réattribuer les anciens numéros<br>";
+
+			if ($config_data['param_numerotation_fixe'] == 1)
+		  	print "<input type='checkbox' name='param_numerotation_fixe' value='1' onchange=\"this.form.submit()\" checked>Changée la numérotation selon l'état du stock<br>";
+			else
+				print "<input type='checkbox' name='param_numerotation_fixe' onchange=\"this.form.submit()\" value='1'>Changée la numérotation selon l'état du stock<br>";
+
+
+		echo '<input type="hidden" name="valid" value="valid">';
+		echo "</form>";
+
+		// [JM - 07/05/2019] Reécriture du fichier de config
+		if (isset($_GET['valid'])){
+			$configJSON = array();
+
+			if (isset($config_data['etapeSynthese']))
+				$configJSON['etapeSynthese'] = $config_data['etapeSynthese'];
+			else
+				$configJSON['etapeSynthese'] = 0;
+
+			if (isset($config_data['couleur']))
+				$configJSON['couleur'] = $config_data['couleur'];
+			else
+				$configJSON['couleur'] = 0;
+
+			if (isset($config_data['typePurif']))
+				$configJSON['typePurif'] = $config_data['typePurif'];
+			else
+				$configJSON['typePurif'] = 0;
+
+			if (isset($config_data['aspect']))
+				$configJSON['aspect'] = $config_data['aspect'];
+			else
+				$configJSON['aspect'] = 0;
+
+			if (isset($config_data['refCahier']))
+				$configJSON['refCahier'] = $config_data['refCahier'];
+			else
+				$configJSON['refCahier'] = 0;
+
+			if (isset($config_data['nomenclature']))
+				$configJSON['nomenclature'] = $config_data['nomenclature'];
+			else
+				$configJSON['nomenclature'] = 0;
+
+			if (isset($config_data['solvantsDeSolubilisation']))
+				$configJSON['solvantsDeSolubilisation'] = $config_data['solvantsDeSolubilisation'];
+			else
+				$configJSON['solvantsDeSolubilisation'] = 0;
+
+			if (isset($_GET['param_numerotation_attrib']))
+				$configJSON['param_numerotation_attrib'] = 1;
+			else
+				$configJSON['param_numerotation_attrib'] = 0;
+
+			if (isset($_GET['param_numerotation_fixe']))
+				$configJSON['param_numerotation_fixe'] = 1;
+			else
+				$configJSON['param_numerotation_fixe'] = 0;
+
+			// on encode la variable $configJSON au format JSON,
+			// puis on écrit dans le fichier config.json
+			$myJSON = json_encode($configJSON);
+			file_put_contents('script/config.json', $myJSON);
+
+			// on recharge la page des configurations
+			echo " <script> location.replace('parametreproduit.php'); </script>";
+		}
+
 		print"<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\">\n<tr>\n<td valign=\"top\">
 			<br/><br/>";
 

@@ -14,17 +14,17 @@ Ce logiciel est un programme informatique servant à la gestion d'une chimiothè
 
 Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres.
 Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA,
- le CNRS et l'INRIA sur le site "http://www.cecill.info".
+le CNRS et l'INRIA sur le site "http://www.cecill.info".
 
 En contrepartie de l'accessibilité au code source et des droits de copie, de modification et de redistribution accordés par cette licence,
- il n'est offert aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l'auteur du
- programme, le titulaire des droits patrimoniaux et les concédants successifs.
+il n'est offert aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l'auteur du
+programme, le titulaire des droits patrimoniaux et les concédants successifs.
 
 A cet égard l'attention de l'utilisateur est attirée sur les risques associés au chargement, à l'utilisation, à la modification et/ou au développement
- et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
+et à la reproduction du logiciel par l'utilisateur étant donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le
 réserve donc à des développeurs et des professionnels avertis possédant des connaissances informatiques approfondies. Les utilisateurs sont donc
 invités à charger et tester l'adéquation du logiciel à leurs besoins dans des conditions permettant d'assurer la sécurité de leurs systèmes et ou de
- leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
+leurs données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
@@ -77,91 +77,89 @@ if (!empty($_POST['id'])) {
 		if ($_POST["mol"]!="") {
 			//javascript de vérification des champs obligatoires
 			echo"<script language=\"JavaScript\">
-				  <!--
-				  function contains(onechar,lstring) {
-					retval=false
-					for(var i=1;i<=lstring.length;i++) {
-					  if(lstring.substring(i,i+1)==onechar) {
+			<!--
+			function contains(onechar,lstring) {
+				retval=false
+				for(var i=1;i<=lstring.length;i++) {
+					if(lstring.substring(i,i+1)==onechar) {
 						retval=true
 						break
-					  }
 					}
-					return retval
-				  }
+				}
+				return retval
+			}
 
-				  function selection(lstring) {
-					retvale=false
-					for(var i=1;i<lstring.length;i++) {
-					  if(document.chimiotheque.D5.options[i].text==document.chimiotheque.T3.value){retvale=true
-					  break
-					  }
+			function selection(lstring) {
+				retvale=false
+				for(var i=1;i<lstring.length;i++) {
+					if(document.chimiotheque.D5.options[i].text==document.chimiotheque.T3.value){retvale=true
+						break
 					}
-					return retvale
-				  }
+				}
+				return retvale
+			}
 
-				  function GetSmiles(theForm) {
-					var i=0;
-					var top=true;
-					if (document.saisie2.config_solvantsDeSolubilisation.value == '1')
+			function GetSmiles(theForm) {
+				var i=0;
+				var top=true;
+				if (document.saisie2.config_solvantsDeSolubilisation.value == '1')
+				{
+					top = false;
+					while (document.saisie2[\"solvant\"+i] )
 					{
-						top = false;
-						while (document.saisie2[\"solvant\"+i] )
+						if (document.saisie2[\"solvant\"+i].checked)
 						{
-							if (document.saisie2[\"solvant\"+i].checked)
-							{
-								top = true;
-								break;
-							}
-							i++;
+							top = true;
+							break;
 						}
+						i++;
 					}
-					if (CKEDITOR.instances.nomiupac.getData()==\"\" && document.saisie2.config_nomenclature.value== '1') {alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");}
+				}
+				if (CKEDITOR.instances.nomiupac.getData()==\"\" && document.saisie2.config_nomenclature.value== '1') {alert(\"".CHAMP." \'".NOM."\' ".RENSEIGNE."\");}
+				else {
+					if (document.saisie2.masse.value==\"\") {alert(\"".CHAMP." \'".MASS."\' ".RENSEIGNE."\");}
 					else {
-					  if (document.saisie2.masse.value==\"\") {alert(\"".CHAMP." \'".MASS."\' ".RENSEIGNE."\");}
-					  else {
 						if((isNaN(document.saisie2.masse.value)) || (contains(\".\",saisie2.masse.value))) {alert(\"".CHAMP." \'".MASS."\' ".ERREURMASSE."\");}
 						else {
-						  if (document.saisie2.couleur.value==\"\" && document.saisie2.config_couleur.value== '1') {alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");}
-						  else {
-							if (document.saisie2.ref.value==\"\" && document.saisie2.config_refCahier.value== '1') {alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");}
+							if (document.saisie2.couleur.value==\"\" && document.saisie2.config_couleur.value== '1') {alert(\"".CHAMP." \'".COULEUR."\' ".RENSEIGNE."\");}
 							else {
-							  if (document.saisie2.aspect.value==\"\" && document.saisie2.config_aspect.value== '1') {alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");}
-							  else {
-								if (document.saisie2.purification.value==\"\" && document.saisie2.config_typePurif.value== '1') {alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");}
+								if (document.saisie2.ref.value==\"\" && document.saisie2.config_refCahier.value== '1') {alert(\"".CHAMP." \'".REFERENCECAHIER."\' ".RENSEIGNE."\");}
 								else {
-									if((document.saisie2.purification.value==\"recristallisation\" || document.saisie2.purification.value==\"précipitation\") && (document.saisie2.aspect.value==\"liquide\")){alert(\"".RECRISTALISE."\");}
+									if (document.saisie2.aspect.value==\"\" && document.saisie2.config_aspect.value== '1') {alert(\"".CHAMP." \'".ASPECT."\' ".RENSEIGNE."\");}
 									else {
-									  if(document.saisie2.purification.value==\"distillation\" && document.saisie2.aspect.value==\"solide\"){alert(\"".DISTILATION."\");}
-									  else {
-										if (!top) {alert(\"".CHAMP." \'".SOLVANTS."\' ".RENSEIGNE."\");}
+										if (document.saisie2.purification.value==\"\" && document.saisie2.config_typePurif.value== '1') {alert(\"".CHAMP." \'".PURIFICATION."\' ".RENSEIGNE."\");}
 										else {
-											var verifRequired = true;
-											var all = document.getElementsByClassName(\"fld-required\");
+											if((document.saisie2.purification.value==\"recristallisation\" || document.saisie2.purification.value==\"précipitation\") && (document.saisie2.aspect.value==\"liquide\")){alert(\"".RECRISTALISE."\");}
+											else {
+												if(document.saisie2.purification.value==\"distillation\" && document.saisie2.aspect.value==\"solide\"){alert(\"".DISTILATION."\");}
+												else {
+													if (!top) {alert(\"".CHAMP." \'".SOLVANTS."\' ".RENSEIGNE."\");}
+													else {
+														var verifRequired = true;
+														var all = document.getElementsByClassName(\"fld-required\");
 
-											for (var i=0, max=all.length; i < max; i++) {
-													if(document.getElementsByClassName(\"fld-required\")[i].checked){
-														if(document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"form-control\")[0].value == \"\"){
-															verifRequired = false;
-															alert('\'' + document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"field-label\")[0].innerHTML + '\' n\'est pas renseigné (Volet déroulant \'ANNEXE\')' );
+														for (var i=0, max=all.length; i < max; i++) {
+															if(document.getElementsByClassName(\"fld-required\")[i].checked){
+																if(document.getElementsByClassName(\"fld-required\")[i].parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\"form-control\")[0].value == \"\"){
+																	verifRequired = false;
+																}
+															}
+														}
+														if(verifRequired){
+															theForm.submit();
 														}
 													}
-											}
-
-											if(verifRequired){
-												theForm.submit();
+												}
 											}
 										}
-									  }
 									}
-								  }
 								}
-							  }
 							}
-						  }
 						}
 					}
-				  }
-				  </script>";
+				}
+			}
+			</script>";
 			//affichage des erreurs du formulaire après traitement par traitement.php
 			if (isset($erreur)) echo $erreur;
 			//fin de l'affichage des erreurs
@@ -179,44 +177,44 @@ if (!empty($_POST['id'])) {
 
 			//selection des résultats de l'ID demandé dans la table produit
 			$sql="SELECT
-				  pro_id_produit,
-				  str_nom,
-				  pro_purification,
-				  pro_aspect,
-				  pro_id_couleur,
-				  pro_ref_cahier_labo,
-				  pro_modop,
-				  pro_observation,
-				  pro_analyse_elem_trouve,
-				  pro_point_fusion,
-				  pro_point_ebullition,
-				  pro_pression_pb,
-				  pro_alpha,
-				  pro_alpha_temperature,
-				  pro_alpha_concentration,
-				  pro_alpha_solvant,
-				  pro_rf,
-				  pro_rf_solvant,
-				  pro_doi,
-				  pro_hal,
-				  pro_cas,
-				  pro_id_uv,
-				  pro_id_hrms,
-				  pro_id_sm,
-				  pro_id_rmnc,
-				  pro_id_rmnh,
-				  pro_id_ir,
-				  pro_observation,
-				  pro_numero,
-				  pro_id_type,
-				  pro_masse,
-				  pro_id_equipe,
-				  pro_date_entree,
-				  pro_num_sansmasse,
-				  pro_purete,
-				  pro_methode_purete,
-				  pro_qrcode
-				   FROM produit,structure WHERE pro_id_produit='".$_POST['id']."' and structure.str_id_structure=produit.pro_id_structure";
+			pro_id_produit,
+			str_nom,
+			pro_purification,
+			pro_aspect,
+			pro_id_couleur,
+			pro_ref_cahier_labo,
+			pro_modop,
+			pro_observation,
+			pro_analyse_elem_trouve,
+			pro_point_fusion,
+			pro_point_ebullition,
+			pro_pression_pb,
+			pro_alpha,
+			pro_alpha_temperature,
+			pro_alpha_concentration,
+			pro_alpha_solvant,
+			pro_rf,
+			pro_rf_solvant,
+			pro_doi,
+			pro_hal,
+			pro_cas,
+			pro_id_uv,
+			pro_id_hrms,
+			pro_id_sm,
+			pro_id_rmnc,
+			pro_id_rmnh,
+			pro_id_ir,
+			pro_observation,
+			pro_numero,
+			pro_id_type,
+			pro_masse,
+			pro_id_equipe,
+			pro_date_entree,
+			pro_num_sansmasse,
+			pro_purete,
+			pro_methode_purete,
+			pro_qrcode
+			FROM produit,structure WHERE pro_id_produit='".$_POST['id']."' and structure.str_id_structure=produit.pro_id_structure";
 			$resultselect = $dbh->query($sql);
 			$rowselect = $resultselect->fetch(PDO::FETCH_NUM);
 			$sql = "SELECT * FROM couleur";
@@ -227,8 +225,8 @@ if (!empty($_POST['id'])) {
 				$tabcoul[$row[0]]=$row[1];
 			}
 			print"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">
-				  <tr>
-				  <td>";
+			<tr>
+			<td>";
 			echo "<script type=\"text/javascript\" language=\"javascript\" src=\"jsme/jsme.nocache.js\"></script>\n";
 			$jme=new visualisationmoleculejme (300,300,$_POST['mol']);
 			$jme->imprime();
@@ -259,8 +257,10 @@ if (!empty($_POST['id'])) {
 			else  $typenumero1=1;
 
 			if ($row21[1]=="AUTO") {
-				if ($config_data['param_numerotation']){
-					if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
+				// [JM - 07/05/2019] Si la réattribution des anciens numéros est activée
+				if ($config_data['param_numerotation_attrib']){
+					if (($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) && $config_data['param_numerotation_fixe']) {
+
 
 						//recherche des parametres du numero definient par l'administrateur
 						$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
@@ -401,9 +401,10 @@ if (!empty($_POST['id'])) {
 					}
 					else print "<strong>".NBPILLULIER."<font color=\"red\"> ".$rowselect[28]."</font></strong><br/><br/>";
 				}
+				// [JM - 07/05/2019] Si la réattribution est déactivée
 				else {
-					if ($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) {
-
+					// [JM - 07/05/2019] $config_data['param_numerotation_fixe'] -> Si la numerotation fixe est activée
+					if (($_POST["type"]!=$rowselect[29] or $typenumero1!=$typenumero) && $config_data['param_numerotation_fixe']) {
 						//recherche des parametres du numero definient par l'administrateur
 						$sql="SELECT num_type,num_valeur FROM numerotation WHERE num_parametre='$typenumero' ORDER BY num_id_numero";
 						$resultat24=$dbh->query($sql);
@@ -652,41 +653,41 @@ if (!empty($_POST['id'])) {
 				$isolvant++;
 			}
 			if (isset($tabsolvant))
-				$formulaire->ajout_checkbox ("solvant",$tab2,$tabsolvant,SOLVANTS."<br/>",false);
-				else {
-					$formulaire->ajout_checkbox ("solvant",$tab2,'',SOLVANTS."<br/>",false);
-				}
-				if (isset($_POST["chx_purete"])){
-					print
-					"<br><br>
-					<label for='chx_purete'>Pureté contrôlée :</label>
-					<select id='chx_purete' name='chx_purete'>
-						<option value='0' "; if ($_POST["chx_purete"] == 0) echo "selected"; echo ">Non contrôlée</option>
-						<option value='1' "; if ($_POST["chx_purete"] == 1) echo "selected"; echo ">Contrôle en cours</option>
-						<option value='2' "; if ($_POST["chx_purete"] == 2) echo "selected"; echo ">Contrôlée et validé</option>
-						<option value='3' "; if ($_POST["chx_purete"] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
-					</select>";
-				}
-				if (isset($_POST["chx_structure"])){
-					print
-					"<br><br>
-					<label for='chx_structure'>Structure contrôlée :</label>
-					<select id='chx_structure' name='chx_structure'>
-						<option value='0' "; if ($_POST["chx_structure"] == 0) echo "selected"; echo ">Non contrôlée</option>
-						<option value='1' "; if ($_POST["chx_structure"] == 1) echo "selected"; echo ">Contrôle en cours</option>
-						<option value='2' "; if ($_POST["chx_structure"] == 2) echo "selected"; echo ">Contrôlée et validé</option>
-						<option value='3' "; if ($_POST["chx_structure"] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
-					</select>";
-				}
-					if (isset($_POST['chezEvo'])){
-					echo "<input type='hidden' id='chezEvo' name='chezEvo' value = 1 />";
-					echo "<input type='hidden' id='pro_num_constant' name='pro_num_constant' value='".$_POST['pro_num_constant']."' />";
-					echo "<br/><br/><label>Insoluble chez Evotec ?</label> ";
-					echo "<input type='checkbox' id='evo_insoluble' name='evo_insoluble' ";
-					if (isset($_POST['evo_insoluble']) && $_POST['evo_insoluble'])
-						echo "checked ";
-					echo "/>";
-				}
+			$formulaire->ajout_checkbox ("solvant",$tab2,$tabsolvant,SOLVANTS."<br/>",false);
+			else {
+				$formulaire->ajout_checkbox ("solvant",$tab2,'',SOLVANTS."<br/>",false);
+			}
+			if (isset($_POST["chx_purete"])){
+				print
+				"<br><br>
+				<label for='chx_purete'>Pureté contrôlée :</label>
+				<select id='chx_purete' name='chx_purete'>
+				<option value='0' "; if ($_POST["chx_purete"] == 0) echo "selected"; echo ">Non contrôlée</option>
+				<option value='1' "; if ($_POST["chx_purete"] == 1) echo "selected"; echo ">Contrôle en cours</option>
+				<option value='2' "; if ($_POST["chx_purete"] == 2) echo "selected"; echo ">Contrôlée et validé</option>
+				<option value='3' "; if ($_POST["chx_purete"] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
+				</select>";
+			}
+			if (isset($_POST["chx_structure"])){
+				print
+				"<br><br>
+				<label for='chx_structure'>Structure contrôlée :</label>
+				<select id='chx_structure' name='chx_structure'>
+				<option value='0' "; if ($_POST["chx_structure"] == 0) echo "selected"; echo ">Non contrôlée</option>
+				<option value='1' "; if ($_POST["chx_structure"] == 1) echo "selected"; echo ">Contrôle en cours</option>
+				<option value='2' "; if ($_POST["chx_structure"] == 2) echo "selected"; echo ">Contrôlée et validé</option>
+				<option value='3' "; if ($_POST["chx_structure"] == 3) echo "selected"; echo ">Contrôlée et invalidé</option>
+				</select>";
+			}
+			if (isset($_POST['chezEvo'])){
+				echo "<input type='hidden' id='chezEvo' name='chezEvo' value = 1 />";
+				echo "<input type='hidden' id='pro_num_constant' name='pro_num_constant' value='".$_POST['pro_num_constant']."' />";
+				echo "<br/><br/><label>Insoluble chez Evotec ?</label> ";
+				echo "<input type='checkbox' id='evo_insoluble' name='evo_insoluble' ";
+				if (isset($_POST['evo_insoluble']) && $_POST['evo_insoluble'])
+				echo "checked ";
+				echo "/>";
+			}
 
 			print"</td>\n</tr>\n<tr valign=\"top\">\n<td>";
 			$formulaire->ajout_textarea ("nomiupac",36,$rowselect[1],12,true,NOM."<br/>");
@@ -724,7 +725,7 @@ if (!empty($_POST['id'])) {
 					else {
 						if(!isset($_POST['numbrevet'])) $_POST['numbrevet']="";
 						$formulaire->ajout_text (20,$_POST['numbrevet'],"","numbrevet",NUMBREVET."<br/>","","");
-						}
+					}
 				}
 			}
 
@@ -746,8 +747,8 @@ if (!empty($_POST['id'])) {
 			$rop=$result7->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_text ($rop[0]+1,$rowselect[9],$rop[0],"pfusion",PFUSION."<br/>",DEG,"");
 			print"<br/><br/>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-					<tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".PEB."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".PEB."</div>\n<br/>";
 			//recherche des informations sur le champ pro_point_ebullition
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_point_ebullition'";
 			//les résultats sont retournées dans la variable $result
@@ -764,25 +765,25 @@ if (!empty($_POST['id'])) {
 			$rop=$result8->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_text ($rop[0]+1,$rowselect[11],$rop[0],"pressionpb",PRESSIONPB."<br/>",ATM,"");
 			print"</td>
-					</tr>
-				</table><br/>";
+			</tr>
+			</table><br/>";
 			print"<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-			  <tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".PURETESUB."</div>\n<br/>";
 			if($rowselect[34]==0) $rowselect[34]="";
 			$formulaire->ajout_text (4, $rowselect[34], 15, "purete", PURETE,"","");
 			echo POURCENT;
 			print"<br/>\n<br/>\n";
 			$formulaire->ajout_text (21, $rowselect[35], 20, "methopurete", METHOPURETE,"","");
 			print"</td>
-			  </tr>
+			</tr>
 			</table>";
 
 			$tabsup[1]=RETIRE;
 			//##############  UV  #####################
 			print"</td>\n<td colspan=\"2\">\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				<tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".UV."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".UV."</div>\n<br/>";
 			$sqluv="SELECT uv_text, uv_nom_fichier FROM produit P
 			INNER JOIN uv U
 			ON P.pro_id_uv=U.uv_id_uv
@@ -798,8 +799,8 @@ if (!empty($_POST['id'])) {
 			}
 			//##############  SM  #####################
 			print"</td>\n</tr>\n</table>\n</td>\n</tr>\n<tr class='hr_analyses' valign=\"top\">\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-					<tr>
-					<td class=\"blocformulaire\">\n<div align=\"center\">".SM."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".SM."</div>\n<br/>";
 			$sqlsm="SELECT sm_text, sm_type, sm_nom_fichier FROM produit P
 			INNER JOIN sm S
 			ON P.pro_id_sm=S.sm_id_sm
@@ -827,12 +828,12 @@ if (!empty($_POST['id'])) {
 				$formulaire->ajout_checkbox ("supsm",$tabsup,'','',false);
 			}
 			print"</td>
-				</tr>
-				</table>";
+			</tr>
+			</table>";
 			//##############  HRMS  #####################
 			print"\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				<tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".HSM."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".HSM."</div>\n<br/>";
 			$sqlhrms="SELECT hrms_text, hrms_type, hrms_nom_fichier FROM produit P
 			INNER JOIN hrms H
 			ON P.pro_id_hrms=H.hrms_id_hrms
@@ -860,12 +861,12 @@ if (!empty($_POST['id'])) {
 				$formulaire->ajout_checkbox ("suphrms",$tabsup,'','',false);
 			}
 			print"</td>
-				</tr>
-				</table>";
+			</tr>
+			</table>";
 			//##############  IR  #####################
 			print"\n</td>\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				<tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".IR."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".IR."</div>\n<br/>";
 			$sqlir="SELECT ir_text, ir_nom_fichier FROM produit P
 			INNER JOIN ir I
 			ON P.pro_id_ir=I.ir_id_ir
@@ -880,11 +881,11 @@ if (!empty($_POST['id'])) {
 				$formulaire->ajout_checkbox ("supir",$tabsup,'','',false);
 			}
 			print"</td>
-				</tr>
-				</table>";
+			</tr>
+			</table>";
 			print"\n</td>\n<td>\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				  <tr>
-					<td class=\"blocformulaire\">\n<div align=\"center\">".ALPHAD.ALPHA."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".ALPHAD.ALPHA."</div>\n<br/>";
 			//recherche des informations sur le champ pro_apha
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_apha'";
 			//les résultats sont retournées dans la variable $result
@@ -915,11 +916,11 @@ if (!empty($_POST['id'])) {
 			$formulaire->ajout_select (1,"alphasolvant",$tab2,false,$rowselect[15],ALPHASELECSOLV,ALPHASOLVANT."<br/>",false,"");
 
 			print"</td>
-				  </tr>
-				</table>";
+			</tr>
+			</table>";
 			print"\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				   <tr>
-					 <td class=\"blocformulaire\">\n<div align=\"center\">".CCM."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".CCM."</div>\n<br/>";
 			//recherche des informations sur le champ pro_rf
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_rf'";
 			//les résultats sont retournées dans la variable $result
@@ -931,12 +932,12 @@ if (!empty($_POST['id'])) {
 			print"<br/>";
 			$formulaire->ajout_text (27,$rowselect[17],256,"ccmsolvant",CCMSOLVANT."<br/>","","");
 			print"</td>
-				  </tr>
-				</table>";
+			</tr>
+			</table>";
 			//##############  RMNH  #####################
 			print"\n</td>\n</tr>\n<tr class='hr_analyses' valign=\"top\">\n<td colspan=\"3\">\n<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				<tr>
-				<td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN."</div>\n<br/>";
+			<tr>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN."</div>\n<br/>";
 			$sqlrmnh="SELECT rmnh_text, rmnh_nom_fichier FROM produit P
 			INNER JOIN rmnh R
 			ON P.pro_id_rmnh=R.rmnh_id_rmnh
@@ -952,8 +953,8 @@ if (!empty($_POST['id'])) {
 			}
 			//##############  RMNC  #####################
 			print"</td>
-				  <td class=\"tabtransparent\">&nbsp;</td>
-					 <td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN.RMNC."</div>\n<br/>";
+			<td class=\"tabtransparent\">&nbsp;</td>
+			<td class=\"blocformulaire\">\n<div align=\"center\">".SPECTRORMN.RMNC."</div>\n<br/>";
 			$sqlrmnc="SELECT rmnc_text, rmnc_nom_fichier FROM produit P
 			INNER JOIN rmnc C
 			ON P.pro_id_rmnc=C.rmnc_id_rmnc
@@ -968,18 +969,18 @@ if (!empty($_POST['id'])) {
 				$formulaire->ajout_checkbox ("suprmnc",$tabsup,'','',false);
 			}
 			print"</td>
-				  </tr>
-				</table>";
+			</tr>
+			</table>";
 			//********fin de la section analyse********
 
 			//*********Section Bibliographie du formulaire***********
 			print"</td>\n</tr>\n<tr>\n<td colspan=\"3\"><div class='hr click_bibliographie'>".BIBLIO." & ".OBSERVATION."</div><hr id='arrow_bibliographie' class='arrow click_bibliographie'>
-				  <table class='hr_bibliographie' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
-				  <h3>".BIBLIO."</h3><br/></td><td width=\"50%\"><h3>".OBSERVATION."</h3></td></tr>
-				  <tr><td width=\"50%\">
-				  <table width=\"250\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
-				   <tr >
-					 <td class=\"blocformulaire\">\n<div align=\"center\">".PUB."</div>\n<br/>";
+			<table class='hr_bibliographie' width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td width=\"50%\">
+			<h3>".BIBLIO."</h3><br/></td><td width=\"50%\"><h3>".OBSERVATION."</h3></td></tr>
+			<tr><td width=\"50%\">
+			<table width=\"250\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">
+			<tr >
+			<td class=\"blocformulaire\">\n<div align=\"center\">".PUB."</div>\n<br/>";
 			//recherche des informations sur le champ pro_doi
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_doi'";
 			//les résultats sont retournées dans la variable $result
@@ -996,8 +997,8 @@ if (!empty($_POST['id'])) {
 			$rop=$result19->fetch(PDO::FETCH_NUM);
 			$formulaire->ajout_text ($rop[0]+1,$rowselect[19],$rop[0],"hal",HAL."<br/>","","");
 			print"</td>
-					</tr>
-					</table>\n<br/>";
+			</tr>
+			</table>\n<br/>";
 			//recherche des informations sur le champ pro_cas
 			$sql="SELECT character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='pro_cas'";
 			//les résultats sont retournées dans la variable $result
@@ -1204,6 +1205,7 @@ if (!empty($_POST['id'])) {
 					});
 				</script>
 				";
+
 		}
 		else {
 			$erreur=STRUC;
